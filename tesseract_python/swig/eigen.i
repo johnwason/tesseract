@@ -39,6 +39,8 @@
   * modified the typemaps to throw SWIG_fail when errors occur, which results in helpful Python errors being thrown when the type conversions fail
   * added typemaps for std::vector containers
   * updated to use the new numpy API for full python3 support
+John Wason:
+  * Add typecheck for Eigen::Ref types
  */
  
  //Source: https://raw.githubusercontent.com/rdeits/swig-eigen-numpy/master/swigmake/swig/python/eigen.i
@@ -352,7 +354,9 @@
     CLASS const &,
     Eigen::MatrixBase< CLASS >,
     const Eigen::MatrixBase< CLASS > &,
-    CLASS &
+    const Eigen::Ref<const Eigen::MatrixBase< CLASS > > &,
+    CLASS &,
+    const Eigen::Ref<const CLASS> &
   {
     $1 = is_array($input);
   }

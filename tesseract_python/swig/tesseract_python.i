@@ -42,8 +42,7 @@
   try {
     $action
   } 
-  SWIG_CATCH_STDEXCEPT
-  SWIG_CATCH_UNKNOWN
+  SWIG_CATCH_STDEXCEPT  
 }
 
 
@@ -74,5 +73,6 @@
 
 %include "trajopt/problem_description.i"
 %include "tesseract_planning/trajopt/trajopt_planner.i"
+
 
 
