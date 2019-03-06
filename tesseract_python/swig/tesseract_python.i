@@ -61,19 +61,18 @@
 %include "tesseract_core/basic_env.i"
 %include "tesseract_core/basic_plotting.i"
 
-%include "tesseract_ros/ros_tesseract_utils.i"
 %include "tesseract_ros/ros_basic_kin.i"
 %include "tesseract_ros/ros_basic_env.i"
 %include "tesseract_ros/ros_basic_plotting.i"
 %include "tesseract_ros/kdl/kdl_chain_kin.i"
 %include "tesseract_ros/kdl/kdl_joint_kin.i"
 %include "tesseract_ros/kdl/kdl_env.i"
+%include "tesseract_ros/ros_tesseract_utils.i"
 
 %include "tesseract_planning/basic_planner_types.i"
 %include "tesseract_planning/basic_planner.i"
 
 %include "trajopt/problem_description.i"
 %include "tesseract_planning/trajopt/trajopt_planner.i"
-
 
 

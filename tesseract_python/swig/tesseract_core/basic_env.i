@@ -18,7 +18,9 @@ public:
 	virtual const std::string& getName() const;
 	
 	virtual void setState(const std::unordered_map<std::string, double>& joints);
+	%rename(setState1) setState;
 	virtual void setState(const std::vector<std::string>& joint_names, const std::vector<double>& joint_values);
+	%rename(setState2) setState;
 	virtual void setState(const std::vector<std::string>& joint_names,
 	                      const Eigen::Ref<const Eigen::VectorXd>& joint_values);
 	

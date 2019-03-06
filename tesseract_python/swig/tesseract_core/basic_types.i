@@ -29,9 +29,12 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 
 
 tesseract_aligned_vector(ContactResultVector, tesseract::ContactResult);
-%template() std::pair<std::string,std::string>;
-%template(ContactResultMap) std::map<std::pair<std::string,std::string>, tesseract::ContactResult, std::less<std::pair<std::string,std::string>>, Eigen::aligned_allocator<std::pair<const std::pair<std::string,std::string>, tesseract::ContactResult>>>;
-%template(ContactResultMap_vector) std::vector<std::map<std::pair<std::string,std::string>, tesseract::ContactResult, std::less<std::pair<std::string,std::string>>, Eigen::aligned_allocator<std::pair<const std::pair<std::string,std::string>, tesseract::ContactResult>>>>;
+%template(string_pair) std::pair<std::string,std::string>;
+%template(ContactResultMap) std::map<std::pair<std::string,std::string>,std::vector<tesseract::ContactResult , Eigen::aligned_allocator<tesseract::ContactResult >>,std::less<std::pair<std::string,std::string>>,Eigen::aligned_allocator<std::pair<const std::pair<std::string,std::string>,std::vector<tesseract::ContactResult , Eigen::aligned_allocator<tesseract::ContactResult >>>>>;
+		
+
+//%tesseract_aligned_map(ContactResultMap, %arg(std::pair<std::string,std::string>), std::vector<tesseract::ContactResult , Eigen::aligned_allocator<tesseract::ContactResult >>);
+//%template(ContactResultMap_vector) std::vector<std::map<std::pair<std::string,std::string>, tesseract::ContactResult, std::less<std::pair<std::string,std::string>>, Eigen::aligned_allocator<std::pair<const std::pair<std::string,std::string>, tesseract::ContactResult>>>>;
 
 %template(CollisionObjectTypeVector) std::vector<tesseract::CollisionObjectType>;
 

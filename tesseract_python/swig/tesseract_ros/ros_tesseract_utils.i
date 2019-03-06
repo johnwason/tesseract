@@ -34,7 +34,7 @@ void tesseractTrajectoryToJointTrajectoryMsg(trajectory_msgs::JointTrajectoryPtr
 
 void tesseractContactResultToContactResultMsg(tesseract_msgs::ContactResult& contact_result_msg,
                                                             const tesseract::ContactResult& contact_result,
-                                                            const ros::Time& stamp = ros::Time::now());
+                                                            const ros::Time& stamp);
 
 }
 }
@@ -63,31 +63,31 @@ void tesseractContactResultToContactResultMsg(tesseract_msgs::ContactResult& con
 %inline
 {
 
-	void processAttachableObjectMsg_swig(tesseract::tesseract_ros::ROSBasicEnv& env, const tesseract_msgs::AttachableObject& ao_msg)
+	void processAttachableObjectMsg_swig(std::shared_ptr<tesseract::tesseract_ros::ROSBasicEnv> env, const tesseract_msgs::AttachableObject& ao_msg)
 	{
-		if (!tesseract::tesseract_ros::processAttachableObjectMsg(env,ao_msg))
+		if (!tesseract::tesseract_ros::processAttachableObjectMsg(*env,ao_msg))
 		{
 			throw std::runtime_error("processAttachedObjectMsg failed");
 		}
 	}
 	
-	void processAttachedBodyInfoMsg_swig(tesseract::tesseract_ros::ROSBasicEnv& env, const tesseract_msgs::AttachedBodyInfo& ab_msg)
+	void processAttachedBodyInfoMsg_swig(std::shared_ptr<tesseract::tesseract_ros::ROSBasicEnv> env, const tesseract_msgs::AttachedBodyInfo& ab_msg)
 	{
-		if(!tesseract::tesseract_ros::processAttachedBodyInfoMsg(env, ab_msg))
+		if(!tesseract::tesseract_ros::processAttachedBodyInfoMsg(*env, ab_msg))
 		{
 			throw std::runtime_error("processAttachedBodyInfoMsg failed");
 		}
 	}
 		
-	void processJointStateMsg_swig(tesseract::tesseract_ros::ROSBasicEnv& env, const sensor_msgs::JointState& joint_state_msg)
+	void processJointStateMsg_swig(std::shared_ptr<tesseract::tesseract_ros::ROSBasicEnv> env, const sensor_msgs::JointState& joint_state_msg)
 	{
-		if(!tesseract::tesseract_ros::processJointStateMsg(env, joint_state_msg))
+		if(!tesseract::tesseract_ros::processJointStateMsg(*env, joint_state_msg))
 		{
 			throw std::runtime_error("processJointStateMsg failed");
 		}
 	}
 		
-	void processTesseractStateMsg_swig(tesseract::tesseract_ros::ROSBasicEnv& env, const tesseract_msgs::TesseractState& state_msg)
+	void processTesseractStateMsg_swig(std::shared_ptr<tesseract::tesseract_ros::ROSBasicEnv> env, const tesseract_msgs::TesseractState& state_msg)
 	{
 		if (!tesseract::tesseract_ros::processTesseractStateMsg(env, state_msg))
 		{

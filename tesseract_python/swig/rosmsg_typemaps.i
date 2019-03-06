@@ -123,6 +123,60 @@
 {
 	$1 = &temp;
 }
-
 		
 %enddef
+
+%fragment("rostval_fragment", "header")
+{
+	template<class T>
+	bool ConvertFromPythonTValToCppTval(T& cpp_tval, PyObject* py_msg)
+	{
+		PyObject* secs=NULL;
+		PyObject* nsecs=NULL;
+		unsigned long c_secs;
+		unsigned long c_nsecs;
+		secs=PyObject_GetAttrString(py_msg, "secs");
+		if (!secs)
+			return false;
+		BOOST_SCOPE_EXIT_TPL(&secs) {		
+			Py_XDECREF(secs);
+		} BOOST_SCOPE_EXIT_END
+		if (!SWIG_IsOK(SWIG_AsVal_unsigned_SS_long(secs, &c_secs)))
+		{
+			return false;
+		}
+		c_secs=boost::lexical_cast<uint32_t>(PyLong_AsLong(secs));
+		nsecs=PyObject_GetAttrString(py_msg, "nsecs");
+		if (!nsecs)
+			return false;
+		BOOST_SCOPE_EXIT_TPL(&nsecs) {		
+			Py_XDECREF(nsecs);
+		} BOOST_SCOPE_EXIT_END
+		if (!SWIG_IsOK(SWIG_AsVal_unsigned_SS_long(nsecs, &c_nsecs)))
+		{
+			return false;
+		}
+		cpp_tval=T((uint32_t)c_secs,(uint32_t)c_nsecs);
+		return true;
+	}
+	
+	
+}
+
+%typemap(in, fragment="rostval_fragment") ros::Time (ros::Time temp)
+{
+	if(!ConvertFromPythonTValToCppTval(temp, $input))
+			SWIG_fail;		
+	$1 = temp;	
+}
+
+%typemap(in, fragment="rostval_fragment") ros::Time const & (ros::Time temp)
+{
+	if(!ConvertFromPythonTValToCppTval(temp, $input))
+			SWIG_fail;		
+	$1 = &temp;	
+}
+
+
+
+
