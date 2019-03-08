@@ -20,6 +20,8 @@
 %template(DblVec) std::vector<double>;
 %template(IntVec) std::vector<int>;
 %template(SafetyMarginDataPtr_vector) std::vector<std::shared_ptr<trajopt::SafetyMarginData>>;
+%template(TermInfoPtr_vector) std::vector<std::shared_ptr<trajopt::TermInfo>>;
+
 
 namespace sco
 {
@@ -162,8 +164,9 @@ struct InitInfo
 
 
 %nodefaultctor TermInfo;
-struct TermInfo
+class TermInfo
 {
+public:
   std::string name;
   int term_type;
   int getSupportedTypes();
@@ -181,14 +184,14 @@ struct ProblemConstructionInfo
 public:
   BasicInfo basic_info;
   sco::BasicTrustRegionSQPParameters opt_info;
-  std::vector<TermInfoPtr> cost_infos;
+  std::vector<std::shared_ptr<trajopt::TermInfo>> cost_infos;
   std::vector<TermInfoPtr> cnt_infos;
   InitInfo init_info;
 
   tesseract::BasicEnvConstPtr env;
   tesseract::BasicKinConstPtr kin;
 
-  ProblemConstructionInfo(tesseract::BasicEnvConstPtr env);
+  ProblemConstructionInfo(std::shared_ptr<const tesseract::BasicEnv> env);
   void fromJson(const Json::Value& v);
 };
 
@@ -292,16 +295,17 @@ struct SafetyMarginData
 typedef std::shared_ptr<SafetyMarginData> SafetyMarginDataPtr;
 typedef std::shared_ptr<const SafetyMarginData> SafetyMarginDataConstPtr;
 
-std::vector<SafetyMarginDataPtr> createSafetyMarginDataVector(int num_elements,
+std::vector<std::shared_ptr<SafetyMarginData>> createSafetyMarginDataVector(int num_elements,
                                                               const double& default_safety_margin,
                                                               const double& default_safety_margin_coeff);
 
-struct CollisionTermInfo : public TermInfo
+class CollisionTermInfo : public TermInfo
 {
+public:
   int first_step, last_step;
   bool continuous;
   int gap;
-  std::vector<SafetyMarginDataPtr> info;
+  std::vector<std::shared_ptr<SafetyMarginData>> info;
   void fromJson(ProblemConstructionInfo& pci, const Json::Value& v);
   void hatch(TrajOptProb& prob);
 };

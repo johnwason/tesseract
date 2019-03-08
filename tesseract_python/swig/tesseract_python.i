@@ -28,6 +28,10 @@
 
 #pragma SWIG nowarn=473
 
+%{ 
+#define SWIG_PYTHON_EXTRA_NATIVE_CONTAINERS 
+%} 
+
 %include <std_shared_ptr.i>
 %include <std_string.i>
 %include <std_vector.i>
@@ -49,9 +53,31 @@
 %include "eigen.i"
 %include "shared_factory.i"
 %include "json_typemaps.i"
-
 %include "eigen_types.i"
 %include "rosmsg_typemaps.i"
+
+%template(vector_string) std::vector<std::string>;
+
+%{
+#include <ros/ros.h>
+%}
+
+%inline %{
+void tesseract_python_ros_init(const std::vector<std::string>& args, const std::string& nodename)
+{
+	std::vector<char*> cargs;
+	for (size_t i=0; i<args.size(); i++)
+		cargs.push_back((char*)&args[i]);	
+	
+	int nargs=cargs.size();
+	ros::init(nargs, &cargs[0], nodename, ros::init_options::NoSigintHandler | ros::init_options::AnonymousName);
+}
+%}
+
+%pythoncode %{
+tesseract_python_ros_init([],"tesseract_python_module")
+%}
+
 %include "geometric_shapes/shapes.i"
 %include "tesseract_core/basic_types.i"
 %include "tesseract_core/basic_kin.i"
@@ -73,6 +99,5 @@
 
 %include "trajopt/problem_description.i"
 %include "tesseract_planning/trajopt/trajopt_planner.i"
-
 
 

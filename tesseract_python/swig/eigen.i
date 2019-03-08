@@ -370,9 +370,13 @@ John Wason:
 %typemap(in, fragment="Eigen_Fragments") const Eigen::Ref<const CLASS >& (CLASS temp)
 {
   if (!ConvertFromNumpyToEigenMatrix<CLASS >(&temp, $input))
-    SWIG_fail;
-  Eigen::Ref<const CLASS > temp_ref(temp);
-  $1 = &temp_ref;
+    SWIG_fail;  
+  $1 = new Eigen::Ref<const CLASS>(temp);
+}
+
+%typemap(freearg) const Eigen::Ref<const CLASS >&
+{
+  if($1) delete $1;
 }
 
 %enddef
