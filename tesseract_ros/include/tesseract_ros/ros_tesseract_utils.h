@@ -595,9 +595,9 @@ static inline void attachedBodyInfoMsgToAttachedBodyInfo(AttachedBodyInfo& ab_in
   ab_info.touch_links = body.touch_links;
 }
 
-static inline void tesseractEnvStateToJointStateMsg(sensor_msgs::JointState& joint_state, const EnvState& state)
+static inline void tesseractEnvStateToJointStateMsg(sensor_msgs::JointState& joint_state, const EnvState& state, const ros::Time& stamp = ros::Time::now())
 {
-  joint_state.header.stamp = ros::Time::now();
+  joint_state.header.stamp = stamp;
   for (const auto& joint : state.joints)
   {
     joint_state.name.push_back(joint.first);
@@ -605,13 +605,13 @@ static inline void tesseractEnvStateToJointStateMsg(sensor_msgs::JointState& joi
   }
 }
 
-static inline void tesseractEnvStateToJointStateMsg(sensor_msgs::JointStatePtr joint_state, const EnvState& state)
+static inline void tesseractEnvStateToJointStateMsg(sensor_msgs::JointStatePtr joint_state, const EnvState& state, const ros::Time& stamp = ros::Time::now())
 {
-  tesseractEnvStateToJointStateMsg(*joint_state, state);
+  tesseractEnvStateToJointStateMsg(*joint_state, state, stamp);
 }
 
 static inline void tesseractToTesseractStateMsg(tesseract_msgs::TesseractState& state_msg,
-                                                const tesseract_ros::ROSBasicEnv& env)
+                                                const tesseract_ros::ROSBasicEnv& env, const ros::Time& stamp = ros::Time::now())
 {
   state_msg.name = env.getName();
   state_msg.urdf_name = env.getURDF()->getName();
@@ -643,13 +643,13 @@ static inline void tesseractToTesseractStateMsg(tesseract_msgs::TesseractState& 
   }
 
   EnvStateConstPtr state = env.getState();
-  tesseractEnvStateToJointStateMsg(state_msg.joint_state, *state);
+  tesseractEnvStateToJointStateMsg(state_msg.joint_state, *state, stamp);
 }
 
 static inline void tesseractToTesseractStateMsg(tesseract_msgs::TesseractStatePtr state_msg,
-                                                const tesseract_ros::ROSBasicEnv& env)
+                                                const tesseract_ros::ROSBasicEnv& env, const ros::Time& stamp = ros::Time::now())
 {
-  tesseractToTesseractStateMsg(*state_msg, env);
+  tesseractToTesseractStateMsg(*state_msg, env, stamp);
 }
 
 /**

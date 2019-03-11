@@ -100,4 +100,3 @@ tesseract_python_ros_init([],"tesseract_python_module")
 %include "trajopt/problem_description.i"
 %include "tesseract_planning/trajopt/trajopt_planner.i"
 
-

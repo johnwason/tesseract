@@ -184,7 +184,7 @@ struct ProblemConstructionInfo
 public:
   BasicInfo basic_info;
   sco::BasicTrustRegionSQPParameters opt_info;
-  std::vector<std::shared_ptr<trajopt::TermInfo>> cost_infos;
+  std::vector<TermInfoPtr> cost_infos;
   std::vector<TermInfoPtr> cnt_infos;
   InitInfo init_info;
 

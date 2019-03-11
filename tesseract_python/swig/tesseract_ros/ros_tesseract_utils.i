@@ -17,9 +17,9 @@ void attachableObjectToAttachableObjectMsg(tesseract_msgs::AttachableObject& ao_
 
 void attachedBodyInfoToAttachedBodyInfoMsg(tesseract_msgs::AttachedBodyInfo& ab_info_msg, const AttachedBodyInfo& ab_info);
 
-void tesseractEnvStateToJointStateMsg(sensor_msgs::JointState& joint_state, const EnvState& state);
+void tesseractEnvStateToJointStateMsg(sensor_msgs::JointState& joint_state, const EnvState& state, const ros::Time& stamp);
 
-void tesseractToTesseractStateMsg(tesseract_msgs::TesseractState& state_msg, const tesseract_ros::ROSBasicEnv& env);
+void tesseractToTesseractStateMsg(tesseract_msgs::TesseractState& state_msg, const tesseract_ros::ROSBasicEnv& env, const ros::Time& stamp);
 
 void tesseractTrajectoryToJointTrajectoryMsg(trajectory_msgs::JointTrajectory& traj_msg, const tesseract::EnvState& start_state,
                                              const std::vector<std::string>& joint_names, const Eigen::Ref<const TrajArray>& traj);
