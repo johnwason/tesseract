@@ -33,7 +33,7 @@ std::vector<typename descartes_light::PositionSampler<FloatType>::Ptr>
 makeRobotPositionSamplers(const std::vector<Waypoint::Ptr>& path,
                           const typename descartes_light::KinematicsInterface<FloatType>::Ptr& kinematic_interface,
                           const typename descartes_light::CollisionInterface<FloatType>::Ptr& collision_interface,
-                          const FloatType radial_sample_resolution = 60 * M_PI / 180)
+                          const FloatType radial_sample_resolution = 60 * EIGEN_PI / 180)
 {
   std::vector<typename descartes_light::PositionSampler<FloatType>::Ptr> result;
   result.reserve(path.size());
@@ -121,7 +121,7 @@ std::vector<typename descartes_light::PositionSampler<FloatType>::Ptr>
 makeGantryPositionSamplers(const std::vector<Waypoint::Ptr>& path,
                            const typename descartes_light::KinematicsInterface<FloatType>::Ptr& kinematic_interface,
                            const typename descartes_light::CollisionInterface<FloatType>::Ptr& collision_interface,
-                           const FloatType radial_sample_resolution = 60 * M_PI / 180)
+                           const FloatType radial_sample_resolution = 60 * EIGEN_PI / 180)
 {
   std::vector<typename descartes_light::PositionSampler<FloatType>::Ptr> result;
   result.reserve(path.size());

@@ -11,17 +11,20 @@ find_package(tesseract REQUIRED)
 find_package(tesseract_common REQUIRED)
 find_package(console_bridge REQUIRED)
 find_package(Boost REQUIRED)
+find_package(jsoncpp REQUIRED)
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
 # Create interface for core
 add_library(${PROJECT_NAME}_core INTERFACE)
 target_link_libraries(${PROJECT_NAME}_core INTERFACE tesseract::tesseract tesseract::tesseract_common console_bridge)
-target_compile_options(${PROJECT_NAME}_core INTERFACE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_core INTERFACE -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_core INTERFACE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_core INTERFACE -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_core INTERFACE -mno-avx)
@@ -32,16 +35,20 @@ target_include_directories(${PROJECT_NAME}_core INTERFACE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>")
 target_include_directories(${PROJECT_NAME}_core SYSTEM INTERFACE
-    ${EIGEN3_INCLUDE_DIRS})
+    ${EIGEN3_INCLUDE_DIRS}
+	"$<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>"
+	)
 
 # Trajopt Planner
-add_library(${PROJECT_NAME}_trajopt SHARED src/trajopt/trajopt_motion_planner.cpp)
+add_library(${PROJECT_NAME}_trajopt STATIC src/trajopt/trajopt_motion_planner.cpp)
 target_link_libraries(${PROJECT_NAME}_trajopt PUBLIC ${Boost_LIBRARIES} ${PROJECT_NAME}_core trajopt::trajopt trajopt::trajopt_utils trajopt::trajopt_sco)
-target_compile_options(${PROJECT_NAME}_trajopt PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_trajopt PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_trajopt PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_trajopt PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_trajopt PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_trajopt PUBLIC cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_trajopt PUBLIC -mno-avx)
@@ -52,16 +59,19 @@ target_include_directories(${PROJECT_NAME}_trajopt PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>")
 target_include_directories(${PROJECT_NAME}_trajopt SYSTEM PUBLIC
+	"$<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>"
     ${Boost_INCLUDE_DIRS})
 
 # Trajopt Freespace Planner
-add_library(${PROJECT_NAME}_trajopt_freespace SHARED src/trajopt/trajopt_freespace_planner.cpp)
+add_library(${PROJECT_NAME}_trajopt_freespace STATIC src/trajopt/trajopt_freespace_planner.cpp)
 target_link_libraries(${PROJECT_NAME}_trajopt_freespace PUBLIC ${PROJECT_NAME}_trajopt)
-target_compile_options(${PROJECT_NAME}_trajopt_freespace PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_trajopt_freespace PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_trajopt_freespace PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_trajopt_freespace PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_trajopt_freespace PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_trajopt_freespace PUBLIC cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_trajopt_freespace PUBLIC -mno-avx)
@@ -70,16 +80,20 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   endif()
 target_include_directories(${PROJECT_NAME}_trajopt_freespace PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:include>")
+    "$<INSTALL_INTERFACE:include>"
+	"$<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>"
+	)
 
 # Trajopt Array Planner
-add_library(${PROJECT_NAME}_trajopt_array SHARED src/trajopt/trajopt_array_planner.cpp)
+add_library(${PROJECT_NAME}_trajopt_array STATIC src/trajopt/trajopt_array_planner.cpp)
 target_link_libraries(${PROJECT_NAME}_trajopt_array PUBLIC ${PROJECT_NAME}_trajopt)
-target_compile_options(${PROJECT_NAME}_trajopt_array PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_trajopt_array PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_trajopt_array PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_trajopt_array PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_trajopt_array PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_trajopt_array PUBLIC cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_trajopt_array PUBLIC -mno-avx)
@@ -88,10 +102,12 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   endif()
 target_include_directories(${PROJECT_NAME}_trajopt_array PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:include>")
+    "$<INSTALL_INTERFACE:include>"
+	"$<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>"
+	)
 
 # OMPL Freespace Planning Interface
-add_library(${PROJECT_NAME}_ompl_freespace SHARED
+add_library(${PROJECT_NAME}_ompl_freespace STATIC
   src/ompl/ompl_freespace_planner.cpp
   src/ompl/conversions.cpp
   src/ompl/continuous_motion_validator.cpp
@@ -99,11 +115,13 @@ add_library(${PROJECT_NAME}_ompl_freespace SHARED
   src/ompl/weighted_real_vector_state_sampler.cpp
 )
 target_link_libraries(${PROJECT_NAME}_ompl_freespace PUBLIC ${PROJECT_NAME}_core ${OMPL_LIBRARIES})
-target_compile_options(${PROJECT_NAME}_ompl_freespace PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_ompl_freespace PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_ompl_freespace PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_ompl_freespace PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_ompl_freespace PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_ompl_freespace PUBLIC cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_ompl_freespace PUBLIC -mno-avx)
@@ -114,16 +132,20 @@ target_include_directories(${PROJECT_NAME}_ompl_freespace PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>")
 target_include_directories(${PROJECT_NAME}_ompl_freespace SYSTEM PUBLIC
-    ${OMPL_INCLUDE_DIRS})
+    ${OMPL_INCLUDE_DIRS}
+	"$<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>"
+	)
 
 # Descartes Planner
-add_library(${PROJECT_NAME}_descartes SHARED src/descartes/descartes_motion_planner.cpp)
+add_library(${PROJECT_NAME}_descartes STATIC src/descartes/descartes_motion_planner.cpp)
 target_link_libraries(${PROJECT_NAME}_descartes PUBLIC ${PROJECT_NAME}_core descartes::descartes_light descartes::descartes_samplers descartes::descartes_opw descartes::descartes_tesseract)
-target_compile_options(${PROJECT_NAME}_descartes PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_descartes PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_descartes PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_descartes PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_descartes PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_descartes PUBLIC cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_descartes PUBLIC -mno-avx)
@@ -132,16 +154,20 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   endif()
 target_include_directories(${PROJECT_NAME}_descartes PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:include>")
+    "$<INSTALL_INTERFACE:include>"
+	"$<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>"
+	)
 
 # Descartes Planner
-add_library(${PROJECT_NAME}_descartes_trajopt_array SHARED src/hybrid/descartes_trajopt_array_planner.cpp)
+add_library(${PROJECT_NAME}_descartes_trajopt_array STATIC src/hybrid/descartes_trajopt_array_planner.cpp)
 target_link_libraries(${PROJECT_NAME}_descartes_trajopt_array PUBLIC ${PROJECT_NAME}_descartes ${PROJECT_NAME}_trajopt_array)
-target_compile_options(${PROJECT_NAME}_descartes_trajopt_array PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_descartes_trajopt_array PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_descartes_trajopt_array PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_descartes_trajopt_array PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_descartes_trajopt_array PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_descartes_trajopt_array PUBLIC cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_descartes_trajopt_array PUBLIC -mno-avx)
@@ -150,7 +176,9 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   endif()
 target_include_directories(${PROJECT_NAME}_descartes_trajopt_array PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:include>")
+    "$<INSTALL_INTERFACE:include>"
+	"$<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>"
+	)
 
 list (APPEND PACKAGE_LIBRARIES ${PROJECT_NAME}_core)
 list (APPEND PACKAGE_LIBRARIES ${PROJECT_NAME}_trajopt)

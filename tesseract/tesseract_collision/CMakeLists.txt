@@ -10,6 +10,9 @@ find_package(console_bridge REQUIRED)
 find_package(tesseract_geometry REQUIRED)
 find_package(tesseract_common REQUIRED)
 find_package(Bullet REQUIRED)
+find_package(assimp REQUIRED)
+
+link_directories(${ASSIMP_LIBRARY_DIRS})
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
@@ -21,11 +24,13 @@ list(APPEND LIBFCL_LIBRARIES ${CCD_LIBRARIES})
 # Create interface for core
 add_library(${PROJECT_NAME}_core INTERFACE)
 target_link_libraries(${PROJECT_NAME}_core INTERFACE tesseract::tesseract_geometry ${Boost_LIBRARIES} ${BULLET_LIBRARIES})
-target_compile_options(${PROJECT_NAME}_core INTERFACE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_core INTERFACE -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_core INTERFACE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_core INTERFACE -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_core INTERFACE -mno-avx)
@@ -42,7 +47,7 @@ target_include_directories(${PROJECT_NAME}_core SYSTEM INTERFACE
     $<TARGET_PROPERTY:tesseract::tesseract_common,INTERFACE_INCLUDE_DIRECTORIES>) #tesseract::tesseract_common Due to bug in catkin, there is an open PR
 
 # Create target for Bullet implementation
-add_library(${PROJECT_NAME}_bullet SHARED
+add_library(${PROJECT_NAME}_bullet STATIC
   src/bullet/bullet_cast_bvh_manager.cpp
   src/bullet/bullet_cast_simple_manager.cpp
   src/bullet/bullet_discrete_bvh_manager.cpp
@@ -50,11 +55,13 @@ add_library(${PROJECT_NAME}_bullet SHARED
   src/bullet/bullet_utils.cpp
 )
 target_link_libraries(${PROJECT_NAME}_bullet PUBLIC ${PROJECT_NAME}_core tesseract::tesseract_geometry console_bridge ${OCTOMAP_LIBRARIES})
-target_compile_options(${PROJECT_NAME}_bullet PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_bullet PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_bullet PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_bullet PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_bullet PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_bullet PUBLIC cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_bullet PUBLIC -mno-avx)
@@ -71,13 +78,15 @@ target_include_directories(${PROJECT_NAME}_bullet SYSTEM PUBLIC
     ${OCTOMAP_INCLUDE_DIRS})
 
 # Create target for FCL implementation
-add_library(${PROJECT_NAME}_fcl SHARED src/fcl/fcl_discrete_managers.cpp src/fcl/fcl_utils.cpp)
+add_library(${PROJECT_NAME}_fcl STATIC src/fcl/fcl_discrete_managers.cpp src/fcl/fcl_utils.cpp)
 target_link_libraries(${PROJECT_NAME}_fcl PUBLIC ${PROJECT_NAME}_core tesseract::tesseract_geometry console_bridge ${OCTOMAP_LIBRARIES} ${LIBFCL_LIBRARIES})
-target_compile_options(${PROJECT_NAME}_fcl PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_fcl PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_fcl PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_fcl PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_fcl PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_fcl PUBLIC cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_fcl PUBLIC -mno-avx)
@@ -97,11 +106,13 @@ target_include_directories(${PROJECT_NAME}_fcl SYSTEM PUBLIC
 # Create target for creating convex hull's from meshes
 add_executable(create_convex_hull src/create_convex_hull.cpp)
 target_link_libraries(create_convex_hull PUBLIC tesseract::tesseract_geometry console_bridge ${BULLET_LIBRARIES} ${Boost_LIBRARIES} ${OCTOMAP_LIBRARIES})
-target_compile_options(create_convex_hull PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(create_convex_hull PUBLIC -std=c++11)
-else()
-    target_compile_features(create_convex_hull PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(create_convex_hull PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(create_convex_hull PUBLIC -std=c++11)
+	else()
+		target_compile_features(create_convex_hull PUBLIC cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(create_convex_hull PUBLIC -mno-avx)

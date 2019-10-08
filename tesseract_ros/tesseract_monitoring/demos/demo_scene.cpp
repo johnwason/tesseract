@@ -42,6 +42,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <tesseract_msgs/EnvironmentCommand.h>
 #include <tesseract_msgs/GetEnvironmentChanges.h>
 #include <ros/service.h>
+#include <boost/thread/thread.hpp>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 static const std::string ROBOT_DESCRIPTION = "robot_description";
@@ -153,7 +154,7 @@ bool updateRViz()
 
   addSphere("sphere_attached", id, revision);
 
-  sleep(10);
+  boost::this_thread::sleep(boost::posix_time::seconds(10));
 
   removeSphere("sphere_attached", id, revision);
 
@@ -183,7 +184,7 @@ bool updateMaster()
 
   addSphere("sphere_attached", id, revision);
 
-  sleep(10);
+  boost::this_thread::sleep(boost::posix_time::seconds(10));
 
   removeSphere("sphere_attached", id, revision);
 

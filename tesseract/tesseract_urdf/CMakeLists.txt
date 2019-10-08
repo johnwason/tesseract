@@ -7,7 +7,7 @@ find_package(Boost REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(console_bridge REQUIRED)
 find_package(TinyXML2 REQUIRED)
-find_package(PCL REQUIRED)
+find_package(PCL REQUIRED COMPONENTS common io)
 find_package(tesseract_geometry REQUIRED)
 find_package(tesseract_common REQUIRED)
 find_package(tesseract_scene_graph REQUIRED)
@@ -15,9 +15,11 @@ find_package(tesseract_collision REQUIRED)
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
-add_library(${PROJECT_NAME} SHARED src/urdf_parser.cpp)
+add_library(${PROJECT_NAME} STATIC src/urdf_parser.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC tesseract::tesseract_geometry tesseract::tesseract_scene_graph tesseract::tesseract_collision_core console_bridge ${Boost_LIBRARIES} ${TinyXML2_LIBRARIES})
+if (NOT MSVC)
 target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+endif()
 
 # PCL does not support c++11 on Xenial so cannot include point cloud parsing from urdf
 if(Boost_VERSION VERSION_GREATER "1.60")

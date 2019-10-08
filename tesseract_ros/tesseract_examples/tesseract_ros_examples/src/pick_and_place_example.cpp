@@ -25,8 +25,9 @@
  */
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include <ros/ros.h>
+#include <boost/thread.hpp>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_ros_examples/pick_and_place_example.h>
@@ -96,7 +97,7 @@ bool PickAndPlaceExample::run()
     if (!checkRviz())
       return false;
   }
-  sleep(20);
+  boost::this_thread::sleep(boost::posix_time::seconds(20));
   // Set the initial state of the robot
   std::unordered_map<std::string, double> joint_states;
   joint_states["iiwa_joint_1"] = 0.0;

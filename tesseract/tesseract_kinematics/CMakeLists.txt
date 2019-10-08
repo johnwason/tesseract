@@ -13,11 +13,13 @@ list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 # Create interface for core
 add_library(${PROJECT_NAME}_core INTERFACE)
 target_link_libraries(${PROJECT_NAME}_core INTERFACE tesseract::tesseract_scene_graph)
-target_compile_options(${PROJECT_NAME}_core INTERFACE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_core INTERFACE -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_core INTERFACE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_core INTERFACE -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_core INTERFACE -mno-avx)
@@ -32,18 +34,20 @@ target_include_directories(${PROJECT_NAME}_core SYSTEM INTERFACE
     $<TARGET_PROPERTY:tesseract::tesseract_common,INTERFACE_INCLUDE_DIRECTORIES>) #tesseract::tesseract_common Due to bug in catkin, there is an open PR
 
 # Add KDL implementation of tesseract_kinematics
-add_library(${PROJECT_NAME}_kdl SHARED
+add_library(${PROJECT_NAME}_kdl STATIC
   src/kdl/kdl_fwd_kin_chain.cpp
   src/kdl/kdl_fwd_kin_tree.cpp
   src/kdl/kdl_inv_kin_chain_lma.cpp
   src/kdl/kdl_inv_kin_chain_nr.cpp
 )
 target_link_libraries(${PROJECT_NAME}_kdl PUBLIC ${PROJECT_NAME}_core tesseract::tesseract_scene_graph orocos-kdl console_bridge)
-target_compile_options(${PROJECT_NAME}_kdl PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
-if(CXX_FEATURE_FOUND EQUAL "-1")
-    target_compile_options(${PROJECT_NAME}_kdl PUBLIC -std=c++11)
-else()
-    target_compile_features(${PROJECT_NAME}_kdl PUBLIC cxx_std_11)
+if(NOT MSVC)
+	target_compile_options(${PROJECT_NAME}_kdl PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
+	if(CXX_FEATURE_FOUND EQUAL "-1")
+		target_compile_options(${PROJECT_NAME}_kdl PUBLIC -std=c++11)
+	else()
+		target_compile_features(${PROJECT_NAME}_kdl PUBLIC cxx_std_11)
+	endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${PROJECT_NAME}_kdl PUBLIC -mno-avx)

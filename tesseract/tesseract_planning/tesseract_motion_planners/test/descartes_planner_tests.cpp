@@ -109,7 +109,7 @@ createDescartesPlannerConfig(const opw_kinematics::Parameters<double>& params,
   typename descartes_light::EdgeEvaluator<double>::Ptr edge_computer =
       std::make_shared<descartes_light::EuclideanDistanceEdgeEvaluator<double>>(kin->numJoints());
   std::vector<typename descartes_light::PositionSampler<double>::Ptr> position_samplers =
-      makeRobotPositionSamplers<double>(waypoints, robot_kin, coll_interface, 60 * M_PI / 180);
+      makeRobotPositionSamplers<double>(waypoints, robot_kin, coll_interface, 60 * EIGEN_PI / 180);
 
   return DescartesMotionPlannerConfigD(
       tesseract_ptr, manip, coll_interface, robot_kin, edge_computer, timing, position_samplers, waypoints);
@@ -138,7 +138,7 @@ protected:
     opw_params_.c3 = (0.755);
     opw_params_.c4 = (0.085);
 
-    opw_params_.offsets[2] = -M_PI / 2.0;
+    opw_params_.offsets[2] = -EIGEN_PI / 2.0;
   }
 };
 

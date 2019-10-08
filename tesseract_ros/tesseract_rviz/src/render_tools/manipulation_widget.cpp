@@ -40,6 +40,9 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <rviz/window_manager_interface.h>
 
 #include <tesseract_rosutils/utils.h>
+
+#include <OgreSceneNode.h>
+
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_rviz/markers/utils.h>

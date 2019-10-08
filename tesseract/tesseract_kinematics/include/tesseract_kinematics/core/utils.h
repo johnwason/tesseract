@@ -109,11 +109,11 @@ inline static void numericalJacobian(Eigen::Ref<Eigen::MatrixXd> jacobian,
 
     Eigen::AngleAxisd r12(pose.rotation().transpose() * updated_pose.rotation());  // rotation from p1 -> p2
     double theta = r12.angle();
-    theta = copysign(fmod(fabs(theta), 2.0 * M_PI), theta);
-    if (theta < -M_PI)
-      theta = theta + 2. * M_PI;
-    if (theta > M_PI)
-      theta = theta - 2. * M_PI;
+    theta = copysign(fmod(fabs(theta), 2.0 * EIGEN_PI), theta);
+    if (theta < -EIGEN_PI)
+      theta = theta + 2. * EIGEN_PI;
+    if (theta > EIGEN_PI)
+      theta = theta - 2. * EIGEN_PI;
     Eigen::VectorXd omega = (pose.rotation() * r12.axis() * theta) / delta;
     jacobian(3, i) = omega(0);
     jacobian(4, i) = omega(1);

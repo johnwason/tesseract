@@ -27,7 +27,8 @@
 #define TESSERACT_COMMON_MACROS_H
 
 // clang-format off
-#define TESSERACT_COMMON_IGNORE_WARNINGS_PUSH                                                                          \
+#ifndef _MSC_VER
+#define TESSERACT_COMMON_IGNORE_WARNINGS_PUSH                                                                      \
   _Pragma("GCC diagnostic push") _Pragma("GCC diagnostic ignored \"-Wall\"")                                           \
       _Pragma("GCC diagnostic ignored \"-Wint-to-pointer-cast\"")                                                      \
           _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")                                                     \
@@ -37,5 +38,9 @@
                           _Pragma("GCC diagnostic ignored \"-Wsign-conversion\"")
 
 #define TESSERACT_COMMON_IGNORE_WARNINGS_POP _Pragma("GCC diagnostic pop")
+#else
+#define TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
+#define TESSERACT_COMMON_IGNORE_WARNINGS_POP
+#endif
 // clang-format on
 #endif  // TESSERACT_COMMON_MACROS_H
