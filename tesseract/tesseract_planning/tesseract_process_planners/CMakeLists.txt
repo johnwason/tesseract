@@ -1,13 +1,19 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(tesseract_process_planners VERSION 0.1.0 LANGUAGES CXX)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 find_package(tesseract_common REQUIRED)
 find_package(tesseract_motion_planners REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
-add_library(${PROJECT_NAME} STATIC src/${PROJECT_NAME}/process_definition.cpp)
+add_library(${PROJECT_NAME} src/${PROJECT_NAME}/process_definition.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC tesseract::tesseract_common tesseract::tesseract_motion_planners_core)
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)

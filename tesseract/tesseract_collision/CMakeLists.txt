@@ -1,16 +1,22 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(tesseract_collision VERSION 0.1.0 LANGUAGES CXX)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 find_package(Eigen3 REQUIRED)
 find_package(Boost COMPONENTS system thread program_options REQUIRED)
 find_package(octomap REQUIRED)
-find_package(PkgConfig REQUIRED)
 find_package(ccd REQUIRED)
 find_package(console_bridge REQUIRED)
 find_package(tesseract_geometry REQUIRED)
 find_package(tesseract_common REQUIRED)
 find_package(Bullet REQUIRED)
 find_package(assimp REQUIRED)
+find_package(PkgConfig)
 
 link_directories(${ASSIMP_LIBRARY_DIRS})
 
@@ -47,7 +53,7 @@ target_include_directories(${PROJECT_NAME}_core SYSTEM INTERFACE
     $<TARGET_PROPERTY:tesseract::tesseract_common,INTERFACE_INCLUDE_DIRECTORIES>) #tesseract::tesseract_common Due to bug in catkin, there is an open PR
 
 # Create target for Bullet implementation
-add_library(${PROJECT_NAME}_bullet STATIC
+add_library(${PROJECT_NAME}_bullet
   src/bullet/bullet_cast_bvh_manager.cpp
   src/bullet/bullet_cast_simple_manager.cpp
   src/bullet/bullet_discrete_bvh_manager.cpp
@@ -78,7 +84,7 @@ target_include_directories(${PROJECT_NAME}_bullet SYSTEM PUBLIC
     ${OCTOMAP_INCLUDE_DIRS})
 
 # Create target for FCL implementation
-add_library(${PROJECT_NAME}_fcl STATIC src/fcl/fcl_discrete_managers.cpp src/fcl/fcl_utils.cpp)
+add_library(${PROJECT_NAME}_fcl src/fcl/fcl_discrete_managers.cpp src/fcl/fcl_utils.cpp)
 target_link_libraries(${PROJECT_NAME}_fcl PUBLIC ${PROJECT_NAME}_core tesseract::tesseract_geometry console_bridge ${OCTOMAP_LIBRARIES} ${LIBFCL_LIBRARIES})
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME}_fcl PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)

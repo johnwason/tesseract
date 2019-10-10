@@ -3,6 +3,12 @@ project(tesseract_urdf VERSION 0.1.0 LANGUAGES CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 find_package(Boost REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(console_bridge REQUIRED)
@@ -15,7 +21,7 @@ find_package(tesseract_collision REQUIRED)
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
-add_library(${PROJECT_NAME} STATIC src/urdf_parser.cpp)
+add_library(${PROJECT_NAME} src/urdf_parser.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC tesseract::tesseract_geometry tesseract::tesseract_scene_graph tesseract::tesseract_collision_core console_bridge ${Boost_LIBRARIES} ${TinyXML2_LIBRARIES})
 if (NOT MSVC)
 target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)

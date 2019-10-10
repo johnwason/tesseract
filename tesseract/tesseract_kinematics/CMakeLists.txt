@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(tesseract_kinematics VERSION 0.1.0 LANGUAGES CXX)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 ## System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
 find_package(orocos_kdl REQUIRED)
@@ -34,7 +40,7 @@ target_include_directories(${PROJECT_NAME}_core SYSTEM INTERFACE
     $<TARGET_PROPERTY:tesseract::tesseract_common,INTERFACE_INCLUDE_DIRECTORIES>) #tesseract::tesseract_common Due to bug in catkin, there is an open PR
 
 # Add KDL implementation of tesseract_kinematics
-add_library(${PROJECT_NAME}_kdl STATIC
+add_library(${PROJECT_NAME}_kdl
   src/kdl/kdl_fwd_kin_chain.cpp
   src/kdl/kdl_fwd_kin_tree.cpp
   src/kdl/kdl_inv_kin_chain_lma.cpp

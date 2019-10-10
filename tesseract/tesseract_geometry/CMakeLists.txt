@@ -8,12 +8,7 @@ find_package(octomap REQUIRED)
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
-find_package(ASSIMP QUIET)
-if (NOT ASSIMP_FOUND)
-  find_package(PkgConfig REQUIRED)
-  # assimp is required, so REQUIRE the second attempt
-  pkg_check_modules(ASSIMP REQUIRED assimp)
-endif()
+find_package(ASSIMP REQUIRED)
 
 link_directories(${ASSIMP_LIBRARY_DIRS})
 

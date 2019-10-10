@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(tesseract_environment VERSION 0.1.0 LANGUAGES CXX)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 ## System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
 find_package(orocos_kdl REQUIRED)
@@ -12,7 +18,7 @@ find_package(tesseract_common REQUIRED)
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
 # Create interface for core
-add_library(${PROJECT_NAME}_core STATIC src/core/environment.cpp)
+add_library(${PROJECT_NAME}_core src/core/environment.cpp)
 target_link_libraries(${PROJECT_NAME}_core PUBLIC tesseract::tesseract_collision_core tesseract::tesseract_scene_graph)
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME}_core PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
@@ -34,7 +40,7 @@ target_include_directories(${PROJECT_NAME}_core SYSTEM PUBLIC
     ${EIGEN3_INCLUDE_DIRS}
     $<TARGET_PROPERTY:tesseract::tesseract_common,INTERFACE_INCLUDE_DIRECTORIES>) #tesseract::tesseract_common Due to bug in catkin, there is an open PR
 
-add_library(${PROJECT_NAME}_kdl STATIC src/kdl/kdl_env.cpp src/kdl/kdl_state_solver.cpp)
+add_library(${PROJECT_NAME}_kdl src/kdl/kdl_env.cpp src/kdl/kdl_state_solver.cpp)
 target_link_libraries(${PROJECT_NAME}_kdl PUBLIC ${PROJECT_NAME}_core tesseract::tesseract_collision_fcl tesseract::tesseract_collision_bullet tesseract::tesseract_scene_graph orocos-kdl console_bridge ${BULLET_LIBRARIES})
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME}_kdl PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)

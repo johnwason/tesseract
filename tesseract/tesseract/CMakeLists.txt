@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(tesseract VERSION 0.1.0 LANGUAGES CXX)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 find_package(Boost COMPONENTS system REQUIRED)
 find_package(console_bridge REQUIRED)
 find_package(tesseract_scene_graph REQUIRED)
@@ -13,7 +19,7 @@ find_package(tesseract_urdf REQUIRED)
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
 # Create target
-add_library(${PROJECT_NAME} STATIC src/tesseract.cpp)
+add_library(${PROJECT_NAME} src/tesseract.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC tesseract::tesseract_urdf tesseract::tesseract_scene_graph tesseract::tesseract_collision_bullet tesseract::tesseract_environment_kdl tesseract::tesseract_kinematics_kdl console_bridge)
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)

@@ -30,7 +30,7 @@ catkin_package(
     tesseract_collision
 )
 
-add_library(tesseract_collision_bullet_plugin src/plugins/bullet_plugin.cpp)
+add_library(tesseract_collision_bullet_plugin SHARED src/plugins/bullet_plugin.cpp)
 target_link_libraries(tesseract_collision_bullet_plugin PRIVATE tesseract::tesseract_collision_core tesseract::tesseract_collision_bullet ${catkin_LIBRARIES})
 if(NOT MSVC)
 target_compile_options(tesseract_collision_bullet_plugin PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)
@@ -45,7 +45,7 @@ target_include_directories(tesseract_collision_bullet_plugin SYSTEM PRIVATE
     ${catkin_INCLUDE_DIRS})
 
 
-add_library(tesseract_collision_fcl_plugin src/plugins/fcl_plugin.cpp)
+add_library(tesseract_collision_fcl_plugin SHARED src/plugins/fcl_plugin.cpp)
 target_link_libraries(tesseract_collision_fcl_plugin PRIVATE tesseract::tesseract_collision_core tesseract::tesseract_collision_fcl ${catkin_LIBRARIES})
 if(NOT MSVC)
 target_compile_options(tesseract_collision_fcl_plugin PRIVATE -Wall -Wextra -Wsuggest-override -Wconversion -Wsign-conversion)

@@ -283,15 +283,7 @@ GetAverageSupport(const btConvexShape* shape, const btVector3& localNormal, floa
   float ptCount = 0;
   float maxSupport = -1000;
 
-  const btPolyhedralConvexShape* pshape = nullptr;
-  try
-  {
-    pshape = dynamic_cast<const btPolyhedralConvexShape*>(shape);
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << "btPolyhedralConvexShape exception: " << e.what() << std::endl;
-  }
+  const btPolyhedralConvexShape* pshape = dynamic_cast<const btPolyhedralConvexShape*>(shape);
   if (pshape)
   {
     int nPts = pshape->getNumVertices();

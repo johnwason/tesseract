@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(tesseract_motion_planners VERSION 0.1.0 LANGUAGES CXX)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 find_package(ompl REQUIRED)
 find_package(trajopt REQUIRED)
 find_package(descartes_light REQUIRED)
@@ -40,7 +46,7 @@ target_include_directories(${PROJECT_NAME}_core SYSTEM INTERFACE
 	)
 
 # Trajopt Planner
-add_library(${PROJECT_NAME}_trajopt STATIC src/trajopt/trajopt_motion_planner.cpp)
+add_library(${PROJECT_NAME}_trajopt src/trajopt/trajopt_motion_planner.cpp)
 target_link_libraries(${PROJECT_NAME}_trajopt PUBLIC ${Boost_LIBRARIES} ${PROJECT_NAME}_core trajopt::trajopt trajopt::trajopt_utils trajopt::trajopt_sco)
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME}_trajopt PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
@@ -63,7 +69,7 @@ target_include_directories(${PROJECT_NAME}_trajopt SYSTEM PUBLIC
     ${Boost_INCLUDE_DIRS})
 
 # Trajopt Freespace Planner
-add_library(${PROJECT_NAME}_trajopt_freespace STATIC src/trajopt/trajopt_freespace_planner.cpp)
+add_library(${PROJECT_NAME}_trajopt_freespace src/trajopt/trajopt_freespace_planner.cpp)
 target_link_libraries(${PROJECT_NAME}_trajopt_freespace PUBLIC ${PROJECT_NAME}_trajopt)
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME}_trajopt_freespace PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
@@ -85,7 +91,7 @@ target_include_directories(${PROJECT_NAME}_trajopt_freespace PUBLIC
 	)
 
 # Trajopt Array Planner
-add_library(${PROJECT_NAME}_trajopt_array STATIC src/trajopt/trajopt_array_planner.cpp)
+add_library(${PROJECT_NAME}_trajopt_array src/trajopt/trajopt_array_planner.cpp)
 target_link_libraries(${PROJECT_NAME}_trajopt_array PUBLIC ${PROJECT_NAME}_trajopt)
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME}_trajopt_array PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
@@ -107,7 +113,7 @@ target_include_directories(${PROJECT_NAME}_trajopt_array PUBLIC
 	)
 
 # OMPL Freespace Planning Interface
-add_library(${PROJECT_NAME}_ompl_freespace STATIC
+add_library(${PROJECT_NAME}_ompl_freespace
   src/ompl/ompl_freespace_planner.cpp
   src/ompl/conversions.cpp
   src/ompl/continuous_motion_validator.cpp
@@ -137,7 +143,7 @@ target_include_directories(${PROJECT_NAME}_ompl_freespace SYSTEM PUBLIC
 	)
 
 # Descartes Planner
-add_library(${PROJECT_NAME}_descartes STATIC src/descartes/descartes_motion_planner.cpp)
+add_library(${PROJECT_NAME}_descartes src/descartes/descartes_motion_planner.cpp)
 target_link_libraries(${PROJECT_NAME}_descartes PUBLIC ${PROJECT_NAME}_core descartes::descartes_light descartes::descartes_samplers descartes::descartes_opw descartes::descartes_tesseract)
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME}_descartes PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)
@@ -159,7 +165,7 @@ target_include_directories(${PROJECT_NAME}_descartes PUBLIC
 	)
 
 # Descartes Planner
-add_library(${PROJECT_NAME}_descartes_trajopt_array STATIC src/hybrid/descartes_trajopt_array_planner.cpp)
+add_library(${PROJECT_NAME}_descartes_trajopt_array src/hybrid/descartes_trajopt_array_planner.cpp)
 target_link_libraries(${PROJECT_NAME}_descartes_trajopt_array PUBLIC ${PROJECT_NAME}_descartes ${PROJECT_NAME}_trajopt_array)
 if(NOT MSVC)
 	target_compile_options(${PROJECT_NAME}_descartes_trajopt_array PRIVATE -Wsuggest-override -Wconversion -Wsign-conversion)

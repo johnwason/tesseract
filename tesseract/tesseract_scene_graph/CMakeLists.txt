@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(tesseract_scene_graph VERSION 0.1.0 LANGUAGES CXX)
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Windows builds must be static" FORCE)
+else()
+  set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+endif()
+
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
 
 find_package(Boost REQUIRED)
@@ -13,7 +19,7 @@ find_package(tesseract_common REQUIRED)
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_std_11 CXX_FEATURE_FOUND)
 
-add_library(${PROJECT_NAME} STATIC src/graph.cpp)
+add_library(${PROJECT_NAME} src/graph.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC tesseract::tesseract_geometry orocos-kdl console_bridge ${Boost_LIBRARIES} ${TinyXML_LIBRARIES})
 target_compile_definitions(${PROJECT_NAME} PUBLIC Boost_USE_STATIC_LIBS=OFF Boost_USE_MULTITHREADED=ON Boost_USE_STATIC_RUNTIME=OFF)
 if(NOT MSVC)
