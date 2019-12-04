@@ -220,8 +220,8 @@ inline bool parseSceneGraph(KDLChainData& results,
         std::abs(results.joint_limits(j, 0) - results.joint_limits(j, 1)) <=
             static_cast<double>(std::numeric_limits<float>::epsilon()))
     {
-      results.joint_limits(j, 0) = -4 * M_PI;
-      results.joint_limits(j, 1) = +4 * M_PI;
+      results.joint_limits(j, 0) = -4 * EIGEN_PI;
+      results.joint_limits(j, 1) = +4 * EIGEN_PI;
     }
     ++j;
   }

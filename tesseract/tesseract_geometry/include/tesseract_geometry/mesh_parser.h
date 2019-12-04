@@ -229,6 +229,7 @@ inline std::vector<std::shared_ptr<T>> createMeshFromResource(tesseract_common::
     return std::vector<std::shared_ptr<T>>();
 
   const char* hint = nullptr;
+  std::string hint_str;
 
   std::string resource_url = resource->getUrl();
   std::regex hint_re("^.*\\.([A-Za-z0-9]{1,8})$");
@@ -237,7 +238,8 @@ inline std::vector<std::shared_ptr<T>> createMeshFromResource(tesseract_common::
   {
     if (hint_match.size() == 2)
     {
-      hint = hint_match[1].str().c_str();
+      hint_str = hint_match[1].str();
+	  hint = hint_str.c_str();
     }
   }
 

@@ -13,6 +13,8 @@ if (NOT ASSIMP_FOUND)
   pkg_check_modules(ASSIMP REQUIRED assimp)
 endif()
 
+link_directories(${ASSIMP_LIBRARY_DIRS})
+
 add_library(${PROJECT_NAME} INTERFACE)
 target_link_libraries(${PROJECT_NAME} INTERFACE console_bridge ${OCTOMAP_LIBRARIES} ${ASSIMP_LIBRARIES})
 tesseract_target_compile_options(${PROJECT_NAME} INTERFACE)

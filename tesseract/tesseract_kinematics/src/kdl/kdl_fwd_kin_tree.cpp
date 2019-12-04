@@ -282,8 +282,8 @@ bool KDLFwdKinTree::init(tesseract_scene_graph::SceneGraph::ConstPtr scene_graph
     if (joint->type == tesseract_scene_graph::JointType::CONTINUOUS &&
         std::abs(joint_limits_(j, 0) - joint_limits_(j, 1)) <= std::numeric_limits<float>::epsilon())
     {
-      joint_limits_(j, 0) = -4 * M_PI;
-      joint_limits_(j, 1) = +4 * M_PI;
+      joint_limits_(j, 0) = -4 * EIGEN_PI;
+      joint_limits_(j, 1) = +4 * EIGEN_PI;
     }
     ++j;
   }

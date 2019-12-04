@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(tesseract_rviz)
 
+if (NOT MSVC)
 add_compile_options(-std=c++11 -Wall -Wextra)
+endif()
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp

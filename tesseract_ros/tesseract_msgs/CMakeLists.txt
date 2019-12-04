@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(tesseract_msgs)
 
+if (NOT MSVC)
 add_compile_options(
   -std=c++11
   -Wall
@@ -8,6 +9,7 @@ add_compile_options(
   -Wsuggest-override
   -Wconversion
   -Wsign-conversion)
+endif()
 
 find_package(catkin REQUIRED COMPONENTS
   message_generation

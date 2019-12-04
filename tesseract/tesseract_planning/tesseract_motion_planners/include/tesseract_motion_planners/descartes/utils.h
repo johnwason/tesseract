@@ -66,9 +66,9 @@ getPoseSampler(const Waypoint::ConstPtr& wp,
                const FloatType x_sample_resolution = 0.001,
                const FloatType y_sample_resolution = 0.001,
                const FloatType z_sample_resolution = 0.001,
-               const FloatType x_axes_sample_resolution = 60 * M_PI / 180,
-               const FloatType y_axes_sample_resolution = 60 * M_PI / 180,
-               const FloatType z_axes_sample_resolution = 60 * M_PI / 180)
+               const FloatType x_axes_sample_resolution = 60 * EIGEN_PI / 180,
+               const FloatType y_axes_sample_resolution = 60 * EIGEN_PI / 180,
+               const FloatType z_axes_sample_resolution = 60 * EIGEN_PI / 180)
 {
   tesseract_motion_planners::PoseSamplerFn tool_pose_sampler = nullptr;
   if (wp->getType() == WaypointType::CARTESIAN_WAYPOINT)
@@ -145,9 +145,9 @@ makeRobotSamplers(const std::vector<Waypoint::Ptr>& path,
                   const FloatType x_sample_resolution = 0.001,
                   const FloatType y_sample_resolution = 0.001,
                   const FloatType z_sample_resolution = 0.001,
-                  const FloatType x_axes_sample_resolution = 60 * M_PI / 180,
-                  const FloatType y_axes_sample_resolution = 60 * M_PI / 180,
-                  const FloatType z_axes_sample_resolution = 60 * M_PI / 180)
+                  const FloatType x_axes_sample_resolution = 60 * EIGEN_PI / 180,
+                  const FloatType y_axes_sample_resolution = 60 * EIGEN_PI / 180,
+                  const FloatType z_axes_sample_resolution = 60 * EIGEN_PI / 180)
 {
   const std::vector<std::string>& joint_names = robot_kinematics->getJointNames();
   std::vector<typename descartes_light::PositionSampler<FloatType>::Ptr> result;
@@ -252,9 +252,9 @@ makeRobotPositionerSamplers(const std::vector<Waypoint::Ptr>& path,
                             const FloatType x_sample_resolution = 0.001,
                             const FloatType y_sample_resolution = 0.001,
                             const FloatType z_sample_resolution = 0.001,
-                            const FloatType x_axes_sample_resolution = 60 * M_PI / 180,
-                            const FloatType y_axes_sample_resolution = 60 * M_PI / 180,
-                            const FloatType z_axes_sample_resolution = 60 * M_PI / 180)
+                            const FloatType x_axes_sample_resolution = 60 * EIGEN_PI / 180,
+                            const FloatType y_axes_sample_resolution = 60 * EIGEN_PI / 180,
+                            const FloatType z_axes_sample_resolution = 60 * EIGEN_PI / 180)
 {
   std::vector<typename descartes_light::PositionSampler<FloatType>::Ptr> result;
   result.reserve(path.size());

@@ -16,5 +16,6 @@ if (NOT ASSIMP_FOUND)
   # assimp is required, so REQUIRE the second attempt
   pkg_check_modules(ASSIMP REQUIRED assimp)
 endif()
+link_directories(${ASSIMP_LIBRARY_DIRS})
 
 include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake")

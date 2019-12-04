@@ -147,7 +147,7 @@ protected:
     opw_params_.c3 = (0.755);
     opw_params_.c4 = (0.085);
 
-    opw_params_.offsets[2] = -M_PI / 2.0;
+    opw_params_.offsets[2] = -EIGEN_PI / 2.0;
 
     auto robot_kin = tesseract_ptr_->getFwdKinematicsManagerConst()->getFwdKinematicSolver("manipulator");
     auto opw_kin = std::make_shared<OPWInvKin>("manipulator",

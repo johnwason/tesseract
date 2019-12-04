@@ -103,23 +103,23 @@ public:
   };
 
   /// The name of the topic used by default for receiving joint states
-  static const std::string DEFAULT_JOINT_STATES_TOPIC;  // "/joint_states"
+  static std::string DEFAULT_JOINT_STATES_TOPIC;  // "/joint_states"
 
   /// The name of the service used by default for requesting tesseract environment change history
-  static const std::string DEFAULT_GET_ENVIRONMENT_CHANGES_SERVICE;  // "/get_tesseract_changes"
+  static std::string DEFAULT_GET_ENVIRONMENT_CHANGES_SERVICE;  // "/get_tesseract_changes"
 
   /// The name of the service used by default for requesting tesseract environment information
-  static const std::string DEFAULT_GET_ENVIRONMENT_INFORMATION_SERVICE;  // "/get_tesseract_information"
+  static std::string DEFAULT_GET_ENVIRONMENT_INFORMATION_SERVICE;  // "/get_tesseract_information"
 
   /// The name of the service used by default for setting the full tesseract environment state
-  static const std::string DEFAULT_MODIFY_ENVIRONMENT_SERVICE;  // "/modify_tesseract"
+  static std::string DEFAULT_MODIFY_ENVIRONMENT_SERVICE;  // "/modify_tesseract"
 
   /// The name of the service used by default for saving the scene graph as a DOT
-  static const std::string DEFAULT_SAVE_SCENE_GRAPH_SERVICE;  //"/save_scene_graph"
+  static std::string DEFAULT_SAVE_SCENE_GRAPH_SERVICE;  //"/save_scene_graph"
 
   /// The name of the topic used by default for publishing the monitored tesseract environment (this is without "/" in
   /// the name, so the topic is prefixed by the node name)
-  static const std::string MONITORED_ENVIRONMENT_TOPIC;  // "/monitored_tesseract"
+  static std::string MONITORED_ENVIRONMENT_TOPIC;  // "/monitored_tesseract"
 
   /** @brief Constructor
    *  @param robot_description The name of the ROS parameter that contains the URDF (in string format)

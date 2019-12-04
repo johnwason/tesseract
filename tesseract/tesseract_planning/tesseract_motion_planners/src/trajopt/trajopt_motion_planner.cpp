@@ -25,7 +25,7 @@
  */
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include <console_bridge/console.h>
 #include <trajopt/plot_callback.hpp>
 #include <trajopt/problem_description.hpp>

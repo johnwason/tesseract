@@ -95,7 +95,7 @@ inline bool checkKinematics(const tesseract_kinematics::ForwardKinematics::Const
 
   for (int t = 0; t < fwd_kin->numJoints(); ++t)
   {
-    joint_angles2[t] = M_PI / 2;
+    joint_angles2[t] = EIGEN_PI / 2;
 
     fwd_kin->calcFwdKin(test1, joint_angles2);
     Eigen::VectorXd sols;
@@ -171,7 +171,7 @@ inline bool checkKinematics(const tesseract_kinematics::ForwardKinematics::Const
 
   for (int t = 0; t < fwd_kin1->numJoints(); ++t)
   {
-    joint_angles2[t] = M_PI / 2;
+    joint_angles2[t] = EIGEN_PI / 2;
 
     fwd_kin1->calcFwdKin(test1, joint_angles2);
     fwd_kin2->calcFwdKin(test2, joint_angles2);
