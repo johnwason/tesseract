@@ -4,7 +4,7 @@ project(tesseract_python)
 # Read version
 FILE (STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/package.xml" tesseract_python_version1 REGEX "<version>[0-9]+\\.[0-9]+\\.[0-9]+</version>")
 IF ("${tesseract_python_version1}" STREQUAL "" )
-MESSAGE(FATAL_ERROR "Could not read Robot Raconteur version.")
+MESSAGE(FATAL_ERROR "Could not read tesseract_python version.")
 ENDIF()
 STRING (REGEX REPLACE "<version>([0-9]+\\.[0-9]+\\.[0-9]+)</version>" "\\1" tesseract_python_version ${tesseract_python_version1})
 MESSAGE(STATUS "tesseract_python version: ${tesseract_python_version}")
