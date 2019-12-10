@@ -45,6 +45,8 @@ public:
   using Ptr = std::shared_ptr<Resource>;
   using ConstPtr = std::shared_ptr<const Resource>;
 
+  virtual ~Resource() = default;
+
   /**
    * @brief Returns true if the located resource is a local file
    *

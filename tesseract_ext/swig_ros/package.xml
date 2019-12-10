@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>swig</name>
+  <version>4.0.0</version>
+  <description>SWIG Interface Generator</description>
+  <maintainer email="wason@wasontech.com">John Wason</maintainer>
+  <license>GPL3</license>
+
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+
+</package>
