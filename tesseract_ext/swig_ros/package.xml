@@ -6,6 +6,7 @@
   <maintainer email="wason@wasontech.com">John Wason</maintainer>
   <license>GPL3</license>
 
+  <depend>pcre</depend>
   <export>
     <build_type>cmake</build_type>
   </export>

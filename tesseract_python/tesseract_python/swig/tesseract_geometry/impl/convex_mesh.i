@@ -36,6 +36,8 @@
 
 namespace tesseract_geometry
 {
+
+%nodefaultctor ConvexMesh;
 class ConvexMesh : public Geometry
 {
 public:
@@ -43,6 +45,7 @@ public:
   using Ptr = std::shared_ptr<ConvexMesh>;
   using ConstPtr = std::shared_ptr<const ConvexMesh>;
 
+/*
 %extend {
 
   ConvexMesh(const tesseract_common::VectorVector3d& vertices,
@@ -65,7 +68,7 @@ public:
       std::shared_ptr<const Eigen::VectorXi> faces1 = std::make_shared<const Eigen::VectorXi>(faces);
       return new tesseract_geometry::ConvexMesh(vertices1, faces1, face_count, resource, scale);
   }
-}
+}*/
   ~ConvexMesh() override;
 
 %extend {

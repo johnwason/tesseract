@@ -36,13 +36,14 @@
 
 namespace tesseract_geometry
 {
+  %nodefaultctor SDFMesh;
 class SDFMesh : public Geometry
 {
 public:
   
   using Ptr = std::shared_ptr<SDFMesh>;
   using ConstPtr = std::shared_ptr<const SDFMesh>;
-
+/*
 %extend {
 
   SDFMesh(const tesseract_common::VectorVector3d& vertices,
@@ -65,7 +66,7 @@ public:
       std::shared_ptr<const Eigen::VectorXi> faces1 = std::make_shared<const Eigen::VectorXi>(faces);
       return new tesseract_geometry::SDFMesh(vertices1, faces1, face_count, resource, scale);
   }
-}
+}*/
   ~SDFMesh() override;
 
 %extend {

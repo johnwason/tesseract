@@ -36,13 +36,15 @@
 
 namespace tesseract_geometry
 {
+%nodefaultctor Mesh;
 class Mesh : public Geometry
 {
 public:
   
   using Ptr = std::shared_ptr<Mesh>;
   using ConstPtr = std::shared_ptr<const Mesh>;
-
+  
+/*
 %extend {
 
   Mesh(const tesseract_common::VectorVector3d& vertices,
@@ -65,7 +67,7 @@ public:
       std::shared_ptr<const Eigen::VectorXi> faces1 = std::make_shared<const Eigen::VectorXi>(faces);
       return new tesseract_geometry::Mesh(vertices1, faces1, face_count, resource, scale);
   }
-}
+}*/
   ~Mesh() override;
 
 %extend {

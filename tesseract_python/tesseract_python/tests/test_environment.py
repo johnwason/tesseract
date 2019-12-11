@@ -19,8 +19,8 @@ def test_environment():
 
     t_env = t.getEnvironment()
     
-    assert t_env.getJointNames() == ('base_link-base', 'joint_6-tool0', 'joint_2', 'joint_1', 'joint_5', 'joint_4', 'joint_3', 'joint_6')
-    assert t_env.getLinkNames() == ('base', 'tool0', 'link_1', 'base_link', 'link_2', 'link_4', 'link_6', 'link_3', 'link_5')
+    assert sorted(t_env.getJointNames()) == sorted(('base_link-base', 'joint_6-tool0', 'joint_2', 'joint_1', 'joint_5', 'joint_4', 'joint_3', 'joint_6'))
+    assert sorted(t_env.getLinkNames()) == sorted(('base', 'tool0', 'link_1', 'base_link', 'link_2', 'link_4', 'link_6', 'link_3', 'link_5'))
     assert t_env.getRootLinkName() == 'base_link'
 
     l = t_env.getLink('link_4')
