@@ -30,7 +30,7 @@ namespace tesseract_motion_planners
 {
 template <typename FloatType>
 DescartesTrajOptArrayPlanner<FloatType>::DescartesTrajOptArrayPlanner(std::string name)
-  : MotionPlanner(std::move(name)), status_category_(std::make_shared<tesseract_common::GeneralStatusCategory>(name))
+  : MotionPlanner(std::move(name)), status_category_(std::make_shared<tesseract_common::GeneralStatusCategory>(name_))
 {
 }
 
@@ -69,8 +69,7 @@ tesseract_common::StatusCode DescartesTrajOptArrayPlanner<FloatType>::isConfigur
 }
 
 template <typename FloatType>
-tesseract_common::StatusCode DescartesTrajOptArrayPlanner<FloatType>::solve(PlannerResponse& response,
-                                                                            const bool verbose)
+tesseract_common::StatusCode DescartesTrajOptArrayPlanner<FloatType>::solve(PlannerResponse& response, bool verbose)
 {
   tesseract_common::StatusCode config_status = isConfigured();
   if (!config_status)

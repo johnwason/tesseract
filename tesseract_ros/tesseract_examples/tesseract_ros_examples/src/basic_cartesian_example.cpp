@@ -68,7 +68,7 @@ TrajOptProb::Ptr BasicCartesianExample::jsonMethod()
 
   Json::Value root;
   Json::Reader reader;
-  bool parse_success = reader.parse(trajopt_config.c_str(), root);
+  bool parse_success = reader.parse(trajopt_config, root);
   if (!parse_success)
   {
     ROS_FATAL("Failed to load trajopt json file from ros parameter");
@@ -82,7 +82,7 @@ bool BasicCartesianExample::addPointCloud()
   // Create octomap and add it to the local environment
   pcl::PointCloud<pcl::PointXYZ> full_cloud;
   double delta = 0.05;
-  int length = static_cast<int>(1 / delta);
+  auto length = static_cast<int>(1 / delta);
 
   for (int x = 0; x < length; ++x)
     for (int y = 0; y < length; ++y)
@@ -150,7 +150,7 @@ TrajOptProb::Ptr BasicCartesianExample::cppMethod()
   pci.init_info.data = start_pos.transpose().replicate(pci.basic_info.n_steps, 1);
 
   // Populate Cost Info
-  std::shared_ptr<JointVelTermInfo> jv = std::shared_ptr<JointVelTermInfo>(new JointVelTermInfo);
+  auto jv = std::make_shared<JointVelTermInfo>();
   jv->coeffs = std::vector<double>(7, 5.0);
   jv->targets = std::vector<double>(7, 0.0);
   jv->first_step = 0;
@@ -159,7 +159,7 @@ TrajOptProb::Ptr BasicCartesianExample::cppMethod()
   jv->term_type = TT_COST;
   pci.cost_infos.push_back(jv);
 
-  std::shared_ptr<CollisionTermInfo> collision = std::shared_ptr<CollisionTermInfo>(new CollisionTermInfo);
+  auto collision = std::make_shared<CollisionTermInfo>();
   collision->name = "collision";
   collision->term_type = TT_COST;
   collision->continuous = false;
@@ -172,7 +172,7 @@ TrajOptProb::Ptr BasicCartesianExample::cppMethod()
   double delta = 0.5 / pci.basic_info.n_steps;
   for (auto i = 0; i < pci.basic_info.n_steps; ++i)
   {
-    std::shared_ptr<CartPoseTermInfo> pose = std::shared_ptr<CartPoseTermInfo>(new CartPoseTermInfo);
+    auto pose = std::make_shared<CartPoseTermInfo>();
     pose->term_type = TT_CNT;
     pose->name = "waypoint_cart_" + std::to_string(i);
     pose->link = "tool0";
@@ -237,7 +237,7 @@ bool BasicCartesianExample::run()
   tesseract_->getEnvironment()->setState(ipos);
 
   // Set Log Level
-  util::gLogLevel = util::LevelInfo;
+  util::gLogLevel = util::LevelError;
 
   // Setup Problem
   TrajOptProb::Ptr prob;
@@ -260,7 +260,7 @@ bool BasicCartesianExample::run()
   manager->setContactDistanceThreshold(0);
   collisions.clear();
   bool found =
-      checkTrajectory(*manager, *prob->GetEnv(), prob->GetKin()->getJointNames(), prob->GetInitTraj(), collisions);
+      checkTrajectory(collisions, *manager, *prob->GetEnv(), prob->GetKin()->getJointNames(), prob->GetInitTraj());
 
   ROS_INFO((found) ? ("Initial trajectory is in collision") : ("Initial trajectory is collision free"));
 
@@ -280,7 +280,7 @@ bool BasicCartesianExample::run()
 
   collisions.clear();
   found = checkTrajectory(
-      *manager, *prob->GetEnv(), prob->GetKin()->getJointNames(), getTraj(opt.x(), prob->GetVars()), collisions);
+      collisions, *manager, *prob->GetEnv(), prob->GetKin()->getJointNames(), getTraj(opt.x(), prob->GetVars()));
 
   ROS_INFO((found) ? ("Final trajectory is in collision") : ("Final trajectory is collision free"));
 

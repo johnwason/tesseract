@@ -16,6 +16,7 @@ find_package(tesseract_collision REQUIRED)
 add_library(${PROJECT_NAME} SHARED src/urdf_parser.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC tesseract::tesseract_geometry tesseract::tesseract_scene_graph tesseract::tesseract_collision_core console_bridge ${Boost_LIBRARIES} ${TinyXML2_LIBRARIES})
 tesseract_target_compile_options(${PROJECT_NAME} PUBLIC)
+tesseract_clang_tidy(${PROJECT_NAME})
 
 # PCL does not support c++11 on Xenial so cannot include point cloud parsing from urdf
 # Boost version number is in XYYYZZ format such that:
@@ -66,11 +67,8 @@ install(FILES cmake/FindTinyXML2.cmake DESTINATION lib/cmake/${PROJECT_NAME})
 # ADD Examples
 add_subdirectory(examples)
 
-if (ENABLE_TESTS)
+if (TESSERACT_ENABLE_TESTING)
   enable_testing()
-  add_custom_target(run_tests ALL
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-      COMMAND ${CMAKE_CTEST_COMMAND} -V -O "/tmp/${PROJECT_NAME}_ctest.log" -C $<CONFIGURATION>)
-
+  tesseract_add_run_tests_target()
   add_subdirectory(test)
 endif()

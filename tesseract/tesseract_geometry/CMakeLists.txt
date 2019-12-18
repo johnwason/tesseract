@@ -16,6 +16,7 @@ endif()
 add_library(${PROJECT_NAME} INTERFACE)
 target_link_libraries(${PROJECT_NAME} INTERFACE console_bridge ${OCTOMAP_LIBRARIES} ${ASSIMP_LIBRARIES})
 tesseract_target_compile_options(${PROJECT_NAME} INTERFACE)
+tesseract_clang_tidy(${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME} INTERFACE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>")
@@ -36,11 +37,8 @@ install(DIRECTORY include/${PROJECT_NAME}
 # ADD Examples
 add_subdirectory(examples)
 
-if (ENABLE_TESTS)
+if (TESSERACT_ENABLE_TESTING)
   enable_testing()
-  add_custom_target(run_tests ALL
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-      COMMAND ${CMAKE_CTEST_COMMAND} -V -C $<CONFIGURATION>)
-
+  tesseract_add_run_tests_target()
   add_subdirectory(test)
 endif()

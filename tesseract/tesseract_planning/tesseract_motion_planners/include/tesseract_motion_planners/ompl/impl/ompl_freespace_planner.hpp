@@ -35,6 +35,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <ompl/base/objectives/PathLengthOptimizationObjective.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#include <tesseract_environment/core/utils.h>
 #include <tesseract_motion_planners/ompl/ompl_freespace_planner.h>
 #include <tesseract_motion_planners/ompl/conversions.h>
 #include <tesseract_motion_planners/ompl/continuous_motion_validator.h>
@@ -43,46 +44,12 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_motion_planners
 {
-OMPLFreespacePlannerStatusCategory::OMPLFreespacePlannerStatusCategory(std::string name) : name_(name) {}
-const std::string& OMPLFreespacePlannerStatusCategory::name() const noexcept { return name_; }
-std::string OMPLFreespacePlannerStatusCategory::message(int code) const
-{
-  switch (code)
-  {
-    case IsConfigured:
-    {
-      return "Is Configured";
-    }
-    case SolutionFound:
-    {
-      return "Found valid solution";
-    }
-    case ErrorIsNotConfigured:
-    {
-      return "Planner is not configured, must call setConfiguration prior to calling solve.";
-    }
-    case ErrorFailedToParseConfig:
-    {
-      return "Failed to parse config data";
-    }
-    case ErrorFailedToFindValidSolution:
-    {
-      return "Failed to find valid solution";
-    }
-    default:
-    {
-      assert(false);
-      return "";
-    }
-  }
-}
-
 /** @brief Construct a basic planner */
 template <typename PlannerType>
 OMPLFreespacePlanner<PlannerType>::OMPLFreespacePlanner(std::string name)
   : MotionPlanner(std::move(name))
   , config_(nullptr)
-  , status_category_(std::make_shared<const OMPLFreespacePlannerStatusCategory>(name))
+  , status_category_(std::make_shared<const OMPLFreespacePlannerStatusCategory>(name_))
 {
 }
 
@@ -94,7 +61,7 @@ bool OMPLFreespacePlanner<PlannerType>::terminate()
 }
 
 template <typename PlannerType>
-tesseract_common::StatusCode OMPLFreespacePlanner<PlannerType>::solve(PlannerResponse& response, const bool verbose)
+tesseract_common::StatusCode OMPLFreespacePlanner<PlannerType>::solve(PlannerResponse& response, bool verbose)
 {
   tesseract_common::StatusCode config_status = isConfigured();
   if (!config_status)
@@ -104,8 +71,6 @@ tesseract_common::StatusCode OMPLFreespacePlanner<PlannerType>::solve(PlannerRes
     return config_status;
   }
 
-  tesseract_motion_planners::PlannerResponse planning_response;
-
   ompl::tools::OptimizePlan op(simple_setup_->getProblemDefinition());
   for (auto i = 0; i < config_->num_threads; ++i)
   {
@@ -114,30 +79,85 @@ tesseract_common::StatusCode OMPLFreespacePlanner<PlannerType>::solve(PlannerRes
     op.addPlanner(planner);
   }
   // Solve problem. Results are stored in the response
-  ompl::base::PlannerStatus status = op.solve(config_->planning_time, config_->max_solutions, config_->num_threads);
+  ompl::base::PlannerStatus status = op.solve(config_->planning_time,
+                                              static_cast<unsigned>(config_->max_solutions),
+                                              static_cast<unsigned>(config_->num_threads));
 
   if (!status || !simple_setup_->haveExactSolutionPath())
   {
-    planning_response.status = tesseract_common::StatusCode(
-        OMPLFreespacePlannerStatusCategory::ErrorFailedToFindValidSolution, status_category_);
-    return planning_response.status;
+    response.status = tesseract_common::StatusCode(OMPLFreespacePlannerStatusCategory::ErrorFailedToFindValidSolution,
+                                                   status_category_);
+    return response.status;
   }
 
   if (config_->simplify)
+  {
     simple_setup_->simplifySolution();
+  }
+  else
+  {
+    // Interpolate the path if it shouldn't be simplified and there are currently fewer states than requested
+    auto num_output_states = static_cast<unsigned>(config_->n_output_states);
+    if (simple_setup_->getSolutionPath().getStateCount() < num_output_states)
+    {
+      simple_setup_->getSolutionPath().interpolate(num_output_states);
+    }
+    else
+    {
+      // Now try to simplify the trajectory to get it under the requested number of output states
+      // The interpolate function only executes if the current number of states is less than the requested
+      simple_setup_->simplifySolution();
+      if (simple_setup_->getSolutionPath().getStateCount() < num_output_states)
+        simple_setup_->getSolutionPath().interpolate(num_output_states);
+    }
+  }
 
-  ompl::geometric::PathGeometric& path = simple_setup_->getSolutionPath();
+  tesseract_common::TrajArray traj = toTrajArray(simple_setup_->getSolutionPath());
 
-  // Interpolate the path if it shouldn't be simplified and there are currently fewer states than requested
-  if (!config_->simplify && path.getStateCount() < config_->n_output_states)
-    path.interpolate(config_->n_output_states);
+  // Check and report collisions
+  std::vector<tesseract_collision::ContactResultMap> collisions;
+  continuous_contact_manager_->setContactDistanceThreshold(0);
+  collisions.clear();
+  bool found = tesseract_environment::checkTrajectory(collisions,
+                                                      *continuous_contact_manager_,
+                                                      *(config_->tesseract->getEnvironmentConst()),
+                                                      kin_->getJointNames(),
+                                                      traj,
+                                                      config_->longest_valid_segment_length,
+                                                      true,
+                                                      verbose);
 
-  planning_response.status =
-      tesseract_common::StatusCode(OMPLFreespacePlannerStatusCategory::SolutionFound, status_category_);
-  planning_response.joint_trajectory.trajectory = toTrajArray(path);
-  planning_response.joint_trajectory.joint_names = kin_->getJointNames();
+  // Do a discrete check until continuous collision checking is updated to do dynamic-dynamic checking
+  discrete_contact_manager_->setContactDistanceThreshold(0);
+  collisions.clear();
 
-  response = std::move(planning_response);
+  found = found || tesseract_environment::checkTrajectory(collisions,
+                                                          *discrete_contact_manager_,
+                                                          *(config_->tesseract->getEnvironmentConst()),
+                                                          kin_->getJointNames(),
+                                                          traj,
+                                                          config_->longest_valid_segment_length,
+                                                          true,
+                                                          verbose);
+
+  // Set the contact distance back to original incase solve was called again.
+  discrete_contact_manager_->setContactDistanceThreshold(config_->collision_safety_margin);
+  continuous_contact_manager_->setContactDistanceThreshold(config_->collision_safety_margin);
+
+  // Send response
+  response.joint_trajectory.trajectory = traj;
+  response.joint_trajectory.joint_names = kin_->getJointNames();
+  if (found)
+  {
+    response.status = tesseract_common::StatusCode(
+        OMPLFreespacePlannerStatusCategory::ErrorFoundValidSolutionInCollision, status_category_);
+  }
+  else
+  {
+    response.status = tesseract_common::StatusCode(OMPLFreespacePlannerStatusCategory::SolutionFound, status_category_);
+    CONSOLE_BRIDGE_logInform("%s, final trajectory is collision free", name_.c_str());
+  }
+
   return response.status;
 }
 
@@ -179,7 +199,7 @@ bool OMPLFreespacePlanner<PlannerType>::setConfiguration(const OMPLFreespacePlan
   if (kin_ == nullptr)
   {
     CONSOLE_BRIDGE_logError("In ompl_freespace_planner: failed to get kinematics object for manipulator: %s.",
-                            config_->manipulator);
+                            config_->manipulator.c_str());
     config_ = nullptr;
     return false;
   }
@@ -207,7 +227,7 @@ bool OMPLFreespacePlanner<PlannerType>::setConfiguration(const OMPLFreespacePlan
   const auto& limits = kin_->getLimits();
 
   // Construct the OMPL state space for this manipulator
-  ompl::base::RealVectorStateSpace* space = new ompl::base::RealVectorStateSpace();
+  auto* space = new ompl::base::RealVectorStateSpace();
   for (unsigned i = 0; i < dof; ++i)
     space->addDimension(joint_names[i], limits(i, 0), limits(i, 1));
 
@@ -215,6 +235,29 @@ bool OMPLFreespacePlanner<PlannerType>::setConfiguration(const OMPLFreespacePlan
       std::bind(&OMPLFreespacePlanner::allocWeightedRealVectorStateSampler, this, std::placeholders::_1));
 
   ompl::base::StateSpacePtr state_space_ptr(space);
+  if (config_->longest_valid_segment_fraction > 0 && config_->longest_valid_segment_length > 0)
+  {
+    double val = std::min(config_->longest_valid_segment_fraction,
+                          config_->longest_valid_segment_length / state_space_ptr->getMaximumExtent());
+    config_->longest_valid_segment_fraction = val;
+    config_->longest_valid_segment_length = val * state_space_ptr->getMaximumExtent();
+    state_space_ptr->setLongestValidSegmentFraction(val);
+  }
+  else if (config_->longest_valid_segment_fraction > 0)
+  {
+    config_->longest_valid_segment_length =
+        config_->longest_valid_segment_fraction * state_space_ptr->getMaximumExtent();
+  }
+  else if (config_->longest_valid_segment_length > 0)
+  {
+    config_->longest_valid_segment_fraction =
+        config_->longest_valid_segment_length / state_space_ptr->getMaximumExtent();
+  }
+  else
+  {
+    config_->longest_valid_segment_fraction = 0.01;
+    config_->longest_valid_segment_length = 0.01 * state_space_ptr->getMaximumExtent();
+  }
   state_space_ptr->setLongestValidSegmentFraction(config_->longest_valid_segment_fraction);
   simple_setup_ = std::make_shared<ompl::geometric::SimpleSetup>(state_space_ptr);
 
@@ -319,13 +362,15 @@ bool OMPLFreespacePlanner<PlannerType>::setConfiguration(const OMPLFreespacePlan
       ompl::base::MotionValidatorPtr mv;
       if (config_->collision_continuous)
       {
-        mv = std::make_shared<ContinuousMotionValidator>(simple_setup_->getSpaceInformation(), env, kin_);
-        simple_setup_->getSpaceInformation()->setMotionValidator(std::move(mv));
+        mv = std::make_shared<ContinuousMotionValidator>(
+            simple_setup_->getSpaceInformation(), env, kin_, config_->collision_safety_margin);
+        simple_setup_->getSpaceInformation()->setMotionValidator(mv);
       }
       else
       {
-        mv = std::make_shared<DiscreteMotionValidator>(simple_setup_->getSpaceInformation(), env, kin_);
-        simple_setup_->getSpaceInformation()->setMotionValidator(std::move(mv));
+        mv = std::make_shared<DiscreteMotionValidator>(
+            simple_setup_->getSpaceInformation(), env, kin_, config_->collision_safety_margin);
+        simple_setup_->getSpaceInformation()->setMotionValidator(mv);
       }
     }
   }

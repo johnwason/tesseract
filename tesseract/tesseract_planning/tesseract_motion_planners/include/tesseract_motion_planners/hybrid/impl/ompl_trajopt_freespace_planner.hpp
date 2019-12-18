@@ -105,8 +105,7 @@ tesseract_common::StatusCode OMPLTrajOptFreespacePlanner<PlannerType>::isConfigu
 }
 
 template <typename PlannerType>
-tesseract_common::StatusCode OMPLTrajOptFreespacePlanner<PlannerType>::solve(PlannerResponse& response,
-                                                                             const bool verbose)
+tesseract_common::StatusCode OMPLTrajOptFreespacePlanner<PlannerType>::solve(PlannerResponse& response, bool verbose)
 {
   tesseract_common::StatusCode config_status = isConfigured();
   if (!config_status)
@@ -122,7 +121,8 @@ tesseract_common::StatusCode OMPLTrajOptFreespacePlanner<PlannerType>::solve(Pla
   if (!ompl_status)
   {
     response = std::move(ompl_planning_response);
-    return ompl_status;
+    response.status = ompl_status;
+    return response.status;
   }
 
   if (trajopt_config_)
@@ -143,8 +143,9 @@ tesseract_common::StatusCode OMPLTrajOptFreespacePlanner<PlannerType>::solve(Pla
   tesseract_motion_planners::PlannerResponse trajopt_planning_response;
   tesseract_common::StatusCode trajopt_status = trajopt_planner_.solve(trajopt_planning_response, verbose);
   response = std::move(trajopt_planning_response);
+  response.status = trajopt_status;
 
-  return trajopt_status;
+  return response.status;
 }
 
 }  // namespace tesseract_motion_planners

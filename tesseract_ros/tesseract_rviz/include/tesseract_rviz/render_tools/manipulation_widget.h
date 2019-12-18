@@ -86,9 +86,9 @@ public:
                     rviz::DisplayContext* context,
                     VisualizationWidget::Ptr visualization,
                     tesseract::Tesseract::Ptr tesseract,
-                    ros::NodeHandle update_nh,
+                    const ros::NodeHandle& update_nh,
                     ManipulatorState state,
-                    QString joint_state_topic);
+                    const QString& joint_state_topic);
 
   void onEnable();
   void onDisable();
@@ -105,8 +105,8 @@ public
   Q_SLOT : void enableCartesianManipulation(bool enabled);
   void enableJointManipulation(bool enabled);
   void resetToCurrentState();
-  bool changeManipulator(QString manipulator);
-  bool changeTCP(QString tcp_link);
+  bool changeManipulator(const QString& manipulator);
+  bool changeTCP(const QString& tcp_link);
 
 private Q_SLOTS:
   void changedManipulator();
@@ -117,14 +117,15 @@ private Q_SLOTS:
   void changedJointMarkerScale();
   void changedJointManipulationEnabled();
   void clickedResetToCurrentState();
-  void markerFeedback(std::string reference_frame,
-                      Eigen::Isometry3d transform,
-                      Eigen::Vector3d mouse_point,
+  void userInputJointValuesChanged();
+  void markerFeedback(const std::string& reference_frame,
+                      const Eigen::Isometry3d& transform,
+                      const Eigen::Vector3d& mouse_point,
                       bool mouse_point_valid);
-  void jointMarkerFeedback(std::string joint_name,
-                           std::string reference_frame,
-                           Eigen::Isometry3d transform,
-                           Eigen::Vector3d mouse_point,
+  void jointMarkerFeedback(const std::string& joint_name,
+                           const std::string& reference_frame,
+                           const Eigen::Isometry3d& transform,
+                           const Eigen::Vector3d& mouse_point,
                            bool mouse_point_valid);
   //  void trajectorySliderPanelVisibilityChange(bool enable);
 
@@ -165,6 +166,11 @@ protected:
   rviz::FloatProperty* joint_marker_scale_property_;
   rviz::EnumProperty* tcp_property_;
   rviz::Property* joint_values_property_;
+
+  void updateEnvironmentVisualization();
+  void updateCartesianMarkerVisualization();
+  void udpateJointMarkerVisualization();
+  void publishJointStates();
 };
 }  // namespace tesseract_rviz
 

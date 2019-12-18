@@ -25,7 +25,6 @@
  */
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
-#include <jsoncpp/json/json.h>
 #include <console_bridge/console.h>
 #include <trajopt/plot_callback.hpp>
 #include <trajopt/problem_description.hpp>
@@ -41,9 +40,11 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 using namespace trajopt;
 
+static const double LONGEST_VALID_SEGMENT_FRACTION_DEFAULT = 0.01;
+
 namespace tesseract_motion_planners
 {
-TrajOptMotionPlannerStatusCategory::TrajOptMotionPlannerStatusCategory(std::string name) : name_(name) {}
+TrajOptMotionPlannerStatusCategory::TrajOptMotionPlannerStatusCategory(std::string name) : name_(std::move(name)) {}
 const std::string& TrajOptMotionPlannerStatusCategory::name() const noexcept { return name_; }
 std::string TrajOptMotionPlannerStatusCategory::message(int code) const
 {
@@ -84,7 +85,7 @@ std::string TrajOptMotionPlannerStatusCategory::message(int code) const
 TrajOptMotionPlanner::TrajOptMotionPlanner(std::string name)
   : MotionPlanner(std::move(name))
   , config_(nullptr)
-  , status_category_(std::make_shared<const TrajOptMotionPlannerStatusCategory>(name))
+  , status_category_(std::make_shared<const TrajOptMotionPlannerStatusCategory>(name_))
 {
 }
 
@@ -100,7 +101,7 @@ void TrajOptMotionPlanner::clear()
   config_ = nullptr;
 }
 
-tesseract_common::StatusCode TrajOptMotionPlanner::solve(PlannerResponse& response, const bool verbose)
+tesseract_common::StatusCode TrajOptMotionPlanner::solve(PlannerResponse& response, bool verbose)
 {
   tesseract_common::StatusCode config_status = isConfigured();
   if (!config_status)
@@ -114,7 +115,7 @@ tesseract_common::StatusCode TrajOptMotionPlanner::solve(PlannerResponse& respon
   if (verbose)
     util::gLogLevel = util::LevelDebug;
   else
-    util::gLogLevel = util::LevelInfo;
+    util::gLogLevel = util::LevelWarn;
 
   // Create optimizer
   sco::BasicTrustRegionSQP opt(config_->prob);
@@ -133,6 +134,25 @@ tesseract_common::StatusCode TrajOptMotionPlanner::solve(PlannerResponse& respon
   CONSOLE_BRIDGE_logInform("planning time: %.3f", (boost::posix_time::second_clock::local_time() - tStart).seconds());
 
   // Check and report collisions
+  const Eigen::MatrixX2d& limits = config_->prob->GetKin()->getLimits();
+  double length = 0;
+  double extent = (limits.col(1) - limits.col(0)).norm();
+  if (config_->longest_valid_segment_fraction > 0 && config_->longest_valid_segment_length > 0)
+  {
+    length = std::min(config_->longest_valid_segment_fraction * extent, config_->longest_valid_segment_length);
+  }
+  else if (config_->longest_valid_segment_fraction > 0)
+  {
+    length = config_->longest_valid_segment_fraction * extent;
+  }
+  else if (config_->longest_valid_segment_length > 0)
+  {
+    length = config_->longest_valid_segment_length;
+  }
+  else
+  {
+    length = LONGEST_VALID_SEGMENT_FRACTION_DEFAULT * extent;
+  }
   std::vector<tesseract_collision::ContactResultMap> collisions;
   tesseract_collision::ContinuousContactManager::Ptr continuous_manager =
       config_->prob->GetEnv()->getContinuousContactManager();
@@ -144,11 +164,12 @@ tesseract_common::StatusCode TrajOptMotionPlanner::solve(PlannerResponse& respon
   continuous_manager->setActiveCollisionObjects(adjacency_map->getActiveLinkNames());
   continuous_manager->setContactDistanceThreshold(0);
   collisions.clear();
-  bool found = checkTrajectory(*continuous_manager,
+  bool found = checkTrajectory(collisions,
+                               *continuous_manager,
                                *(config_->prob->GetEnv()),
                                config_->prob->GetKin()->getJointNames(),
                                getTraj(opt.x(), config_->prob->GetVars()),
-                               collisions,
+                               length,
                                true,
                                verbose);
 
@@ -159,11 +180,12 @@ tesseract_common::StatusCode TrajOptMotionPlanner::solve(PlannerResponse& respon
   discrete_manager->setContactDistanceThreshold(0);
   collisions.clear();
 
-  found = found || checkTrajectory(*discrete_manager,
+  found = found || checkTrajectory(collisions,
+                                   *discrete_manager,
                                    *(config_->prob->GetEnv()),
                                    config_->prob->GetKin()->getJointNames(),
                                    getTraj(opt.x(), config_->prob->GetVars()),
-                                   collisions,
+                                   length,
                                    true,
                                    verbose);
 
@@ -193,13 +215,13 @@ tesseract_common::StatusCode TrajOptMotionPlanner::isConfigured() const
 {
   if (config_ != nullptr && config_->prob != nullptr)
     return tesseract_common::StatusCode(TrajOptMotionPlannerStatusCategory::IsConfigured, status_category_);
-  else
-    return tesseract_common::StatusCode(TrajOptMotionPlannerStatusCategory::IsNotConfigured, status_category_);
+
+  return tesseract_common::StatusCode(TrajOptMotionPlannerStatusCategory::IsNotConfigured, status_category_);
 }
 
-bool TrajOptMotionPlanner::setConfiguration(const TrajOptPlannerConfig::Ptr config)
+bool TrajOptMotionPlanner::setConfiguration(TrajOptPlannerConfig::Ptr config)
 {
-  config_ = config;
+  config_ = std::move(config);
   return config_->generate();
 }
 

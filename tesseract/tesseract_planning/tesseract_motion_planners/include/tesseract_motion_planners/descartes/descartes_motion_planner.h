@@ -38,32 +38,35 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/core/planner.h>
 #include <tesseract_motion_planners/core/waypoint.h>
+#include <tesseract_motion_planners/descartes/descartes_motion_planner_status_category.h>
 
 namespace tesseract_motion_planners
 {
-class DescartesMotionPlannerStatusCategory;
-
 template <typename FloatType>
 struct DescartesMotionPlannerConfig
 {
   DescartesMotionPlannerConfig(tesseract::Tesseract::ConstPtr tesseract_ptr,
-                               const std::vector<std::string> active_link_names,
-                               const std::vector<std::string> joint_names,
-                               const typename descartes_light::EdgeEvaluator<FloatType>::Ptr& edge_evaluator,
+                               std::vector<std::string> active_link_names,
+                               std::vector<std::string> joint_names,
+                               typename descartes_light::EdgeEvaluator<FloatType>::Ptr edge_evaluator,
                                std::vector<descartes_core::TimingConstraint<FloatType>> timing_constraint,
                                std::vector<typename descartes_light::PositionSampler<FloatType>::Ptr> samplers,
-                               const std::vector<Waypoint::Ptr>& waypoints)
-    : tesseract(tesseract_ptr)
+                               std::vector<Waypoint::Ptr> waypoints)
+    : tesseract(std::move(tesseract_ptr))
     , active_link_names(std::move(active_link_names))
     , joint_names(std::move(joint_names))
-    , edge_evaluator(edge_evaluator)
-    , timing_constraint(timing_constraint)
-    , samplers(samplers)
-    , waypoints(waypoints)
+    , edge_evaluator(std::move(edge_evaluator))
+    , timing_constraint(std::move(timing_constraint))
+    , samplers(std::move(samplers))
+    , waypoints(std::move(waypoints))
   {
   }
 
   virtual ~DescartesMotionPlannerConfig() = default;
+  DescartesMotionPlannerConfig(const DescartesMotionPlannerConfig&) = default;
+  DescartesMotionPlannerConfig& operator=(const DescartesMotionPlannerConfig&) = default;
+  DescartesMotionPlannerConfig(DescartesMotionPlannerConfig&&) = default;             // NOLINT
+  DescartesMotionPlannerConfig& operator=(DescartesMotionPlannerConfig&&) = default;  // NOLINT
 
   const tesseract::Tesseract::ConstPtr tesseract;
   const std::vector<std::string> active_link_names;
@@ -87,7 +90,11 @@ public:
   /** @brief Construct a basic planner */
   DescartesMotionPlanner(std::string name = "DESCARTES");
 
-  ~DescartesMotionPlanner() override {}
+  ~DescartesMotionPlanner() override = default;
+  DescartesMotionPlanner(const DescartesMotionPlanner&) = default;
+  DescartesMotionPlanner& operator=(const DescartesMotionPlanner&) = default;
+  DescartesMotionPlanner(DescartesMotionPlanner&&) noexcept = default;
+  DescartesMotionPlanner& operator=(DescartesMotionPlanner&&) noexcept = default;
 
   /**
    * @brief Set the configuration for the planner
@@ -106,7 +113,7 @@ public:
    * to console
    * @return true if optimization complete
    */
-  tesseract_common::StatusCode solve(PlannerResponse& response, const bool verbose = false) override;
+  tesseract_common::StatusCode solve(PlannerResponse& response, bool verbose = false) override;
 
   bool terminate() override;
 
@@ -125,34 +132,6 @@ private:
 
 using DescartesMotionPlannerD = DescartesMotionPlanner<double>;
 using DescartesMotionPlannerF = DescartesMotionPlanner<float>;
-
-/**
- * @brief The Descartes motion planner status category
- *
- * It contains both successfull and error status codes.
-
- */
-class DescartesMotionPlannerStatusCategory : public tesseract_common::StatusCategory
-{
-public:
-  DescartesMotionPlannerStatusCategory(std::string name);
-  const std::string& name() const noexcept override;
-  std::string message(int code) const override;
-
-  enum
-  {
-    IsConfigured = 1,
-    SolutionFound = 0,
-    ErrorIsNotConfigured = -1,
-    ErrorFailedToParseConfig = -2,
-    ErrorFailedToBuildGraph = -3,
-    ErrorFailedToFindValidSolution = -4,
-    ErrorFoundValidSolutionInCollision = -5
-  };
-
-private:
-  std::string name_; /**< @brief The name of the status category */
-};
 
 }  // namespace tesseract_motion_planners
 #endif  // TESSERACT_MOTION_PLANNERS_DECARTES_MOTION_PLANNER_H

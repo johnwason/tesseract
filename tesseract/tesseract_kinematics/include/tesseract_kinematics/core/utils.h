@@ -302,7 +302,7 @@ inline static bool isWithinLimits(const Eigen::Ref<const Eigen::Matrix<FloatType
 template <typename FloatType>
 inline std::vector<FloatType> getRedundantSolutions(const FloatType* sol, const Eigen::MatrixX2d& limits)
 {
-  int dof = limits.rows();
+  auto dof = static_cast<int>(limits.rows());
   FloatType val;
   std::vector<FloatType> redundant_sols;
   for (int i = 0; i < dof; ++i)
@@ -311,7 +311,7 @@ inline std::vector<FloatType> getRedundantSolutions(const FloatType* sol, const 
     while ((val -= (2 * M_PI)) > limits(i, 0))
     {
       std::vector<FloatType> new_sol(sol, sol + dof);
-      new_sol[i] = val;
+      new_sol[static_cast<size_t>(i)] = val;
       redundant_sols.insert(redundant_sols.end(), new_sol.begin(), new_sol.end());
     }
 
@@ -319,7 +319,7 @@ inline std::vector<FloatType> getRedundantSolutions(const FloatType* sol, const 
     while ((val += (static_cast<FloatType>(2.0 * M_PI))) < limits(i, 1))
     {
       std::vector<FloatType> new_sol(sol, sol + dof);
-      new_sol[i] = val;
+      new_sol[static_cast<size_t>(i)] = val;
       redundant_sols.insert(redundant_sols.end(), new_sol.begin(), new_sol.end());
     }
   }
@@ -354,8 +354,8 @@ inline bool isValid(const FloatType* qs, int dof)
 template <typename FloatType>
 inline void harmonizeTowardZero(FloatType* qs, int dof)
 {
-  const static FloatType pi = FloatType(M_PI);
-  const static FloatType two_pi = FloatType(2.0 * M_PI);
+  const static auto pi = FloatType(M_PI);
+  const static auto two_pi = FloatType(2.0 * M_PI);
 
   for (int i = 0; i < dof; i++)
   {

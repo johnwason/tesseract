@@ -47,7 +47,12 @@ public:
   using Ptr = std::shared_ptr<ResourceLocator>;
   using ConstPtr = std::shared_ptr<const ResourceLocator>;
 
+  ResourceLocator() = default;
   virtual ~ResourceLocator() = default;
+  ResourceLocator(const ResourceLocator&) = default;
+  ResourceLocator& operator=(const ResourceLocator&) = default;
+  ResourceLocator(ResourceLocator&&) = default;
+  ResourceLocator& operator=(ResourceLocator&&) = default;
 
   /**
    * @brief Locate a resource based on a URL
@@ -77,7 +82,7 @@ public:
    */
   SimpleResourceLocator(ResourceLocatorFn locator_function);
 
-  virtual tesseract_common::Resource::Ptr locateResource(const std::string& url) override;
+  tesseract_common::Resource::Ptr locateResource(const std::string& url) override;
 
 protected:
   ResourceLocatorFn locator_function_;
@@ -95,15 +100,15 @@ public:
 
   SimpleLocatedResource(const std::string& url, const std::string& filename);
 
-  virtual bool isFile() override;
+  bool isFile() override;
 
-  virtual std::string getUrl() override;
+  std::string getUrl() override;
 
-  virtual std::string getFilePath() override;
+  std::string getFilePath() override;
 
-  virtual std::vector<uint8_t> getResourceContents() override;
+  std::vector<uint8_t> getResourceContents() override;
 
-  virtual std::shared_ptr<std::istream> getResourceContentStream() override;
+  std::shared_ptr<std::istream> getResourceContentStream() override;
 
 protected:
   std::string url_;

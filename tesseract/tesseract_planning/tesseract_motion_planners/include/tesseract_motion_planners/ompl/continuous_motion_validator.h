@@ -41,9 +41,10 @@ namespace tesseract_motion_planners
 class ContinuousMotionValidator : public ompl::base::MotionValidator
 {
 public:
-  ContinuousMotionValidator(ompl::base::SpaceInformationPtr space_info,
+  ContinuousMotionValidator(const ompl::base::SpaceInformationPtr& space_info,
                             tesseract_environment::Environment::ConstPtr env,
-                            tesseract_kinematics::ForwardKinematics::ConstPtr kin);
+                            tesseract_kinematics::ForwardKinematics::ConstPtr kin,
+                            double collision_safety_margin);
 
   bool checkMotion(const ompl::base::State* s1, const ompl::base::State* s2) const override;
 

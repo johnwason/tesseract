@@ -35,11 +35,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_motion_planners/core/planner.h>
 #include <tesseract_motion_planners/core/waypoint.h>
 #include <tesseract_motion_planners/ompl/ompl_settings.h>
+#include <tesseract_motion_planners/ompl/ompl_freespace_planner_status_category.h>
 
 namespace tesseract_motion_planners
 {
-class OMPLFreespacePlannerStatusCategory;
-
 template <typename PlannerType>
 struct OMPLFreespacePlannerConfig
 {
@@ -75,15 +74,31 @@ struct OMPLFreespacePlannerConfig
   int num_threads = 1;
   /** @brief Simplify trajectory */
   bool simplify = true;
-  /** @brief Number of states in the output trajectory - note: this is ignored if the trajectory is simplified */
+  /**
+   * @brief Number of states in the output trajectory
+   *   Note: This is ignored if the trajectory is simplified
+   *   Note: The trajectory can be longer if original trajectory is longer and reducing the number of states causes
+   *         the solution to be invalid.
+   */
   int n_output_states = 20;
   /** @brief This scales the variables search space. Must be same size as number of joints.
    *         If empty it defaults to all ones */
   Eigen::VectorXd weights;
 
-  /** @brief Set the resolution at which state validity needs to be
-   * verified in order for a motion between two states to be considered valid. */
+  /** @brief Set the resolution at which state validity needs to be verified in order for a motion between two states
+   * to be considered valid. The resolution is equal to longest_valid_segment_fraction * state_space.getMaximumExtent()
+   *
+   * Note: The planner takes the conservative of either longest_valid_segment_fraction or longest_valid_segment_length.
+   */
   double longest_valid_segment_fraction = 0.01;  // 1%
+
+  /** @brief Set the resolution at which state validity needs to be verified in order for a motion between two states
+   * to be considered valid. If norm(state1 - state0) > longest_valid_segment_length.
+   *
+   * Note: This gets converted to longest_valid_segment_fraction.
+   *       longest_valid_segment_fraction = longest_valid_segment_length / state_space.getMaximumExtent()
+   */
+  double longest_valid_segment_length = 0.5;
 
   /** @brief Planner settings */
   OMPLSettings<PlannerType> settings;
@@ -136,7 +151,7 @@ public:
    * @param response The results of OMPL.
    * @return true if valid solution was found
    */
-  tesseract_common::StatusCode solve(PlannerResponse& response, const bool verbose = false) override;
+  tesseract_common::StatusCode solve(PlannerResponse& response, bool verbose = false) override;
 
   bool terminate() override;
 
@@ -175,26 +190,6 @@ protected:
 
   /** @brief The continuous contact manager */
   tesseract_collision::ContinuousContactManager::Ptr continuous_contact_manager_;
-};
-
-class OMPLFreespacePlannerStatusCategory : public tesseract_common::StatusCategory
-{
-public:
-  OMPLFreespacePlannerStatusCategory(std::string name);
-  const std::string& name() const noexcept override;
-  std::string message(int code) const override;
-
-  enum
-  {
-    IsConfigured = 1,
-    SolutionFound = 0,
-    ErrorIsNotConfigured = -1,
-    ErrorFailedToParseConfig = -2,
-    ErrorFailedToFindValidSolution = -3
-  };
-
-private:
-  std::string name_;
 };
 
 }  // namespace tesseract_motion_planners

@@ -34,9 +34,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_motion_planners
 {
-DiscreteMotionValidator::DiscreteMotionValidator(ompl::base::SpaceInformationPtr space_info,
+DiscreteMotionValidator::DiscreteMotionValidator(const ompl::base::SpaceInformationPtr& space_info,
                                                  tesseract_environment::Environment::ConstPtr env,
-                                                 tesseract_kinematics::ForwardKinematics::ConstPtr kin)
+                                                 tesseract_kinematics::ForwardKinematics::ConstPtr kin,
+                                                 double collision_safety_margin)
   : MotionValidator(space_info), env_(std::move(env)), kin_(std::move(kin))
 {
   joints_ = kin_->getJointNames();
@@ -49,7 +50,7 @@ DiscreteMotionValidator::DiscreteMotionValidator(ompl::base::SpaceInformationPtr
 
   contact_manager_ = env_->getDiscreteContactManager();
   contact_manager_->setActiveCollisionObjects(links_);
-  contact_manager_->setContactDistanceThreshold(0);
+  contact_manager_->setContactDistanceThreshold(collision_safety_margin);
 }
 
 bool DiscreteMotionValidator::checkMotion(const ompl::base::State* s1, const ompl::base::State* s2) const
@@ -65,36 +66,46 @@ bool DiscreteMotionValidator::checkMotion(const ompl::base::State* s1,
   const ompl::base::StateSpace& state_space = *si_->getStateSpace();
 
   unsigned n_steps = state_space.validSegmentCount(s1, s2);
-
-  ompl::base::State* end_interp = si_->allocState();
-
   bool is_valid = true;
-  unsigned i = 1;
-  for (i = 1; i <= n_steps; ++i)
-  {
-    state_space.interpolate(s1, s2, static_cast<double>(i) / n_steps, end_interp);
 
-    if (!si_->isValid(end_interp) || !discreteCollisionCheck(end_interp))
+  if (n_steps > 1)
+  {
+    ompl::base::State* end_interp = si_->allocState();
+    for (unsigned i = 1; i < n_steps; ++i)
     {
+      state_space.interpolate(s1, s2, static_cast<double>(i) / static_cast<double>(n_steps), end_interp);
+
+      if (!si_->isValid(end_interp) || !discreteCollisionCheck(end_interp))
+      {
+        lastValid.second = static_cast<double>(i - 1) / static_cast<double>(n_steps);
+        if (lastValid.first != nullptr)
+          state_space.interpolate(s1, s2, lastValid.second, lastValid.first);
+
+        is_valid = false;
+        break;
+      }
+    }
+    si_->freeState(end_interp);
+  }
+
+  if (is_valid)
+  {
+    if (!si_->isValid(s2) || !discreteCollisionCheck(s2))
+    {
+      lastValid.second = static_cast<double>(n_steps - 1) / static_cast<double>(n_steps);
+      if (lastValid.first != nullptr)
+        state_space.interpolate(s1, s2, lastValid.second, lastValid.first);
+
       is_valid = false;
-      break;
     }
   }
 
-  if (!is_valid)
-  {
-    lastValid.second = static_cast<double>(i - 1) / n_steps;
-    if (lastValid.first != nullptr)
-      state_space.interpolate(s1, s2, lastValid.second, lastValid.first);
-  }
-
-  si_->freeState(end_interp);
   return is_valid;
 }
 
 bool DiscreteMotionValidator::discreteCollisionCheck(const ompl::base::State* s2) const
 {
-  const ompl::base::RealVectorStateSpace::StateType* finish = s2->as<ompl::base::RealVectorStateSpace::StateType>();
+  const auto* finish = s2->as<ompl::base::RealVectorStateSpace::StateType>();
 
   // It was time using chronos time elapsed and it was faster to cache the contact manager
   unsigned long int hash = std::hash<std::thread::id>{}(std::this_thread::get_id());

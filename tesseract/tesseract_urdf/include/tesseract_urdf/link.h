@@ -45,7 +45,7 @@ namespace tesseract_urdf
 class LinkStatusCategory : public tesseract_common::StatusCategory
 {
 public:
-  LinkStatusCategory(std::string link_name = "") : name_("LinkStatusCategory"), link_name_(link_name) {}
+  LinkStatusCategory(std::string link_name = "") : name_("LinkStatusCategory"), link_name_(std::move(link_name)) {}
   const std::string& name() const noexcept override { return name_; }
   std::string message(int code) const override
   {
@@ -83,7 +83,7 @@ private:
 inline tesseract_common::StatusCode::Ptr
 parse(tesseract_scene_graph::Link::Ptr& link,
       const tinyxml2::XMLElement* xml_element,
-      tesseract_scene_graph::ResourceLocator::Ptr locator,
+      const tesseract_scene_graph::ResourceLocator::Ptr& locator,
       std::unordered_map<std::string, tesseract_scene_graph::Material::Ptr>& available_materials,
       const int version)
 {

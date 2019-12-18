@@ -57,7 +57,7 @@ std::string locateResource(const std::string& url)
   if (url.find("package://tesseract_support") == 0)
   {
     mod_url.erase(0, strlen("package://tesseract_support"));
-    size_t pos = mod_url.find("/");
+    size_t pos = mod_url.find('/');
     if (pos == std::string::npos)
     {
       return std::string();
@@ -79,13 +79,13 @@ std::string locateResource(const std::string& url)
 }
 
 DescartesMotionPlannerConfigD
-createDescartesPlannerConfig(const tesseract::Tesseract::ConstPtr tesseract_ptr,
-                             const std::string manip,
+createDescartesPlannerConfig(const tesseract::Tesseract::ConstPtr& tesseract_ptr,
+                             const std::string& /*manip*/,
                              const tesseract_kinematics::InverseKinematics::ConstPtr& kin,
                              const Eigen::Isometry3d& tcp,
                              const double robot_reach,
                              const tesseract_environment::EnvState::ConstPtr& current_state,
-                             const std::vector<tesseract_motion_planners::Waypoint::Ptr> waypoints)
+                             const std::vector<tesseract_motion_planners::Waypoint::Ptr>& waypoints)
 {
   const std::vector<std::string>& joint_names = kin->getJointNames();
   const std::vector<std::string>& active_link_names = kin->getActiveLinkNames();
@@ -150,19 +150,21 @@ protected:
     opw_params_.offsets[2] = -M_PI / 2.0;
 
     auto robot_kin = tesseract_ptr_->getFwdKinematicsManagerConst()->getFwdKinematicSolver("manipulator");
-    auto opw_kin = std::make_shared<OPWInvKin>("manipulator",
-                                               opw_params_,
-                                               robot_kin->getBaseLinkName(),
-                                               robot_kin->getTipLinkName(),
-                                               robot_kin->getJointNames(),
-                                               robot_kin->getLinkNames(),
-                                               robot_kin->getActiveLinkNames(),
-                                               robot_kin->getLimits());
+    auto opw_kin = std::make_shared<OPWInvKin>();
+    opw_kin->init("manipulator",
+                  opw_params_,
+                  robot_kin->getBaseLinkName(),
+                  robot_kin->getTipLinkName(),
+                  robot_kin->getJointNames(),
+                  robot_kin->getLinkNames(),
+                  robot_kin->getActiveLinkNames(),
+                  robot_kin->getLimits());
+
     tesseract_ptr_->getInvKinematicsManager()->addInvKinematicSolver(opw_kin);
   }
 };
 
-TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerFixedPoses)
+TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerFixedPoses)  // NOLINT
 {
   // These specify the series of points to be optimized
   std::vector<tesseract_motion_planners::Waypoint::Ptr> waypoints;
@@ -202,7 +204,7 @@ TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerFixedPoses)
   }
 }
 
-TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerAxialSymetric)
+TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerAxialSymetric)  // NOLINT
 {
   // These specify the series of points to be optimized
   std::vector<tesseract_motion_planners::Waypoint::Ptr> waypoints;
@@ -245,7 +247,7 @@ TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerAxialSymetric)
   }
 }
 
-TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerMakeRobotSampler)
+TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerMakeRobotSampler)  // NOLINT
 {
   auto robot_kin = tesseract_ptr_->getInvKinematicsManagerConst()->getInvKinematicSolver("manipulator", "OPWInvKin");
   auto current_state = tesseract_ptr_->getEnvironmentConst()->getCurrentState();

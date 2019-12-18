@@ -49,7 +49,7 @@ bool DescartesTesseractKinematics<FloatType>::ik(
     const descartes_light::GetRedundantSolutionsFn<FloatType>& redundant_sol_fn,
     std::vector<FloatType>& solution_set) const
 {
-  unsigned int dof = tesseract_ik_->numJoints();
+  auto dof = static_cast<int>(tesseract_ik_->numJoints());
 
   // Convert to appropriate Eigen types
   Eigen::Isometry3d p_double;
@@ -74,7 +74,7 @@ bool DescartesTesseractKinematics<FloatType>::ik(
     std::vector<FloatType> redundant_sols = redundant_sol_fn(sol);
     if (!redundant_sols.empty())
     {
-      int num_sol = redundant_sols.size() / dof;
+      int num_sol = static_cast<int>(redundant_sols.size()) / dof;
       for (int s = 0; s < num_sol; ++s)
       {
         FloatType* redundant_sol = redundant_sols.data() + dof * s;
@@ -103,8 +103,8 @@ bool DescartesTesseractKinematics<FloatType>::ik(
     std::vector<FloatType> redundant_sols = redundant_sol_fn(sol);
     if (!redundant_sols.empty())
     {
-      unsigned int num_sol = redundant_sols.size() / dof;
-      for (unsigned int s = 0; s < num_sol; ++s)
+      long num_sol = static_cast<long>(redundant_sols.size()) / dof;
+      for (long s = 0; s < num_sol; ++s)
       {
         FloatType* redundant_sol = redundant_sols.data() + dof * s;
         solution_set.insert(end(solution_set), redundant_sol, redundant_sol + dof);  // If good then add to solution
@@ -189,18 +189,19 @@ template <typename FloatType>
 void DescartesTesseractKinematics<FloatType>::setIKSeed(
     const Eigen::Ref<const Eigen::Matrix<FloatType, Eigen::Dynamic, 1> >& seed)
 {
-  assert(seed.size() == dof());
+  assert(static_cast<int>(seed.size()) == dof());
   ik_seed_ = seed.template cast<double>();
 }
 
 template <typename FloatType>
 void DescartesTesseractKinematics<FloatType>::setIKSeed(const std::vector<FloatType>& seed)
 {
-  assert(seed.size() == dof());
+  assert(static_cast<int>(seed.size()) == dof());
   std::vector<double> seed_copy;
+  seed_copy.reserve(seed.size());
   for (auto& i : seed)
     seed_copy.push_back(static_cast<double>(i));
-  ik_seed_ = Eigen::Map<Eigen::VectorXd>(seed_copy.data(), seed_copy.size());
+  ik_seed_ = Eigen::Map<Eigen::VectorXd>(seed_copy.data(), static_cast<long>(seed_copy.size()));
 }
 }  // namespace tesseract_motion_planners
 #endif

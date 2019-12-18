@@ -38,17 +38,17 @@ bool DescartesCollision<FloatType>::isContactAllowed(const std::string& a, const
 
 template <typename FloatType>
 DescartesCollision<FloatType>::DescartesCollision(const tesseract_environment::Environment::ConstPtr& collision_env,
-                                                  const std::vector<std::string>& active_links,
-                                                  const std::vector<std::string>& joint_names,
-                                                  const bool debug)
+                                                  std::vector<std::string> active_links,
+                                                  std::vector<std::string> joint_names,
+                                                  bool debug)
   : state_solver_(collision_env->getStateSolver())
   , acm_(*(collision_env->getAllowedCollisionMatrix()))
-  , active_link_names_(active_links)
-  , joint_names_(joint_names)
+  , active_link_names_(std::move(active_links))
+  , joint_names_(std::move(joint_names))
   , contact_manager_(collision_env->getDiscreteContactManager())
   , debug_(debug)
 {
-  contact_manager_->setActiveCollisionObjects(active_links);
+  contact_manager_->setActiveCollisionObjects(active_link_names_);
   contact_manager_->setIsContactAllowedFn(
       std::bind(&tesseract_motion_planners::DescartesCollision<FloatType>::isContactAllowed,
                 this,
@@ -74,12 +74,12 @@ DescartesCollision<FloatType>::DescartesCollision(const DescartesCollision& coll
 }
 
 template <typename FloatType>
-bool DescartesCollision<FloatType>::validate(const FloatType* pos, const std::size_t size)
+bool DescartesCollision<FloatType>::validate(const FloatType* pos, std::size_t size)
 {
   // Happens in two phases:
   // 1. Compute the transform of all objects
   Eigen::VectorXd joint_angles(size);
-  for (int i = 0; i < size; ++i)
+  for (int i = 0; i < static_cast<int>(size); ++i)
     joint_angles(i) = pos[i];
 
   tesseract_environment::EnvState::Ptr env_state = state_solver_->getState(joint_names_, joint_angles);
@@ -107,12 +107,12 @@ bool DescartesCollision<FloatType>::validate(const FloatType* pos, const std::si
 }
 
 template <typename FloatType>
-FloatType DescartesCollision<FloatType>::distance(const FloatType* pos, const std::size_t size)
+FloatType DescartesCollision<FloatType>::distance(const FloatType* pos, std::size_t size)
 {
   // Happens in two phases:
   // 1. Compute the transform of all objects
   Eigen::VectorXd joint_angles(size);
-  for (int i = 0; i < size; ++i)
+  for (int i = 0; i < static_cast<int>(size); ++i)
     joint_angles(i) = pos[i];
   tesseract_environment::EnvState::Ptr env_state = state_solver_->getState(joint_names_, joint_angles);
 
@@ -135,8 +135,8 @@ FloatType DescartesCollision<FloatType>::distance(const FloatType* pos, const st
 
   if (results.empty())
     return static_cast<FloatType>(contact_manager_->getContactDistanceThreshold());
-  else
-    return static_cast<FloatType>(results.begin()->second[0].distance);
+
+  return static_cast<FloatType>(results.begin()->second[0].distance);
 }
 
 template <typename FloatType>

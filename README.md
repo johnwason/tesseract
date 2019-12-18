@@ -1,6 +1,14 @@
 # Tesseract
 
-The planning framework (Tesseract) was designed to be lightweight, limiting the number of dependencies, mainly only using standard library like, eigen, boost, orocos and to the packages below. The core packages are ROS agnostic and have full python support.
+[![Build Status](https://travis-ci.com/ros-industrial-consortium/tesseract.svg?branch=master)](https://travis-ci.com/ros-industrial-consortium/tesseract)
+[![Github Issues](https://img.shields.io/github/issues/ros-industrial-consortium/tesseract.svg)](http://github.com/ros-industrial-consortium/tesseract/issues)
+
+[![license - apache 2.0](https://img.shields.io/:license-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
+[![license - bsd 2 clause](https://img.shields.io/:license-BSD%202--Clause-blue.svg)](https://opensource.org/licenses/BSD-2-Clause)
+
+[![support level: consortium](https://img.shields.io/badge/support%20level-consortium-brightgreen.png)](http://rosindustrial.org/news/2016/10/7/better-supporting-a-growing-ros-industrial-software-platform)
+
+The planning framework (Tesseract) was designed to be light weight, limiting the number of dependencies, mainly only using standard libraries like, eigen, boost, orocos and to the packages below. The core packages are ROS agnostic and have full python support.
 
 ## Tesseract Core Packages
 
@@ -33,15 +41,29 @@ See [issue #66](https://github.com/ros-industrial-consortium/tesseract/issues/66
 
 ## Clone Repository
 
-This repository contains submodules so use the *--recursive* flag as shown below.
+This repository contains submodule tesseract_ext so use the *--recursive* flag as shown below.
 
 `git clone --recursive`
 
-## Building Tests
+.. NOTE: To speed up clean build you may want to add tesseract_ext to an extended workspace. If so do not clone with submodules and clone https://github.com/ros-industrial-consortium/tesseract_ext.git into your extended workspace.
 
-Must pass the -DENABLE_TESTS=ON to cmake when wanting to build tests.
+## Building with Clang-Tidy Enabled
 
-.. NOTE: If you are building using catkin tools, use `catkin build --force-cmake -DENABLE_TESTS=ON`.
+Must pass the -DTESSERACT_ENABLE_CLANG_TIDY=ON to cmake when building. This is automatically enabled if cmake argument -DTESSERACT_ENABLE_TESTS=ON is passed.
+
+## Building Tesseract Tests
+
+Must pass the -DTESSERACT_ENABLE_TESTS=ON to cmake when wanting to build tests. This automatically enables clang tidy.
+
+.. NOTE: If you are building using catkin tools, use `catkin build --force-cmake -DTESSERACT_ENABLE_TESTS=ON`.
+
+## Running Tesseract Tests
+
+Tesseract packages use ctest because it is ROS agnostic, so to run the test call `catkin test --no-deps tesseract_collision tesseract_environment tesseract_geometry tesseract_kinematics tesseract_motion_planners tesseract_process_planners tesseract_scene_graph tesseract_urdf`
+
+## Running Tesseract ROS Tests
+
+Tesseract ROS Packages use the typical method so pass catkin argument `run_tests` when wanting to run these tests.
 
 ## Build Branch Sphinx Documentation
 

@@ -33,7 +33,6 @@
 #include <tesseract_environment/core/utils.h>
 #include <tesseract_motion_planners/core/waypoint.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
-#include <jsoncpp/json/json.h>
 #include <descartes_light/descartes_light.h>
 #include <descartes_light/interface/position_sampler.h>
 #include <descartes_samplers/samplers/railed_cartesian_point_sampler.h>
@@ -50,48 +49,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_motion_planners
 {
-DescartesMotionPlannerStatusCategory::DescartesMotionPlannerStatusCategory(std::string name) : name_(name) {}
-const std::string& DescartesMotionPlannerStatusCategory::name() const noexcept { return name_; }
-std::string DescartesMotionPlannerStatusCategory::message(int code) const
-{
-  switch (code)
-  {
-    case IsConfigured:
-    {
-      return "Is Configured";
-    }
-    case SolutionFound:
-    {
-      return "Found valid solution";
-    }
-    case ErrorIsNotConfigured:
-    {
-      return "Planner is not configured, must call setConfiguration prior to calling solve.";
-    }
-    case ErrorFailedToParseConfig:
-    {
-      return "Failed to parse config data";
-    }
-    case ErrorFailedToBuildGraph:
-    {
-      return "Failed to build graph";
-    }
-    case ErrorFailedToFindValidSolution:
-    {
-      return "Failed to search graph";
-    }
-    case ErrorFoundValidSolutionInCollision:
-    {
-      return "Found valid solution, but is in collision";
-    }
-    default:
-    {
-      assert(false);
-      return "";
-    }
-  }
-}
-
 template <typename FloatType>
 DescartesMotionPlanner<FloatType>::DescartesMotionPlanner(std::string name)
   : MotionPlanner(name)
@@ -195,7 +152,7 @@ tesseract_common::StatusCode DescartesMotionPlanner<FloatType>::solve(PlannerRes
   }
 
   response.joint_trajectory.joint_names = config_->joint_names;
-  response.joint_trajectory.trajectory.resize(static_cast<long>(config_->waypoints.size()), dof);
+  response.joint_trajectory.trajectory.resize(static_cast<long>(config_->waypoints.size()), static_cast<long>(dof));
   for (size_t r = 0; r < config_->waypoints.size(); ++r)
     for (size_t c = 0; c < dof; ++c)
       response.joint_trajectory.trajectory(static_cast<long>(r), static_cast<long>(c)) = solution[(r * dof) + c];
@@ -206,11 +163,11 @@ tesseract_common::StatusCode DescartesMotionPlanner<FloatType>::solve(PlannerRes
   manager->setActiveCollisionObjects(config_->active_link_names);
   manager->setContactDistanceThreshold(0);
   collisions.clear();
-  bool found = tesseract_environment::checkTrajectory(*manager,
+  bool found = tesseract_environment::checkTrajectory(collisions,
+                                                      *manager,
                                                       *config_->tesseract->getEnvironmentConst(),
                                                       response.joint_trajectory.joint_names,
                                                       response.joint_trajectory.trajectory,
-                                                      collisions,
                                                       true,
                                                       verbose);
 
@@ -248,8 +205,8 @@ tesseract_common::StatusCode DescartesMotionPlanner<FloatType>::isConfigured() c
 {
   if (config_ != nullptr)
     return tesseract_common::StatusCode(DescartesMotionPlannerStatusCategory::IsConfigured, status_category_);
-  else
-    return tesseract_common::StatusCode(DescartesMotionPlannerStatusCategory::ErrorIsNotConfigured, status_category_);
+
+  return tesseract_common::StatusCode(DescartesMotionPlannerStatusCategory::ErrorIsNotConfigured, status_category_);
 }
 
 }  // namespace tesseract_motion_planners

@@ -4,22 +4,17 @@ project(tesseract_collision VERSION 0.1.0 LANGUAGES CXX)
 find_package(Eigen3 REQUIRED)
 find_package(Boost COMPONENTS system thread program_options REQUIRED)
 find_package(octomap REQUIRED)
-find_package(PkgConfig REQUIRED)
-find_package(ccd REQUIRED)
 find_package(console_bridge REQUIRED)
 find_package(tesseract_geometry REQUIRED)
 find_package(tesseract_common REQUIRED)
 find_package(Bullet REQUIRED)
-
-pkg_check_modules(LIBFCL REQUIRED fcl)
-find_library(LIBFCL_LIBRARIES_FULL ${LIBFCL_LIBRARIES} ${LIBFCL_LIBRARY_DIRS})
-set(LIBFCL_LIBRARIES "${LIBFCL_LIBRARIES_FULL}")
-list(APPEND LIBFCL_LIBRARIES ${CCD_LIBRARIES})
+find_package(fcl REQUIRED)
 
 # Create interface for core
 add_library(${PROJECT_NAME}_core INTERFACE)
 target_link_libraries(${PROJECT_NAME}_core INTERFACE tesseract::tesseract_geometry ${Boost_LIBRARIES} ${BULLET_LIBRARIES})
 tesseract_target_compile_options(${PROJECT_NAME}_core INTERFACE)
+tesseract_clang_tidy(${PROJECT_NAME}_core)
 target_include_directories(${PROJECT_NAME}_core INTERFACE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>")
@@ -39,6 +34,7 @@ add_library(${PROJECT_NAME}_bullet SHARED
 )
 target_link_libraries(${PROJECT_NAME}_bullet PUBLIC ${PROJECT_NAME}_core tesseract::tesseract_geometry console_bridge ${OCTOMAP_LIBRARIES})
 tesseract_target_compile_options(${PROJECT_NAME}_bullet PUBLIC)
+tesseract_clang_tidy(${PROJECT_NAME}_bullet)
 target_include_directories(${PROJECT_NAME}_bullet PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>")
@@ -50,13 +46,13 @@ target_include_directories(${PROJECT_NAME}_bullet SYSTEM PUBLIC
 
 # Create target for FCL implementation
 add_library(${PROJECT_NAME}_fcl SHARED src/fcl/fcl_discrete_managers.cpp src/fcl/fcl_utils.cpp)
-target_link_libraries(${PROJECT_NAME}_fcl PUBLIC ${PROJECT_NAME}_core tesseract::tesseract_geometry console_bridge ${OCTOMAP_LIBRARIES} ${LIBFCL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_fcl PUBLIC ${PROJECT_NAME}_core tesseract::tesseract_geometry console_bridge ${OCTOMAP_LIBRARIES} fcl)
 tesseract_target_compile_options(${PROJECT_NAME}_fcl PUBLIC)
+tesseract_clang_tidy(${PROJECT_NAME}_fcl)
 target_include_directories(${PROJECT_NAME}_fcl PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>")
 target_include_directories(${PROJECT_NAME}_fcl SYSTEM PUBLIC
-    ${LIBFCL_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIRS}
     ${BULLET_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
@@ -66,6 +62,7 @@ target_include_directories(${PROJECT_NAME}_fcl SYSTEM PUBLIC
 add_executable(create_convex_hull src/create_convex_hull.cpp)
 target_link_libraries(create_convex_hull PUBLIC tesseract::tesseract_geometry console_bridge ${BULLET_LIBRARIES} ${Boost_LIBRARIES} ${OCTOMAP_LIBRARIES})
 tesseract_target_compile_options(create_convex_hull PUBLIC)
+tesseract_clang_tidy(create_convex_hull)
 target_include_directories(create_convex_hull PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
 target_include_directories(create_convex_hull SYSTEM PUBLIC
     ${EIGEN3_INCLUDE_DIRS}
@@ -91,11 +88,8 @@ file(WRITE ${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/packages/${P
 # ADD Examples
 add_subdirectory(examples)
 
-if (ENABLE_TESTS)
+if (TESSERACT_ENABLE_TESTING)
   enable_testing()
-  add_custom_target(run_tests ALL
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-      COMMAND ${CMAKE_CTEST_COMMAND} -V -O "/tmp/${PROJECT_NAME}_ctest.log" -C $<CONFIGURATION>)
-
+  tesseract_add_run_tests_target()
   add_subdirectory(test)
 endif()

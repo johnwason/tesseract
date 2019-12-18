@@ -28,11 +28,11 @@
 
 namespace tesseract_motion_planners
 {
-TrajOptPlannerDefaultConfig::TrajOptPlannerDefaultConfig(const tesseract::Tesseract::ConstPtr& tesseract_,
-                                                         const std::string& manipulator_,
-                                                         const std::string& link_,
-                                                         const tesseract_common::VectorIsometry3d& tcp_)
-  : TrajOptPlannerConfig(), tesseract(tesseract_), manipulator(manipulator_), link(link_), tcp(tcp_)
+TrajOptPlannerDefaultConfig::TrajOptPlannerDefaultConfig(tesseract::Tesseract::ConstPtr tesseract_,
+                                                         std::string manipulator_,
+                                                         std::string link_,
+                                                         tesseract_common::VectorIsometry3d tcp_)
+  : tesseract(std::move(tesseract_)), manipulator(std::move(manipulator_)), link(std::move(link_)), tcp(std::move(tcp_))
 {
 }
 
@@ -94,7 +94,7 @@ std::shared_ptr<trajopt::ProblemConstructionInfo> TrajOptPlannerDefaultConfig::g
       tesseract->getFwdKinematicsManagerConst()->getFwdKinematicSolver(manipulator);
   tesseract_environment::AdjacencyMap map(
       env->getSceneGraph(), kin->getActiveLinkNames(), env->getCurrentState()->transforms);
-  std::vector<std::string> adjacency_links = map.getActiveLinkNames();
+  const std::vector<std::string>& adjacency_links = map.getActiveLinkNames();
 
   // Populate Init Info
   pci.init_info.type = init_type;
@@ -165,7 +165,7 @@ std::shared_ptr<trajopt::ProblemConstructionInfo> TrajOptPlannerDefaultConfig::g
   {
     // Create a default collision term info
     trajopt::TermInfo::Ptr ti =
-        createCollisionTermInfo(pci.basic_info.n_steps, collision_safety_margin, collision_continuous);
+        createCollisionTermInfo(pci.basic_info.n_steps, collision_safety_margin, collision_continuous, collision_coeff);
 
     // Update the term info with the (possibly) new start and end state indices for which to apply this cost
     std::shared_ptr<trajopt::CollisionTermInfo> ct = std::static_pointer_cast<trajopt::CollisionTermInfo>(ti);
@@ -216,12 +216,14 @@ std::shared_ptr<trajopt::ProblemConstructionInfo> TrajOptPlannerDefaultConfig::g
     for (std::size_t i = 0; i < constraint_error_functions.size(); ++i)
     {
       auto& c = constraint_error_functions[i];
-      trajopt::TermInfo::Ptr ti =
-          createUserDefinedTermInfo(pci.basic_info.n_steps, c.first, c.second, "user_defined_" + std::to_string(i));
+      trajopt::TermInfo::Ptr ti = createUserDefinedTermInfo(
+          pci.basic_info.n_steps, std::get<0>(c), std::get<1>(c), "user_defined_" + std::to_string(i));
 
       // Update the term info with the (possibly) new start and end state indices for which to apply this cost
       std::shared_ptr<trajopt::UserDefinedTermInfo> ef = std::static_pointer_cast<trajopt::UserDefinedTermInfo>(ti);
       ef->term_type = trajopt::TT_CNT;
+      ef->constraint_type = std::get<2>(c);
+      ef->coeff = std::get<3>(c);
       ef->first_step = cost_first_step;
       ef->last_step = cost_last_step;
 

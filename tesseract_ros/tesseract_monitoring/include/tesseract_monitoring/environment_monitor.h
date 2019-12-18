@@ -70,11 +70,11 @@ class DynamicReconfigureImpl;
 
 namespace tesseract_monitoring
 {
-typedef pluginlib::ClassLoader<tesseract_collision::DiscreteContactManager> DiscreteContactManagerPluginLoader;
-typedef std::shared_ptr<DiscreteContactManagerPluginLoader> DiscreteContactManagerPluginLoaderPtr;
+using DiscreteContactManagerPluginLoader = pluginlib::ClassLoader<tesseract_collision::DiscreteContactManager>;
+using DiscreteContactManagerPluginLoaderPtr = std::shared_ptr<DiscreteContactManagerPluginLoader>;
 
-typedef pluginlib::ClassLoader<tesseract_collision::ContinuousContactManager> ContinuousContactManagerPluginLoader;
-typedef std::shared_ptr<ContinuousContactManagerPluginLoader> ContinuousContactManagerPluginLoaderPtr;
+using ContinuousContactManagerPluginLoader = pluginlib::ClassLoader<tesseract_collision::ContinuousContactManager>;
+using ContinuousContactManagerPluginLoaderPtr = std::shared_ptr<ContinuousContactManagerPluginLoader>;
 
 /**
  * @brief TesseractMonitor
@@ -127,9 +127,9 @@ public:
    *  @param name A name identifying this planning scene monitor
    */
   EnvironmentMonitor(const std::string& robot_description,
-                     const std::string& name,
-                     const std::string& discrete_plugin = "",
-                     const std::string& continuous_plugin = "");
+                     std::string name,
+                     std::string discrete_plugin = "",
+                     std::string continuous_plugin = "");
 
   /** @brief Constructor
    *  @param rml A pointer to a kinematic model loader
@@ -137,11 +137,15 @@ public:
    *  @param name A name identifying this planning scene monitor
    */
   EnvironmentMonitor(tesseract::Tesseract::Ptr tesseract,
-                     const std::string& name,
-                     const std::string& discrete_plugin = "",
-                     const std::string& continuous_plugin = "");
+                     std::string name,
+                     std::string discrete_plugin = "",
+                     std::string continuous_plugin = "");
 
   ~EnvironmentMonitor();
+  EnvironmentMonitor(const EnvironmentMonitor&) = delete;
+  EnvironmentMonitor& operator=(const EnvironmentMonitor&) = delete;
+  EnvironmentMonitor(EnvironmentMonitor&&) = delete;
+  EnvironmentMonitor& operator=(EnvironmentMonitor&&) = delete;
 
   /** \brief Get the name of this monitor */
   const std::string& getName() const { return monitor_name_; }
@@ -205,7 +209,7 @@ public:
       Diffs are sent afterwards on updates specified by the \e event bitmask. For UPDATE_ENVIRONMENT, the full
      environment is always
      sent. */
-  void startPublishingEnvironment(EnvironmentUpdateType event,
+  void startPublishingEnvironment(EnvironmentUpdateType update_type,
                                   const std::string& environment_topic = MONITORED_ENVIRONMENT_TOPIC);
 
   /** \brief Stop publishing the maintained environment. */
@@ -245,8 +249,8 @@ public:
   {
     if (!dt_state_update_.isZero())
       return 1.0 / dt_state_update_.toSec();
-    else
-      return 0.0;
+
+    return 0.0;
   }
 
   /** @brief Add a function to be called when an update to the scene is received */
@@ -370,7 +374,7 @@ private:
   bool saveSceneGraphCallback(tesseract_msgs::SaveSceneGraphRequest& req, tesseract_msgs::SaveSceneGraphResponse& res);
 
   // Called when new service request is called to modify the environment.
-  bool applyEnvironmentCommandsMessage(std::string id,
+  bool applyEnvironmentCommandsMessage(const std::string& id,
                                        int revision,
                                        const std::vector<tesseract_msgs::EnvironmentCommand>& commands);
 
@@ -401,8 +405,8 @@ private:
 
   DynamicReconfigureImpl* reconfigure_impl_;
 };
-typedef std::shared_ptr<EnvironmentMonitor> EnvironmentMonitorPtr;
-typedef std::shared_ptr<const EnvironmentMonitor> EnvironmentMonitorConstPtr;
+using EnvironmentMonitorPtr = std::shared_ptr<EnvironmentMonitor>;
+using EnvironmentMonitorConstPtr = std::shared_ptr<const EnvironmentMonitor>;
 
 /** \brief This is a convenience class for obtaining access to an
  *         instance of a locked Environment.
@@ -428,7 +432,7 @@ typedef std::shared_ptr<const EnvironmentMonitor> EnvironmentMonitorConstPtr;
 class LockedEnvironmentRO
 {
 public:
-  LockedEnvironmentRO(const EnvironmentMonitorPtr& environment_monitor) : env_monitor_(environment_monitor)
+  LockedEnvironmentRO(EnvironmentMonitorPtr environment_monitor) : env_monitor_(std::move(environment_monitor))
   {
     initialize(true);
   }
@@ -446,8 +450,8 @@ public:
   }
 
 protected:
-  LockedEnvironmentRO(const EnvironmentMonitorPtr& environment_monitor, bool read_only)
-    : env_monitor_(environment_monitor)
+  LockedEnvironmentRO(EnvironmentMonitorPtr environment_monitor, bool read_only)
+    : env_monitor_(std::move(environment_monitor))
   {
     initialize(read_only);
   }
@@ -477,11 +481,16 @@ protected:
       else
         env_monitor_->unlockEnvironmentWrite();
     }
+    SingleUnlock(const SingleUnlock&) = delete;
+    SingleUnlock& operator=(const SingleUnlock&) = delete;
+    SingleUnlock(SingleUnlock&&) = delete;
+    SingleUnlock& operator=(SingleUnlock&&) = delete;
+
     EnvironmentMonitor* env_monitor_;
     bool read_only_;
   };
-  typedef std::shared_ptr<SingleUnlock> SingleUnlockPtr;
-  typedef std::shared_ptr<const SingleUnlock> SingleUnlockConstPtr;
+  using SingleUnlockPtr = std::shared_ptr<SingleUnlock>;
+  using SingleUnlockConstPtr = std::shared_ptr<const SingleUnlock>;
 
   EnvironmentMonitorPtr env_monitor_;
   SingleUnlockPtr lock_;

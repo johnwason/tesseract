@@ -76,8 +76,10 @@ inline bool isLinkActive(const std::vector<std::string>& active, const std::stri
  * @param verbose If true print debug informaton
  * @return True if contact is allowed between the two object, otherwise false.
  */
-inline bool
-isContactAllowed(const std::string& name1, const std::string& name2, const IsContactAllowedFn acm, bool verbose = false)
+inline bool isContactAllowed(const std::string& name1,
+                             const std::string& name2,
+                             const IsContactAllowedFn& acm,
+                             bool verbose = false)
 {
   // do not distance check geoms part of the same object / link / attached body
   if (name1 == name2)
@@ -122,30 +124,29 @@ inline ContactResult* processResult(ContactTestData& cdata,
 
     return &(cdata.res.insert(std::make_pair(key, data)).first->second.back());
   }
-  else
+
+  assert(cdata.type != ContactTestType::FIRST);
+  ContactResultVector& dr = cdata.res[key];
+  if (cdata.type == ContactTestType::ALL)
   {
-    assert(cdata.type != ContactTestType::FIRST);
-    ContactResultVector& dr = cdata.res[key];
-    if (cdata.type == ContactTestType::ALL)
-    {
-      dr.emplace_back(contact);
-      return &(dr.back());
-    }
-    else if (cdata.type == ContactTestType::CLOSEST)
-    {
-      if (contact.distance < dr[0].distance)
-      {
-        dr[0] = contact;
-        return &(dr[0]);
-      }
-    }
-    //    else if (cdata.cdata.condition == DistanceRequestType::LIMITED)
-    //    {
-    //      assert(dr.size() < cdata.req->max_contacts_per_body);
-    //      dr.emplace_back(contact);
-    //      return &(dr.back());
-    //    }
+    dr.emplace_back(contact);
+    return &(dr.back());
   }
+
+  if (cdata.type == ContactTestType::CLOSEST)
+  {
+    if (contact.distance < dr[0].distance)
+    {
+      dr[0] = contact;
+      return &(dr[0]);
+    }
+  }
+  //    else if (cdata.cdata.condition == DistanceRequestType::LIMITED)
+  //    {
+  //      assert(dr.size() < cdata.req->max_contacts_per_body);
+  //      dr.emplace_back(contact);
+  //      return &(dr.back());
+  //    }
 
   return nullptr;
 }
@@ -172,7 +173,7 @@ inline int createConvexHull(tesseract_common::VectorVector3d& vertices,
 
   btConvexHullComputer conv;
   std::vector<double> points;
-  points.reserve(static_cast<int>(input.size() * 3));
+  points.reserve(input.size() * 3);
   for (const auto& v : input)
   {
     points.push_back(v[0]);
@@ -182,7 +183,7 @@ inline int createConvexHull(tesseract_common::VectorVector3d& vertices,
 
   btScalar val = conv.compute(points.data(),
                               3 * sizeof(double),
-                              input.size(),
+                              static_cast<int>(input.size()),
                               static_cast<btScalar>(shrink),
                               static_cast<btScalar>(shrinkClamp));
   if (val < 0)
@@ -196,13 +197,14 @@ inline int createConvexHull(tesseract_common::VectorVector3d& vertices,
   for (int i = 0; i < num_verts; i++)
   {
     btVector3& v = conv.vertices[i];
-    vertices.push_back(Eigen::Vector3d(v.getX(), v.getY(), v.getZ()));
+    vertices.push_back(
+        Eigen::Vector3d(static_cast<double>(v.getX()), static_cast<double>(v.getY()), static_cast<double>(v.getZ())));
   }
 
-  int num_faces = conv.faces.size();
+  auto num_faces = static_cast<size_t>(conv.faces.size());
   std::vector<int> local_faces;
-  local_faces.reserve(static_cast<size_t>(3 * num_faces));
-  for (int i = 0; i < num_faces; i++)
+  local_faces.reserve(3ul * num_faces);
+  for (int i = 0; i < conv.faces.size(); i++)
   {
     std::vector<int> face;
     face.reserve(3);
@@ -235,7 +237,7 @@ inline int createConvexHull(tesseract_common::VectorVector3d& vertices,
   for (size_t i = 0; i < local_faces.size(); ++i)
     faces[static_cast<long>(i)] = local_faces[i];
 
-  return num_faces;
+  return conv.faces.size();
 }
 
 inline tesseract_geometry::ConvexMesh::Ptr makeConvexMesh(const tesseract_geometry::Mesh& mesh)
@@ -436,7 +438,7 @@ inline int loadSimplePlyFile(const std::string& path,
     CONSOLE_BRIDGE_logError("Failed to parse file: %s", path.c_str());
     return false;
   }
-  size_t num_vertices = static_cast<size_t>(std::stoi(tokens.back()));
+  auto num_vertices = static_cast<size_t>(std::stoi(tokens.back()));
 
   std::getline(myfile, str);
   std::getline(myfile, str);
@@ -451,7 +453,7 @@ inline int loadSimplePlyFile(const std::string& path,
     return false;
   }
 
-  size_t num_faces = static_cast<size_t>(std::stoi(tokens.back()));
+  auto num_faces = static_cast<size_t>(std::stoi(tokens.back()));
   std::getline(myfile, str);
   std::getline(myfile, str);
   if (str != "end_header")
@@ -489,7 +491,7 @@ inline int loadSimplePlyFile(const std::string& path,
       return false;
     }
 
-    int num_verts = static_cast<int>(tokens.size());
+    auto num_verts = static_cast<int>(tokens.size());
     assert(num_verts >= 3);
     if (triangles_only && num_verts > 3)
     {

@@ -50,6 +50,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_motion_planners/ompl/conversions.h>
 #include <tesseract/tesseract.h>
 #include <tesseract_environment/core/utils.h>
+#include <trajopt_utils/logging.hpp>
 
 #include <tesseract_motion_planners/hybrid/ompl_trajopt_freespace_planner.h>
 #include <tesseract_motion_planners/trajopt/config/trajopt_planner_freespace_config.h>
@@ -63,6 +64,8 @@ using namespace tesseract_kinematics;
 using namespace tesseract_motion_planners;
 
 const static int SEED = 1;
+const static std::vector<double> start_state = { -0.5, 0.5, 0.0, -1.3348, 0.0, 1.4959, 0.0 };
+const static std::vector<double> end_state = { 0.5, 0.5, 0.0, -1.3348, 0.0, 1.4959, 0.0 };
 
 std::string locateResource(const std::string& url)
 {
@@ -70,7 +73,7 @@ std::string locateResource(const std::string& url)
   if (url.find("package://tesseract_support") == 0)
   {
     mod_url.erase(0, strlen("package://tesseract_support"));
-    size_t pos = mod_url.find("/");
+    size_t pos = mod_url.find('/');
     if (pos == std::string::npos)
     {
       return std::string();
@@ -97,8 +100,8 @@ static void addBox(tesseract_environment::Environment& env)
 
   Visual::Ptr visual = std::make_shared<Visual>();
   visual->origin = Eigen::Isometry3d::Identity();
-  visual->origin.translation() = Eigen::Vector3d(0.4, 0, 0.55);
-  visual->geometry = std::make_shared<tesseract_geometry::Box>(0.5, 0.001, 0.5);
+  visual->origin.translation() = Eigen::Vector3d(0.5, 0, 0.55);
+  visual->geometry = std::make_shared<tesseract_geometry::Box>(0.4, 0.001, 0.4);
   link_1.visual.push_back(visual);
 
   Collision::Ptr collision = std::make_shared<Collision>();
@@ -122,27 +125,27 @@ public:
   tesseract_motion_planners::OMPLTrajOptFreespacePlanner<PlannerType> planner;
 };
 
-typedef ::testing::Types<ompl::geometric::SBL,
-                         ompl::geometric::PRM,
-                         ompl::geometric::PRMstar,
-                         ompl::geometric::LazyPRMstar,
-                         ompl::geometric::EST,
-                         ompl::geometric::LBKPIECE1,
-                         ompl::geometric::BKPIECE1,
-                         ompl::geometric::KPIECE1,
-                         ompl::geometric::RRT,
-                         ompl::geometric::RRTConnect,
-                         ompl::geometric::RRTstar,
-                         //                         ompl::geometric::SPARS,
-                         ompl::geometric::TRRT>
-    Implementations;
+using Implementations = ::testing::Types<ompl::geometric::SBL,
+                                         ompl::geometric::PRM,
+                                         ompl::geometric::PRMstar,
+                                         ompl::geometric::LazyPRMstar,
+                                         ompl::geometric::EST,
+                                         ompl::geometric::LBKPIECE1,
+                                         ompl::geometric::BKPIECE1,
+                                         ompl::geometric::KPIECE1,
+                                         // ompl::geometric::RRT,
+                                         // ompl::geometric::RRTstar,
+                                         // ompl::geometric::SPARS,
+                                         // ompl::geometric::TRRT,
+                                         ompl::geometric::RRTConnect>;
 
 TYPED_TEST_CASE(OMPLTrajOptTestFixture, Implementations);
 
-TYPED_TEST(OMPLTrajOptTestFixture, OMPLTrajOptFreespacePlannerUnit)
+TYPED_TEST(OMPLTrajOptTestFixture, OMPLTrajOptFreespacePlannerUnit)  // NOLINT
 {
   EXPECT_EQ(ompl::RNG::getSeed(), SEED) << "Randomization seed does not match expected: " << ompl::RNG::getSeed()
                                         << " vs. " << SEED;
+  util::gLogLevel = util::LevelDebug;
 
   // Step 1: Load scene and srdf
   tesseract_scene_graph::ResourceLocator::Ptr locator =
@@ -157,8 +160,8 @@ TYPED_TEST(OMPLTrajOptTestFixture, OMPLTrajOptFreespacePlannerUnit)
 
   // Step 3: Create ompl planner config and populate it
   auto kin = tesseract->getFwdKinematicsManagerConst()->getFwdKinematicSolver("manipulator");
-  std::vector<double> swp = { -1.2, 0.5, 0.0, -1.3348, 0.0, 1.4959, 0.0 };
-  std::vector<double> ewp = { 1.2, 0.2762, 0.0, -1.3348, 0.0, 1.4959, 0.0 };
+  std::vector<double> swp = start_state;
+  std::vector<double> ewp = end_state;
 
   auto start = std::make_shared<tesseract_motion_planners::JointWaypoint>(swp, kin->getJointNames());
   auto end = std::make_shared<tesseract_motion_planners::JointWaypoint>(ewp, kin->getJointNames());
@@ -170,12 +173,13 @@ TYPED_TEST(OMPLTrajOptTestFixture, OMPLTrajOptFreespacePlannerUnit)
     ompl_config.end_waypoint = end;
     ompl_config.tesseract = tesseract;
     ompl_config.manipulator = "manipulator";
-    ompl_config.collision_safety_margin = 0.01;
-    ompl_config.planning_time = 10.0;
-    ompl_config.num_threads = 4;
-    ompl_config.max_solutions = 4;
+    ompl_config.collision_safety_margin = 0.02;
+    ompl_config.planning_time = 5.0;
+    ompl_config.num_threads = 2;
+    ompl_config.max_solutions = 2;
+    ompl_config.longest_valid_segment_fraction = 0.01;
 
-    ompl_config.collision_continuous = false;
+    ompl_config.collision_continuous = true;
     ompl_config.collision_check = true;
     ompl_config.simplify = false;
     ompl_config.n_output_states = 50;
@@ -189,14 +193,14 @@ TYPED_TEST(OMPLTrajOptTestFixture, OMPLTrajOptFreespacePlannerUnit)
     trajopt_config.target_waypoints.push_back(end);
 
     trajopt_config.collision_check = true;
-    trajopt_config.collision_continuous = false;
-    trajopt_config.collision_safety_margin = 0.01;
+    trajopt_config.collision_continuous = true;
+    trajopt_config.collision_safety_margin = 0.02;
 
     trajopt_config.smooth_velocities = true;
     trajopt_config.smooth_jerks = true;
     trajopt_config.smooth_accelerations = true;
 
-    trajopt_config.num_steps = 30;
+    trajopt_config.num_steps = 50;
   }
 
   // Set the planner configuration
@@ -207,6 +211,10 @@ TYPED_TEST(OMPLTrajOptTestFixture, OMPLTrajOptFreespacePlannerUnit)
   tesseract_common::StatusCode status = this->planner.solve(planning_response);
 
   // Expect the planning to succeed
+  if (!status)
+  {
+    CONSOLE_BRIDGE_logError("CI Error: %s", status.message().c_str());
+  }
   EXPECT_TRUE(status);
 
   // Expect that the trajectory has the same number of states as the config with the highest number of states

@@ -10,6 +10,7 @@ add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/process_segment_definition.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC tesseract::tesseract_common tesseract::tesseract_motion_planners_core)
 tesseract_target_compile_options(${PROJECT_NAME} PUBLIC)
+tesseract_clang_tidy(${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME} PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>")
@@ -25,12 +26,9 @@ install(DIRECTORY include/${PROJECT_NAME}
   PATTERN ".svn" EXCLUDE
 )
 
-if (ENABLE_TESTS)
+if (TESSERACT_ENABLE_TESTING)
   enable_testing()
-  add_custom_target(run_tests ALL
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-      COMMAND ${CMAKE_CTEST_COMMAND} -V -O "/tmp/${PROJECT_NAME}_ctest.log" -C $<CONFIGURATION>)
-
+  tesseract_add_run_tests_target()
   add_subdirectory(test)
 endif()
 

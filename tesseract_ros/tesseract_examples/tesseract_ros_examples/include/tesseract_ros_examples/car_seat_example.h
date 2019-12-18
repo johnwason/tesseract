@@ -47,8 +47,12 @@ namespace tesseract_ros_examples
 class CarSeatExample : public Example
 {
 public:
-  CarSeatExample(ros::NodeHandle nh, bool plotting, bool rviz);
-  ~CarSeatExample() = default;
+  CarSeatExample(const ros::NodeHandle& nh, bool plotting, bool rviz);
+  ~CarSeatExample() override = default;
+  CarSeatExample(const CarSeatExample&) = default;
+  CarSeatExample& operator=(const CarSeatExample&) = default;
+  CarSeatExample(CarSeatExample&&) = default;
+  CarSeatExample& operator=(CarSeatExample&&) = default;
 
   bool run() override;
 
