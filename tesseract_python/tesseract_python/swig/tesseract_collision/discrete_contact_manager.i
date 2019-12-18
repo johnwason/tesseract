@@ -74,7 +74,7 @@ public:
 
   virtual void setActiveCollisionObjects(const std::vector<std::string>& names) = 0;
 
-  virtual const std::vector<std::string>& getActiveCollisionObjects() const = 0;
+  virtual const std::vector<std::string> getActiveCollisionObjects() const = 0;
 
   virtual void setContactDistanceThreshold(double contact_distance) = 0;
 

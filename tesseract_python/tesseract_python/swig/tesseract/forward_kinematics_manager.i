@@ -52,7 +52,7 @@ public:
   
   tesseract_kinematics::ForwardKinematicsFactory::ConstPtr getFwdKinematicFactory(const std::string& name) const;
   
-  bool addFwdKinematicSolver(tesseract_kinematics::ForwardKinematics::ConstPtr solver);
+  bool addFwdKinematicSolver(const tesseract_kinematics::ForwardKinematics::ConstPtr& solver);
   
   void removeFwdKinematicSolver(const std::string& manipulator, const std::string& name);
   

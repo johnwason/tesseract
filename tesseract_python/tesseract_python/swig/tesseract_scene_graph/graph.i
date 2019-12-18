@@ -119,7 +119,7 @@ std::vector<std::string> getLinkChildrenNames(const std::string& name) const;
 
 std::vector<std::string> getJointChildrenNames(const std::string& name) const;
 
-void saveDOT(std::string path) const;
+void saveDOT(const std::string& path) const;
 
 // TODO: Boost Graph functions?
 // Path getShortestPath(const std::string& root, const std::string& tip);

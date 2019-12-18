@@ -97,7 +97,7 @@ public:
   using Ptr = std::shared_ptr<CartesianWaypoint>;
   using ConstPtr = std::shared_ptr<const CartesianWaypoint>;
 
-  CartesianWaypoint(Eigen::Isometry3d cartesian_position, std::string parent_link = "");
+  CartesianWaypoint(const Eigen::Isometry3d& cartesian_position, std::string parent_link = "");
 
   const Eigen::Isometry3d getTransform();
 

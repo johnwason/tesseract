@@ -43,7 +43,7 @@ public:
   void setRequest(const PlannerRequest& request);
   
   %rename(_solve) solve;
-  virtual tesseract_common::StatusCode solve(PlannerResponse& res, const bool verbose = false) = 0;
+  virtual tesseract_common::StatusCode solve(PlannerResponse& res, bool verbose = false) = 0;
   %pythoncode %{
   def solve(self, verbose=False):
       response = PlannerResponse()

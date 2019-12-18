@@ -170,12 +170,10 @@ install(CODE "message(STATUS \"Running setup.py in ${CMAKE_CURRENT_BINARY_DIR}/p
 execute_process(COMMAND python setup.py install -f
 --root=/ --prefix=${CMAKE_INSTALL_PREFIX} ${SETUPTOOLS_ARG_EXTRA} --single-version-externally-managed WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/python)")
 
-if(ENABLE_TESTS)
+if(TESSERACT_ENABLE_TESTING)
   enable_testing()
 
-  add_custom_target(run_tests ALL
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-      COMMAND ${CMAKE_CTEST_COMMAND} -V -O "/tmp/${PROJECT_NAME}_ctest.log" -C $<CONFIGURATION>)
+  tesseract_add_run_tests_target()
 
   add_test (NAME python-tests
   COMMAND ${PYTHON_EXECUTABLE} -m pytest -p no:cacheprovider
@@ -184,9 +182,9 @@ if(ENABLE_TESTS)
   
   find_package(tesseract_support REQUIRED)
   if (WIN32)
-  set_tests_properties(python-tests PROPERTIES ENVIRONMENT "TESSERACT_SUPPORT_DIR=${TESSERACT_SUPPORT_DIR};PYTHONPATH=\$PYTHONPATH\;${CMAKE_CURRENT_BINARY_DIR}/python/")
+  set_tests_properties(python-tests PROPERTIES ENVIRONMENT "TESSERACT_SUPPORT_DIR=${TESSERACT_SUPPORT_DIR}")
   else()
-  set_tests_properties(python-tests PROPERTIES ENVIRONMENT "TESSERACT_SUPPORT_DIR=${TESSERACT_SUPPORT_DIR}:PYTHONPATH=\$PYTHONPATH:${CMAKE_CURRENT_BINARY_DIR}/python/")
+  set_tests_properties(python-tests PROPERTIES ENVIRONMENT "TESSERACT_SUPPORT_DIR=${TESSERACT_SUPPORT_DIR}")
   endif()
   
 

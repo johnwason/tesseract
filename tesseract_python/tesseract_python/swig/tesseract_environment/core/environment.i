@@ -143,11 +143,11 @@ public:
 
   virtual tesseract_collision::ContinuousContactManager::Ptr getContinuousContactManager(const std::string& name) const;
 
-  bool registerDiscreteContactManager(const std::string name,
+  bool registerDiscreteContactManager(const std::string& name,
                                       tesseract_collision::DiscreteContactManagerFactory::CreateMethod create_function);
 
   bool
-  registerContinuousContactManager(const std::string name,
+  registerContinuousContactManager(const std::string& name,
                                    tesseract_collision::ContinuousContactManagerFactory::CreateMethod create_function);
 
 };
