@@ -108,8 +108,11 @@ struct BasicTrustRegionSQPParameters
   double max_merit_coeff_increases;
   double merit_coeff_increase_ratio;  
   double max_time;                    
-  double merit_error_coeff;           
+  double initial_merit_error_coeff;
+  bool inflate_constraints_individually;    
   double trust_box_size;
+  bool log_results;
+  std::string log_dir;
 
   BasicTrustRegionSQPParameters();
 };
