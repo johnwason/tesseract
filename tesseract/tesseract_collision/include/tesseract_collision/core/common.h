@@ -303,24 +303,26 @@ inline bool writeSimplePlyFile(const std::string& path,
   myfile << "format ascii 1.0\n";
   myfile << "comment made by tesseract\n";
   myfile << "element vertex " << vertices.size() << "\n";
-  myfile << "property double x\n";
-  myfile << "property double y\n";
-  myfile << "property double z\n";
-  myfile << "property uchar red\n";
-  myfile << "property uchar green\n";
-  myfile << "property uchar blue\n";
+  myfile << "property float x\n";
+  myfile << "property float y\n";
+  myfile << "property float z\n";
+  if (!vectices_color.empty())
+  {
+    myfile << "property uchar red\n";
+    myfile << "property uchar green\n";
+    myfile << "property uchar blue\n";
+  }
   myfile << "element face " << num_faces << "\n";
-  myfile << "property list uchar uint vertex_indices\n";
+  myfile << "property list uchar int vertex_indices\n";
   myfile << "end_header\n";
 
   // Add vertices
   if (vectices_color.empty())
   {
-    Eigen::Vector3i default_color(100, 100, 100);
     for (const auto& v : vertices)
     {
-      myfile << std::fixed << std::setprecision(std::numeric_limits<double>::digits10 + 1) << v[0] << " " << v[1] << " "
-             << v[2] << " " << default_color[0] << " " << default_color[1] << " " << default_color[2] << "\n";
+      myfile << std::fixed << std::setprecision(std::numeric_limits<float>::digits10 + 1) << v[0] << " " << v[1] << " "
+             << v[2] << "\n";
     }
   }
   else if (vectices_color.size() == 1)
@@ -328,7 +330,7 @@ inline bool writeSimplePlyFile(const std::string& path,
     const Eigen::Vector3i& default_color = vectices_color[0];
     for (const auto& v : vertices)
     {
-      myfile << std::fixed << std::setprecision(std::numeric_limits<double>::digits10 + 1) << v[0] << " " << v[1] << " "
+      myfile << std::fixed << std::setprecision(std::numeric_limits<float>::digits10 + 1) << v[0] << " " << v[1] << " "
              << v[2] << " " << default_color[0] << " " << default_color[1] << " " << default_color[2] << "\n";
     }
   }
@@ -338,7 +340,7 @@ inline bool writeSimplePlyFile(const std::string& path,
     {
       const Eigen::Vector3d& v = vertices[i];
       const Eigen::Vector3i& v_color = vectices_color[i];
-      myfile << std::fixed << std::setprecision(std::numeric_limits<double>::digits10 + 1) << v[0] << " " << v[1] << " "
+      myfile << std::fixed << std::setprecision(std::numeric_limits<float>::digits10 + 1) << v[0] << " " << v[1] << " "
              << v[2] << " " << v_color[0] << " " << v_color[1] << " " << v_color[2] << "\n";
     }
   }
