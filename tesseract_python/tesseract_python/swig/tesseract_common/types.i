@@ -46,7 +46,6 @@ tesseract_aligned_map(name, %arg(Key), %arg(std::vector<Value , Eigen::aligned_a
 
 tesseract_aligned_vector(VectorIsometry3d, Eigen::Isometry3d);
 //tesseract_aligned_vector(VectorVector3d, Eigen::Vector3d);
-//TODO: Why is this not aligned??
 //%template(VectorVector3d) std::vector<Eigen::Vector3d>; // This is handled by eigen.i
 tesseract_aligned_vector(VectorVector4d, Eigen::Vector4d);
 
