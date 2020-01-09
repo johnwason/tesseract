@@ -34,11 +34,6 @@
 
 namespace tesseract_environment
 {
-enum class BodyType
-{
-  ROBOT_LINK = 0,
-  ROBOT_ATTACHED = 1
-};
 
 struct EnvState
 {

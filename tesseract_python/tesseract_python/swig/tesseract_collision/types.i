@@ -55,7 +55,7 @@
   $1 = &temp[0];
 }
 
-// std::string[2]
+// int[2]
 %typemap(out) int [2]
 {
   // Convert int [2] to tuple
@@ -65,14 +65,15 @@
     SWIG_fail;
 }
 
-%typemap(in, fragment="Eigen_Fragments") int [2] (std::array<int,2> temp)
+%typemap(in) int [2] (std::array<int,2> temp)
 {
   // Convert tuple to int [2]
   
   if (!PyArg_ParseTuple($input,"(i,i)", &temp[0], &temp[1]))
     SWIG_fail;
 
-  $1 = &temp[0];
+  $1[0] = temp[0];
+  $1[1] = temp[1];
 }
 
 //Eigen::Vector3d[2]
@@ -110,7 +111,47 @@
     SWIG_fail;
   if (!ConvertFromNumpyToEigenMatrix<Eigen::Vector3d>(&temp[1], v2))
     SWIG_fail;  
-  $1 = &temp[0];
+  $1[0] = temp[0];
+  $1[1] = temp[1];
+}
+
+//Eigen::Isometry3d[2]
+%typemap(out, fragment="Eigen_Fragments") Eigen::Eigen::Matrix4d [2]  (PyObject* v1, PyObject* v2, PyObject* res)
+{
+  // Convert Eigen::Isometry3d[2] to tuple
+  res = PyTuple_New(2);
+  if (!ConvertFromEigenToNumPyMatrix<Eigen::Matrix4d >(&v1, &$1[0]))
+  {
+    Py_XDECREF(res);
+    SWIG_fail;
+  }
+  PyTuple_SetItem(res, 0, v1);
+  if (!ConvertFromEigenToNumPyMatrix<Eigen::Matrix4d >(&v2, &$1[1]))
+  {
+    Py_XDECREF(res);
+    SWIG_fail;  
+  }
+  
+  PyTuple_SetItem(res, 1, v2);
+  $result = res;
+}
+
+%typemap(in, fragment="Eigen_Fragments") Eigen::Isometry3d [2]  (std::array<Eigen::Matrix4d,2> temp, PyObject* v1, PyObject* v2)
+{
+  // Convert from tuple to Eigen::Isometry3d[2]
+  if (!PyTuple_Check($input))
+    SWIG_fail;
+  if (PyTuple_Size($input) != 2)
+    SWIG_fail;
+  v1 = PyTuple_GetItem($input, 0);
+  v2 = PyTuple_GetItem($input, 1);
+
+  if (!ConvertFromNumpyToEigenMatrix<Eigen::Matrix4d>(&temp[0], v1))
+    SWIG_fail;
+  if (!ConvertFromNumpyToEigenMatrix<Eigen::Matrix4d>(&temp[1], v2))
+    SWIG_fail;  
+  $1[0] = temp[0];
+  $1[1] = temp[1];
 }
 
 namespace tesseract_collision
@@ -119,7 +160,7 @@ using CollisionShapesConst = std::vector<tesseract_geometry::Geometry::ConstPtr>
 using CollisionShapeConstPtr = tesseract_geometry::Geometry::ConstPtr;
 using CollisionShapePtr = tesseract_geometry::Geometry::Ptr;
 
-enum class ContinouseCollisionType
+enum class ContinuousCollisionType
 {
   CCType_None,
   CCType_Time0,
@@ -135,9 +176,6 @@ enum class ContactTestType
   LIMITED = 3
 };
 
-
-
-
 struct ContactResult
 {
   double distance;
@@ -146,10 +184,12 @@ struct ContactResult
   int shape_id[2];
   int subshape_id[2];
   Eigen::Vector3d nearest_points[2];
-  Eigen::Vector3d normal;
-  Eigen::Vector3d cc_nearest_points[2];
-  double cc_time;
-  ContinouseCollisionType cc_type;
+  Eigen::Vector3d nearest_points_local[2];
+  Eigen::Isometry3d transform[2];
+  Eigen::Vector3d normal;  
+  double cc_time[2];
+  //std::array<ContinuousCollisionType, 2> cc_type;
+  Eigen::Isometry3d cc_transform[2];
 
   ContactResult();
   void clear();
@@ -172,28 +212,6 @@ tesseract_collision::ContactResultVector flattenResults(tesseract_collision::Con
     tesseract_collision::flattenResults(std::move(m),v);
     return v;
 }
-}
-
-namespace tesseract_collision
-{
-/*struct ContactTestData
-{
-  ContactTestData(const std::vector<std::string>& active,
-                  const double& contact_distance,
-                  const IsContactAllowedFn& fn,
-                  const ContactTestType& type,
-                  ContactResultMap& res);
-
-  const std::vector<std::string>& active;
-  const double& contact_distance;
-  const IsContactAllowedFn& fn;
-  const ContactTestType& type;
-  
-  // TODO: This can cause a lifecycle issue in Python!
-  ContactResultMap& res;
-
-  bool done;
-};*/
 }
 
 tesseract_aligned_vector(ContactResultVector, tesseract_collision::ContactResult);

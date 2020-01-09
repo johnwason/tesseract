@@ -351,8 +351,9 @@ class CollisionTermInfo : public TermInfo
 public:
   int first_step, last_step;
   bool continuous;
-  int gap;
+  double longest_valid_segment_length = 0.5;
   std::vector<std::shared_ptr<SafetyMarginData> > info;
+  tesseract_collision::ContactTestType contact_test_type;
   void fromJson(ProblemConstructionInfo& pci, const Json::Value& v);
   void hatch(TrajOptProb& prob);
 };
