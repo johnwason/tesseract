@@ -35,26 +35,26 @@ trajopt::TermInfo::Ptr createJointWaypointTermInfo(const JointWaypoint::ConstPtr
                                                    int ind,
                                                    const std::vector<std::string>& joint_names,
                                                    double coeff = 1.0,
-                                                   const std::string& name = "joint_position");
+                                                   const std::string& name = "joint_waypoint");
 
 trajopt::TermInfo::Ptr createJointTolerancedWaypointTermInfo(const JointTolerancedWaypoint::ConstPtr& waypoint,
                                                              int ind,
                                                              const std::vector<std::string>& joint_names,
                                                              double coeff = 0.1,
-                                                             const std::string& name = "joint_toleranced_position");
+                                                             const std::string& name = "joint_tol_waypoint");
 
 trajopt::TermInfo::Ptr createCartesianWaypointTermInfo(const CartesianWaypoint::ConstPtr& waypoint,
                                                        int ind,
                                                        const std::string& link,
                                                        const Eigen::Isometry3d& tcp = Eigen::Isometry3d::Identity(),
-                                                       const std::string& name = "cartesian_position_position");
+                                                       const std::string& name = "cart_waypoint");
 
 trajopt::TermInfo::Ptr
 createDynamicCartesianWaypointTermInfo(const CartesianWaypoint::ConstPtr& waypoint,
                                        int ind,
                                        const std::string& link,
                                        const Eigen::Isometry3d& tcp = Eigen::Isometry3d::Identity(),
-                                       const std::string& name = "dynamic_cartesian_position");
+                                       const std::string& name = "dyn_cart_waypoint");
 
 struct WaypointTermInfo
 {
@@ -77,11 +77,14 @@ trajopt::TermInfo::Ptr createConfigurationTermInfo(const JointWaypoint::ConstPtr
                                                    double coeff = 1.0,
                                                    const std::string& name = "configuration_cost");
 
-trajopt::TermInfo::Ptr createCollisionTermInfo(int n_steps,
-                                               double collision_safety_margin,
-                                               bool collision_continuous = true,
-                                               double coeff = 20.0,
-                                               const std::string& name = "collision_cost");
+trajopt::TermInfo::Ptr createCollisionTermInfo(
+    int n_steps,
+    double collision_safety_margin,
+    bool collision_continuous = true,
+    double coeff = 20.0,
+    tesseract_collision::ContactTestType contact_test_type = tesseract_collision::ContactTestType::ALL,
+    double longest_valid_segment_length = 0.5,
+    const std::string& name = "collision_cost");
 
 trajopt::TermInfo::Ptr
 createSmoothVelocityTermInfo(int n_steps, int n_joints, double coeff = 5.0, const std::string& name = "joint_vel_cost");
@@ -110,6 +113,11 @@ trajopt::TermInfo::Ptr createUserDefinedTermInfo(int n_steps,
                                                  sco::VectorOfVector::func error_function,
                                                  sco::MatrixOfVector::func jacobian_function,
                                                  const std::string& name = "user_defined");
+
+trajopt::TermInfo::Ptr createAvoidSingularityTermInfo(int n_steps,
+                                                      const std::string& link,
+                                                      double coeff = 5.0,
+                                                      const std::string& name = "avoid_singularity");
 
 }  // namespace tesseract_motion_planners
 

@@ -218,6 +218,8 @@ trajopt::TermInfo::Ptr createCollisionTermInfo(int n_steps,
                                                double collision_safety_margin,
                                                bool collision_continuous,
                                                double coeff,
+                                               tesseract_collision::ContactTestType contact_test_type,
+                                               double longest_valid_segment_length,
                                                const std::string& name)
 {
   std::shared_ptr<trajopt::CollisionTermInfo> collision = std::make_shared<trajopt::CollisionTermInfo>();
@@ -226,7 +228,8 @@ trajopt::TermInfo::Ptr createCollisionTermInfo(int n_steps,
   collision->continuous = collision_continuous;
   collision->first_step = 0;
   collision->last_step = n_steps - 1;
-  collision->gap = 1;
+  collision->contact_test_type = contact_test_type;
+  collision->longest_valid_segment_length = longest_valid_segment_length;
   collision->info = trajopt::createSafetyMarginDataVector(n_steps, collision_safety_margin, coeff);
   return collision;
 }
@@ -329,6 +332,20 @@ trajopt::TermInfo::Ptr createUserDefinedTermInfo(int n_steps,
   ef->jacobian_function = std::move(jacobian_function);
 
   return ef;
+}
+
+trajopt::TermInfo::Ptr
+createAvoidSingularityTermInfo(int n_steps, const std::string& link, double coeff, const std::string& name)
+{
+  auto as = std::make_shared<trajopt::AvoidSingularityTermInfo>();
+  as->term_type = trajopt::TT_COST;
+  as->link = link;
+  as->first_step = 0;
+  as->last_step = n_steps - 1;
+  as->coeffs = std::vector<double>(1, coeff);
+  as->name = name;
+
+  return as;
 }
 
 }  // namespace tesseract_motion_planners

@@ -113,7 +113,7 @@ tesseract_common::StatusCode TrajOptMotionPlanner::solve(PlannerResponse& respon
 
   // Set Log Level
   if (verbose)
-    util::gLogLevel = util::LevelDebug;
+    util::gLogLevel = util::LevelInfo;
   else
     util::gLogLevel = util::LevelWarn;
 
@@ -153,6 +153,7 @@ tesseract_common::StatusCode TrajOptMotionPlanner::solve(PlannerResponse& respon
   {
     length = LONGEST_VALID_SEGMENT_FRACTION_DEFAULT * extent;
   }
+
   std::vector<tesseract_collision::ContactResultMap> collisions;
   tesseract_environment::StateSolver::Ptr state_solver = config_->prob->GetEnv()->getStateSolver();
   tesseract_collision::ContinuousContactManager::Ptr continuous_manager =
@@ -173,22 +174,6 @@ tesseract_common::StatusCode TrajOptMotionPlanner::solve(PlannerResponse& respon
                                length,
                                tesseract_collision::ContactTestType::FIRST,
                                verbose);
-
-  // Do a discrete check until continuous collision checking is updated to do dynamic-dynamic checking
-  tesseract_collision::DiscreteContactManager::Ptr discrete_manager =
-      config_->prob->GetEnv()->getDiscreteContactManager();
-  discrete_manager->setActiveCollisionObjects(adjacency_map->getActiveLinkNames());
-  discrete_manager->setContactDistanceThreshold(0);
-  collisions.clear();
-
-  found = found || checkTrajectory(collisions,
-                                   *discrete_manager,
-                                   *state_solver,
-                                   config_->prob->GetKin()->getJointNames(),
-                                   getTraj(opt.x(), config_->prob->GetVars()),
-                                   length,
-                                   tesseract_collision::ContactTestType::FIRST,
-                                   verbose);
 
   // Send response
   response.joint_trajectory.trajectory = getTraj(opt.x(), config_->prob->GetVars());

@@ -88,6 +88,8 @@ struct TrajOptPlannerDefaultConfig : public TrajOptPlannerConfig
    * singularities */
   JointWaypoint::ConstPtr configuration = nullptr;
 
+  /** @brief The type of contact test to perform: FIRST, CLOSEST, ALL */
+  tesseract_collision::ContactTestType contact_test_type = tesseract_collision::ContactTestType::ALL;
   /** @brief If true, collision checking will be enabled. Default: true*/
   bool collision_check = true;
   /** @brief If true, use continuous collision checking */
@@ -108,6 +110,10 @@ struct TrajOptPlannerDefaultConfig : public TrajOptPlannerConfig
   bool smooth_jerks = true;
   /** @brief This default to all ones, but allows you to weight different joints */
   Eigen::VectorXd jerk_coeff;
+  /** @brief If true, applies a cost to avoid kinematic singularities */
+  bool avoid_singularity = false;
+  /** @brief Optimization weight associated with kinematic singularity avoidance */
+  double avoid_singularity_coeff = 5.0;
 
   /** @brief Error function that is set as a constraint for each timestep.
    *
