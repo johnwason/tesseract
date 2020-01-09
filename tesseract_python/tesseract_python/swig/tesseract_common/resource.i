@@ -28,9 +28,15 @@
 #include <tesseract_common/resource.h>
 %}
 
+%include <pybuffer.i>
+
 %shared_ptr(tesseract_common::Resource)
 
 %template(vector_uint8) std::vector<uint8_t>;
+
+%pybuffer_binary(const uint8_t* bytes, size_t bytes_len);
+
+%shared_ptr(tesseract_common::BytesResource)
 
 namespace tesseract_common
 {
@@ -47,6 +53,17 @@ public:
   virtual std::string getFilePath() = 0;
   //TODO: Typemap to bytes instead of vector
   virtual std::vector<uint8_t> getResourceContents() = 0;  
+};
+
+class BytesResource : public tesseract_common::Resource
+{
+public:
+  BytesResource(const std::string& url, const uint8_t* bytes, size_t bytes_len);
+  virtual bool isFile() override;
+  virtual std::string getUrl() override;
+  virtual std::string getFilePath() override;
+  virtual std::vector<uint8_t> getResourceContents() override;
+  virtual std::shared_ptr<std::istream> getResourceContentStream() override;
 };
 
 }  // namespace tesseract_common

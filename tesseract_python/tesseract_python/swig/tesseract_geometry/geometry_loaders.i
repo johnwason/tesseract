@@ -1,6 +1,6 @@
 /**
  * @file geometry_loaders.i
- * @brief SWIG interface file for geometry_loaders.h
+ * @brief SWIG interface file for tesseract_geometry/geometry_loaders.h
  *
  * @author John Wason
  * @date December 10, 2019
@@ -25,23 +25,14 @@
  */
 
 %{
-#include "geometry_loaders.h"
+#include <tesseract_geometry/geometry_loaders.h>
 %}
 %include <pybuffer.i>
 
 %pybuffer_binary(const uint8_t* bytes, size_t bytes_len);
 
-%shared_ptr(BytesResource)
-class BytesResource : public tesseract_common::Resource
+namespace tesseract_geometry
 {
-public:
-  BytesResource(const std::string& url, const uint8_t* bytes, size_t bytes_len);
-  virtual bool isFile() override;
-  virtual std::string getUrl() override;
-  virtual std::string getFilePath() override;
-  virtual std::vector<uint8_t> getResourceContents() override;
-  virtual std::shared_ptr<std::istream> getResourceContentStream() override;
-};
 
 std::vector<tesseract_geometry::Mesh::Ptr> createMeshFromBytes(const std::string& url, const uint8_t* bytes, size_t bytes_len, 
                                                               Eigen::Vector3d scale = Eigen::Vector3d(1, 1, 1),
@@ -57,3 +48,5 @@ std::vector<tesseract_geometry::ConvexMesh::Ptr> createConvexMeshFromBytes(const
                                                               Eigen::Vector3d scale = Eigen::Vector3d(1, 1, 1),
                                                               bool triangulate = false,
                                                               bool flatten = false);
+
+}

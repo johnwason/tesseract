@@ -33,7 +33,7 @@
 #include <tesseract/tesseract.h>
 #include <tesseract_motion_planners/trajopt/trajopt_motion_planner.h>
 #include <tesseract_motion_planners/trajopt/config/trajopt_planner_default_config.h>
-#include "geometry_loaders.h"
+#include <tesseract_geometry/geometry_loaders.h>
 %}
 
 

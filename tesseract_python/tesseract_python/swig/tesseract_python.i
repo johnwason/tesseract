@@ -75,6 +75,7 @@
 %include "tesseract_common/resource.i"
 %include "tesseract_geometry/geometries.i"
 %include "tesseract_geometry/utils.i"
+%include "tesseract_geometry/geometry_loaders.i"
 %include "tesseract_scene_graph/graph.i"
 %include "tesseract_scene_graph/resource_locator.i"
 %include "tesseract_kinematics/core/forward_kinematics.i"
@@ -103,4 +104,3 @@
 %include "tesseract_planning/tesseract_motion_planners/trajopt/config/trajopt_planner_default_config.i"
 %include "tesseract_planning/tesseract_motion_planners/trajopt/trajopt_motion_planner.i"
 
-%include "geometry_loaders.i"

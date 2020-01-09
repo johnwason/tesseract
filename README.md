@@ -49,13 +49,13 @@ This repository contains submodule tesseract_ext so use the *--recursive* flag a
 
 ## Building with Clang-Tidy Enabled
 
-Must pass the -DTESSERACT_ENABLE_CLANG_TIDY=ON to cmake when building. This is automatically enabled if cmake argument -DTESSERACT_ENABLE_TESTS=ON is passed.
+Must pass the -DTESSERACT_ENABLE_CLANG_TIDY=ON to cmake when building. This is automatically enabled if cmake argument -DTESSERACT_ENABLE_TESTING=ON is passed.
 
 ## Building Tesseract Tests
 
-Must pass the -DTESSERACT_ENABLE_TESTS=ON to cmake when wanting to build tests. This automatically enables clang tidy.
+Must pass the -DTESSERACT_ENABLE_TESTING=ON to cmake when wanting to build tests. This automatically enables clang tidy.
 
-.. NOTE: If you are building using catkin tools, use `catkin build --force-cmake -DTESSERACT_ENABLE_TESTS=ON`.
+.. NOTE: If you are building using catkin tools, use `catkin build --force-cmake -DTESSERACT_ENABLE_TESTING=ON`.
 
 ## Running Tesseract Tests
 
