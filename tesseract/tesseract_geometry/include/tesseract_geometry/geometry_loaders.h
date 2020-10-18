@@ -28,6 +28,10 @@
 
 #pragma once
 
+#ifdef SWIG
+%pybuffer_binary(const uint8_t* bytes, size_t bytes_len);
+#endif // SWIG
+
 namespace tesseract_geometry
 {
 static std::vector<tesseract_geometry::Mesh::Ptr> createMeshFromBytes(const std::string& url,

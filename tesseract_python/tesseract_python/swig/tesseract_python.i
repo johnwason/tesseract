@@ -38,6 +38,17 @@
 #include <boost/graph/properties.hpp>
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/breadth_first_search.hpp>
+
+// tesseract_common
+#include <tesseract_common/types.h>
+#include <tesseract_common/status_code.h>
+#include <tesseract_common/resource.h>
+
+// tesseract_geometry
+#include <tesseract_geometry/geometry.h>
+#include <tesseract_geometry/geometries.h>
+#include <tesseract_geometry/utils.h>
+
 %}
 
 %include <std_shared_ptr.i>
@@ -49,6 +60,7 @@
 %include <stdint.i>
 %include <attribute.i>
 %include <exception.i>
+%include <pybuffer.i>
 
 %exception {
   try {
@@ -79,10 +91,42 @@
 %template(map_string_map_string_double) std::unordered_map<std::string, std::unordered_map<std::string, double> >;
 %template(map_string_map_string_map_string_double) std::unordered_map<std::string, std::unordered_map<std::string, std::unordered_map<std::string, double> > >;
 
-%include "tesseract_common/types.i"
-%include "tesseract_common/status_code.i"
-%include "tesseract_common/resource.i"
-%include "tesseract_geometry/geometries.i"
+%define tesseract_aligned_vector(name,T)
+%template(name) std::vector<T , Eigen::aligned_allocator<T >>;
+%enddef
+
+%define tesseract_aligned_map(name,Key,Value)
+%template(name) std::map<Key, Value, std::less<Key>, Eigen::aligned_allocator<std::pair<const Key, Value>>>;
+%enddef
+
+%define tesseract_aligned_map_of_aligned_vector(name,Key,Value)
+tesseract_aligned_map(name, %arg(Key), %arg(std::vector<Value , Eigen::aligned_allocator<Value >>));
+%enddef
+
+%define tesseract_aligned_unordered_map(name,Key,Value)
+%template(name) std::unordered_map<Key,Value,std::hash<Key>,std::equal_to<Key>,Eigen::aligned_allocator<std::pair<const Key, Value>>>;
+%enddef
+
+tesseract_aligned_vector(VectorIsometry3d, Eigen::Isometry3d);
+tesseract_aligned_vector(VectorVector4d, Eigen::Vector4d);
+tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
+
+#define EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+#define TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
+#define TESSERACT_COMMON_IGNORE_WARNINGS_POP
+
+// tesseract_common
+%include "tesseract_common/types.h"
+%include "tesseract_common/status_code.h"
+%include "tesseract_common/resource.h"
+
+// tesseract_geometry
+%include "tesseract_geometry/geometry.h"
+%include "tesseract_geometry/geometries.h"
+%include "tesseract_geometry/utils.h"
+
+
+/*%include "tesseract_geometry/geometries.i"
 %include "tesseract_geometry/utils.i"
 %include "tesseract_geometry/geometry_loaders.i"
 %include "tesseract_scene_graph/graph.i"
@@ -114,5 +158,5 @@
 %include "trajopt/problem_description.i"
 %include "tesseract_planning/tesseract_motion_planners/trajopt/config/trajopt_planner_config.i"
 %include "tesseract_planning/tesseract_motion_planners/trajopt/config/trajopt_planner_default_config.i"
-%include "tesseract_planning/tesseract_motion_planners/trajopt/trajopt_motion_planner.i"
+%include "tesseract_planning/tesseract_motion_planners/trajopt/trajopt_motion_planner.i"*/
 

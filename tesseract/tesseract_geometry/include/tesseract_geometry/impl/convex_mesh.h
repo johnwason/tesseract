@@ -36,8 +36,16 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_common/types.h>
 #include <tesseract_common/resource.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_geometry::ConvexMesh)
+%template(tesseract_geometry_ConvexMeshVector) std::vector<tesseract_geometry::ConvexMesh::Ptr>;
+#endif // SWIG
+
 namespace tesseract_geometry
 {
+#ifdef SWIG
+%nodefaultctor ConvexMesh;
+#endif // SWIG
 class ConvexMesh : public Geometry
 {
 public:
@@ -46,6 +54,7 @@ public:
   using Ptr = std::shared_ptr<ConvexMesh>;
   using ConstPtr = std::shared_ptr<const ConvexMesh>;
 
+#ifndef SWIG
   /**
    * @brief Convex Mesh geometry
    * @param vertices A vector of vertices associated with the mesh
@@ -103,12 +112,15 @@ public:
     vertice_count_ = static_cast<int>(vertices_->size());
   }
 
+#endif // SWIG
+
   ~ConvexMesh() override = default;
   ConvexMesh(const ConvexMesh&) = delete;
   ConvexMesh& operator=(const ConvexMesh&) = delete;
   ConvexMesh(ConvexMesh&&) = delete;
   ConvexMesh& operator=(ConvexMesh&&) = delete;
 
+#ifndef SWIG
   /**
    * @brief Get convex mesh vertices
    * @return A vector of vertices
@@ -120,6 +132,20 @@ public:
    * @return A vector of face indices
    */
   const std::shared_ptr<const Eigen::VectorXi>& getFaces() const { return faces_; }
+
+#else // SWIG
+  %extend {
+    tesseract_common::VectorVector3d getVertices()
+    {
+      return *$self->getVertices();
+    }
+
+    Eigen::VectorXi getFaces()
+    {
+      return *$self->getFaces();
+    }
+  }
+#endif // SWIG
 
   /**
    * @brief Get vertice count

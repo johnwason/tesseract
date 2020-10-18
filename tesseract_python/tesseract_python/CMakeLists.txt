@@ -27,6 +27,8 @@ find_package(tesseract_visualization REQUIRED)
 find_package(PCL REQUIRED COMPONENTS core features filters io segmentation surface)
 find_package(trajopt REQUIRED)
 
+include_directories(${tesseract_INCLUDE_DIRS} ${tesseract_common_INCLUDE_DIRS})
+
 if(NOT PYTHON_VERSION)
   set(PYTHON_VERSION  $ENV{ROS_PYTHON_VERSION})
   message(STATUS "Setting Python Version: " ${PYTHON_VERSION})
@@ -78,6 +80,7 @@ set_property(SOURCE swig/tesseract_python.i PROPERTY SWIG_FLAGS -relativeimport 
 else()
 set_property(SOURCE swig/tesseract_python.i PROPERTY SWIG_FLAGS -relativeimport -threads -py3)
 endif()
+set_property(SOURCE swig/tesseract_python.i PROPERTY USE_LIBRARY_INCLUDE_DIRECTORIES TRUE)
 
 set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract)
 set(SWIG_OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR})
@@ -95,6 +98,7 @@ target_include_directories(${SWIG_MODULE_tesseract_python_REAL_NAME}  SYSTEM PUB
 	${PYTHON_INCLUDE_DIRS}
 	${NUMPY_INCLUDE_DIR}
     $<TARGET_PROPERTY:tesseract::tesseract,INTERFACE_INCLUDE_DIRECTORIES>)
+
 
 set_target_properties(${SWIG_MODULE_tesseract_python_REAL_NAME}
   PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract)

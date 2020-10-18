@@ -36,8 +36,17 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_common/types.h>
 #include <tesseract_common/resource.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_geometry::SDFMesh)
+%template(tesseract_geometry_SDFMeshVector) std::vector<tesseract_geometry::SDFMesh::Ptr>;
+#endif // SWIG
+
 namespace tesseract_geometry
 {
+#ifdef SWIG
+%nodefaultctor SDFMesh;
+#endif // SWIG
+
 class SDFMesh : public Geometry
 {
 public:
@@ -46,6 +55,7 @@ public:
   using Ptr = std::shared_ptr<SDFMesh>;
   using ConstPtr = std::shared_ptr<const SDFMesh>;
 
+#ifndef SWIG
   /**
    * @brief SDF Mesh geometry
    * @param vertices A vector of vertices associated with the mesh
@@ -104,6 +114,7 @@ public:
     vertice_count_ = static_cast<int>(vertices_->size());
     assert((triangle_count_ * 4) == triangles_->size());
   }
+#endif
 
   ~SDFMesh() override = default;
   SDFMesh(const SDFMesh&) = delete;
@@ -111,6 +122,7 @@ public:
   SDFMesh(SDFMesh&&) = delete;
   SDFMesh& operator=(SDFMesh&&) = delete;
 
+#ifndef SWIG
   /**
    * @brief Get SDF mesh vertices
    * @return A vector of vertices
@@ -122,6 +134,20 @@ public:
    * @return A vector of triangle indices
    */
   const std::shared_ptr<const Eigen::VectorXi>& getTriangles() const { return triangles_; }
+#else // SWIG
+  %extend {
+
+    tesseract_common::VectorVector3d getVertices()
+    {
+      return *$self->getVertices();
+    }
+
+    Eigen::VectorXi getTriangles()
+    {
+      return *$self->getTriangles();
+    }
+  }
+#endif // SWIG
 
   /**
    * @brief Get vertice count
