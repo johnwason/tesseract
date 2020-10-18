@@ -88,6 +88,12 @@
 #include <tesseract_collision/bullet/bullet_discrete_bvh_manager.h>
 #include <tesseract_collision/bullet/bullet_discrete_simple_manager.h>
 
+// tesseract_environment
+#include <tesseract_environment/core/types.h>
+#include <tesseract_environment/core/commands.h>
+#include <tesseract_environment/core/state_solver.h>
+#include <tesseract_environment/core/environment.h>
+
 %}
 
 %include <std_shared_ptr.i>
@@ -210,10 +216,13 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 %include "tesseract_collision/bullet/bullet_discrete_bvh_manager.h"
 %include "tesseract_collision/bullet/bullet_discrete_simple_manager.h"
 
+// tesseract_environment
+%include "tesseract_environment/core/types.h"
+%include "tesseract_environment/core/commands.h"
+%include "tesseract_environment/core/state_solver.h"
+%include "tesseract_environment/core/environment.h"
 
 /*
-%include "tesseract_environment/core/types.i"
-%include "tesseract_environment/core/commands.i"
 %include "tesseract_environment/core/state_solver.i"
 %include "tesseract_environment/core/environment.i"
 %include "tesseract/forward_kinematics_manager.i"

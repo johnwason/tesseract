@@ -34,6 +34,44 @@
 #include <tesseract_scene_graph/graph.h>
 #include <Eigen/Geometry>
 
+#ifdef SWIG
+
+%shared_ptr(tesseract_environment::Command)
+%shared_ptr(tesseract_environment::AddCommand)
+%shared_ptr(tesseract_environment::MoveLinkCommand)
+%shared_ptr(tesseract_environment::MoveJointCommand)
+%shared_ptr(tesseract_environment::RemoveLinkCommand)
+%shared_ptr(tesseract_environment::RemoveJointCommand)
+%shared_ptr(tesseract_environment::ChangeLinkOriginCommand)
+%shared_ptr(tesseract_environment::ChangeJointOriginCommand)
+%shared_ptr(tesseract_environment::ChangeLinkCollisionEnabledCommand)
+%shared_ptr(tesseract_environment::ChangeLinkVisibilityCommand)
+%shared_ptr(tesseract_environment::AddAllowedCollisionCommand)
+%shared_ptr(tesseract_environment::RemoveAllowedCollisionCommand)
+%shared_ptr(tesseract_environment::RemoveAllowedCollisionLinkCommand)
+%shared_ptr(tesseract_environment::AddSceneGraphCommand)
+
+%shared_factory(
+  tesseract_environment::Command,
+  tesseract_environment::AddCommand,
+	tesseract_environment::MoveLinkCommand,
+	tesseract_environment::MoveJointCommand,
+	tesseract_environment::RemoveLinkCommand,
+	tesseract_environment::RemoveJointCommand,
+	tesseract_environment::ChangeLinkOriginCommand,
+	tesseract_environment::ChangeJointOriginCommand,
+	tesseract_environment::ChangeLinkCollisionEnabledCommand,
+	tesseract_environment::ChangeLinkVisibilityCommand,
+	tesseract_environment::AddAllowedCollisionCommand,
+  tesseract_environment::RemoveAllowedCollisionCommand,
+  tesseract_environment::RemoveAllowedCollisionLinkCommand,
+  tesseract_environment::AddSceneGraphCommand
+)
+
+%template(Commands) std::vector<tesseract_environment::Command::ConstPtr>;
+
+#endif // SWIG
+
 namespace tesseract_environment
 {
 enum class CommandType
