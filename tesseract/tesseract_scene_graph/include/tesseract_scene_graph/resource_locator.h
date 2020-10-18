@@ -34,6 +34,11 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <functional>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#ifdef SWIG
+%feature("director") ResourceLocator;
+%shared_ptr(tesseract_scene_graph::ResourceLocator)
+#endif // SWIG
+
 namespace tesseract_scene_graph
 {
 /**
@@ -61,6 +66,8 @@ public:
    */
   virtual tesseract_common::Resource::Ptr locateResource(const std::string& url) = 0;
 };
+
+#ifndef SWIG
 
 /**
  * @brief Resource locator implementation using a provided function to locate file resources
@@ -113,6 +120,8 @@ protected:
   std::string url_;
   std::string filename_;
 };
+
+#endif // SWIG
 
 }  // namespace tesseract_scene_graph
 

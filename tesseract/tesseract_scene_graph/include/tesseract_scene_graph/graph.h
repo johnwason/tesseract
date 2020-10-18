@@ -41,6 +41,18 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_scene_graph/joint.h>
 #include <tesseract_scene_graph/allowed_collision_matrix.h>
 
+#ifdef SWIG
+
+%shared_ptr(tesseract_scene_graph::SceneGraph)
+%template(tesseract_scene_graph_LinkVector) std::vector<std::shared_ptr<tesseract_scene_graph::Link> >;
+%template(tesseract_scene_graph_JointVector) std::vector<std::shared_ptr<tesseract_scene_graph::Joint> >;
+%template(tesseract_scene_graph_LinkConstVector) std::vector<std::shared_ptr<tesseract_scene_graph::Link const> >;
+%template(tesseract_scene_graph_JointConstVector) std::vector<std::shared_ptr<tesseract_scene_graph::Joint const> >;
+
+#endif // SWIG
+
+#ifndef SWIG
+
 /* definition of basic boost::graph properties */
 namespace boost
 {
@@ -72,8 +84,13 @@ BOOST_INSTALL_PROPERTY(edge, joint);
 BOOST_INSTALL_PROPERTY(graph, root);
 }  // namespace boost
 
+#endif // SWIG
+
 namespace tesseract_scene_graph
 {
+
+#ifndef SWIG
+
 /** @brief Defines the boost graph property. */
 using GraphProperty =
     boost::property<boost::graph_name_t, std::string, boost::property<boost::graph_root_t, std::string>>;
@@ -93,7 +110,14 @@ using EdgeProperty = boost::property<boost::edge_joint_t, Joint::Ptr, boost::pro
 
 using Graph = boost::
     adjacency_list<boost::listS, boost::listS, boost::bidirectionalS, VertexProperty, EdgeProperty, GraphProperty>;
-class SceneGraph : public Graph
+
+#endif // SWIG
+
+class SceneGraph 
+#ifndef SWIG
+  : public Graph
+#endif // SWIG
+
 {
 public:
   /**

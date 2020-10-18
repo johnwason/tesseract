@@ -9,14 +9,28 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <Eigen/Geometry>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#ifdef SWIG
+
+%template(GroupOPWKinematics) std::unordered_map<std::string, tesseract_scene_graph::OPWKinematicParameters>;
+%template(GroupROPKinematics) std::unordered_map<std::string, tesseract_scene_graph::ROPKinematicParameters>;
+%template(GroupREPKinematics) std::unordered_map<std::string, tesseract_scene_graph::REPKinematicParameters>;
+
+#endif // SWIG
+
 namespace tesseract_scene_graph
 {
 /** @brief A structure to hold opw kinematics data */
 struct OPWKinematicParameters
 {
+#ifndef SWIG
   double a1{ 0 }, a2{ 0 }, b{ 0 }, c1{ 0 }, c2{ 0 }, c3{ 0 }, c4{ 0 };
   double offsets[6]{ 0, 0, 0, 0, 0, 0 };
   signed char sign_corrections[6]{ 1, 1, 1, 1, 1, 1 };
+#else // SWIG
+  double a1, a2, b, c1, c2, c3, c4;
+  double offsets[6];
+  signed char sign_corrections[6];
+#endif // SWIG
 };
 
 struct ROPKinematicParameters

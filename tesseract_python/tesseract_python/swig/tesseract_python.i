@@ -49,6 +49,16 @@
 #include <tesseract_geometry/geometries.h>
 #include <tesseract_geometry/utils.h>
 
+// tesseract_scene_graph
+#include <tesseract_scene_graph/link.h>
+#include <tesseract_scene_graph/joint.h>
+#include <tesseract_scene_graph/allowed_collision_matrix.h>
+#include <tesseract_scene_graph/graph.h>
+#include <tesseract_scene_graph/resource_locator.h>
+#include <tesseract_scene_graph/srdf/types.h>
+#include <tesseract_scene_graph/srdf_model.h>
+
+
 %}
 
 %include <std_shared_ptr.i>
@@ -125,12 +135,17 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 %include "tesseract_geometry/geometries.h"
 %include "tesseract_geometry/utils.h"
 
+// tesseract_scene_graph
+%include "tesseract_scene_graph/joint.h"
+%include "tesseract_scene_graph/link.h"
+%include "tesseract_scene_graph/allowed_collision_matrix.h"
+%include "tesseract_scene_graph/graph.h"
+%include "tesseract_scene_graph/resource_locator.h"
+%include "tesseract_scene_graph/srdf/types.h"
+%include "tesseract_scene_graph/srdf_model.h"
 
-/*%include "tesseract_geometry/geometries.i"
-%include "tesseract_geometry/utils.i"
-%include "tesseract_geometry/geometry_loaders.i"
-%include "tesseract_scene_graph/graph.i"
-%include "tesseract_scene_graph/resource_locator.i"
+/*
+
 %include "tesseract_scene_graph/srdf/types.i"
 %include "tesseract_scene_graph/srdf_model.i"
 %include "tesseract_kinematics/core/forward_kinematics.i"

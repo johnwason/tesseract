@@ -45,6 +45,18 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <Eigen/Eigen>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#ifdef SWIG
+
+%shared_ptr(tesseract_scene_graph::JointDynamics)
+%shared_ptr(tesseract_scene_graph::JointLimits)
+%shared_ptr(tesseract_scene_graph::JointSafety)
+%shared_ptr(tesseract_scene_graph::JointMimic)
+%shared_ptr(tesseract_scene_graph::JointCalibration)
+%shared_ptr(tesseract_scene_graph::Joint)
+%shared_ptr(tesseract_scene_graph::Link)
+
+#endif // SWIG
+
 namespace tesseract_scene_graph
 {
 class Link;
@@ -230,12 +242,6 @@ public:
 
   Joint(std::string name) : name_(std::move(name)) { this->clear(); }
   ~Joint() = default;
-  // Joints are non-copyable as their name must be unique
-  Joint(const Joint& other) = delete;
-  Joint& operator=(const Joint& other) = delete;
-
-  Joint(Joint&& other) = default;
-  Joint& operator=(Joint&& other) = default;
 
   const std::string& getName() const { return name_; }
 
@@ -292,6 +298,7 @@ public:
     this->type = JointType::UNKNOWN;
   }
 
+#ifndef SWIG
   /**
    * @brief Clone the joint keeping the name
    * @return Cloned joint
@@ -330,6 +337,7 @@ public:
     }
     return ret;
   }
+#endif // SWIG
 
 private:
   std::string name_;
