@@ -41,6 +41,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_kinematics/core/forward_kinematics.h>
 #include <tesseract_kinematics/kdl/kdl_utils.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_kinematics::KDLFwdKinChain)
+#endif // SWIG
+
 namespace tesseract_kinematics
 {
 /**
@@ -66,6 +70,8 @@ public:
 
   ForwardKinematics::Ptr clone() const override;
 
+#ifndef SWIG
+
   bool calcFwdKin(Eigen::Isometry3d& pose, const Eigen::Ref<const Eigen::VectorXd>& joint_angles) const override;
 
   bool calcFwdKin(tesseract_common::VectorIsometry3d& poses,
@@ -81,6 +87,8 @@ public:
   bool calcJacobian(Eigen::Ref<Eigen::MatrixXd> jacobian,
                     const Eigen::Ref<const Eigen::VectorXd>& joint_angles,
                     const std::string& link_name) const override;
+
+#endif // SWIG
 
   bool checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const override;
 

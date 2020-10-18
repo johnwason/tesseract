@@ -39,6 +39,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/types.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_kinematics::InverseKinematics)
+#endif // SWIG
+
 namespace tesseract_kinematics
 {
 /** @brief Inverse kinematics functions. */
@@ -57,6 +61,7 @@ public:
   InverseKinematics(InverseKinematics&&) = delete;
   InverseKinematics& operator=(InverseKinematics&&) = delete;
 
+#ifndef SWIG
   /**
    * @brief Calculates joint solutions given a pose.
    * @param solutions A vector of solutions, so check the size of the vector to determine the number of solutions
@@ -79,6 +84,33 @@ public:
                           const Eigen::Isometry3d& pose,
                           const Eigen::Ref<const Eigen::VectorXd>& seed,
                           const std::string& link_name) const = 0;
+
+#else // SWIG
+
+  %extend {
+
+    Eigen::VectorXd calcInvKin(const Eigen::Isometry3d& pose, const Eigen::Ref<const Eigen::VectorXd>& seed) const
+    {
+      Eigen::VectorXd solutions;
+      if (!$self->calcInvKin(solutions, pose, seed))
+      {
+        throw std::runtime_error("calcInvKin failed");
+      }
+      return solutions;
+    }
+
+    Eigen::VectorXd calcInvKin(const Eigen::Isometry3d& pose, const Eigen::Ref<const Eigen::VectorXd>& seed, const std::string& link_name) const
+    {
+      Eigen::VectorXd solutions;
+      if (!$self->calcInvKin(solutions, pose, seed, link_name))
+      {
+        throw std::runtime_error("calcInvKin failed");
+      }
+      return solutions;
+    }
+  }
+
+#endif // SWIG
 
   /**
    * @brief Check for consistency in # and limits of joints

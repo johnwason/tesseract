@@ -36,6 +36,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_kinematics/core/inverse_kinematics.h>
 #include <tesseract_kinematics/core/forward_kinematics.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_kinematics::RobotWithExternalPositionerInvKin)
+#endif // SWIG
+
 namespace tesseract_kinematics
 {
 /**
@@ -61,6 +65,7 @@ public:
 
   InverseKinematics::Ptr clone() const override;
 
+#ifndef SWIG
   bool calcInvKin(Eigen::VectorXd& solutions,
                   const Eigen::Isometry3d& pose,
                   const Eigen::Ref<const Eigen::VectorXd>& seed) const override;
@@ -71,6 +76,7 @@ public:
                   const std::string& link_name) const override;
 
   bool checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const override;
+#endif // SWIG
 
   const std::vector<std::string>& getJointNames() const override;
 

@@ -58,7 +58,23 @@
 #include <tesseract_scene_graph/srdf/types.h>
 #include <tesseract_scene_graph/srdf_model.h>
 
-
+// tesseract_kinematics
+#include <tesseract_kinematics/core/forward_kinematics.h>
+#include <tesseract_kinematics/core/forward_kinematics_factory.h>
+#include <tesseract_kinematics/core/inverse_kinematics.h>
+#include <tesseract_kinematics/core/inverse_kinematics_factory.h>
+#include <tesseract_kinematics/core/rep_inverse_kinematics.h>
+#include <tesseract_kinematics/core/rop_inverse_kinematics.h>
+#include <tesseract_kinematics/ikfast/ikfast_inv_kin.h>
+#include <tesseract_kinematics/kdl/kdl_fwd_kin_chain.h>
+#include <tesseract_kinematics/kdl/kdl_fwd_kin_chain_factory.h>
+#include <tesseract_kinematics/kdl/kdl_fwd_kin_tree.h>
+#include <tesseract_kinematics/kdl/kdl_fwd_kin_tree_factory.h>
+#include <tesseract_kinematics/kdl/kdl_inv_kin_chain_lma.h>
+#include <tesseract_kinematics/kdl/kdl_inv_kin_chain_lma_factory.h>
+#include <tesseract_kinematics/kdl/kdl_inv_kin_chain_nr.h>
+#include <tesseract_kinematics/kdl/kdl_inv_kin_chain_nr_factory.h>
+#include <tesseract_kinematics/opw/opw_inv_kin.h>
 %}
 
 %include <std_shared_ptr.i>
@@ -144,14 +160,25 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 %include "tesseract_scene_graph/srdf/types.h"
 %include "tesseract_scene_graph/srdf_model.h"
 
-/*
+// tesseract_kinematics
+%include "tesseract_kinematics/core/forward_kinematics.h"
+%include "tesseract_kinematics/core/forward_kinematics_factory.h"
+%include "tesseract_kinematics/core/inverse_kinematics.h"
+%include "tesseract_kinematics/core/inverse_kinematics_factory.h"
+%include "tesseract_kinematics/core/rop_inverse_kinematics.h"
+%include "tesseract_kinematics/core/rep_inverse_kinematics.h"
+%include "tesseract_kinematics/ikfast/ikfast_inv_kin.h"
+%include "tesseract_kinematics/kdl/kdl_fwd_kin_chain.h"
+%include "tesseract_kinematics/kdl/kdl_fwd_kin_chain_factory.h"
+%include "tesseract_kinematics/kdl/kdl_fwd_kin_tree.h"
+%include "tesseract_kinematics/kdl/kdl_fwd_kin_tree_factory.h"
+%include "tesseract_kinematics/kdl/kdl_inv_kin_chain_lma.h"
+%include "tesseract_kinematics/kdl/kdl_inv_kin_chain_lma_factory.h"
+%include "tesseract_kinematics/kdl/kdl_inv_kin_chain_nr.h"
+%include "tesseract_kinematics/kdl/kdl_inv_kin_chain_nr_factory.h"
+%include "tesseract_kinematics/opw/opw_inv_kin.h"
 
-%include "tesseract_scene_graph/srdf/types.i"
-%include "tesseract_scene_graph/srdf_model.i"
-%include "tesseract_kinematics/core/forward_kinematics.i"
-%include "tesseract_kinematics/core/forward_kinematics_factory.i"
-%include "tesseract_kinematics/core/inverse_kinematics.i"
-%include "tesseract_kinematics/core/inverse_kinematics_factory.i"
+/*
 %include "tesseract_collision/types.i"
 %include "tesseract_collision/discrete_contact_manager.i"
 %include "tesseract_collision/discrete_contact_manager_factory.i"
