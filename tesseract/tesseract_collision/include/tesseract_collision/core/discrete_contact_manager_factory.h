@@ -28,6 +28,10 @@
 
 #include <tesseract_collision/core/discrete_contact_manager.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_collision::DiscreteContactManagerFactory)
+#endif // SWIG
+
 namespace tesseract_collision
 {
 class DiscreteContactManagerFactory

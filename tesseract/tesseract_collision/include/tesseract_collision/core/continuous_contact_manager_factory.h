@@ -29,6 +29,10 @@
 
 #include <tesseract_collision/core/continuous_contact_manager.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_collision::ContinuousContactManagerFactory)
+#endif // SWIG
+
 namespace tesseract_collision
 {
 class ContinuousContactManagerFactory

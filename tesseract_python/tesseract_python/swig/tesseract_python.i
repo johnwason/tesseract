@@ -75,6 +75,19 @@
 #include <tesseract_kinematics/kdl/kdl_inv_kin_chain_nr.h>
 #include <tesseract_kinematics/kdl/kdl_inv_kin_chain_nr_factory.h>
 #include <tesseract_kinematics/opw/opw_inv_kin.h>
+
+// tesseract_collision
+#include <tesseract_collision/core/types.h>
+#include <tesseract_collision/core/discrete_contact_manager.h>
+#include <tesseract_collision/core/discrete_contact_manager_factory.h>
+#include <tesseract_collision/core/continuous_contact_manager.h>
+#include <tesseract_collision/core/continuous_contact_manager_factory.h>
+#include <tesseract_collision/fcl/fcl_discrete_managers.h>
+#include <tesseract_collision/bullet/bullet_cast_bvh_manager.h>
+#include <tesseract_collision/bullet/bullet_cast_simple_manager.h>
+#include <tesseract_collision/bullet/bullet_discrete_bvh_manager.h>
+#include <tesseract_collision/bullet/bullet_discrete_simple_manager.h>
+
 %}
 
 %include <std_shared_ptr.i>
@@ -83,6 +96,7 @@
 %include <std_pair.i>
 %include <std_map.i>
 %include <std_unordered_map.i>
+%include <std_array.i>
 %include <stdint.i>
 %include <attribute.i>
 %include <exception.i>
@@ -116,6 +130,12 @@
 %template(map_string_double) std::unordered_map<std::string, double>;
 %template(map_string_map_string_double) std::unordered_map<std::string, std::unordered_map<std::string, double> >;
 %template(map_string_map_string_map_string_double) std::unordered_map<std::string, std::unordered_map<std::string, std::unordered_map<std::string, double> > >;
+
+%template(array2_int) std::array<int,2>;
+%template(array2_string) std::array<std::string,2>;
+%template(array2_Vector3d) std::array<Eigen::Vector3d,2>;
+%template(array2_Isometry3d) std::array<Eigen::Isometry3d,2>;
+%template(array2_double) std::array<double,2>;
 
 %define tesseract_aligned_vector(name,T)
 %template(name) std::vector<T , Eigen::aligned_allocator<T >>;
@@ -178,8 +198,20 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 %include "tesseract_kinematics/kdl/kdl_inv_kin_chain_nr_factory.h"
 %include "tesseract_kinematics/opw/opw_inv_kin.h"
 
+// tesseract_collision
+%include "tesseract_collision/core/types.h"
+%include "tesseract_collision/core/discrete_contact_manager.h"
+%include "tesseract_collision/core/discrete_contact_manager_factory.h"
+%include "tesseract_collision/core/continuous_contact_manager.h"
+%include "tesseract_collision/core/continuous_contact_manager_factory.h"
+%include "tesseract_collision/fcl/fcl_discrete_managers.h"
+%include "tesseract_collision/bullet/bullet_cast_bvh_manager.h"
+%include "tesseract_collision/bullet/bullet_cast_simple_manager.h"
+%include "tesseract_collision/bullet/bullet_discrete_bvh_manager.h"
+%include "tesseract_collision/bullet/bullet_discrete_simple_manager.h"
+
+
 /*
-%include "tesseract_collision/types.i"
 %include "tesseract_collision/discrete_contact_manager.i"
 %include "tesseract_collision/discrete_contact_manager_factory.i"
 %include "tesseract_collision/continuous_contact_manager.i"
