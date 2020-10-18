@@ -169,6 +169,12 @@ public:
 
   Link(std::string name) : name_(std::move(name)) { this->clear(); }
   ~Link() = default;
+  // Links are non-copyable as their name must be unique
+  Link(const Link& other) = delete;
+  Link& operator=(const Link& other) = delete;
+
+  Link(Link&& other) = default;
+  Link& operator=(Link&& other) = default;
 
   const std::string& getName() const { return name_; }
 

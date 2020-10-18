@@ -242,6 +242,12 @@ public:
 
   Joint(std::string name) : name_(std::move(name)) { this->clear(); }
   ~Joint() = default;
+  // Joints are non-copyable as their name must be unique
+  Joint(const Joint& other) = delete;
+  Joint& operator=(const Joint& other) = delete;
+
+  Joint(Joint&& other) = default;
+  Joint& operator=(Joint&& other) = default;
 
   const std::string& getName() const { return name_; }
 

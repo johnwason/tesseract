@@ -169,6 +169,7 @@ public:
    */
   const std::string& getRoot() const;
 
+#ifndef SWIG
   /**
    * @brief Adds a link to the graph
    *
@@ -189,6 +190,8 @@ public:
    * @return Return False if a link with the same name allready exists, otherwise true
    */
   bool addLink(Link link, Joint joint);
+
+#endif // SWIG
 
   /**
    * @brief Get a link in the graph
@@ -237,6 +240,8 @@ public:
    */
   bool getLinkCollisionEnabled(const std::string& name) const;
 
+#ifndef SWIG
+
   /**
    * @brief Adds joint to the graph
    * @param joint The joint to be added
@@ -244,6 +249,8 @@ public:
    * otherwise true
    */
   bool addJoint(Joint joint);
+
+#endif // SWIG
 
   /**
    * @brief Get a joint in the graph
@@ -440,6 +447,7 @@ public:
    */
   bool insertSceneGraph(const tesseract_scene_graph::SceneGraph& scene_graph, const std::string& prefix = "");
 
+#ifndef SWIG
   /**
    * @brief Merge a graph into the current environment
    * @param scene_graph Const ref to the graph to be merged (said graph will be copied)
@@ -453,8 +461,9 @@ public:
   bool insertSceneGraph(const tesseract_scene_graph::SceneGraph& scene_graph,
                         tesseract_scene_graph::Joint joint,
                         const std::string& prefix = "");
+#endif // SWIG
 
-protected:
+public:
   /**
    * @brief Adds a link to the graph
    *

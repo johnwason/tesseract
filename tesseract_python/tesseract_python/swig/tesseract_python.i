@@ -212,10 +212,6 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 
 
 /*
-%include "tesseract_collision/discrete_contact_manager.i"
-%include "tesseract_collision/discrete_contact_manager_factory.i"
-%include "tesseract_collision/continuous_contact_manager.i"
-%include "tesseract_collision/continuous_contact_manager_factory.i"
 %include "tesseract_environment/core/types.i"
 %include "tesseract_environment/core/commands.i"
 %include "tesseract_environment/core/state_solver.i"
