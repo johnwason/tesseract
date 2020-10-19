@@ -47,7 +47,7 @@ namespace tesseract_geometry
 %nodefaultctor SDFMesh;
 #endif // SWIG
 
-class SDFMesh : public Geometry
+class TESSERACT_GEOMETRY_PUBLIC SDFMesh : public Geometry
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

@@ -40,6 +40,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_scene_graph/link.h>
 #include <tesseract_scene_graph/joint.h>
 #include <tesseract_scene_graph/allowed_collision_matrix.h>
+#include <tesseract_scene_graph/visibility_control.h>
 
 #ifdef SWIG
 
@@ -113,11 +114,10 @@ using Graph = boost::
 
 #endif // SWIG
 
-class SceneGraph 
+class TESSERACT_SCENE_GRAPH_PUBLIC SceneGraph 
 #ifndef SWIG
   : public Graph
 #endif // SWIG
-
 {
 public:
   /**

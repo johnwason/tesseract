@@ -30,8 +30,12 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_process_managers/process_managers/simple_process_manager.h>
+#include <tesseract_process_managers/debug_observer.h>
+
 #include <tesseract_command_language/instruction_type.h>
 #include <tesseract_command_language/composite_instruction.h>
+
+#include <tesseract_common/utils.h>
 
 using namespace tesseract_planning;
 
@@ -64,29 +68,51 @@ bool SimpleProcessManager::init(ProcessInput input)
   // Create the dependency graph
   if (console_bridge::getLogLevel() == console_bridge::LogLevel::CONSOLE_BRIDGE_LOG_DEBUG)
     input_instruction->print("Generating Taskflow for: ");
-  auto task = taskflow_
-                  .composed_of(taskflow_generator_->generateTaskflow(
-                      input,
-                      [this, &input]() { successCallback(input.getInstruction()->getDescription()); },
-                      [this, &input]() { failureCallback(input.getInstruction()->getDescription()); }))
-                  .name("Simple");
+  auto task =
+      taskflow_
+          .composed_of(taskflow_generator_->generateTaskflow(
+              input,
+              std::bind(&SimpleProcessManager::successCallback, this, input.getInstruction()->getDescription()),
+              std::bind(&SimpleProcessManager::failureCallback, this, input.getInstruction()->getDescription())))
+          .name("Simple");
   simple_tasks_.push_back(task);
 
   // Dump the taskflow
-  std::ofstream out_data;
-  out_data.open("/tmp/simple_process_manager.dot");
-  taskflow_.dump(out_data);
-  out_data.close();
+  if (debug_)
+  {
+    std::ofstream out_data;
+    out_data.open("/tmp/simple_process_manager-" + tesseract_common::getTimestampString() + ".dot");
+    taskflow_.dump(out_data);
+    out_data.close();
+  }
 
   return true;
 }
 
 bool SimpleProcessManager::execute()
 {
-  success_ = false;
+  success_ = true;
+
+  DebugObserver::Ptr debug_observer;
+  std::shared_ptr<tf::TFProfObserver> profile_observer;
+  if (debug_)
+    debug_observer = executor_.make_observer<DebugObserver>("SimpleProcessManager");
+
   executor_.wait_for_all();
   executor_.run(taskflow_);
   executor_.wait_for_all();
+
+  if (debug_observer != nullptr)
+    executor_.remove_observer(debug_observer);
+
+  if (profile_observer != nullptr)
+  {
+    std::ofstream out_data;
+    out_data.open("/tmp/simple_process_manager-" + tesseract_common::getTimestampString() + ".json");
+    profile_observer->dump(out_data);
+    out_data.close();
+    executor_.remove_observer(profile_observer);
+  }
 
   clear();  // I believe clear must be called so memory is cleaned up
 
@@ -108,6 +134,10 @@ bool SimpleProcessManager::clear()
   simple_tasks_.clear();
   return true;
 }
+
+void SimpleProcessManager::enableDebug(bool enabled) { debug_ = enabled; }
+
+void SimpleProcessManager::enableProfile(bool enabled) { profile_ = enabled; }
 
 void SimpleProcessManager::successCallback(std::string message)
 {

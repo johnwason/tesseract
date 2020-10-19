@@ -48,6 +48,8 @@ bool Tesseract::isInitialized() const { return initialized_; }
 
 bool Tesseract::init(tesseract_scene_graph::SceneGraph::Ptr scene_graph)
 {
+  if (!scene_graph)
+    return false;
   clear();
   init_info_->type = TesseractInitType::SCENE_GRAPH;
   init_info_->scene_graph = scene_graph->clone();
@@ -79,6 +81,8 @@ bool Tesseract::init(tesseract_scene_graph::SceneGraph::Ptr scene_graph)
 bool Tesseract::init(tesseract_scene_graph::SceneGraph::Ptr scene_graph,
                      tesseract_scene_graph::SRDFModel::Ptr srdf_model)
 {
+  if (!scene_graph || !srdf_model)
+    return false;
   clear();
   init_info_->type = TesseractInitType::SCENE_GRAPH_SRDF_MODEL;
   init_info_->scene_graph = scene_graph->clone();
@@ -332,11 +336,16 @@ Tesseract::Ptr Tesseract::clone() const
 {
   auto clone = std::make_shared<Tesseract>();
 
-  clone->init(init_info_);
+  if (environment_)
+    clone->environment_ = environment_->clone();
 
-  clone->environment_ = environment_->clone();
-  clone->manipulator_manager_->clone(clone->environment_);
+  if (clone->environment_)
+    if (manipulator_manager_)
+      clone->manipulator_manager_ = manipulator_manager_->clone(clone->environment_);
+
   clone->init_info_ = init_info_;
+  clone->initialized_ = initialized_;
+  clone->find_tcp_cb_ = find_tcp_cb_;
 
   return clone;
 }
@@ -363,6 +372,8 @@ ManipulatorManager::ConstPtr Tesseract::getManipulatorManager() const { return m
 bool Tesseract::registerDefaultContactManagers()
 {
   using namespace tesseract_collision;
+  if (!environment_)
+    return false;
 
   // Register contact manager
   environment_->registerDiscreteContactManager(tesseract_collision_bullet::BulletDiscreteBVHManager::name(),
@@ -386,43 +397,50 @@ void Tesseract::clear()
 
 Eigen::Isometry3d Tesseract::findTCP(const tesseract_planning::ManipulatorInfo& manip_info) const
 {
-  Eigen::Isometry3d tcp = Eigen::Isometry3d::Identity();
+  if (manip_info.tcp.empty())
+    return Eigen::Isometry3d::Identity();
 
   auto composite_mi_fwd_kin = manipulator_manager_->getFwdKinematicSolver(manip_info.manipulator);
   if (composite_mi_fwd_kin == nullptr)
-  {
-    CONSOLE_BRIDGE_logError("findTCP: Manipulator '%s' does not exist!", manip_info.manipulator.c_str());
-    return tcp;
-  }
+    throw std::runtime_error("findTCP: Manipulator '" + manip_info.manipulator + "' does not exist!");
 
   const std::string& tip_link = composite_mi_fwd_kin->getTipLinkName();
   if (manip_info.tcp.isString())
   {
+    // Check Manipulator Manager for TCP
     const std::string& tcp_name = manip_info.tcp.getString();
     if (manipulator_manager_->hasGroupTCP(manip_info.manipulator, tcp_name))
+      return manipulator_manager_->getGroupsTCP(manip_info.manipulator, tcp_name);
+
+    // Check Environment for links and calculate TCP
+    tesseract_environment::EnvState::ConstPtr env_state = environment_->getCurrentState();
+    auto link_it = env_state->link_transforms.find(tcp_name);
+    if (link_it != env_state->link_transforms.end())
+      return env_state->link_transforms.at(tip_link).inverse() * link_it->second;
+
+    // Check callbacks for TCP
+    for (const auto& fn : find_tcp_cb_)
     {
-      tcp = manipulator_manager_->getGroupsTCP(manip_info.manipulator, tcp_name);
-    }
-    else
-    {
-      tesseract_environment::EnvState::ConstPtr env_state = environment_->getCurrentState();
-      auto link_it = env_state->link_transforms.find(tcp_name);
-      if (link_it != env_state->link_transforms.end())
+      try
       {
-        tcp = env_state->link_transforms.at(tip_link).inverse() * link_it->second;
+        Eigen::Isometry3d tcp = fn(manip_info);
+        return tcp;
       }
-      else
+      catch (...)
       {
-        CONSOLE_BRIDGE_logError("Could not find tcp by name '%s' setting to Identity!", tcp_name.c_str());
+        CONSOLE_BRIDGE_logDebug("User Defined Find TCP Callback Failed!");
       }
     }
-  }
-  else if (manip_info.tcp.isTransform())
-  {
-    tcp = manip_info.tcp.getTransform();
+
+    throw std::runtime_error("Could not find tcp by name " + tcp_name + "' setting to Identity!");
   }
 
-  return tcp;
+  if (manip_info.tcp.isTransform())
+    return manip_info.tcp.getTransform();
+
+  throw std::runtime_error("Could not find tcp!");
 }
+
+void Tesseract::addFindTCPCallback(FindTCPCallbackFn fn) { find_tcp_cb_.push_back(fn); }
 
 }  // namespace tesseract

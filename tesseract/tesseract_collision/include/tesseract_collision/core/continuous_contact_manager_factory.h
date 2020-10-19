@@ -28,6 +28,7 @@
 #define TESSERACT_COLLISION_CONTINUOUS_CONTACT_MANAGER_FACTORY_H
 
 #include <tesseract_collision/core/continuous_contact_manager.h>
+#include <tesseract_collision/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_collision::ContinuousContactManagerFactory)
@@ -35,7 +36,7 @@
 
 namespace tesseract_collision
 {
-class ContinuousContactManagerFactory
+class TESSERACT_COLLISION_CORE_PUBLIC ContinuousContactManagerFactory
 {
 public:
   using CreateMethod = std::function<ContinuousContactManager::Ptr()>;

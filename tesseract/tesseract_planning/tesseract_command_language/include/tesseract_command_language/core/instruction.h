@@ -32,6 +32,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_command_language/core/waypoint.h>
+#include <tesseract_command_language/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::Instruction)
@@ -42,7 +43,7 @@ namespace tesseract_planning
 #ifndef SWIG
 namespace detail
 {
-struct InstructionInnerBase
+struct TESSERACT_COMMAND_LANGUAGE_LOCAL InstructionInnerBase
 {
   InstructionInnerBase() = default;
   virtual ~InstructionInnerBase() = default;
@@ -106,7 +107,7 @@ struct InstructionInner final : InstructionInnerBase
 
 #endif // SWIG
 
-class Instruction
+class TESSERACT_COMMAND_LANGUAGE_PUBLIC Instruction
 {
   template <typename T>
   using uncvref_t = std::remove_cv_t<std::remove_reference_t<T>>;

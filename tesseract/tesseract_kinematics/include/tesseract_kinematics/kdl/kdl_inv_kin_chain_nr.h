@@ -40,6 +40,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/inverse_kinematics.h>
 #include <tesseract_kinematics/kdl/kdl_utils.h>
+#include <tesseract_kinematics/kdl/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::KDLInvKinChainNR)
@@ -50,7 +51,7 @@ namespace tesseract_kinematics
 /**
  * @brief KDL Inverse kinematic chain implementation.
  */
-class KDLInvKinChainNR : public InverseKinematics
+class TESSERACT_KINEMATICS_KDL_PUBLIC KDLInvKinChainNR : public InverseKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

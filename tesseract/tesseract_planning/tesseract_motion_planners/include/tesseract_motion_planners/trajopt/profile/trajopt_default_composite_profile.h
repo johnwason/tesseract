@@ -36,10 +36,11 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/trajopt/trajopt_collision_config.h>
 #include <tesseract_motion_planners/trajopt/profile/trajopt_profile.h>
+#include <tesseract_motion_planners/trajopt/visibility_control.h>
 
 namespace tesseract_planning
 {
-class TrajOptDefaultCompositeProfile : public TrajOptCompositeProfile
+class TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC TrajOptDefaultCompositeProfile : public TrajOptCompositeProfile
 {
 public:
   TrajOptDefaultCompositeProfile() = default;
@@ -83,7 +84,7 @@ public:
    * Note: This gets converted to longest_valid_segment_fraction.
    *       longest_valid_segment_fraction = longest_valid_segment_length / state_space.getMaximumExtent()
    */
-  double longest_valid_segment_length = 0.5;
+  double longest_valid_segment_length = 0.1;
 
   /**@brief Special link collision cost distances */
   trajopt::SafetyMarginData::Ptr special_collision_cost{ nullptr };

@@ -9,6 +9,8 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <Eigen/Geometry>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#include <tesseract_scene_graph/visibility_control.h>
+
 #ifdef SWIG
 
 %template(GroupOPWKinematics) std::unordered_map<std::string, tesseract_scene_graph::OPWKinematicParameters>;
@@ -17,10 +19,11 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #endif // SWIG
 
+
 namespace tesseract_scene_graph
 {
 /** @brief A structure to hold opw kinematics data */
-struct OPWKinematicParameters
+struct TESSERACT_SCENE_GRAPH_PUBLIC OPWKinematicParameters
 {
 #ifndef SWIG
   double a1{ 0 }, a2{ 0 }, b{ 0 }, c1{ 0 }, c2{ 0 }, c3{ 0 }, c4{ 0 };
@@ -33,7 +36,7 @@ struct OPWKinematicParameters
 #endif // SWIG
 };
 
-struct ROPKinematicParameters
+struct TESSERACT_SCENE_GRAPH_PUBLIC ROPKinematicParameters
 {
   std::string manipulator_group;
   std::string manipulator_ik_solver;
@@ -43,7 +46,7 @@ struct ROPKinematicParameters
   std::unordered_map<std::string, double> positioner_sample_resolution;
 };
 
-struct REPKinematicParameters
+struct TESSERACT_SCENE_GRAPH_PUBLIC REPKinematicParameters
 {
   std::string manipulator_group;
   std::string manipulator_ik_solver;

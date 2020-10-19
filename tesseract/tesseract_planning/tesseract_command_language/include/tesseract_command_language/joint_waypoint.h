@@ -37,28 +37,16 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_command_language/waypoint_type.h>
 #include <tesseract_common/utils.h>
+#include <tesseract_command_language/visibility_control.h>
 
 namespace tesseract_planning
 {
-class JointWaypoint : public Eigen::VectorXd
+class TESSERACT_COMMAND_LANGUAGE_PUBLIC JointWaypoint
 {
 public:
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
   JointWaypoint() = default;
-
-  // This method allows you to assign Eigen expressions to MyVectorType
-  template <typename OtherDerived>
-  JointWaypoint& operator=(const Eigen::MatrixBase<OtherDerived>& other)
-  {
-    this->Eigen::VectorXd::operator=(other);
-    return *this;
-  }
-
-  // This constructor allows you to construct MyVectorType from Eigen expressions
-  template <typename OtherDerived>
-  JointWaypoint(std::vector<std::string> joint_names, const Eigen::MatrixBase<OtherDerived>& other)
-    : Eigen::VectorXd(other), joint_names(std::move(joint_names))
-  {
-  }
 
   // This constructs a Joint Waypoint from xml element
   JointWaypoint(const tinyxml2::XMLElement& xml_element)
@@ -95,12 +83,17 @@ public:
       throw std::runtime_error("JointWaypoint: Positions are not all numeric values.");
 
     joint_names = names_tokens;
-    resize(static_cast<long>(names_tokens.size()));
+    waypoint.resize(static_cast<long>(names_tokens.size()));
     for (long i = 0; i < static_cast<long>(position_tokens.size()); ++i)
-      tesseract_common::toNumeric<double>(position_tokens[static_cast<std::size_t>(i)], (*this)[i]);
+      tesseract_common::toNumeric<double>(position_tokens[static_cast<std::size_t>(i)], waypoint[i]);
   }
 
   int getType() const { return static_cast<int>(WaypointType::JOINT_WAYPOINT); }
+
+  void print(const std::string& prefix = "") const
+  {
+    std::cout << prefix << "Joint WP: " << this->transpose() << std::endl;
+  };
 
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const
   {
@@ -121,7 +114,7 @@ public:
     xml_joint_waypoint->InsertEndChild(xml_joint_names);
 
     std::stringstream position_string;
-    position_string << this->format(eigen_format);
+    position_string << waypoint.format(eigen_format);
 
     tinyxml2::XMLElement* xml_joint_position = doc.NewElement("Position");
     xml_joint_position->SetText(position_string.str().c_str());
@@ -132,6 +125,144 @@ public:
     return xml_waypoint;
   }
 
+  /////////////////////
+  // Eigen Container //
+  /////////////////////
+
+  using ConstTransposeReturnType = Eigen::VectorXd::ConstTransposeReturnType;
+
+  ////////////////////////
+  // Eigen Constructors //
+  ////////////////////////
+
+  // This constructor allows you to construct MyVectorType from Eigen expressions
+  template <typename OtherDerived>
+  JointWaypoint(std::vector<std::string> joint_names, const Eigen::MatrixBase<OtherDerived>& other)
+    : waypoint(other), joint_names(std::move(joint_names))
+  {
+  }
+
+  JointWaypoint(std::vector<std::string> joint_names, std::initializer_list<double> l)
+    : joint_names(std::move(joint_names))
+  {
+    waypoint.resize(static_cast<Eigen::Index>(l.size()));
+    Eigen::Index i = 0;
+    for (auto& v : l)
+      waypoint(i++) = v;
+  }
+
+  ///////////////////
+  // Eigen Methods //
+  ///////////////////
+
+  /** @returns true if two are approximate */
+  inline Eigen::Index size() const { return waypoint.size(); }
+  /** @returns norm of vector */
+  inline double norm() const { return waypoint.norm(); }
+  /** @returns true if two are approximate */
+  inline bool isApprox(const Eigen::VectorXd& other, double prec = 1e-12) { return waypoint.isApprox(other, prec); }
+  /** @returns the transpose of the joint positions */
+  inline ConstTransposeReturnType transpose() const { return waypoint.transpose(); }
+
+  /////////////////////
+  // Eigen Operators //
+  /////////////////////
+
+  // This method allows you to assign Eigen expressions to MyVectorType
+  template <typename OtherDerived>
+  inline JointWaypoint& operator=(const Eigen::MatrixBase<OtherDerived>& other)
+  {
+    waypoint = other;
+    return *this;
+  }
+
+  template <typename OtherDerived>
+  inline JointWaypoint& operator*=(const Eigen::MatrixBase<OtherDerived>& other)
+  {
+    waypoint = waypoint * other;
+    return *this;
+  }
+
+  inline JointWaypoint& operator=(std::initializer_list<double> l)
+  {
+    waypoint.resize(static_cast<Eigen::Index>(l.size()));
+    Eigen::Index i = 0;
+    for (auto& v : l)
+      waypoint(i++) = v;
+
+    return *this;
+  }
+
+  template <typename OtherDerived>
+  inline JointWaypoint operator*(const Eigen::MatrixBase<OtherDerived>& other) const
+  {
+    JointWaypoint jwp = *this;
+    jwp.waypoint = jwp.waypoint * other;
+    return jwp;
+  }
+
+  template <typename OtherDerived>
+  inline JointWaypoint operator-(const Eigen::MatrixBase<OtherDerived>& other) const
+  {
+    JointWaypoint jwp = *this;
+    jwp.waypoint = jwp.waypoint - other;
+    return jwp;
+  }
+
+  template <typename OtherDerived>
+  inline JointWaypoint operator+(const Eigen::MatrixBase<OtherDerived>& other) const
+  {
+    JointWaypoint jwp = *this;
+    jwp.waypoint = jwp.waypoint + other;
+    return jwp;
+  }
+
+  inline JointWaypoint operator-(const JointWaypoint& other) const
+  {
+    JointWaypoint jwp = *this;
+    jwp.waypoint = jwp.waypoint - other.waypoint;
+    return jwp;
+  }
+
+  template <typename OtherDerived>
+  inline JointWaypoint operator+(const JointWaypoint& other) const
+  {
+    JointWaypoint jwp = *this;
+    jwp.waypoint = jwp.waypoint + other.waypoint;
+    return jwp;
+  }
+
+  inline Eigen::CommaInitializer<Eigen::VectorXd> operator<<(const double& s)
+  {
+    return Eigen::CommaInitializer<Eigen::VectorXd>(waypoint, s);
+  }
+
+  inline double& operator[](Eigen::Index i) { return waypoint[i]; }
+  inline double operator[](Eigen::Index i) const { return waypoint[i]; }
+  inline double& operator()(Eigen::Index i) { return waypoint(i); }
+  inline double operator()(Eigen::Index i) const { return waypoint(i); }
+
+  //////////////////////////
+  // Implicit Conversions //
+  //////////////////////////
+
+  /** @return Implicit Conversions to read-only Eigen::VectorXd */
+  inline operator const Eigen::VectorXd&() const { return waypoint; }
+
+  /** @return Implicit Conversions to writable Eigen::VectorXd */
+  inline operator Eigen::VectorXd&() { return waypoint; }
+
+  /** @return Implicit Conversions to read-only Eigen::VectorXd */
+  inline operator Eigen::Ref<const Eigen::VectorXd>() const { return Eigen::Ref<const Eigen::VectorXd>(waypoint); }
+
+  /** @return Implicit Conversions to writable Eigen::VectorXd */
+  inline operator Eigen::Ref<Eigen::VectorXd>() { return Eigen::Ref<Eigen::VectorXd>(waypoint); }
+
+  //////////////////////////////////
+  // Cartesian Waypoint Container //
+  //////////////////////////////////
+
+  Eigen::VectorXd waypoint;
   std::vector<std::string> joint_names;
 };
 }  // namespace tesseract_planning

@@ -38,6 +38,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/types.h>
+#include <tesseract_kinematics/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::InverseKinematics)
@@ -46,7 +47,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 namespace tesseract_kinematics
 {
 /** @brief Inverse kinematics functions. */
-class InverseKinematics
+class TESSERACT_KINEMATICS_CORE_PUBLIC InverseKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

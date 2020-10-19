@@ -32,6 +32,8 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <vector>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#include <tesseract_geometry/visibility_control.h>
+
 #ifdef SWIG
 %shared_ptr(tesseract_geometry::Geometry)
 #endif // SWIG
@@ -55,11 +57,12 @@ static const std::vector<std::string> GeometryTypeStrings = {
   "SPHERE", "CYLINDER", "CAPSULE", "CONE", "BOX", "PLANE", "MESH", "CONVEX_MESH", "SDF_MESH", "OCTREE"
 };
 
+
 #ifdef SWIG
 %nodefaultctor Geometry;
 #endif // SWIG
 
-class Geometry
+class TESSERACT_GEOMETRY_PUBLIC Geometry
 {
 public:
   using Ptr = std::shared_ptr<Geometry>;

@@ -34,6 +34,8 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <sstream>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#include <tesseract_common/visibility_control.h>
+
 #ifdef SWIG
 
 %shared_ptr(tesseract_common::Resource)
@@ -49,7 +51,7 @@ namespace tesseract_common
  * @brief Represents resource data available from a file or url
  *
  */
-class Resource
+class TESSERACT_COMMON_PUBLIC Resource
 {
 public:
   using Ptr = std::shared_ptr<Resource>;
@@ -93,7 +95,7 @@ public:
   virtual std::shared_ptr<std::istream> getResourceContentStream() = 0;
 };
 
-class BytesResource : public tesseract_common::Resource
+class TESSERACT_COMMON_PUBLIC BytesResource : public tesseract_common::Resource
 {
 public:
   BytesResource(std::string url, std::vector<uint8_t> bytes)

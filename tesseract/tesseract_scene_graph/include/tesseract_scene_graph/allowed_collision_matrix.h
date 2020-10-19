@@ -10,6 +10,8 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <unordered_map>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#include <tesseract_scene_graph/visibility_control.h>
+
 #ifdef SWIG
 
 %shared_ptr(tesseract_scene_graph::AllowedCollisionMatrix)
@@ -19,7 +21,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_scene_graph
 {
-class AllowedCollisionMatrix
+class TESSERACT_SCENE_GRAPH_PUBLIC AllowedCollisionMatrix
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

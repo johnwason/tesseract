@@ -40,6 +40,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/forward_kinematics.h>
 #include <tesseract_kinematics/kdl/kdl_utils.h>
+#include <tesseract_kinematics/kdl/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::KDLFwdKinChain)
@@ -53,7 +54,7 @@ namespace tesseract_kinematics
  * Typically, just wrappers around the equivalent KDL calls.
  *
  */
-class KDLFwdKinChain : public ForwardKinematics
+class TESSERACT_KINEMATICS_KDL_PUBLIC KDLFwdKinChain : public ForwardKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

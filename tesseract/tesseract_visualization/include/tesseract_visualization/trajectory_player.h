@@ -34,36 +34,89 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_visualization/trajectory_interpolator.h>
 #include <tesseract_command_language/composite_instruction.h>
 #include <tesseract_command_language/move_instruction.h>
+#include <tesseract_visualization/visibility_control.h>
 
 namespace tesseract_visualization
 {
-class TrajectoryPlayer
+/** @brief Enables the ability to play a trajectory provided by the set program */
+class TESSERACT_VISUALIZATION_PUBLIC TrajectoryPlayer
 {
 public:
   TrajectoryPlayer() = default;
 
+  /**
+   * @brief Set the the program for the trajectory player
+   * @param program The program to play
+   */
   void setProgram(tesseract_planning::CompositeInstruction program);
 
+  /**
+   * @brief Set the scale factor for the play back of the trajectory
+   * @param scale The scale playback of the trajectory
+   */
   void setScale(double scale);
 
-  tesseract_planning::MoveInstruction setCurrentTime(long index);
+  /**
+   * @brief Set the current time for the player by index of the input program
+   * @param index The input trajectory index for which to set the current time from
+   * @return The move instruction at the input trajectory index
+   */
+  tesseract_planning::MoveInstruction setCurrentDurationByIndex(long index);
 
+  /**
+   * @brief Set the current time for the player by duration
+   * @param duration The duration for which to set the current time from
+   * @return The move instruction at the provided duration
+   */
   tesseract_planning::MoveInstruction setCurrentDuration(double duration);
 
+  /**
+   * @brief Get the next move instruction from the player
+   * @return The move instruction at the next time interval
+   */
   tesseract_planning::MoveInstruction getNext();
 
-  tesseract_planning::MoveInstruction getIndex(long index) const;
+  /**
+   * @brief Get move instruction by index
+   * @param index The index of the input program to extract the move instruction from
+   * @return The move instruction at the input index
+   */
+  tesseract_planning::MoveInstruction getByIndex(long index) const;
 
+  /**
+   * @brief Get the current duration populated by the last call to getNext()
+   * @return The current duration
+   */
   double currentDuration() const;
 
+  /**
+   * @brief Get the trajectory duration
+   * @return The trajectory duration
+   */
+  double trajectoryDuration() const;
+
+  /**
+   * @brief Check if the player has the reached the end of the trajectory
+   * @return True if end has been reached, otherwise false.
+   */
   bool isFinished() const;
 
-  void setLoop(bool loop);
+  /**
+   * @brief Enable looping playback of the trajectory
+   * @param loop True to enable looping play, otherwise single playback.
+   */
+  void enableLoop(bool loop);
 
-  bool getLoop() const;
+  /**
+   * @brief Get if looping playback is enabled
+   * @return True if looping playback is enabled otherwise false.
+   */
+  bool isLoopEnabled() const;
 
+  /** @brief Reset the state of the trajectory player */
   void reset();
 
+  /** @brief The size of the tajectory */
   long size() const;
 
 private:

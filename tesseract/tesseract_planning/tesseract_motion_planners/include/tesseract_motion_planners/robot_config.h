@@ -26,8 +26,27 @@
 #ifndef TESSERACT_MOTION_PLANNERS_ROBOT_CONFIG_H
 #define TESSERACT_MOTION_PLANNERS_ROBOT_CONFIG_H
 
+#include <tesseract_common/macros.h>
+TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
+#include <Eigen/Geometry>
+TESSERACT_COMMON_IGNORE_WARNINGS_POP
+
+#include <tesseract_kinematics/core/forward_kinematics.h>
+
 namespace tesseract_planning
 {
+/**
+ * @brief The RobotConfig enum
+ *
+ * The first letter refers to 'Flip vs No-Flip', think of the human arm as the robot this would relate to wrist flipped
+ * or not flipped.
+ *   - Which is indicated by flipping the sign of J5 requiring J4 and J6 to move by +/-180 degrees
+ * The second letter refers to 'Up vs Down' think of the human arm as the robot this would relate to elbow up or down
+ *   - Which is indicated, J3 is greater than or less than 90 degrees and tool0 positiion x is positive or negative
+ * The third letter refers to 'Front vs Back' think of the human arm as the robot this would relate to arm in front or
+ * back
+ *
+ */
 enum class RobotConfig
 {
   NUT = 0,

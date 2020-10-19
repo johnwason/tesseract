@@ -41,6 +41,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_collision/core/continuous_contact_manager_factory.h>
 #include <tesseract_scene_graph/graph.h>
 #include <tesseract_environment/core/state_solver.h>
+#include <tesseract_environment/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_environment::Environment)
@@ -48,7 +49,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_environment
 {
-class Environment
+class TESSERACT_ENVIRONMENT_CORE_PUBLIC Environment
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

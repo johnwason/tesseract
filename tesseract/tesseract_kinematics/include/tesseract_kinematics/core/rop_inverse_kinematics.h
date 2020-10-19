@@ -36,6 +36,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/inverse_kinematics.h>
 #include <tesseract_kinematics/core/forward_kinematics.h>
+#include <tesseract_kinematics/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::RobotOnPositionerInvKin)
@@ -46,7 +47,7 @@ namespace tesseract_kinematics
 /**
  * @brief Robot on Positioner Inverse kinematic implementation.
  */
-class RobotOnPositionerInvKin : public InverseKinematics
+class TESSERACT_KINEMATICS_CORE_PUBLIC RobotOnPositionerInvKin : public InverseKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

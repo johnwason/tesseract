@@ -34,10 +34,13 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <functional>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#include <tesseract_scene_graph/visibility_control.h>
+
 #ifdef SWIG
 %feature("director") ResourceLocator;
 %shared_ptr(tesseract_scene_graph::ResourceLocator)
 #endif // SWIG
+
 
 namespace tesseract_scene_graph
 {
@@ -45,7 +48,7 @@ namespace tesseract_scene_graph
  * @brief Abstract class for resource loaders
  *
  */
-class ResourceLocator
+class TESSERACT_SCENE_GRAPH_PUBLIC ResourceLocator
 {
 public:
   using Ptr = std::shared_ptr<ResourceLocator>;
@@ -73,7 +76,7 @@ public:
  * @brief Resource locator implementation using a provided function to locate file resources
  *
  */
-class SimpleResourceLocator : public ResourceLocator
+class TESSERACT_SCENE_GRAPH_PUBLIC SimpleResourceLocator : public ResourceLocator
 {
 public:
   using Ptr = std::shared_ptr<SimpleResourceLocator>;
@@ -98,7 +101,7 @@ protected:
  * @brief Resource implementation for a local file
  *
  */
-class SimpleLocatedResource : public tesseract_common::Resource
+class TESSERACT_SCENE_GRAPH_PUBLIC SimpleLocatedResource : public tesseract_common::Resource
 {
 public:
   using Ptr = std::shared_ptr<SimpleLocatedResource>;

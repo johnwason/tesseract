@@ -34,32 +34,36 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/utils.h>
+#include <tesseract_motion_planners/trajopt/visibility_control.h>
 
 namespace tesseract_planning
 {
 /**
  * @brief Config settings for collision cost terms.
  */
-struct CollisionCostConfig
+struct TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC CollisionCostConfig
 {
   CollisionCostConfig() = default;
   CollisionCostConfig(const tinyxml2::XMLElement& xml_element);
 
   /** @brief If true, a collision cost term will be added to the problem. Default: true*/
   bool enabled = true;
+
   /**
    * @brief Use the weighted sum for each link pair. This reduces the number equations added to the problem
    * If set to true, it is recommended to start with the coeff set to one
    */
   bool use_weighted_sum = false;
+
   /** @brief The evaluator type that will be used for collision checking. */
-  trajopt::CollisionEvaluatorType type = trajopt::CollisionEvaluatorType::CAST_CONTINUOUS;
+  trajopt::CollisionEvaluatorType type = trajopt::CollisionEvaluatorType::DISCRETE_CONTINUOUS;
 
   /** @brief Max distance in which collision costs will be evaluated. */
-  double buffer_margin = 0.025;
+  double safety_margin = 0.025;
   /** @brief Distance beyond buffer_margin in which collision optimization will be evaluated.
       This is set to 0 by default (effectively disabled) for collision costs.*/
   double safety_margin_buffer = 0.0;
+
   /** @brief The collision coeff/weight */
   double coeff = 20;
 
@@ -69,7 +73,7 @@ struct CollisionCostConfig
 /**
  * @brief Config settings for collision constraint terms.
  */
-struct CollisionConstraintConfig
+struct TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC CollisionConstraintConfig
 {
   CollisionConstraintConfig() = default;
   CollisionConstraintConfig(const tinyxml2::XMLElement& xml_element);

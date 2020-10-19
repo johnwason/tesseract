@@ -37,6 +37,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_motion_planners/ompl/ompl_planner_configurator.h>
 #include <tesseract_motion_planners/ompl/profile/ompl_profile.h>
 #include <tesseract_motion_planners/ompl/types.h>
+#include <tesseract_motion_planners/ompl/visibility_control.h>
 
 namespace tesseract_planning
 {
@@ -45,7 +46,7 @@ namespace tesseract_planning
  * every plan instruction will be its a seperate ompl motion plan and therefore planning information is relevent
  * for this motion planner in the profile.
  */
-class OMPLDefaultPlanProfile : public OMPLPlanProfile
+class TESSERACT_MOTION_PLANNERS_OMPL_PUBLIC OMPLDefaultPlanProfile : public OMPLPlanProfile
 {
 public:
   using Ptr = std::shared_ptr<OMPLDefaultPlanProfile>;
@@ -101,7 +102,7 @@ public:
   bool collision_check = true;
 
   /** @brief If true, use continuous collision checking */
-  bool collision_continuous = true;
+  bool collision_continuous = false;
 
   /** @brief Max distance over which collisions are checked */
   double collision_safety_margin = 0.00;
@@ -121,7 +122,7 @@ public:
    * Note: This gets converted to longest_valid_segment_fraction.
    *       longest_valid_segment_fraction = longest_valid_segment_length / state_space.getMaximumExtent()
    */
-  double longest_valid_segment_length = 0.5;
+  double longest_valid_segment_length = 0.1;
 
   /** @brief This scales the variables search space. Must be same size as number of joints.
    *         If empty it defaults to all ones */

@@ -25,8 +25,10 @@
  */
 #ifndef TESSERACT_KINEMATICS_KDL_INV_KIN_CHAIN_NR_FACTORY_H
 #define TESSERACT_KINEMATICS_KDL_INV_KIN_CHAIN_NR_FACTORY_H
+
 #include <tesseract_kinematics/core/inverse_kinematics_factory.h>
 #include <tesseract_kinematics/kdl/kdl_inv_kin_chain_nr.h>
+#include <tesseract_kinematics/kdl/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::KDLInvKinChainNRFactory)
@@ -34,7 +36,7 @@
 
 namespace tesseract_kinematics
 {
-class KDLInvKinChainNRFactory : public InverseKinematicsFactory
+class TESSERACT_KINEMATICS_KDL_PUBLIC KDLInvKinChainNRFactory : public InverseKinematicsFactory
 {
 public:
   KDLInvKinChainNRFactory() : name_(KDLInvKinChainNR().getSolverName()) {}

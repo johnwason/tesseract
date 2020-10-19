@@ -32,6 +32,8 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <tinyxml2.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#include <tesseract_command_language/visibility_control.h>
+
 #ifdef SWIG
 %shared_ptr(tesseract_planning::Waypoint)
 #endif // SWIG
@@ -41,7 +43,7 @@ namespace tesseract_planning
 #ifndef SWIG
 namespace detail
 {
-struct WaypointInnerBase
+struct TESSERACT_COMMAND_LANGUAGE_LOCAL WaypointInnerBase
 {
   WaypointInnerBase() = default;
   virtual ~WaypointInnerBase() = default;
@@ -51,6 +53,8 @@ struct WaypointInnerBase
   WaypointInnerBase& operator=(WaypointInnerBase&&) = delete;
 
   virtual int getType() const = 0;
+
+  virtual void print(const std::string& prefix) const = 0;
 
   virtual tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const = 0;
 
@@ -79,6 +83,8 @@ struct WaypointInner final : WaypointInnerBase
 
   int getType() const final { return waypoint_.getType(); }
 
+  void print(const std::string& prefix) const final { waypoint_.print(prefix); }
+
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const final { return waypoint_.toXML(doc); }
 
   void* recover() final { return &waypoint_; }
@@ -89,7 +95,7 @@ struct WaypointInner final : WaypointInnerBase
 }  // namespace detail
 #endif // SWIG
 
-class Waypoint
+class TESSERACT_COMMAND_LANGUAGE_PUBLIC Waypoint
 {
   template <typename T>
   using uncvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
@@ -140,7 +146,9 @@ public:
 
   int getType() const { return waypoint_->getType(); }
 
-#ifndef SWIG
+  void print(const std::string& prefix = "") const { waypoint_->print(prefix); }
+
+#ifndef SWIG  
 
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const { return waypoint_->toXML(doc); }
 

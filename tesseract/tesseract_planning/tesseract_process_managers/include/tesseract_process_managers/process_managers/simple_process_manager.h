@@ -36,6 +36,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_process_managers/process_manager.h>
 #include <tesseract_process_managers/taskflow_generator.h>
+#include <tesseract_process_managers/visibility_control.h>
 
 namespace tesseract_planning
 {
@@ -52,7 +53,7 @@ namespace tesseract_planning
  *   ... Must not contain any child composite instructions
  * }
  */
-class SimpleProcessManager : public ProcessManager
+class TESSERACT_PROCESS_MANAGERS_PUBLIC SimpleProcessManager : public ProcessManager
 {
 public:
   using Ptr = std::shared_ptr<SimpleProcessManager>;
@@ -73,10 +74,16 @@ public:
 
   bool clear() override;
 
+  void enableDebug(bool enabled) override;
+
+  void enableProfile(bool enabled) override;
+
 private:
   void successCallback(std::string message);
   void failureCallback(std::string message);
-  bool success_;
+  bool success_{ false };
+  bool debug_{ false };
+  bool profile_{ false };
 
   TaskflowGenerator::UPtr taskflow_generator_;
   tf::Executor executor_;
