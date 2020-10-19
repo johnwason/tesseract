@@ -173,16 +173,19 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 #define TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 // tesseract_common
+#define TESSERACT_COMMON_PUBLIC
 %include "tesseract_common/types.h"
 %include "tesseract_common/status_code.h"
 %include "tesseract_common/resource.h"
 
 // tesseract_geometry
+#define TESSERACT_GEOMETRY_PUBLIC
 %include "tesseract_geometry/geometry.h"
 %include "tesseract_geometry/geometries.h"
 %include "tesseract_geometry/utils.h"
 
 // tesseract_scene_graph
+#define TESSERACT_SCENE_GRAPH_PUBLIC
 %include "tesseract_scene_graph/joint.h"
 %include "tesseract_scene_graph/link.h"
 %include "tesseract_scene_graph/allowed_collision_matrix.h"
@@ -192,6 +195,10 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 %include "tesseract_scene_graph/srdf_model.h"
 
 // tesseract_kinematics
+#define TESSERACT_KINEMATICS_CORE_PUBLIC
+#define TESSERACT_KINEMATICS_IKFAST_PUBLIC
+#define TESSERACT_KINEMATICS_KDL_PUBLIC
+#define TESSERACT_KINEMATICS_OPW_PUBLIC
 %include "tesseract_kinematics/core/forward_kinematics.h"
 %include "tesseract_kinematics/core/forward_kinematics_factory.h"
 %include "tesseract_kinematics/core/inverse_kinematics.h"
@@ -210,6 +217,9 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 %include "tesseract_kinematics/opw/opw_inv_kin.h"
 
 // tesseract_collision
+#define TESSERACT_COLLISION_CORE_PUBLIC
+#define TESSERACT_COLLISION_FCL_PUBLIC
+#define TESSERACT_COLLISION_BULLET_PUBLIC
 %include "tesseract_collision/core/types.h"
 %include "tesseract_collision/core/discrete_contact_manager.h"
 %include "tesseract_collision/core/discrete_contact_manager_factory.h"
@@ -222,15 +232,17 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 %include "tesseract_collision/bullet/bullet_discrete_simple_manager.h"
 
 // tesseract_environment
+#define TESSERACT_ENVIRONMENT_CORE_PUBLIC
 %include "tesseract_environment/core/types.h"
 %include "tesseract_environment/core/commands.h"
 %include "tesseract_environment/core/state_solver.h"
 %include "tesseract_environment/core/environment.h"
 
 // tesseract_command_language
+#define TESSERACT_COMMAND_LANGUAGE_PUBLIC
 %include "tesseract_command_language/core/waypoint.h"
 %include "tesseract_command_language/core/instruction.h"
-%include "tesseract_command_language/command_language.h"
+//%include "tesseract_command_language/command_language.h"
 
 
 /*
