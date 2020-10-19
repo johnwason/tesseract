@@ -33,8 +33,13 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_command_language/core/waypoint.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::Instruction)
+#endif // SWIG
+
 namespace tesseract_planning
 {
+#ifndef SWIG
 namespace detail
 {
 struct InstructionInnerBase
@@ -99,6 +104,8 @@ struct InstructionInner final : InstructionInnerBase
 
 }  // namespace detail
 
+#endif // SWIG
+
 class Instruction
 {
   template <typename T>
@@ -156,6 +163,8 @@ public:
 
   void print(std::string prefix = "") const { instruction_->print(std::move(prefix)); }
 
+#ifndef SWIG
+
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const { return instruction_->toXML(doc); }
 
   template <typename T>
@@ -169,6 +178,7 @@ public:
   {
     return static_cast<const T*>(instruction_->recover());
   }
+#endif // SWIG
 
 private:
   std::unique_ptr<detail::InstructionInnerBase> instruction_;

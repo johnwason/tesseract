@@ -11,9 +11,10 @@ ENDIF()
 STRING (REGEX REPLACE "<version>([0-9]+\\.[0-9]+\\.[0-9]+)</version>" "\\1" tesseract_python_version ${tesseract_python_version1})
 MESSAGE(STATUS "tesseract_python version: ${tesseract_python_version}")
 
+set(CMAKE_CXX_STANDARD 14)
+
 if (NOT MSVC)
-  #add_compile_options(-std=c++11 -Wall -Wextra -Wno-write-strings -Wno-unused-paramete -Wno-suggest-override)
-  add_compile_options(-std=c++11 -w)
+  add_compile_options(-w)
 else()
   add_compile_options(/bigobj)
 endif()

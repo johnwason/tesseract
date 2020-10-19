@@ -32,8 +32,13 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <tinyxml2.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::Waypoint)
+#endif // SWIG
+
 namespace tesseract_planning
 {
+#ifndef SWIG
 namespace detail
 {
 struct WaypointInnerBase
@@ -82,6 +87,7 @@ struct WaypointInner final : WaypointInnerBase
 };
 
 }  // namespace detail
+#endif // SWIG
 
 class Waypoint
 {
@@ -134,6 +140,8 @@ public:
 
   int getType() const { return waypoint_->getType(); }
 
+#ifndef SWIG
+
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const { return waypoint_->toXML(doc); }
 
   template <typename T>
@@ -147,6 +155,8 @@ public:
   {
     return static_cast<const T*>(waypoint_->recover());
   }
+
+#endif // SWIG
 
 private:
   std::unique_ptr<detail::WaypointInnerBase> waypoint_;
