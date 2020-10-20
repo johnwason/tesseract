@@ -36,6 +36,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::Instruction)
+
+%ignore std::vector<tesseract_planning::Instruction>::vector(size_type);
+%ignore std::vector<tesseract_planning::Instruction>::resize(size_type);
+%template(PlanningInstructions) std::vector<tesseract_planning::Instruction>;
 #endif // SWIG
 
 namespace tesseract_planning
@@ -168,6 +172,8 @@ public:
 
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const { return instruction_->toXML(doc); }
 
+#endif // SWIG
+
   template <typename T>
   T* cast()
   {
@@ -179,6 +185,16 @@ public:
   {
     return static_cast<const T*>(instruction_->recover());
   }
+
+#ifdef SWIG
+  %template(cast_NullInstruction) cast<tesseract_planning::NullInstruction>;
+  %template(cast_const_NullInstruction) cast_const<tesseract_planning::NullInstruction>;
+  %template(cast_PlanInstruction) cast<tesseract_planning::PlanInstruction>;
+  %template(cast_const_PlanInstruction) cast_const<tesseract_planning::PlanInstruction>;
+  %template(cast_MoveInstruction) cast<tesseract_planning::MoveInstruction>;
+  %template(cast_const_MoveInstruction) cast_const<tesseract_planning::MoveInstruction>;
+  %template(cast_CompositeInstruction) cast<tesseract_planning::CompositeInstruction>;
+  %template(cast_const_CompositeInstruction) cast_const<tesseract_planning::CompositeInstruction>;
 #endif // SWIG
 
 private:

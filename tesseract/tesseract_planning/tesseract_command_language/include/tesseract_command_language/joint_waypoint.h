@@ -95,6 +95,7 @@ public:
     std::cout << prefix << "Joint WP: " << this->transpose() << std::endl;
   };
 
+#ifndef SWIG
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const
   {
     Eigen::IOFormat eigen_format(Eigen::StreamPrecision, Eigen::DontAlignCols, " ", " ");
@@ -261,6 +262,8 @@ public:
   //////////////////////////////////
   // Cartesian Waypoint Container //
   //////////////////////////////////
+
+#endif // SWIG
 
   Eigen::VectorXd waypoint;
   std::vector<std::string> joint_names;

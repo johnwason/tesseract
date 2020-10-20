@@ -51,6 +51,8 @@ public:
     std::cout << prefix + "Null Instruction, Type: " << getType() << "  Description: " << getDescription() << std::endl;
   }
 
+#ifndef SWIG
+
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const
   {
     tinyxml2::XMLElement* xml_instruction = doc.NewElement("Instruction");
@@ -65,6 +67,7 @@ public:
 
     return xml_instruction;
   }
+#endif // SWIG
 
 private:
   /** @brief The description of the instruction */

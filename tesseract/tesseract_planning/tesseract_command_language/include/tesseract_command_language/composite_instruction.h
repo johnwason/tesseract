@@ -39,6 +39,12 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_command_language/null_instruction.h>
 #include <tesseract_command_language/visibility_control.h>
 
+#ifdef SWIG
+
+%shared_ptr(tesseract_planning::CompositeInstruction)
+
+#endif // SWIG
+
 namespace tesseract_planning
 {
 enum class CompositeInstructionOrder
@@ -72,7 +78,12 @@ public:
   const ManipulatorInfo& getManipulatorInfo() const;
   ManipulatorInfo& getManipulatorInfo();
 
+#ifndef SWIG
   void setStartInstruction(Instruction instruction);
+#else // SWIG
+  void setStartInstruction(const Instruction& instruction);
+#endif // SWIG
+
   void resetStartInstruction();
   const Instruction& getStartInstruction() const;
   Instruction& getStartInstruction();
@@ -80,8 +91,9 @@ public:
 
   void print(std::string prefix = "") const;
 
+#ifndef SWIG
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
-
+#endif // SWIG
   // C++ container support
 
   /** value_type */
@@ -106,6 +118,8 @@ public:
   using reverse_iterator = typename std::vector<value_type>::reverse_iterator;
   /** const_reverse_iterator */
   using const_reverse_iterator = typename std::vector<value_type>::const_reverse_iterator;
+
+#ifndef SWIG
 
   ///////////////
   // Iterators //
@@ -137,6 +151,8 @@ public:
   /** @brief returns a reverse iterator to the end */
   const_reverse_iterator const crend();
 
+#endif // SWIG
+
   //////////////
   // Capacity //
   //////////////
@@ -152,6 +168,8 @@ public:
   size_type capacity() const;
   /** @brief reduces memory usage by freeing unused memory  */
   void shrink_to_fit();
+
+#ifndef SWIG
 
   ////////////////////
   // Element Access //
@@ -211,6 +229,8 @@ public:
   /** @brief swaps the contents  */
   void swap(std::vector<value_type>& other);
 
+#endif // SWIG
+
 private:
   std::vector<value_type> container_;
 
@@ -239,6 +259,28 @@ private:
    * If not provided, the planner should use the current state of the robot is used and defined as fixed.
    */
   value_type start_instruction_{ NullInstruction() };
+
+public:
+
+#ifdef SWIG
+
+  %extend
+  {
+    std::vector<tesseract_planning::Instruction> getInstructions()
+    {
+      std::vector<tesseract_planning::Instruction> o;
+      std::copy($self->begin(), $self->end(), std::back_inserter(o));
+      return o;
+    }
+
+    void setInstructions(std::vector<tesseract_planning::Instruction> instructions)
+    {
+      $self->swap(instructions);
+    }
+  }
+
+#endif // SWIG
+
 };
 
 }  // namespace tesseract_planning

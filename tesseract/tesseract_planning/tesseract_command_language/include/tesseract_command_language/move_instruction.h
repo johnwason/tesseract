@@ -37,6 +37,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_command_language/manipulator_info.h>
 #include <tesseract_command_language/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::MoveInstruction)
+#endif // SWIG
+
 namespace tesseract_planning
 {
 enum class MoveInstructionType : int
@@ -89,7 +93,9 @@ public:
 
   bool isStart() const;
 
+#ifndef SWIG
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
+#endif // SWIG
 
 private:
   int type_{ static_cast<int>(InstructionType::MOVE_INSTRUCTION) };

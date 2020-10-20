@@ -32,6 +32,18 @@
 //#define SWIG_PYTHON_EXTRA_NATIVE_CONTAINERS
 %}
 
+%include <std_shared_ptr.i>
+%include <std_string.i>
+%include <std_vector.i>
+%include <std_pair.i>
+%include <std_map.i>
+%include <std_unordered_map.i>
+%include <std_array.i>
+%include <stdint.i>
+%include <attribute.i>
+%include <exception.i>
+%include <pybuffer.i>
+
 %{
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/directed_graph.hpp>
@@ -100,18 +112,6 @@
 #include <tesseract_command_language/command_language.h>
 
 %}
-
-%include <std_shared_ptr.i>
-%include <std_string.i>
-%include <std_vector.i>
-%include <std_pair.i>
-%include <std_map.i>
-%include <std_unordered_map.i>
-%include <std_array.i>
-%include <stdint.i>
-%include <attribute.i>
-%include <exception.i>
-%include <pybuffer.i>
 
 %exception {
   try {
@@ -240,9 +240,46 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 
 // tesseract_command_language
 #define TESSERACT_COMMAND_LANGUAGE_PUBLIC
+%{
+namespace std
+{
+  template<typename T> struct remove_reference<swig::SwigPySequence_Ref<T>>
+  {
+    typedef T type;
+  };
+
+  template<typename T> struct remove_reference<const swig::SwigPySequence_Ref<T>>
+  {
+    typedef const T type;
+  };
+
+  template<typename T> struct remove_reference<SwigValueWrapper<T>>
+  {
+    typedef T type;
+  };
+
+  template<typename T> struct remove_reference<const SwigValueWrapper<T>>
+  {
+    typedef const T type;
+  };
+
+  template<typename T> struct remove_reference<SwigValueWrapper<T>&>
+  {
+    typedef T type;
+  };
+
+  template<typename T> struct remove_reference<const SwigValueWrapper<T>&>
+  {
+    typedef const T type;
+  };
+
+}
+%}
+
+
 %include "tesseract_command_language/core/waypoint.h"
 %include "tesseract_command_language/core/instruction.h"
-//%include "tesseract_command_language/command_language.h"
+%include "tesseract_command_language/command_language.h"
 
 
 /*

@@ -46,7 +46,9 @@ public:
 
   void print(const std::string& prefix = "") const;
 
+#ifndef SWIG
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
+#endif // SWIG
 };
 }  // namespace tesseract_planning
 

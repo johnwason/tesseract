@@ -39,6 +39,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_common/utils.h>
 #include <tesseract_command_language/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::StateWaypoint)
+#endif // SWIG
+
 namespace tesseract_planning
 {
 class TESSERACT_COMMAND_LANGUAGE_PUBLIC StateWaypoint
@@ -52,7 +56,9 @@ public:
 
   void print(const std::string& prefix = "") const;
 
+#ifndef SWIG
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
+#endif // SWIG
 
   /** @brief The joint corresponding to the position vector. */
   std::vector<std::string> joint_names;
