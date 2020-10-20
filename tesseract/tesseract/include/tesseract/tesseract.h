@@ -44,6 +44,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_command_language/manipulator_info.h>
 #include <tesseract/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract::Tesseract)
+#endif // SWIG
+
 namespace tesseract
 {
 /**
@@ -81,10 +85,13 @@ public:
   bool init(const std::string& urdf_string,
             const std::string& srdf_string,
             const tesseract_scene_graph::ResourceLocator::Ptr& locator);
+
+  #ifndef SWIG
   bool init(const boost::filesystem::path& urdf_path, const tesseract_scene_graph::ResourceLocator::Ptr& locator);
   bool init(const boost::filesystem::path& urdf_path,
             const boost::filesystem::path& srdf_path,
             const tesseract_scene_graph::ResourceLocator::Ptr& locator);
+  #endif // SWIG
 
   bool init(const tesseract_environment::Environment& env, const ManipulatorManager& manipulator_manager);
 

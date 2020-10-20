@@ -39,6 +39,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_kinematics/core/inverse_kinematics_factory.h>
 #include <tesseract/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract::ManipulatorManager)
+#endif // SWIG
+
 namespace tesseract
 {
 class TESSERACT_PUBLIC ManipulatorManager

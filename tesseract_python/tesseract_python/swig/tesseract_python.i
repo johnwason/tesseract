@@ -111,6 +111,9 @@
 #include <tesseract_command_language/core/instruction.h>
 #include <tesseract_command_language/command_language.h>
 
+// tesseract
+#include <tesseract/tesseract.h>
+
 %}
 
 %exception {
@@ -281,10 +284,14 @@ namespace std
 %include "tesseract_command_language/core/instruction.h"
 %include "tesseract_command_language/command_language.h"
 
+// tesseract
+#define TESSERACT_PUBLIC
+%include "tesseract/manipulator_manager.h"
+%include "tesseract/tesseract_init_info.h"
+%include "tesseract/tesseract.h"
+
 
 /*
-%include "tesseract_environment/core/state_solver.i"
-%include "tesseract_environment/core/environment.i"
 %include "tesseract/forward_kinematics_manager.i"
 %include "tesseract/inverse_kinematics_manager.i"
 %include "tesseract/tesseract.i"
