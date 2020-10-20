@@ -116,6 +116,9 @@
 // tesseract
 #include <tesseract/tesseract.h>
 
+// tesseract_visualization
+#include <tesseract_visualization/visualization.h>
+
 %}
 
 %exception {
@@ -294,11 +297,12 @@ namespace std
 %include "tesseract/tesseract_init_info.h"
 %include "tesseract/tesseract.h"
 
+// tesseract_visualization
+#define TESSERACT_VISUALIZATION_PUBLIC
+%include "tesseract_visualization/visualization.h"
+
 
 /*
-%include "tesseract/forward_kinematics_manager.i"
-%include "tesseract/inverse_kinematics_manager.i"
-%include "tesseract/tesseract.i"
 %include "tesseract_visualization/visualization.i"
 %include "tesseract_planning/tesseract_motion_planners/core/waypoint.i"
 %include "tesseract_planning/tesseract_motion_planners/core/utils.i"
