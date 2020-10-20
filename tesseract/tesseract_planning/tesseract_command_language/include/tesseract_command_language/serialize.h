@@ -35,9 +35,15 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
+#ifndef SWIG
 TESSERACT_COMMAND_LANGUAGE_PUBLIC std::shared_ptr<tinyxml2::XMLDocument> toXMLDocument(const Instruction& instruction);
 
 TESSERACT_COMMAND_LANGUAGE_PUBLIC bool toXMLFile(const Instruction& instruction, const std::string& file_path);
+#endif // SWIG
+
+#ifdef SWIG
+%rename(commandToXMLString) toXMLString(const Instruction& instruction);
+#endif // SWIG
 
 TESSERACT_COMMAND_LANGUAGE_PUBLIC std::string toXMLString(const Instruction& instruction);
 

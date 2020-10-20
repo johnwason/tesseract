@@ -110,6 +110,8 @@
 #include <tesseract_command_language/core/waypoint.h>
 #include <tesseract_command_language/core/instruction.h>
 #include <tesseract_command_language/command_language.h>
+#include <tesseract_command_language/serialize.h>
+#include <tesseract_command_language/deserialize.h>
 
 // tesseract
 #include <tesseract/tesseract.h>
@@ -283,6 +285,8 @@ namespace std
 %include "tesseract_command_language/core/waypoint.h"
 %include "tesseract_command_language/core/instruction.h"
 %include "tesseract_command_language/command_language.h"
+%include "tesseract_command_language/serialize.h"
+%include "tesseract_command_language/deserialize.h"
 
 // tesseract
 #define TESSERACT_PUBLIC
