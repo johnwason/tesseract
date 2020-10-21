@@ -158,6 +158,15 @@
 #include <tesseract_motion_planners/descartes/serialize.h>
 #include <tesseract_motion_planners/descartes/deserialize.h>
 
+// tesseract_motion_planners_simple
+#include <tesseract_motion_planners/simple/profile/simple_planner_profile.h>
+#include <tesseract_motion_planners/simple/profile/simple_planner_default_lvs_plan_profile.h>
+#include <tesseract_motion_planners/simple/profile/simple_planner_interpolation_plan_profile.h>
+#include <tesseract_motion_planners/simple/step_generators/fixed_size_assign_position.h>
+#include <tesseract_motion_planners/simple/step_generators/fixed_size_interpolation.h>
+#include <tesseract_motion_planners/simple/step_generators/lvs_interpolation.h>
+#include <tesseract_motion_planners/simple/simple_motion_planner.h>
+
 %}
 
 %exception {
@@ -391,3 +400,13 @@ namespace std
 %include "tesseract_motion_planners/descartes/problem_generators/default_problem_generator.h"
 %include "tesseract_motion_planners/descartes/serialize.h"
 %include "tesseract_motion_planners/descartes/deserialize.h"
+
+// tesseract_motion_planners_simple
+#define TESSERACT_MOTION_PLANNERS_SIMPLE_PUBLIC
+%include "tesseract_motion_planners/simple/profile/simple_planner_profile.h"
+%include "tesseract_motion_planners/simple/profile/simple_planner_default_lvs_plan_profile.h"
+%include "tesseract_motion_planners/simple/profile/simple_planner_interpolation_plan_profile.h"
+%include "tesseract_motion_planners/simple/step_generators/fixed_size_assign_position.h"
+%include "tesseract_motion_planners/simple/step_generators/fixed_size_interpolation.h"
+%include "tesseract_motion_planners/simple/step_generators/lvs_interpolation.h"
+%include "tesseract_motion_planners/simple/simple_motion_planner.h"
