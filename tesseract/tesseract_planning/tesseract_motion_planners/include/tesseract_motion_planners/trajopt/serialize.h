@@ -35,19 +35,24 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
+#ifndef SWIG
 TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC std::shared_ptr<tinyxml2::XMLDocument>
 toXMLDocument(const TrajOptPlanProfile& plan_profile);
 
 TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC bool toXMLFile(const TrajOptPlanProfile& plan_profile,
                                                         const std::string& file_path);
 
+#endif // SWIG
+
 TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC std::string toXMLString(const TrajOptPlanProfile& plan_profile);
 
+#ifndef SWIG
 TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC std::shared_ptr<tinyxml2::XMLDocument>
 toXMLDocument(const TrajOptCompositeProfile& composite_profile);
 
 TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC bool toXMLFile(const TrajOptCompositeProfile& composite_profile,
                                                         const std::string& file_path);
+#endif // SWIG
 
 TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC std::string toXMLString(const TrajOptCompositeProfile& composite_profile);
 

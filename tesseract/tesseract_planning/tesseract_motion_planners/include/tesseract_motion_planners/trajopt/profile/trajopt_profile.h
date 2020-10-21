@@ -37,6 +37,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_command_language/manipulator_info.h>
 #include <tesseract_motion_planners/trajopt/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::TrajOptPlanProfile)
+#endif // SWIG
+
 namespace tesseract_planning
 {
 class TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC TrajOptPlanProfile
@@ -59,7 +63,9 @@ public:
                      const std::vector<std::string>& active_links,
                      int index) = 0;
 
+#ifndef SWIG
   virtual tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const = 0;
+#endif // SWIG
 };
 
 class TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC TrajOptCompositeProfile
@@ -75,11 +81,18 @@ public:
                      const std::vector<std::string>& active_links,
                      const std::vector<int>& fixed_indices) = 0;
 
+#ifndef SWIG
   virtual tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const = 0;
+#endif // SWIG
 };
 
 using TrajOptCompositeProfileMap = std::unordered_map<std::string, TrajOptCompositeProfile::Ptr>;
 using TrajOptPlanProfileMap = std::unordered_map<std::string, TrajOptPlanProfile::Ptr>;
 }  // namespace tesseract_planning
+
+#ifdef SWIG
+%template(TrajOptCompositeProfileMap) std::unordered_map<std::string, tesseract_planning::TrajOptCompositeProfile::Ptr>;
+%template(TrajOptPlanProfileMap) std::unordered_map<std::string, tesseract_planning::TrajOptPlanProfile::Ptr>;
+#endif // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_TRAJOPT_PROFILE_H

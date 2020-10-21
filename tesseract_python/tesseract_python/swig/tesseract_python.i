@@ -116,6 +116,24 @@
 // tesseract
 #include <tesseract/tesseract.h>
 
+// tesseract_motion_planners
+#include <tesseract_motion_planners/core/planner.h>
+#include <tesseract_motion_planners/robot_config.h>
+
+// trajopt
+#include <trajopt/problem_description.hpp>
+
+// tesseract_motion_planners_trajopt
+#include <tesseract_motion_planners/trajopt/trajopt_motion_planner.h>
+#include <tesseract_motion_planners/trajopt/trajopt_collision_config.h>
+#include <tesseract_motion_planners/trajopt/trajopt_utils.h>
+#include <tesseract_motion_planners/trajopt/profile/trajopt_profile.h>
+#include <tesseract_motion_planners/trajopt/profile/trajopt_default_composite_profile.h>
+#include <tesseract_motion_planners/trajopt/profile/trajopt_default_plan_profile.h>
+#include <tesseract_motion_planners/trajopt/problem_generators/default_problem_generator.h>
+#include <tesseract_motion_planners/trajopt/serialize.h>
+#include <tesseract_motion_planners/trajopt/deserialize.h>
+
 // tesseract_visualization
 #include <tesseract_visualization/visualization.h>
 
@@ -148,6 +166,7 @@
 %template(map_string_vector_double) std::unordered_map<std::string, std::vector<double> >;
 %template(map_string_double) std::unordered_map<std::string, double>;
 %template(map_string_map_string_double) std::unordered_map<std::string, std::unordered_map<std::string, double> >;
+%template(map_string_map_string_string) std::unordered_map<std::string, std::unordered_map<std::string, std::string> >;
 %template(map_string_map_string_map_string_double) std::unordered_map<std::string, std::unordered_map<std::string, std::unordered_map<std::string, double> > >;
 
 %template(array2_int) std::array<int,2>;
@@ -297,19 +316,38 @@ namespace std
 %include "tesseract/tesseract_init_info.h"
 %include "tesseract/tesseract.h"
 
+// tesseract_motion_planners
+#define TESSERACT_MOTION_PLANNERS_CORE_PUBLIC
+%include "tesseract_motion_planners/core/types.h"
+%include "tesseract_motion_planners/core/trajectory_validator.h"
+%include "tesseract_motion_planners/core/planner.h"
+%include "tesseract_motion_planners/robot_config.h"
+
+// trajopt
+
+// Including trajopt headers is too noisy, use *.i file instead
+%include "trajopt/problem_description.i"
+
 // tesseract_visualization
 #define TESSERACT_VISUALIZATION_PUBLIC
 %include "tesseract_visualization/visualization.h"
 
+// tesseract_motion_planners_trajopt
+#define TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC
+
+%include "tesseract_motion_planners/trajopt/trajopt_collision_config.h"
+%include "tesseract_motion_planners/trajopt/profile/trajopt_profile.h"
+%include "tesseract_motion_planners/trajopt/profile/trajopt_default_plan_profile.h"
+%include "tesseract_motion_planners/trajopt/profile/trajopt_default_composite_profile.h"
+
+%include "tesseract_motion_planners/trajopt/trajopt_utils.h"
+%include "tesseract_motion_planners/trajopt/trajopt_motion_planner.h"
+%include "tesseract_motion_planners/trajopt/serialize.h"
+%include "tesseract_motion_planners/trajopt/deserialize.h"
+%include "tesseract_motion_planners/trajopt/problem_generators/default_problem_generator.h"
+
 
 /*
-%include "tesseract_visualization/visualization.i"
-%include "tesseract_planning/tesseract_motion_planners/core/waypoint.i"
-%include "tesseract_planning/tesseract_motion_planners/core/utils.i"
-%include "tesseract_planning/tesseract_motion_planners/core/types.i"
-%include "tesseract_planning/tesseract_motion_planners/core/trajectory_validator.i"
-%include "tesseract_planning/tesseract_motion_planners/core/planner.i"
-%include "trajopt/problem_description.i"
 %include "tesseract_planning/tesseract_motion_planners/trajopt/config/trajopt_planner_config.i"
 %include "tesseract_planning/tesseract_motion_planners/trajopt/config/trajopt_planner_default_config.i"
 %include "tesseract_planning/tesseract_motion_planners/trajopt/trajopt_motion_planner.i"*/

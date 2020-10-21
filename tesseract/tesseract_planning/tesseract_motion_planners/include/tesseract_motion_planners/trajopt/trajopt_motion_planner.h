@@ -35,6 +35,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_motion_planners/trajopt/profile/trajopt_profile.h>
 #include <tesseract_motion_planners/trajopt/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::TrajOptMotionPlannerStatusCategory)
+#endif // SWIG
+
 namespace tesseract_planning
 {
 class TrajOptMotionPlannerStatusCategory;

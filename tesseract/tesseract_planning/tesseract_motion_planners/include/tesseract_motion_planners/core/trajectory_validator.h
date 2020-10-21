@@ -34,6 +34,10 @@
 #include <trajopt/utils.hpp>
 #include <tesseract_motion_planners/core/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::TrajectoryValidator)
+#endif // SWIG
+
 namespace tesseract_planning
 {
 /** @brief Enumeration of the types of validation checks that can be performed on a planned trajectory */

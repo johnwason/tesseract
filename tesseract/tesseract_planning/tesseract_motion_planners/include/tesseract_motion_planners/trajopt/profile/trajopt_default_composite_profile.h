@@ -38,6 +38,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_motion_planners/trajopt/profile/trajopt_profile.h>
 #include <tesseract_motion_planners/trajopt/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::TrajOptDefaultCompositeProfile)
+#endif // SWIG
+
 namespace tesseract_planning
 {
 class TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC TrajOptDefaultCompositeProfile : public TrajOptCompositeProfile
@@ -98,7 +102,9 @@ public:
              const std::vector<std::string>& active_links,
              const std::vector<int>& fixed_indices) override;
 
+#ifndef SWIG
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const override;
+#endif // SWIG
 
 protected:
   void addCollisionCost(trajopt::ProblemConstructionInfo& pci,

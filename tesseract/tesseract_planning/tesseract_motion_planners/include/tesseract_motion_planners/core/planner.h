@@ -52,6 +52,10 @@ public:
   /** @brief Get the name of this planner */
   const std::string& getName() const { return name_; }
 
+#ifdef SWIG
+%rename(_solve) solve;
+#endif // SWIG
+
   /**
    * @brief Solve the planner request problem
    * @param request The planning request
@@ -72,6 +76,15 @@ public:
 
   /** @brief Clear the data structures used by the planner */
   virtual void clear() = 0;
+
+#ifdef SWIG
+  %pythoncode %{
+  def solve(self, check_type=PostPlanCheckType_DISCRETE_CONTINUOUS_COLLISION, verbose=False):
+      response = PlannerResponse()
+      status_code = self._solve(response, verbose)
+      return status_code, response
+  %}
+#endif // SWIG
 
 protected:
   std::string name_; /**< @brief The name of this planner */

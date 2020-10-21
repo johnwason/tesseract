@@ -32,6 +32,11 @@
 #include <tesseract_command_language/command_language.h>
 #include <tesseract_motion_planners/core/visibility_control.h>
 
+#ifdef SWIG
+%attribute_readonly(tesseract_planning::PlannerResponse, %arg(std::vector<tesseract_planning::Instruction>), succeeded_instructions, get_succeeded_instructions, %arg(new std::vector<tesseract_planning::Instruction>(tesseract_planning_PlannerResponse__get_succeeded_instructions(self_))));
+%attribute_readonly(tesseract_planning::PlannerResponse, %arg(std::vector<tesseract_planning::Instruction>), failed_instructions, get_failed_instructions, %arg(new std::vector<tesseract_planning::Instruction>(tesseract_planning_PlannerResponse__get_failed_instructions(self_))));
+#endif // SWIG
+
 namespace tesseract_planning
 {
 /**
@@ -83,10 +88,30 @@ struct TESSERACT_MOTION_PLANNERS_CORE_PUBLIC PlannerResponse
 {
   CompositeInstruction results;
   tesseract_common::StatusCode status;                                     /**< @brief The status information */
+
+#ifndef SWIG
   std::vector<std::reference_wrapper<Instruction>> succeeded_instructions; /**< @brief Waypoints for which the planner
                                                                         succeeded */
   std::vector<std::reference_wrapper<Instruction>> failed_instructions;    /**< @brief Waypoints for which the planner
                                                                               failed */
+#else // SWIG
+  %extend
+  {
+    std::vector<tesseract_planning::Instruction> _get_succeeded_instructions()
+    {
+      std::vector<tesseract_planning::Instruction> o;
+      for (auto x : $self->succeeded_instructions) o.push_back(x.get());      
+      return o;
+    }
+    std::vector<tesseract_planning::Instruction> _get_failed_instructions()
+    {
+      std::vector<tesseract_planning::Instruction> o;
+      for (auto x : $self->failed_instructions) o.push_back(x.get());      
+      return o;
+    }
+  }
+#endif // SWIG
+
   /**
    * @brief data Planner specific data. For planners included in Tesseract_planning this is the planner problem that was
    * solved
