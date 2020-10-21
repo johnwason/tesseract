@@ -157,6 +157,7 @@ public:
                const Eigen::Ref<const Eigen::VectorXd>& max_velocity_scaling_factor,
                const Eigen::Ref<const Eigen::VectorXd>& max_acceleration_scaling_factor) const;
 
+#ifndef SWIG
   /**
    * @brief Compute the time stamps for a flattened vector of move instruction
    * @param trajectory Flattended vector of move instruction
@@ -216,6 +217,53 @@ public:
                const Eigen::Ref<const Eigen::VectorXd>& max_acceleration,
                const Eigen::Ref<const Eigen::VectorXd>& max_velocity_scaling_factors,
                const Eigen::Ref<const Eigen::VectorXd>& max_acceleration_scaling_factors) const;
+#else // SWIG
+  %extend {
+    bool compute(const std::vector<Instruction>& trajectory,
+               const double& max_velocity,
+               const double& max_acceleration,
+               double max_velocity_scaling_factor = 1.0,
+               double max_acceleration_scaling_factor = 1.0) const
+    {
+      std::vector<std::reference_wrapper<tesseract_planning::Instruction>> trajectory_inout;
+      for (auto& inst : trajectory) trajectory_inout.push_back(inst);
+      return compute(trajectory_inout, max_velocity, max_acceleration, max_velocity_scaling_factory, max_acceleration_scaling_factory);
+    }
+
+    bool compute(const std::vector<Instruction>& trajectory,
+               const std::vector<double>& max_velocity,
+               const std::vector<double>& max_acceleration,
+               double max_velocity_scaling_factor = 1.0,
+               double max_acceleration_scaling_factor = 1.0) const
+    {
+      std::vector<std::reference_wrapper<tesseract_planning::Instruction>> trajectory_inout;
+      for (auto& inst : trajectory) trajectory_inout.push_back(inst);
+      return compute(trajectory_inout, max_velocity, max_acceleration, max_velocity_scaling_factory, max_acceleration_scaling_factory);
+    }
+
+    bool compute(const std::vector<Instruction>& trajectory,
+               const Eigen::Ref<const Eigen::VectorXd>& max_velocity,
+               const Eigen::Ref<const Eigen::VectorXd>& max_acceleration,
+               double max_velocity_scaling_factor = 1.0,
+               double max_acceleration_scaling_factor = 1.0) const
+    {
+      std::vector<std::reference_wrapper<tesseract_planning::Instruction>> trajectory_inout;
+      for (auto& inst : trajectory) trajectory_inout.push_back(inst);
+      return compute(trajectory_inout, max_velocity, max_acceleration, max_velocity_scaling_factory, max_acceleration_scaling_factory);
+    }
+
+    bool compute(const std::vector<Instruction>& trajectory,
+               const Eigen::Ref<const Eigen::VectorXd>& max_velocity,
+               const Eigen::Ref<const Eigen::VectorXd>& max_acceleration,
+               const Eigen::Ref<const Eigen::VectorXd>& max_velocity_scaling_factors,
+               const Eigen::Ref<const Eigen::VectorXd>& max_acceleration_scaling_factors) const
+    {
+      std::vector<std::reference_wrapper<tesseract_planning::Instruction>> trajectory_inout;
+      for (auto& inst : trajectory) trajectory_inout.push_back(inst);
+      return compute(trajectory_inout, max_velocity, max_acceleration, max_velocity_scaling_factory, max_acceleration_scaling_factory);
+    }
+  }
+#endif
 
 private:
   bool add_points_;  /// @brief If true, add two points to trajectory (first and last segments).

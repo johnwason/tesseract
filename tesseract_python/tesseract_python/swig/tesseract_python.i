@@ -167,6 +167,9 @@
 #include <tesseract_motion_planners/simple/step_generators/lvs_interpolation.h>
 #include <tesseract_motion_planners/simple/simple_motion_planner.h>
 
+// tesseract_time_parameterization
+#include <tesseract_time_parameterization/iterative_spline_parameterization.h>
+
 %}
 
 %exception {
@@ -410,3 +413,7 @@ namespace std
 %include "tesseract_motion_planners/simple/step_generators/fixed_size_interpolation.h"
 %include "tesseract_motion_planners/simple/step_generators/lvs_interpolation.h"
 %include "tesseract_motion_planners/simple/simple_motion_planner.h"
+
+// tesseract_time_parameterization
+#define TESSERACT_TIME_PARAMETERIZATION_PUBLIC
+%include "tesseract_time_parameterization/iterative_spline_parameterization.h"
