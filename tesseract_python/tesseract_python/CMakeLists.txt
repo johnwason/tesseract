@@ -94,6 +94,7 @@ set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract)
 set(SWIG_OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR})
 swig_add_module(tesseract_python python swig/tesseract_python.i)
 swig_link_libraries(tesseract_python tesseract::tesseract_motion_planners_trajopt tesseract::tesseract_motion_planners_ompl
+  tesseract::tesseract_motion_planners_descartes
   tesseract::tesseract_motion_planners_core tesseract::tesseract_visualization tesseract::tesseract 
   trajopt::trajopt ${PYTHON_LIBRARIES} ${EIGEN3_LIBRARIES} ${PYTHON_LIBRARIES})
 target_include_directories(${SWIG_MODULE_tesseract_python_REAL_NAME} PUBLIC 

@@ -144,8 +144,19 @@
 #include <tesseract_motion_planners/ompl/profile/ompl_profile.h>
 #include <tesseract_motion_planners/ompl/profile/ompl_default_plan_profile.h>
 #include <tesseract_motion_planners/ompl/ompl_motion_planner.h>
+#include <tesseract_motion_planners/ompl/problem_generators/default_problem_generator.h>
 #include <tesseract_motion_planners/ompl/serialize.h>
 #include <tesseract_motion_planners/ompl/deserialize.h>
+
+// tesseract_motion_planner_descartes
+#include <tesseract_motion_planners/descartes/descartes_problem.h>
+#include <tesseract_motion_planners/descartes/descartes_motion_planner_status_category.h>
+#include <tesseract_motion_planners/descartes/profile/descartes_profile.h>
+#include <tesseract_motion_planners/descartes/profile/descartes_default_plan_profile.h>
+#include <tesseract_motion_planners/descartes/descartes_motion_planner.h>
+#include <tesseract_motion_planners/descartes/problem_generators/default_problem_generator.h>
+#include <tesseract_motion_planners/descartes/serialize.h>
+#include <tesseract_motion_planners/descartes/deserialize.h>
 
 %}
 
@@ -366,12 +377,17 @@ namespace std
 %include "tesseract_motion_planners/ompl/profile/ompl_profile.h"
 %include "tesseract_motion_planners/ompl/profile/ompl_default_plan_profile.h"
 %include "tesseract_motion_planners/ompl/ompl_motion_planner.h"
+%include "tesseract_motion_planners/ompl/problem_generators/default_problem_generator.h"
 %include "tesseract_motion_planners/ompl/serialize.h"
 %include "tesseract_motion_planners/ompl/deserialize.h"
 
-
-/*
-%include "tesseract_planning/tesseract_motion_planners/trajopt/config/trajopt_planner_config.i"
-%include "tesseract_planning/tesseract_motion_planners/trajopt/config/trajopt_planner_default_config.i"
-%include "tesseract_planning/tesseract_motion_planners/trajopt/trajopt_motion_planner.i"*/
-
+// tesseract_motion_planner_descartes
+#define TESSERACT_MOTION_PLANNERS_DESCARTES_PUBLIC
+%include "tesseract_motion_planners/descartes/descartes_problem.h"
+%include "tesseract_motion_planners/descartes/descartes_motion_planner_status_category.h"
+%include "tesseract_motion_planners/descartes/profile/descartes_profile.h"
+%include "tesseract_motion_planners/descartes/profile/descartes_default_plan_profile.h"
+%include "tesseract_motion_planners/descartes/descartes_motion_planner.h"
+%include "tesseract_motion_planners/descartes/problem_generators/default_problem_generator.h"
+%include "tesseract_motion_planners/descartes/serialize.h"
+%include "tesseract_motion_planners/descartes/deserialize.h"

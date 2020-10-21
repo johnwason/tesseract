@@ -34,6 +34,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_common/status_code.h>
 #include <tesseract_motion_planners/descartes/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::DescartesMotionPlannerStatusCategory)
+#endif // SWIG
+
 namespace tesseract_planning
 {
 /**

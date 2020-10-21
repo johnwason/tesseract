@@ -37,6 +37,12 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <descartes_light/interface/edge_evaluator.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::DescartesPlanDefaultProfile<double>)
+%ignore tesseract_planning::DescartesDefaultPlanProfile::edge_evaluator;
+%ignore tesseract_planning::DescartesDefaultPlanProfile::is_valid;
+#endif // SWIG
+
 namespace tesseract_planning
 {
 template <typename FloatType>
@@ -54,9 +60,12 @@ public:
   DescartesDefaultPlanProfile& operator=(DescartesDefaultPlanProfile&&) noexcept = default;
   DescartesDefaultPlanProfile(const tinyxml2::XMLElement& xml_element);
 
+#ifndef SWIG
   PoseSamplerFn target_pose_sampler = [](const Eigen::Isometry3d& tool_pose) {
     return tesseract_common::VectorIsometry3d({ tool_pose });
   };
+#endif // SWIG
+
   DescartesEdgeEvaluatorAllocatorFn<FloatType> edge_evaluator{ nullptr };
   double timing_constraint = std::numeric_limits<FloatType>::max();
 
@@ -95,5 +104,9 @@ public:
 using DescartesDefaultPlanProfileF = DescartesDefaultPlanProfile<float>;
 using DescartesDefaultPlanProfileD = DescartesDefaultPlanProfile<double>;
 }  // namespace tesseract_planning
+
+#ifdef SWIG
+%template(DescartesDefaultPlanProfileD) tesseract_planning::DescartesDefaultPlanProfile<double>;
+#endif // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_DESCARTES_DESCARTES_DEFAULT_PLAN_PROFILE_H

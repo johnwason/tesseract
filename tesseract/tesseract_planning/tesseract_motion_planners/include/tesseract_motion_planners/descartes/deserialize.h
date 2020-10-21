@@ -34,6 +34,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
+#ifndef SWIG
 TESSERACT_MOTION_PLANNERS_DESCARTES_PUBLIC DescartesDefaultPlanProfile<double>
 descartesPlanParser(const tinyxml2::XMLElement& xml_element);
 
@@ -45,6 +46,7 @@ descartesPlanFromXMLDocument(const tinyxml2::XMLDocument& xml_doc);
 
 TESSERACT_MOTION_PLANNERS_DESCARTES_PUBLIC DescartesDefaultPlanProfile<double>
 descartesPlanFromXMLFile(const std::string& file_path);
+#endif // SWIG
 
 TESSERACT_MOTION_PLANNERS_DESCARTES_PUBLIC DescartesDefaultPlanProfile<double>
 descartesPlanFromXMLString(const std::string& xml_string);

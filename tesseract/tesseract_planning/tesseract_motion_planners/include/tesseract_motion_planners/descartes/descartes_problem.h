@@ -60,4 +60,9 @@ using DescartesProblemF = DescartesProblem<float>;
 using DescartesProblemD = DescartesProblem<double>;
 
 }  // namespace tesseract_planning
+
+#ifdef SWIG
+%template(DescartesProblemD) tesseract_planning::DescartesProblem<double>;
+#endif // SWIG
+
 #endif  // TESSERACT_MOTION_PLANNERS_DESCARTES_PROBLEM_H

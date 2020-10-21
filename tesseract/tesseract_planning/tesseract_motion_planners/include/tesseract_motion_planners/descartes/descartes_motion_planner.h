@@ -74,4 +74,9 @@ using DescartesMotionPlannerD = DescartesMotionPlanner<double>;
 using DescartesMotionPlannerF = DescartesMotionPlanner<float>;
 
 }  // namespace tesseract_planning
+
+#ifdef SWIG
+%template(DescartesMotionPlannerD) tesseract_planning::DescartesMotionPlanner<double>;
+#endif // SWIG
+
 #endif  // TESSERACT_MOTION_PLANNERS_DECARTES_MOTION_PLANNER_H
