@@ -27,6 +27,7 @@ find_package(tesseract_geometry REQUIRED)
 find_package(tesseract_visualization REQUIRED)
 find_package(tesseract_collision REQUIRED)
 find_package(tesseract_time_parameterization REQUIRED)
+find_package(tesseract_kinematics REQUIRED)
 find_package(PCL REQUIRED COMPONENTS core features filters io segmentation surface)
 find_package(trajopt REQUIRED)
 
@@ -96,8 +97,12 @@ set(SWIG_OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR})
 swig_add_module(tesseract_python python swig/tesseract_python.i)
 swig_link_libraries(tesseract_python tesseract::tesseract_motion_planners_trajopt tesseract::tesseract_motion_planners_ompl
   tesseract::tesseract_motion_planners_descartes tesseract::tesseract_motion_planners_simple
-  tesseract::tesseract_time_parameterization
+  tesseract::tesseract_time_parameterization tesseract::tesseract_scene_graph
+  tesseract::tesseract_kinematics_core  tesseract::tesseract_kinematics_ikfast tesseract::tesseract_kinematics_opw
+  tesseract::tesseract_kinematics_kdl
+  tesseract::tesseract_collision_bullet tesseract::tesseract_collision_fcl
   tesseract::tesseract_motion_planners_core tesseract::tesseract_visualization tesseract::tesseract 
+  
   trajopt::trajopt ${PYTHON_LIBRARIES} ${EIGEN3_LIBRARIES} ${PYTHON_LIBRARIES})
 target_include_directories(${SWIG_MODULE_tesseract_python_REAL_NAME} PUBLIC 
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"

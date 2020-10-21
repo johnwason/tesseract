@@ -168,4 +168,18 @@ private:
 
 }  // namespace tesseract_planning
 
+#ifdef SWIG
+%extend tesseract_planning::Waypoint {
+    Waypoint(tesseract_planning::CartesianWaypoint&& inner_waypoint)
+    {
+      return new tesseract_planning::Waypoint(inner_waypoint);
+    }
+
+    Waypoint(tesseract_planning::JointWaypoint&& inner_waypoint)
+    {
+      return new tesseract_planning::Waypoint(inner_waypoint);
+    }
+}
+#endif // SWIG
+
 #endif  // TESSERACT_COMMAND_LANGUAGE_WAYPOINT_H

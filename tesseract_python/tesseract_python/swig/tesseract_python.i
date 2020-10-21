@@ -77,7 +77,7 @@
 #include <tesseract_kinematics/core/inverse_kinematics_factory.h>
 #include <tesseract_kinematics/core/rep_inverse_kinematics.h>
 #include <tesseract_kinematics/core/rop_inverse_kinematics.h>
-#include <tesseract_kinematics/ikfast/ikfast_inv_kin.h>
+//#include <tesseract_kinematics/ikfast/ikfast_inv_kin.h>
 #include <tesseract_kinematics/kdl/kdl_fwd_kin_chain.h>
 #include <tesseract_kinematics/kdl/kdl_fwd_kin_chain_factory.h>
 #include <tesseract_kinematics/kdl/kdl_fwd_kin_tree.h>
@@ -267,7 +267,7 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 %include "tesseract_kinematics/core/inverse_kinematics_factory.h"
 %include "tesseract_kinematics/core/rop_inverse_kinematics.h"
 %include "tesseract_kinematics/core/rep_inverse_kinematics.h"
-%include "tesseract_kinematics/ikfast/ikfast_inv_kin.h"
+//%include "tesseract_kinematics/ikfast/ikfast_inv_kin.h"
 %include "tesseract_kinematics/kdl/kdl_fwd_kin_chain.h"
 %include "tesseract_kinematics/kdl/kdl_fwd_kin_chain_factory.h"
 %include "tesseract_kinematics/kdl/kdl_fwd_kin_tree.h"
