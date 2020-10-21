@@ -91,9 +91,8 @@ public:
 
   void print(std::string prefix = "") const;
 
-#ifndef SWIG
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
-#endif // SWIG
+
   // C++ container support
 
   /** value_type */

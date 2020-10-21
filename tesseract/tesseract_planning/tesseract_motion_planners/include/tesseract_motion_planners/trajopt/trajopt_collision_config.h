@@ -66,9 +66,9 @@ struct TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC CollisionCostConfig
 
   /** @brief The collision coeff/weight */
   double coeff = 20;
-#ifndef SWIG
+
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
-#endif // SWIG
+
 };
 
 /**
@@ -94,9 +94,9 @@ struct TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC CollisionConstraintConfig
   double safety_margin_buffer = 0.05;
   /** @brief The collision coeff/weight */
   double coeff = 20;
-#ifndef SWIG
+
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
-#endif // SWIG
+
 };
 }  // namespace tesseract_planning
 

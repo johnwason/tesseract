@@ -195,6 +195,8 @@ tesseract_aligned_vector(VectorIsometry3d, Eigen::Isometry3d);
 tesseract_aligned_vector(VectorVector4d, Eigen::Vector4d);
 tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 
+%ignore toXML(tinyxml2::XMLDocument& doc) const;
+
 #define EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 #define TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #define TESSERACT_COMMON_IGNORE_WARNINGS_POP

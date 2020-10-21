@@ -56,9 +56,7 @@ public:
 
   void print(const std::string& prefix = "") const;
 
-#ifndef SWIG
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
-#endif // SWIG
 
   /** @brief The joint corresponding to the position vector. */
   std::vector<std::string> joint_names;

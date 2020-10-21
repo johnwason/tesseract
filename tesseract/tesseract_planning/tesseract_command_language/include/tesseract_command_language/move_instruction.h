@@ -93,9 +93,7 @@ public:
 
   bool isStart() const;
 
-#ifndef SWIG
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
-#endif // SWIG
 
 private:
   int type_{ static_cast<int>(InstructionType::MOVE_INSTRUCTION) };

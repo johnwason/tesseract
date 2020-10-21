@@ -168,11 +168,7 @@ public:
 
   void print(std::string prefix = "") const { instruction_->print(std::move(prefix)); }
 
-#ifndef SWIG
-
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const { return instruction_->toXML(doc); }
-
-#endif // SWIG
 
   template <typename T>
   T* cast()

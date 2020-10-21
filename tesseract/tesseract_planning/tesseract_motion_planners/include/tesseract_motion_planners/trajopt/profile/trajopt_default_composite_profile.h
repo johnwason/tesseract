@@ -102,9 +102,7 @@ public:
              const std::vector<std::string>& active_links,
              const std::vector<int>& fixed_indices) override;
 
-#ifndef SWIG
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const override;
-#endif // SWIG
 
 protected:
   void addCollisionCost(trajopt::ProblemConstructionInfo& pci,

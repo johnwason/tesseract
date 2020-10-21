@@ -63,9 +63,7 @@ public:
                      const std::vector<std::string>& active_links,
                      int index) = 0;
 
-#ifndef SWIG
   virtual tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const = 0;
-#endif // SWIG
 };
 
 class TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC TrajOptCompositeProfile
@@ -81,9 +79,7 @@ public:
                      const std::vector<std::string>& active_links,
                      const std::vector<int>& fixed_indices) = 0;
 
-#ifndef SWIG
   virtual tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const = 0;
-#endif // SWIG
 };
 
 using TrajOptCompositeProfileMap = std::unordered_map<std::string, TrajOptCompositeProfile::Ptr>;

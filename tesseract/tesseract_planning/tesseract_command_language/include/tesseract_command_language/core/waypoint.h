@@ -148,8 +148,6 @@ public:
 
   void print(const std::string& prefix = "") const { waypoint_->print(prefix); }
 
-#ifndef SWIG  
-
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const { return waypoint_->toXML(doc); }
 
   template <typename T>
@@ -163,8 +161,6 @@ public:
   {
     return static_cast<const T*>(waypoint_->recover());
   }
-
-#endif // SWIG
 
 private:
   std::unique_ptr<detail::WaypointInnerBase> waypoint_;
