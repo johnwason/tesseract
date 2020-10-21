@@ -40,6 +40,11 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_environment/core/environment.h>
 #include <tesseract_motion_planners/ompl/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::OMPLProblem)
+%ignore tesseract_planning::OMPLProblem::extractor;
+#endif // SWIG
+
 namespace tesseract_planning
 {
 struct OMPLProblem;

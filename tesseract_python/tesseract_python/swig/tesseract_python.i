@@ -137,6 +137,16 @@
 // tesseract_visualization
 #include <tesseract_visualization/visualization.h>
 
+// tesseract_motion_planners_ompl
+#include <tesseract_motion_planners/ompl/ompl_planner_configurator.h>
+#include <tesseract_motion_planners/ompl/ompl_problem.h>
+#include <tesseract_motion_planners/ompl/ompl_motion_planner_status_category.h>
+#include <tesseract_motion_planners/ompl/profile/ompl_profile.h>
+#include <tesseract_motion_planners/ompl/profile/ompl_default_plan_profile.h>
+#include <tesseract_motion_planners/ompl/ompl_motion_planner.h>
+#include <tesseract_motion_planners/ompl/serialize.h>
+#include <tesseract_motion_planners/ompl/deserialize.h>
+
 %}
 
 %exception {
@@ -347,6 +357,17 @@ namespace std
 %include "tesseract_motion_planners/trajopt/serialize.h"
 %include "tesseract_motion_planners/trajopt/deserialize.h"
 %include "tesseract_motion_planners/trajopt/problem_generators/default_problem_generator.h"
+
+// tesseract_motion_planners_ompl
+#define TESSERACT_MOTION_PLANNERS_OMPL_PUBLIC
+%include "tesseract_motion_planners/ompl/ompl_planner_configurator.h"
+%include "tesseract_motion_planners/ompl/ompl_problem.h"
+%include "tesseract_motion_planners/ompl/ompl_motion_planner_status_category.h"
+%include "tesseract_motion_planners/ompl/profile/ompl_profile.h"
+%include "tesseract_motion_planners/ompl/profile/ompl_default_plan_profile.h"
+%include "tesseract_motion_planners/ompl/ompl_motion_planner.h"
+%include "tesseract_motion_planners/ompl/serialize.h"
+%include "tesseract_motion_planners/ompl/deserialize.h"
 
 
 /*

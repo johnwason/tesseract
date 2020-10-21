@@ -37,6 +37,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_motion_planners/ompl/ompl_problem.h>
 #include <tesseract_motion_planners/ompl/visibility_control.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::OMPLPlanProfile)
+#endif // SWIG
+
 namespace tesseract_planning
 {
 class TESSERACT_MOTION_PLANNERS_OMPL_PUBLIC OMPLPlanProfile
@@ -91,5 +95,9 @@ using OMPLPlanProfileMap = std::unordered_map<std::string, OMPLPlanProfile::Ptr>
 /** @todo Currently OMPL does not have support of composite profile everything is handled by the plan profile */
 
 }  // namespace tesseract_planning
+
+#ifdef SWIG
+%template(OMPLPlanProfileMap) std::unordered_map<std::string, tesseract_planning::OMPLPlanProfile::Ptr>;
+#endif // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_OMPL_OMPL_PROFILE_H

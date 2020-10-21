@@ -35,10 +35,12 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
+#ifndef SWIG
 TESSERACT_MOTION_PLANNERS_OMPL_PUBLIC std::shared_ptr<tinyxml2::XMLDocument>
 toXMLDocument(const OMPLPlanProfile& plan_profile);
 
 TESSERACT_MOTION_PLANNERS_OMPL_PUBLIC bool toXMLFile(const OMPLPlanProfile& plan_profile, const std::string& file_path);
+#endif // SWIG
 
 TESSERACT_MOTION_PLANNERS_OMPL_PUBLIC std::string toXMLString(const OMPLPlanProfile& plan_profile);
 
