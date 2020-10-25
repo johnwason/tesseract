@@ -271,4 +271,14 @@ public:
 };
 }  // namespace tesseract_planning
 
+#ifdef SWIG
+%extend tesseract_planning::JointWaypoint {
+  JointWaypoint(std::vector<std::string> joint_names, const Eigen::VectorXd& other)
+  {
+    return new tesseract_planning::JointWaypoint(joint_names, other);
+  }
+}
+
+#endif // SWIG
+
 #endif  // TESSERACT_COMMAND_LANGUAGE_JOINT_WAYPOINT_H

@@ -38,9 +38,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_command_language/manipulator_info.h>
 #include <tesseract_command_language/visibility_control.h>
 
-#ifdef SWIG
-%shared_ptr(tesseract_planning::PlanInstruction)
-#endif // SWIG
 
 namespace tesseract_planning
 {
@@ -55,8 +52,6 @@ enum class PlanInstructionType : int
 class TESSERACT_COMMAND_LANGUAGE_PUBLIC PlanInstruction
 {
 public:
-  using Ptr = std::shared_ptr<PlanInstruction>;
-  using ConstPtr = std::shared_ptr<const PlanInstruction>;
 
   PlanInstruction(Waypoint waypoint,
                   PlanInstructionType type,

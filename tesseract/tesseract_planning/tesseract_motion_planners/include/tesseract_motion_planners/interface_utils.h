@@ -35,11 +35,15 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/simple/simple_motion_planner.h>
 #include <tesseract_motion_planners/simple/profile/simple_planner_default_plan_profile.h>
+#include <tesseract_motion_planners/core/utils.h>
 
 namespace tesseract_planning
 {
+#ifdef SWIG
+%rename(planningGenerateSeed) generateSeed;
+#endif // SWIG
 /** @brief Provided for backwards compatibility */
-inline CompositeInstruction generateSeed(const CompositeInstruction& instructions,
+CompositeInstruction generateSeed(const CompositeInstruction& instructions,
                                          const tesseract_environment::EnvState::ConstPtr& current_state,
                                          const tesseract::Tesseract::ConstPtr& tesseract,
                                          int freespace_steps = 10,

@@ -3,10 +3,47 @@ import os
 import re
 import numpy as np
 
-def test_trajopt_motion_planner_default_config():
-    t = _load_tesseract()
+def test_test_trajopt_freespace_joint_cart():
+    t,manip = _load_tesseract()
 
-    config = tesseract.TrajOptPlannerDefaultConfig(t,"manipulator", "tool0", np.eye(4))
+    fwd_kin = t.getManipulatorManager().getFwdKinematicSolver(manip.manipulator)
+    joint_names  = fwd_kin.getJointNames()
+    cur_state = t.getEnvironment().getCurrentState()
+
+    wp1 = tesseract.Waypoint(tesseract.JointWaypoint(joint_names, np.array([0,0,0,-1.57,0,0,0])))
+
+    wp2_H = np.array([[-1,0,0,-0.2],[0,1,0,0.4],[0,0,-1,0.2],[0,0,0,1]])
+    wp2 = tesseract.Waypoint(tesseract.CartesianWaypoint(wp2_H))
+
+    start_instruction = tesseract.Instruction(tesseract.PlanInstruction(wp1, tesseract.PlanInstructionType_START, "TEST_PROFILE"))
+
+    plan_f1 = tesseract.Instruction(tesseract.PlanInstruction(wp2, tesseract.PlanInstructionType_FREESPACE, "TEST_PROFILE"))
+
+    program = tesseract.CompositeInstruction("TEST_PROFILE")
+    program.setStartInstruction(start_instruction)
+    program.setManipulatorInfo(manip)
+    program.setInstructions([plan_f1])
+
+    seed = tesseract.planningGenerateSeed(program,cur_state,t)
+
+    plan_profile = tesseract.TrajOptDefaultPlanProfile()
+    composite_profile = tesseract.TrajOptDefaultCompositeProfile()
+
+    test_planner = tesseract.TrajOptMotionPlanner()
+    test_planner.plan_profiles["TEST_PROFILE"] = plan_profile
+    #test_planner.composite_profiles["TEST_PROFILE"] = composite_profile
+    test_planner.problem_generator = tesseract.DefaultTrajOptProblemGenerator
+
+    request = tesseract.PlannerRequest()
+    request.seed = seed
+    request.instructions = program
+    request.tesseract = t
+    request.env_state = t.getEnvironment().getCurrentState()
+
+
+def old():
+
+    config = tesseract.TrajOptPlannerFreespaceConfig(t,"manipulator", "tool0", np.eye(4))
 
     config.params.cnt_tolerance = 1e-5
 
@@ -38,7 +75,7 @@ def test_trajopt_motion_planner_default_config():
 
 
 
-def test_trajopt_motion_planner_pci():
+def disable_test_trajopt_motion_planner_pci():
     
     t = _load_tesseract()
 
@@ -134,7 +171,11 @@ def _load_tesseract():
 
     t.init(robot_urdf, robot_srdf, TesseractSupportResourceLocator())
 
-    return t
+    manip = tesseract.ManipulatorInfo()
+    manip.manipulator = "manipulator"
+    manip.manipulator_ik_solver = "OPWInvKin"
+
+    return t, manip
 
 class TesseractSupportResourceLocator(tesseract.ResourceLocator):
     def __init__(self):

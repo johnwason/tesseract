@@ -17,8 +17,8 @@ def test_fwd_kin():
 
     t.init(abb_irb2400_urdf, abb_irb2400_srdf, TesseractSupportResourceLocator())
 
-    fwd_kin_manager = t.getFwdKinematicsManager()
-    fwd_kin = fwd_kin_manager.getFwdKinematicSolver("manipulator")
+    manager = t.getManipulatorManager()
+    fwd_kin = manager.getFwdKinematicSolver("manipulator")
     tcp_pose = fwd_kin.calcFwdKin(np.deg2rad([15,-30,-20,5,10,-90]))
 
     np.testing.assert_allclose(tcp_pose, [[ 0.32232436,  0.59589736,  0.73553609,  0.1875004 ],
@@ -46,15 +46,14 @@ def test_inv_kin():
 
     tcp_pose = np.array([[0,0,1,0.8],[0,1,0,0],[-1,0,0, 1.2],[0,0,0,1]])
 
-    inv_kin_manager = t.getInvKinematicsManager()
-    inv_kin = inv_kin_manager.getInvKinematicSolver("manipulator")
+    manager = t.getManipulatorManager()
+    inv_kin = manager.getInvKinematicSolver("manipulator")
     joint_angles = inv_kin.calcInvKin(tcp_pose, np.ones(6)*0.25)
 
     # Now check fwd_kin
-
-    fwd_kin_manager = t.getFwdKinematicsManager()
-    fwd_kin = fwd_kin_manager.getFwdKinematicSolver("manipulator")
-    tcp_pose2 = fwd_kin.calcFwdKin(joint_angles)
+    
+    fwd_kin = manager.getFwdKinematicSolver("manipulator")
+    tcp_pose2 = fwd_kin.calcFwdKin(joint_angles[0:6])
 
     np.testing.assert_allclose(tcp_pose[0:3,3], tcp_pose2[0:3,3], atol=1e-5)
 

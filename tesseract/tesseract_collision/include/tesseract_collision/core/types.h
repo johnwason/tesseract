@@ -152,9 +152,13 @@ struct TESSERACT_COLLISION_CORE_PUBLIC ContactResult
   }
 };
 
+#ifndef SWIG
 using ContactResultVector = tesseract_common::AlignedVector<ContactResult>;
 using ContactResultMap = tesseract_common::AlignedMap<std::pair<std::string, std::string>, ContactResultVector>;
-
+#else
+using ContactResultVector = std::vector<ContactResult, Eigen::aligned_allocator<ContactResult>>;
+using ContactResultMap = std::map<std::pair<std::string, std::string>, std::vector<ContactResult, Eigen::aligned_allocator<ContactResult>>, std::less<std::pair<std::string, std::string>>, Eigen::aligned_allocator<std::pair<const std::pair<std::string, std::string>, std::vector<ContactResult, Eigen::aligned_allocator<ContactResult>>>>>;
+#endif
 /**
  * @brief Should return true if contact results are valid, otherwise false.
  *

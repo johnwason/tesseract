@@ -119,6 +119,7 @@
 // tesseract_motion_planners
 #include <tesseract_motion_planners/core/planner.h>
 #include <tesseract_motion_planners/robot_config.h>
+#include <tesseract_motion_planners/interface_utils.h>
 
 // trajopt
 #include <trajopt/problem_description.hpp>
@@ -185,6 +186,11 @@
     }
 }
 
+%pythonnondynamic;
+
+%pythondynamic sco::ModelType;
+%pythondynamic tesseract_scene_graph::ResourceLocator;
+
 %include "eigen.i"
 %include "shared_factory.i"
 %include "json_typemaps.i"
@@ -229,6 +235,14 @@ tesseract_aligned_vector(VectorVector4d, Eigen::Vector4d);
 tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 
 %ignore toXML(tinyxml2::XMLDocument& doc) const;
+
+%typemap(out, fragment="SWIG_From_std_string") std::string& {
+  $result = SWIG_From_std_string(*$1);
+}
+
+%typemap(out, fragment="SWIG_From_std_string") const std::string& {
+  $result = SWIG_From_std_string(*$1);
+}
 
 #define EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 #define TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
@@ -338,6 +352,15 @@ namespace std
 }
 %}
 
+%define %tesseract_erasure_ctor(class_type,inner_type)
+%extend tesseract_planning::class_type {
+  class_type (tesseract_planning::inner_type && inner_waypoint)
+  {
+     return new tesseract_planning::class_type (inner_waypoint);
+  }
+}
+%enddef
+
 
 %include "tesseract_command_language/core/waypoint.h"
 %include "tesseract_command_language/core/instruction.h"
@@ -357,6 +380,7 @@ namespace std
 %include "tesseract_motion_planners/core/trajectory_validator.h"
 %include "tesseract_motion_planners/core/planner.h"
 %include "tesseract_motion_planners/robot_config.h"
+%include "tesseract_motion_planners/interface_utils.h"
 
 // trajopt
 

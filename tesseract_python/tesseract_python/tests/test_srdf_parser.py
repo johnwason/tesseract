@@ -18,7 +18,7 @@ def test_environment():
 
     t.init(abb_irb2400_urdf, abb_irb2400_srdf, TesseractSupportResourceLocator())
 
-    t_srdf = t.getSRDFModel()
+    t_srdf = t.getManipulatorManager().getSRDFModel()
 
     print("robot name: " + str(t_srdf.getName()))
     assert str(t_srdf.getName()) == "abb_irb2400"

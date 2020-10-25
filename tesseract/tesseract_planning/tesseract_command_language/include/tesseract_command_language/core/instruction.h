@@ -35,11 +35,9 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_command_language/visibility_control.h>
 
 #ifdef SWIG
-%shared_ptr(tesseract_planning::Instruction)
-
 %ignore std::vector<tesseract_planning::Instruction>::vector(size_type);
 %ignore std::vector<tesseract_planning::Instruction>::resize(size_type);
-%template(PlanningInstructions) std::vector<tesseract_planning::Instruction>;
+%template(tesseract_planning_InstructionVector) std::vector<tesseract_planning::Instruction>;
 #endif // SWIG
 
 namespace tesseract_planning
@@ -122,8 +120,6 @@ class TESSERACT_COMMAND_LANGUAGE_PUBLIC Instruction
   using generic_ctor_enabler = std::enable_if_t<!std::is_same<Instruction, uncvref_t<T>>::value, int>;
 
 public:
-  using Ptr = std::shared_ptr<Instruction>;
-  using ConstPtr = std::shared_ptr<const Instruction>;
 
   template <typename T, generic_ctor_enabler<T> = 0>
   Instruction(T&& instruction)  // NOLINT
@@ -198,5 +194,12 @@ private:
 };
 
 }  // namespace tesseract_planning
+
+#ifdef SWIG
+%tesseract_erasure_ctor(Instruction,NullInstruction);
+%tesseract_erasure_ctor(Instruction,PlanInstruction);
+%tesseract_erasure_ctor(Instruction,MoveInstruction);
+%tesseract_erasure_ctor(Instruction,CompositeInstruction);
+#endif // SWIG
 
 #endif  // TESSERACT_COMMAND_LANGUAGE_INSTRUCTION_H

@@ -39,12 +39,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_command_language/null_instruction.h>
 #include <tesseract_command_language/visibility_control.h>
 
-#ifdef SWIG
-
-%shared_ptr(tesseract_planning::CompositeInstruction)
-
-#endif // SWIG
-
 namespace tesseract_planning
 {
 enum class CompositeInstructionOrder
@@ -57,8 +51,6 @@ enum class CompositeInstructionOrder
 class TESSERACT_COMMAND_LANGUAGE_PUBLIC CompositeInstruction
 {
 public:
-  using Ptr = std::shared_ptr<CompositeInstruction>;
-  using ConstPtr = std::shared_ptr<const CompositeInstruction>;
 
   CompositeInstruction(std::string profile = "DEFAULT",
                        CompositeInstructionOrder order = CompositeInstructionOrder::ORDERED,
@@ -78,11 +70,7 @@ public:
   const ManipulatorInfo& getManipulatorInfo() const;
   ManipulatorInfo& getManipulatorInfo();
 
-#ifndef SWIG
   void setStartInstruction(Instruction instruction);
-#else // SWIG
-  void setStartInstruction(const Instruction& instruction);
-#endif // SWIG
 
   void resetStartInstruction();
   const Instruction& getStartInstruction() const;

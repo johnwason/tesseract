@@ -30,14 +30,16 @@ def test_environment():
 
     env_state = t_env.getCurrentState()
     manager.setCollisionObjectsTransform(env_state.link_transforms)
-    contacts = manager.contactTest(2)
+    contact_req = tesseract.ContactRequest(0)
+    contact_req.calculate_penetration = False
+    contacts = manager.contactTest(contact_req)
     contact_vector = tesseract.flattenResults(contacts)
 
-    assert len(contact_vector) == 3
-    assert contact_vector[0].link_names == ('link_1', 'link_4')
-    assert contact_vector[0].shape_id == (0,0)
-    assert contact_vector[0].nearest_points[0].shape == (3,1)
-    assert contact_vector[0].nearest_points[1].shape == (3,1)
+    assert len(contact_vector) == 1
+    assert tuple(contact_vector[0].link_names) == ('link_1', 'link_4')
+    assert tuple(contact_vector[0].shape_id) == (0,0)
+    assert tuple(contact_vector[0].nearest_points[0].shape) == (3,1)
+    assert tuple(contact_vector[0].nearest_points[1].shape) == (3,1)
 
     #TODO: test more stuff...
 

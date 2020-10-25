@@ -34,10 +34,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_command_language/visibility_control.h>
 
-#ifdef SWIG
-%shared_ptr(tesseract_planning::Waypoint)
-#endif // SWIG
-
 namespace tesseract_planning
 {
 #ifndef SWIG
@@ -106,8 +102,6 @@ class TESSERACT_COMMAND_LANGUAGE_PUBLIC Waypoint
   using generic_ctor_enabler = std::enable_if_t<!std::is_same<Waypoint, uncvref_t<T>>::value, int>;
 
 public:
-  using Ptr = std::shared_ptr<Waypoint>;
-  using ConstPtr = std::shared_ptr<const Waypoint>;
 
   template <typename T, generic_ctor_enabler<T> = 0>
   Waypoint(T&& waypoint)  // NOLINT
@@ -169,17 +163,10 @@ private:
 }  // namespace tesseract_planning
 
 #ifdef SWIG
-%extend tesseract_planning::Waypoint {
-    Waypoint(tesseract_planning::CartesianWaypoint&& inner_waypoint)
-    {
-      return new tesseract_planning::Waypoint(inner_waypoint);
-    }
-
-    Waypoint(tesseract_planning::JointWaypoint&& inner_waypoint)
-    {
-      return new tesseract_planning::Waypoint(inner_waypoint);
-    }
-}
+%tesseract_erasure_ctor(Waypoint,CartesianWaypoint);
+%tesseract_erasure_ctor(Waypoint,JointWaypoint);
+%tesseract_erasure_ctor(Waypoint,NullWaypoint);
+%tesseract_erasure_ctor(Waypoint,StateWaypoint);
 #endif // SWIG
 
 #endif  // TESSERACT_COMMAND_LANGUAGE_WAYPOINT_H
