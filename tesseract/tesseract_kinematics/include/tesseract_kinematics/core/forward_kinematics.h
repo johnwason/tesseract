@@ -39,7 +39,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/types.h>
 #include <tesseract_scene_graph/graph.h>
-#include <tesseract_kinematics/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::ForwardKinematics)
@@ -50,7 +49,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 namespace tesseract_kinematics
 {
 /** @brief Forward kinematics functions. */
-class TESSERACT_KINEMATICS_CORE_PUBLIC ForwardKinematics
+class ForwardKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -66,6 +65,12 @@ public:
   ForwardKinematics& operator=(ForwardKinematics&&) = delete;
 
 #ifndef SWIG
+  /**
+   * @brief Updates kinematics if kinematic parameters have changed
+   * @return True if successful
+   */
+  virtual bool update() = 0;
+
   /**
    * @brief Calculates tool pose of robot chain
    * @param pose Transform of end-of-tip relative to root
@@ -202,6 +207,12 @@ public:
    * @return Kinematic Limits
    */
   virtual const tesseract_common::KinematicLimits& getLimits() const = 0;
+
+  /**
+   * @brief Setter for kinematic limits (joint, velocity, acceleration, etc.)
+   * @param Kinematic Limits
+   */
+  virtual void setLimits(tesseract_common::KinematicLimits limits) = 0;
 
   /**
    * @brief Number of joints in robot

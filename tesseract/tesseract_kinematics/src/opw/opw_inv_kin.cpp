@@ -42,6 +42,11 @@ InverseKinematics::Ptr OPWInvKin::clone() const
   return cloned_invkin;
 }
 
+bool OPWInvKin::update()
+{
+  return init(name_, params_, base_link_name_, tip_link_name_, joint_names_, link_names_, active_link_names_, limits_);
+}
+
 bool OPWInvKin::calcInvKin(Eigen::VectorXd& solutions,
                            const Eigen::Isometry3d& pose,
                            const Eigen::Ref<const Eigen::VectorXd>& /*seed*/) const
@@ -104,6 +109,26 @@ bool OPWInvKin::checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const
 
 unsigned int OPWInvKin::numJoints() const { return 6; }
 
+const std::vector<std::string>& OPWInvKin::getJointNames() const { return joint_names_; }
+const std::vector<std::string>& OPWInvKin::getLinkNames() const { return link_names_; }
+const std::vector<std::string>& OPWInvKin::getActiveLinkNames() const { return active_link_names_; }
+const tesseract_common::KinematicLimits& OPWInvKin::getLimits() const { return limits_; }
+
+void OPWInvKin::setLimits(tesseract_common::KinematicLimits limits)
+{
+  unsigned int nj = numJoints();
+  if (limits.joint_limits.rows() != nj || limits.velocity_limits.size() != nj ||
+      limits.acceleration_limits.size() != nj)
+    throw std::runtime_error("Kinematics limits assigned are invalid!");
+
+  limits_ = std::move(limits);
+}
+
+const std::string& OPWInvKin::getBaseLinkName() const { return base_link_name_; }
+const std::string& OPWInvKin::getTipLinkName() const { return tip_link_name_; }
+const std::string& OPWInvKin::getName() const { return name_; }
+const std::string& OPWInvKin::getSolverName() const { return solver_name_; }
+
 bool OPWInvKin::init(std::string name,
                      opw_kinematics::Parameters<double> params,
                      std::string base_link_name,
@@ -140,6 +165,16 @@ bool OPWInvKin::init(const OPWInvKin& kin)
   link_names_ = kin.link_names_;
   active_link_names_ = kin.active_link_names_;
   limits_ = kin.limits_;
+
+  return initialized_;
+}
+
+bool OPWInvKin::checkInitialized() const
+{
+  if (!initialized_)
+  {
+    CONSOLE_BRIDGE_logError("Kinematics has not been initialized!");
+  }
 
   return initialized_;
 }

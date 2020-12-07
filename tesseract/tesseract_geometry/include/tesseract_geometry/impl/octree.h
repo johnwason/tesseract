@@ -44,7 +44,7 @@ namespace tesseract_geometry
 #ifdef SWIG
 %nodefaultctor Octree;
 #endif // SWIG
-class TESSERACT_GEOMETRY_PUBLIC Octree : public Geometry
+class Octree : public Geometry
 {
 public:
   using Ptr = std::shared_ptr<Octree>;

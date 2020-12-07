@@ -27,7 +27,6 @@
 #define TESSERACT_KINEMATICS_KDL_FWD_KIN_CHAIN_FACTORY_H
 #include <tesseract_kinematics/core/forward_kinematics_factory.h>
 #include <tesseract_kinematics/kdl/kdl_fwd_kin_chain.h>
-#include <tesseract_kinematics/kdl/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::KDLFwdKinChainFactory)
@@ -35,7 +34,7 @@
 
 namespace tesseract_kinematics
 {
-class TESSERACT_KINEMATICS_KDL_PUBLIC KDLFwdKinChainFactory : public ForwardKinematicsFactory
+class KDLFwdKinChainFactory : public ForwardKinematicsFactory
 {
 public:
   KDLFwdKinChainFactory() : name_(KDLFwdKinChain().getSolverName()) {}

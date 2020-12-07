@@ -37,12 +37,9 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract/tesseract_init_info.h>
 #include <tesseract_environment/core/environment.h>
-#include <tesseract_scene_graph/srdf_model.h>
 #include <tesseract_scene_graph/utils.h>
 #include <tesseract_scene_graph/resource_locator.h>
-#include <tesseract/manipulator_manager.h>
 #include <tesseract_command_language/manipulator_info.h>
-#include <tesseract/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract::Tesseract)
@@ -64,7 +61,7 @@ using FindTCPCallbackFn = std::function<Eigen::Isometry3d(const tesseract_planni
  * It also provides several construction methods for loading from urdf, srdf
  *
  */
-class TESSERACT_PUBLIC Tesseract
+class Tesseract
 {
 public:
   using Ptr = std::shared_ptr<Tesseract>;
@@ -79,6 +76,7 @@ public:
 
   bool isInitialized() const;
 
+  bool init(const tesseract_environment::Environment& env);
   bool init(tesseract_scene_graph::SceneGraph::Ptr scene_graph);
   bool init(tesseract_scene_graph::SceneGraph::Ptr scene_graph, tesseract_scene_graph::SRDFModel::Ptr srdf_model);
   bool init(const std::string& urdf_string, const tesseract_scene_graph::ResourceLocator::Ptr& locator);
@@ -93,8 +91,6 @@ public:
             const tesseract_scene_graph::ResourceLocator::Ptr& locator);
   #endif // SWIG
 
-  bool init(const tesseract_environment::Environment& env, const ManipulatorManager& manipulator_manager);
-
   bool init(const TesseractInitInfo::Ptr& init_info);
 
   /** @brief Clone the Tesseract and all of the internals
@@ -104,11 +100,16 @@ public:
   /** @brief reset to initialized state */
   bool reset();
 
+  /** @brief clear content and uninitialize */
+  void clear();
+
   tesseract_environment::Environment::Ptr getEnvironment();
   tesseract_environment::Environment::ConstPtr getEnvironment() const;
 
-  ManipulatorManager::Ptr getManipulatorManager();
-  ManipulatorManager::ConstPtr getManipulatorManager() const;
+  DEPRECATED("Please use getEnvironment->getManipulatorManager()")
+  tesseract_environment::ManipulatorManager::Ptr getManipulatorManager();
+  DEPRECATED("Please use getEnvironment->getManipulatorManager()")
+  tesseract_environment::ManipulatorManager::ConstPtr getManipulatorManager() const;
 
   /**
    * @brief Find tool center point provided in the manipulator info
@@ -137,13 +138,10 @@ public:
 private:
   bool initialized_;
   tesseract_environment::Environment::Ptr environment_;
-  ManipulatorManager::Ptr manipulator_manager_;
   TesseractInitInfo::Ptr init_info_;
   std::vector<FindTCPCallbackFn> find_tcp_cb_;
 
   bool registerDefaultContactManagers();
-
-  void clear();
 };
 }  // namespace tesseract
 #endif  // TESSERACT_TESSERACT_H

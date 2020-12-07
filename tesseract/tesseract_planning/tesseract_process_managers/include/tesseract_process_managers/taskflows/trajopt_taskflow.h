@@ -29,15 +29,21 @@
 #include <tesseract_process_managers/taskflow_generators/graph_taskflow.h>
 #include <tesseract_motion_planners/trajopt/profile/trajopt_profile.h>
 #include <tesseract_motion_planners/simple/profile/simple_planner_profile.h>
-#include <tesseract_process_managers/visibility_control.h>
 
 namespace tesseract_planning
 {
-TESSERACT_PROCESS_MANAGERS_PUBLIC GraphTaskflow::UPtr createTrajOptTaskflow(
-    bool create_seed,
-    const SimplePlannerPlanProfileMap& simple_plan_profiles = SimplePlannerPlanProfileMap(),
-    const SimplePlannerCompositeProfileMap& simple_composite_profiles = SimplePlannerCompositeProfileMap(),
-    const TrajOptPlanProfileMap& trajopt_plan_profiles = TrajOptPlanProfileMap(),
-    const TrajOptCompositeProfileMap& trajopt_composite_profiles = TrajOptCompositeProfileMap());
-}
+struct TrajOptTaskflowParams
+{
+  bool enable_simple_planner{ true };
+  bool enable_post_contact_discrete_check{ false };
+  bool enable_post_contact_continuous_check{ true };
+  bool enable_time_parameterization{ true };
+  SimplePlannerPlanProfileMap simple_plan_profiles;
+  SimplePlannerCompositeProfileMap simple_composite_profiles;
+  TrajOptPlanProfileMap trajopt_plan_profiles;
+  TrajOptCompositeProfileMap trajopt_composite_profiles;
+};
+
+GraphTaskflow::UPtr createTrajOptTaskflow(TrajOptTaskflowParams params);
+}  // namespace tesseract_planning
 #endif  // TESSERACT_PROCESS_MANAGERS_TRAJOPT_TASKFLOW_H

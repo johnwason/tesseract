@@ -27,7 +27,6 @@
 #define TESSERACT_KINEMATICS_IKFAST_INV_KIN_H
 
 #include <tesseract_kinematics/core/inverse_kinematics.h>
-#include <tesseract_kinematics/ikfast/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::IKFastInvKin)
@@ -84,7 +83,7 @@ namespace tesseract_kinematics
  * }
  *
 */
-class TESSERACT_KINEMATICS_IKFAST_PUBLIC IKFastInvKin : public InverseKinematics
+class IKFastInvKin : public InverseKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -100,7 +99,10 @@ public:
 
   InverseKinematics::Ptr clone() const override;
 
+  bool update() override;
+
 #ifndef SWIG
+
   bool calcInvKin(Eigen::VectorXd& solutions,
                   const Eigen::Isometry3d& pose,
                   const Eigen::Ref<const Eigen::VectorXd>& seed) const override;
@@ -119,6 +121,7 @@ public:
   const std::vector<std::string>& getLinkNames() const override;
   const std::vector<std::string>& getActiveLinkNames() const;
   const tesseract_common::KinematicLimits& getLimits() const override;
+  void setLimits(tesseract_common::KinematicLimits limits) override;
   const std::string& getBaseLinkName() const override;
   const std::string& getTipLinkName() const override;
   const std::string& getName() const override;

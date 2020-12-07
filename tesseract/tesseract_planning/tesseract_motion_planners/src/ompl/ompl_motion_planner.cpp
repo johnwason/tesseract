@@ -39,6 +39,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_motion_planners/ompl/ompl_motion_planner.h>
 #include <tesseract_motion_planners/ompl/continuous_motion_validator.h>
 #include <tesseract_motion_planners/ompl/discrete_motion_validator.h>
+#include <tesseract_motion_planners/ompl/profile/ompl_default_plan_profile.h>
 #include <tesseract_motion_planners/ompl/weighted_real_vector_state_sampler.h>
 #include <tesseract_motion_planners/core/utils.h>
 
@@ -86,10 +87,13 @@ bool checkGoalState(const ompl::base::ProblemDefinitionPtr& prob_def,
 }
 
 /** @brief Construct a basic planner */
-OMPLMotionPlanner::OMPLMotionPlanner(std::string name)
-  : MotionPlanner(std::move(name)), status_category_(std::make_shared<const OMPLMotionPlannerStatusCategory>(name_))
+OMPLMotionPlanner::OMPLMotionPlanner()
+  : status_category_(std::make_shared<const OMPLMotionPlannerStatusCategory>(name_))
 {
+  plan_profiles[DEFAULT_PROFILE_KEY] = std::make_shared<OMPLDefaultPlanProfile>();
 }
+
+const std::string& OMPLMotionPlanner::getName() const { return name_; }
 
 bool OMPLMotionPlanner::terminate()
 {
@@ -279,6 +283,8 @@ tesseract_common::StatusCode OMPLMotionPlanner::solve(const PlannerRequest& requ
 }
 
 void OMPLMotionPlanner::clear() { parallel_plan_ = nullptr; }
+
+MotionPlanner::Ptr OMPLMotionPlanner::clone() const { return std::make_shared<OMPLMotionPlanner>(); }
 
 bool OMPLMotionPlanner::checkUserInput(const PlannerRequest& request) const
 {

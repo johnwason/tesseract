@@ -36,7 +36,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/inverse_kinematics.h>
 #include <tesseract_kinematics/core/forward_kinematics.h>
-#include <tesseract_kinematics/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::RobotOnPositionerInvKin)
@@ -47,7 +46,7 @@ namespace tesseract_kinematics
 /**
  * @brief Robot on Positioner Inverse kinematic implementation.
  */
-class TESSERACT_KINEMATICS_CORE_PUBLIC RobotOnPositionerInvKin : public InverseKinematics
+class RobotOnPositionerInvKin : public InverseKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -63,6 +62,8 @@ public:
   RobotOnPositionerInvKin& operator=(RobotOnPositionerInvKin&&) = delete;
 
   InverseKinematics::Ptr clone() const override;
+
+  bool update() override;
 
 #ifndef SWIG
 
@@ -86,6 +87,8 @@ public:
   const std::vector<std::string>& getActiveLinkNames() const override;
 
   const tesseract_common::KinematicLimits& getLimits() const override;
+
+  void setLimits(tesseract_common::KinematicLimits limits) override;
 
   tesseract_scene_graph::SceneGraph::ConstPtr getSceneGraph() const;
   unsigned int numJoints() const override;

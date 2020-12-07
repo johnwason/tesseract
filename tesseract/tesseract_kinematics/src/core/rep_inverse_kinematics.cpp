@@ -42,6 +42,13 @@ InverseKinematics::Ptr RobotWithExternalPositionerInvKin::clone() const
   return cloned_invkin;
 }
 
+bool RobotWithExternalPositionerInvKin::update()
+{
+  manip_inv_kin_->update();
+  positioner_fwd_kin_->update();
+  return init(scene_graph_, manip_inv_kin_, manip_reach_, positioner_fwd_kin_, positioner_sample_resolution_, name_);
+}
+
 bool RobotWithExternalPositionerInvKin::calcInvKinHelper(std::vector<double>& solutions,
                                                          const Eigen::Isometry3d& pose,
                                                          const Eigen::Ref<const Eigen::VectorXd>& seed) const
@@ -176,21 +183,50 @@ const std::vector<std::string>& RobotWithExternalPositionerInvKin::getActiveLink
 
 const tesseract_common::KinematicLimits& RobotWithExternalPositionerInvKin::getLimits() const { return limits_; }
 
-tesseract_scene_graph::SceneGraph::ConstPtr RobotWithExternalPositionerInvKin::getSceneGraph() const
+void RobotWithExternalPositionerInvKin::setLimits(tesseract_common::KinematicLimits limits)
 {
-  return scene_graph_;
-};
+  unsigned int nj = numJoints();
+  if (limits.joint_limits.rows() != nj || limits.velocity_limits.size() != nj ||
+      limits.acceleration_limits.size() != nj)
+    throw std::runtime_error("Kinematics limits assigned are invalid!");
+
+  unsigned int pj = positioner_fwd_kin_->numJoints();
+  tesseract_common::KinematicLimits positioner_limits;
+  positioner_limits.joint_limits = limits.joint_limits.topRows(pj);
+  positioner_limits.velocity_limits = limits.velocity_limits.head(pj);
+  positioner_limits.acceleration_limits = limits.acceleration_limits.head(pj);
+  positioner_fwd_kin_->setLimits(positioner_limits);
+
+  unsigned int mj = manip_inv_kin_->numJoints();
+  tesseract_common::KinematicLimits manipulator_limits;
+  manipulator_limits.joint_limits = limits.joint_limits.bottomRows(mj);
+  manipulator_limits.velocity_limits = limits.velocity_limits.tail(mj);
+  manipulator_limits.acceleration_limits = limits.acceleration_limits.tail(mj);
+  manip_inv_kin_->setLimits(manipulator_limits);
+
+  limits_ = std::move(limits);
+}
+
 unsigned int RobotWithExternalPositionerInvKin::numJoints() const { return dof_; }
+
 const std::string& RobotWithExternalPositionerInvKin::getBaseLinkName() const
 {
   return positioner_fwd_kin_->getTipLinkName();
 }
+
 const std::string& RobotWithExternalPositionerInvKin::getTipLinkName() const
 {
   return manip_inv_kin_->getTipLinkName();
 }
+
 const std::string& RobotWithExternalPositionerInvKin::getName() const { return name_; }
+
 const std::string& RobotWithExternalPositionerInvKin::getSolverName() const { return solver_name_; }
+
+tesseract_scene_graph::SceneGraph::ConstPtr RobotWithExternalPositionerInvKin::getSceneGraph() const
+{
+  return scene_graph_;
+}
 
 bool RobotWithExternalPositionerInvKin::checkInitialized() const
 {
@@ -333,9 +369,9 @@ bool RobotWithExternalPositionerInvKin::init(tesseract_scene_graph::SceneGraph::
   manip_base_to_positioner_base_ = robot_to_positioner;
   scene_graph_ = std::move(scene_graph);
   name_ = std::move(name);
-  manip_inv_kin_ = std::move(manipulator);
+  manip_inv_kin_ = manipulator->clone();
   manip_reach_ = manipulator_reach;
-  positioner_fwd_kin_ = std::move(positioner);
+  positioner_fwd_kin_ = positioner->clone();
   positioner_sample_resolution_ = positioner_sample_resolution;
   dof_ = positioner_fwd_kin_->numJoints() + manip_inv_kin_->numJoints();
 

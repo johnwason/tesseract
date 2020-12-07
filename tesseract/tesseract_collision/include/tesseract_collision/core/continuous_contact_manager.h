@@ -34,7 +34,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_collision/core/types.h>
-#include <tesseract_collision/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_collision::ContinuousContactManager)
@@ -42,7 +41,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_collision
 {
-class TESSERACT_COLLISION_CORE_PUBLIC ContinuousContactManager
+class ContinuousContactManager
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -212,13 +211,25 @@ public:
    * @brief Set the contact distance threshold for which collision should be considered.
    * @param contact_distance The contact distance
    */
-  virtual void setContactDistanceThreshold(double contact_distance) = 0;
+  virtual void DEPRECATED("Please use setCollisionMarginData") setContactDistanceThreshold(double contact_distance) = 0;
+
+  /**
+   * @brief Set the contact distance thresholds for which collision should be considered on a per pair basis
+   * @param collision_margin_data Contains the data that will replace the current settings
+   */
+  virtual void setCollisionMarginData(CollisionMarginData collision_margin_data) = 0;
 
   /**
    * @brief Get the contact distance threshold
    * @return The contact distance
    */
-  virtual double getContactDistanceThreshold() const = 0;
+  virtual double DEPRECATED("Please use getCollisionMarginData") getContactDistanceThreshold() const = 0;
+
+  /**
+   * @brief Get the contact distance threshold
+   * @return The contact distance
+   */
+  virtual const CollisionMarginData& getCollisionMarginData() const = 0;
 
   /** @brief Set the active function for determining if two links are allowed to be in collision */
   virtual void setIsContactAllowedFn(IsContactAllowedFn fn) = 0;

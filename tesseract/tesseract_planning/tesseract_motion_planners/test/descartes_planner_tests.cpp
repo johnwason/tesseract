@@ -107,8 +107,8 @@ TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerFixedPoses)  // NOLINT
   // Create the planner and the responses that will store the results
   PlannerResponse planning_response;
 
-  auto fwd_kin = tesseract_ptr_->getManipulatorManager()->getFwdKinematicSolver("manipulator");
-  auto inv_kin = tesseract_ptr_->getManipulatorManager()->getInvKinematicSolver("manipulator");
+  auto fwd_kin = tesseract_ptr_->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver("manipulator");
+  auto inv_kin = tesseract_ptr_->getEnvironment()->getManipulatorManager()->getInvKinematicSolver("manipulator");
   auto cur_state = tesseract_ptr_->getEnvironment()->getCurrentState();
 
   // Specify a start waypoint
@@ -132,7 +132,7 @@ TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerFixedPoses)  // NOLINT
   program.push_back(plan_f1);
 
   // Create a seed
-  CompositeInstruction seed = generateSeed(program, cur_state, tesseract_ptr_);
+  CompositeInstruction seed = generateSeed(program, cur_state, tesseract_ptr_, 3.14, 1.0, 3.14, 10);
 
   // Create Profiles
   auto plan_profile = std::make_shared<DescartesDefaultPlanProfileD>();
@@ -224,8 +224,8 @@ TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerAxialSymetric)  // NOLINT
   // Create the planner and the responses that will store the results
   PlannerResponse planning_response;
 
-  auto fwd_kin = tesseract_ptr_->getManipulatorManager()->getFwdKinematicSolver(manip.manipulator);
-  auto inv_kin = tesseract_ptr_->getManipulatorManager()->getInvKinematicSolver(manip.manipulator);
+  auto fwd_kin = tesseract_ptr_->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(manip.manipulator);
+  auto inv_kin = tesseract_ptr_->getEnvironment()->getManipulatorManager()->getInvKinematicSolver(manip.manipulator);
   auto cur_state = tesseract_ptr_->getEnvironment()->getCurrentState();
 
   // Specify a start waypoint
@@ -249,7 +249,7 @@ TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerAxialSymetric)  // NOLINT
   program.push_back(plan_f1);
 
   // Create a seed
-  CompositeInstruction seed = generateSeed(program, cur_state, tesseract_ptr_);
+  CompositeInstruction seed = generateSeed(program, cur_state, tesseract_ptr_, 3.14, 1.0, 3.14, 10);
 
   // Create Profiles
   auto plan_profile = std::make_shared<DescartesDefaultPlanProfileD>();
@@ -331,8 +331,8 @@ TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerCollisionEdgeEvaluator)  
   // Create the planner and the responses that will store the results
   PlannerResponse planning_response;
 
-  auto fwd_kin = tesseract_ptr_->getManipulatorManager()->getFwdKinematicSolver(manip.manipulator);
-  auto inv_kin = tesseract_ptr_->getManipulatorManager()->getInvKinematicSolver(manip.manipulator);
+  auto fwd_kin = tesseract_ptr_->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(manip.manipulator);
+  auto inv_kin = tesseract_ptr_->getEnvironment()->getManipulatorManager()->getInvKinematicSolver(manip.manipulator);
   auto cur_state = tesseract_ptr_->getEnvironment()->getCurrentState();
 
   // Specify a start waypoint
@@ -356,7 +356,7 @@ TEST_F(TesseractPlanningDescartesUnit, DescartesPlannerCollisionEdgeEvaluator)  
   program.push_back(plan_f1);
 
   // Create a seed
-  CompositeInstruction seed = generateSeed(program, cur_state, tesseract_ptr_, 2, 2);
+  CompositeInstruction seed = generateSeed(program, cur_state, tesseract_ptr_, 3.14, 1.0, 3.14, 2);
 
   // Create Profiles
   auto plan_profile = std::make_shared<DescartesDefaultPlanProfileD>();

@@ -5,6 +5,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <iostream>
 #include <fstream>
 #include <tesseract_geometry/geometries.h>
+#include <tesseract_common/utils.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_scene_graph/graph.h>
@@ -12,6 +13,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_scene_graph/resource_locator.h>
 #include <tesseract_scene_graph/srdf_model.h>
 #include <tesseract_scene_graph/parser/kdl_parser.h>
+#include <tesseract_scene_graph/srdf/group_opw_kinematics.h>
 
 // getLinks and getJoint use an internal map so need to check against graph
 void checkSceneGraph(tesseract_scene_graph::SceneGraph& scene_graph)
@@ -123,7 +125,7 @@ TEST(TesseractSceneGraphUnit, TesseractSceneGraphUnit)  // NOLINT
   checkSceneGraph(g);
 
   // Save Graph
-  g.saveDOT("/tmp/graph_acyclic_tree_example.dot");
+  g.saveDOT(tesseract_common::getTempPath() + "graph_acyclic_tree_example.dot");
 
   // Test if the graph is Acyclic
   std::cout << "Is Acyclic: " << g.isAcyclic() << std::endl;
@@ -150,7 +152,7 @@ TEST(TesseractSceneGraphUnit, TesseractSceneGraphUnit)  // NOLINT
   checkSceneGraph(g);
 
   Joint joint_5("joint_5");
-  joint_5.parent_to_joint_origin_transform.translation()(1) = 1.25;
+  joint_5.parent_to_joint_origin_transform.translation()(1) = 1.5;
   joint_5.parent_link_name = "link_5";
   joint_5.child_link_name = "link_4";
   joint_5.type = JointType::CONTINUOUS;
@@ -160,7 +162,7 @@ TEST(TesseractSceneGraphUnit, TesseractSceneGraphUnit)  // NOLINT
   checkSceneGraph(g);
 
   // Save Graph
-  g.saveDOT("/tmp/graph_acyclic_not_tree_example.dot");
+  g.saveDOT(tesseract_common::getTempPath() + "graph_acyclic_not_tree_example.dot");
 
   // Test if the graph is Acyclic
   std::cout << "Is Acyclic: " << g.isAcyclic() << std::endl;
@@ -181,7 +183,7 @@ TEST(TesseractSceneGraphUnit, TesseractSceneGraphUnit)  // NOLINT
   checkSceneGraph(g);
 
   // Save Graph
-  g.saveDOT("/tmp/graph_cyclic_not_tree_example.dot");
+  g.saveDOT(tesseract_common::getTempPath() + "graph_cyclic_not_tree_example.dot");
 
   // Test if the graph is Acyclic
   std::cout << "Is Acyclic: " << g.isAcyclic() << std::endl;
@@ -211,7 +213,7 @@ TEST(TesseractSceneGraphUnit, TesseractSceneGraphUnit)  // NOLINT
   std::cout << (g.getName().c_str()) << std::endl;
 
   // Should throw since this is a directory and not a file
-  EXPECT_ANY_THROW(g.saveDOT("/tmp/"));
+  EXPECT_ANY_THROW(g.saveDOT(tesseract_common::getTempPath()));
 }
 
 std::string locateResource(const std::string& url)
@@ -344,6 +346,44 @@ TEST(TesseractSceneGraphUnit, LoadSRDFUnit)  // NOLINT
 
   g.clearAllowedCollisions();
   EXPECT_EQ(acm->getAllAllowedCollisions().size(), 0);
+}
+
+TEST(TesseractSceneGraphUnit, LoadSRDFOPWKinematicsUnit)  // NOLINT
+{
+  using namespace tesseract_scene_graph;
+  SceneGraph g;
+
+  std::string xml_string =
+      R"(<robot name="abb_irb2400">
+           <group_opw group="manipulator" a1="0.1" a2="-0.135" b="0" c1="0.615" c2="0.705" c3="0.755" c4="0.085" offsets="0.0 0.0 -1.570796 0.0 0.0 0.0" sign_corrections="1 1 1 -1 1 1"/>
+         </robot>)";
+  tinyxml2::XMLDocument xml_doc;
+  EXPECT_TRUE(xml_doc.Parse(xml_string.c_str()) == tinyxml2::XML_SUCCESS);
+
+  tinyxml2::XMLElement* element = xml_doc.FirstChildElement("robot");
+  EXPECT_TRUE(element != nullptr);
+
+  GroupOPWKinematics opw_groups = parseGroupOPWKinematics(g, element, std::array<int, 3>({ 1, 0, 0 }));
+  OPWKinematicParameters opw = opw_groups["manipulator"];
+  EXPECT_NEAR(opw.a1, 0.1, 1e-8);
+  EXPECT_NEAR(opw.a2, -0.135, 1e-8);
+  EXPECT_NEAR(opw.b, 0.0, 1e-8);
+  EXPECT_NEAR(opw.c1, 0.615, 1e-8);
+  EXPECT_NEAR(opw.c2, 0.705, 1e-8);
+  EXPECT_NEAR(opw.c3, 0.755, 1e-8);
+  EXPECT_NEAR(opw.c4, 0.085, 1e-8);
+  EXPECT_NEAR(opw.offsets[0], 0.0, 1e-8);
+  EXPECT_NEAR(opw.offsets[1], 0.0, 1e-8);
+  EXPECT_NEAR(opw.offsets[2], -1.570796, 1e-8);
+  EXPECT_NEAR(opw.offsets[3], 0.0, 1e-8);
+  EXPECT_NEAR(opw.offsets[4], 0.0, 1e-8);
+  EXPECT_NEAR(opw.offsets[5], 0.0, 1e-8);
+  EXPECT_EQ(opw.sign_corrections[0], 1);
+  EXPECT_EQ(opw.sign_corrections[1], 1);
+  EXPECT_EQ(opw.sign_corrections[2], 1);
+  EXPECT_EQ(opw.sign_corrections[3], -1);
+  EXPECT_EQ(opw.sign_corrections[4], 1);
+  EXPECT_EQ(opw.sign_corrections[5], 1);
 }
 
 void printKDLTree(const KDL::SegmentMap::const_iterator& link, const std::string& prefix)
@@ -519,27 +559,27 @@ TEST(TesseractSceneGraphUnit, TesseractSRDFModelUnit)  // NOLINT
   EXPECT_TRUE(srdf.getName() == "test_srdf");
 
   // Add chain groups
-  auto& chain_groups = srdf.getChainGroups();
+  auto& chain_groups = srdf.getKinematicsInformation().chain_groups;
   EXPECT_TRUE(chain_groups.empty());
 
   chain_groups["manipulator_chain"] = { std::make_pair("base_link", "link_5") };
-  EXPECT_FALSE(srdf.getChainGroups().empty());
+  EXPECT_FALSE(srdf.getKinematicsInformation().chain_groups.empty());
 
   // Add joint groups
-  auto& joint_groups = srdf.getJointGroups();
+  auto& joint_groups = srdf.getKinematicsInformation().joint_groups;
   EXPECT_TRUE(joint_groups.empty());
 
   joint_groups["manipulator_joint"] = { "joint_1", "joint_2", "joint_3", "joint_4" };
-  EXPECT_FALSE(srdf.getJointGroups().empty());
+  EXPECT_FALSE(srdf.getKinematicsInformation().joint_groups.empty());
 
   // Add link groups
-  auto& link_groups = srdf.getLinkGroups();
+  auto& link_groups = srdf.getKinematicsInformation().link_groups;
   EXPECT_TRUE(link_groups.empty());
   link_groups["manipulator_link"] = { "base_link", "link_1", "link_2", "link_3", "link_4", "link_5" };
-  EXPECT_FALSE(srdf.getLinkGroups().empty());
+  EXPECT_FALSE(srdf.getKinematicsInformation().link_groups.empty());
 
   // Add group states
-  auto& group_state = srdf.getGroupStates();
+  auto& group_state = srdf.getKinematicsInformation().group_states;
   EXPECT_TRUE(group_state.empty());
   tesseract_scene_graph::GroupsJointState joint_state;
   joint_state["joint_1"] = 0;
@@ -549,15 +589,15 @@ TEST(TesseractSceneGraphUnit, TesseractSRDFModelUnit)  // NOLINT
   group_state["manipulator_chain"]["All Zeros"] = joint_state;
   group_state["manipulator_joint"]["All Zeros"] = joint_state;
   group_state["manipulator_link"]["All Zeros"] = joint_state;
-  EXPECT_EQ(srdf.getGroupStates().size(), 3);
+  EXPECT_EQ(srdf.getKinematicsInformation().group_states.size(), 3);
 
   // Add Tool Center Points
-  auto& group_tcps = srdf.getGroupTCPs();
+  auto& group_tcps = srdf.getKinematicsInformation().group_tcps;
   EXPECT_TRUE(group_tcps.empty());
   group_tcps["manipulator_chain"]["laser"] = Eigen::Isometry3d::Identity();
   group_tcps["manipulator_joint"]["laser"] = Eigen::Isometry3d::Identity();
   group_tcps["manipulator_link"]["laser"] = Eigen::Isometry3d::Identity();
-  EXPECT_FALSE(srdf.getGroupTCPs().empty());
+  EXPECT_FALSE(srdf.getKinematicsInformation().group_tcps.empty());
 
   // Add disabled collisions
   auto& acm = srdf.getAllowedCollisionMatrix();
@@ -568,32 +608,32 @@ TEST(TesseractSceneGraphUnit, TesseractSRDFModelUnit)  // NOLINT
   acm.addAllowedCollision("link_3", "link_4", "Adjacent");
   acm.addAllowedCollision("link_4", "link_5", "Adjacent");
   EXPECT_FALSE(srdf.getAllowedCollisionMatrix().getAllAllowedCollisions().empty());
-  srdf.saveToFile("/tmp/test.srdf");
+  srdf.saveToFile(tesseract_common::getTempPath() + "test.srdf");
 
   SceneGraph g = buildTestSceneGraph();
 
   tesseract_scene_graph::SRDFModel srdf_reload;
-  srdf_reload.initFile(g, "/tmp/test.srdf");
+  srdf_reload.initFile(g, tesseract_common::getTempPath() + "test.srdf");
   EXPECT_TRUE(srdf_reload.getName() == "test_srdf");
-  EXPECT_FALSE(srdf_reload.getChainGroups().empty());
-  EXPECT_FALSE(srdf_reload.getJointGroups().empty());
-  EXPECT_FALSE(srdf_reload.getLinkGroups().empty());
-  EXPECT_EQ(srdf_reload.getGroupStates().size(), 3);
-  EXPECT_TRUE(srdf_reload.getGroupStates()["manipulator_chain"].find("All Zeros") !=
-              srdf_reload.getGroupStates()["manipulator_chain"].end());
-  EXPECT_TRUE(srdf_reload.getGroupStates()["manipulator_joint"].find("All Zeros") !=
-              srdf_reload.getGroupStates()["manipulator_joint"].end());
-  EXPECT_TRUE(srdf_reload.getGroupStates()["manipulator_link"].find("All Zeros") !=
-              srdf_reload.getGroupStates()["manipulator_link"].end());
-  EXPECT_FALSE(srdf_reload.getGroupTCPs().empty());
-  EXPECT_TRUE(srdf_reload.getGroupTCPs()["manipulator_chain"].find("laser") !=
-              srdf_reload.getGroupTCPs()["manipulator_chain"].end());
-  EXPECT_TRUE(srdf_reload.getGroupTCPs()["manipulator_joint"].find("laser") !=
-              srdf_reload.getGroupTCPs()["manipulator_joint"].end());
-  EXPECT_TRUE(srdf_reload.getGroupTCPs()["manipulator_link"].find("laser") !=
-              srdf_reload.getGroupTCPs()["manipulator_link"].end());
+  EXPECT_FALSE(srdf_reload.getKinematicsInformation().chain_groups.empty());
+  EXPECT_FALSE(srdf_reload.getKinematicsInformation().joint_groups.empty());
+  EXPECT_FALSE(srdf_reload.getKinematicsInformation().link_groups.empty());
+  EXPECT_EQ(srdf_reload.getKinematicsInformation().group_states.size(), 3);
+  EXPECT_TRUE(srdf_reload.getKinematicsInformation().group_states["manipulator_chain"].find("All Zeros") !=
+              srdf_reload.getKinematicsInformation().group_states["manipulator_chain"].end());
+  EXPECT_TRUE(srdf_reload.getKinematicsInformation().group_states["manipulator_joint"].find("All Zeros") !=
+              srdf_reload.getKinematicsInformation().group_states["manipulator_joint"].end());
+  EXPECT_TRUE(srdf_reload.getKinematicsInformation().group_states["manipulator_link"].find("All Zeros") !=
+              srdf_reload.getKinematicsInformation().group_states["manipulator_link"].end());
+  EXPECT_FALSE(srdf_reload.getKinematicsInformation().group_tcps.empty());
+  EXPECT_TRUE(srdf_reload.getKinematicsInformation().group_tcps["manipulator_chain"].find("laser") !=
+              srdf_reload.getKinematicsInformation().group_tcps["manipulator_chain"].end());
+  EXPECT_TRUE(srdf_reload.getKinematicsInformation().group_tcps["manipulator_joint"].find("laser") !=
+              srdf_reload.getKinematicsInformation().group_tcps["manipulator_joint"].end());
+  EXPECT_TRUE(srdf_reload.getKinematicsInformation().group_tcps["manipulator_link"].find("laser") !=
+              srdf_reload.getKinematicsInformation().group_tcps["manipulator_link"].end());
   EXPECT_FALSE(srdf_reload.getAllowedCollisionMatrix().getAllAllowedCollisions().empty());
-  srdf_reload.saveToFile("/tmp/test_reload.srdf");
+  srdf_reload.saveToFile(tesseract_common::getTempPath() + "test_reload.srdf");
 }
 
 TEST(TesseractSceneGraphUnit, TesseractSceneGraphInsertEmptyUnit)  // NOLINT
@@ -633,7 +673,7 @@ TEST(TesseractSceneGraphUnit, TesseractSceneGraphInsertEmptyUnit)  // NOLINT
   }
 
   // Save Graph
-  ng.saveDOT("/tmp/graph_insert_empty_example.dot");
+  ng.saveDOT(tesseract_common::getTempPath() + "graph_insert_empty_example.dot");
 }
 
 TEST(TesseractSceneGraphUnit, TesseractSceneGraphInsertWithoutJointNoPrefixUnit)  // NOLINT
@@ -719,7 +759,7 @@ TEST(TesseractSceneGraphUnit, TesseractSceneGraphInsertWithoutJointWithPrefixUni
   }
 
   // Save Graph
-  ng.saveDOT("/tmp/graph_insert_example.dot");
+  ng.saveDOT(tesseract_common::getTempPath() + "graph_insert_example.dot");
 }
 
 TEST(TesseractSceneGraphUnit, TesseractSceneGraphInsertWithJointWithPrefixUnit)  // NOLINT
@@ -774,7 +814,7 @@ TEST(TesseractSceneGraphUnit, TesseractSceneGraphInsertWithJointWithPrefixUnit) 
   }
 
   // Save Graph
-  ng.saveDOT("/tmp/graph_insert_with_joint_example.dot");
+  ng.saveDOT(tesseract_common::getTempPath() + "graph_insert_with_joint_example.dot");
 }
 
 int main(int argc, char** argv)

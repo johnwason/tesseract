@@ -34,23 +34,24 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_common/status_code.h>
 #include <tesseract_motion_planners/core/types.h>
 #include <tesseract_motion_planners/core/trajectory_validator.h>
-#include <tesseract_motion_planners/core/visibility_control.h>
 
 namespace tesseract_planning
 {
-class TESSERACT_MOTION_PLANNERS_CORE_PUBLIC MotionPlanner
+class MotionPlanner
 {
 public:
+  using Ptr = std::shared_ptr<MotionPlanner>;
+  using ConstPtr = std::shared_ptr<const MotionPlanner>;
   /** @brief Construct a basic planner */
-  MotionPlanner(std::string name) : name_(std::move(name)) {}
+  MotionPlanner() = default;
   virtual ~MotionPlanner() = default;
-  MotionPlanner(const MotionPlanner&) = default;
-  MotionPlanner& operator=(const MotionPlanner&) = default;
-  MotionPlanner(MotionPlanner&&) = default;
-  MotionPlanner& operator=(MotionPlanner&&) = default;
+  MotionPlanner(const MotionPlanner&) = delete;
+  MotionPlanner& operator=(const MotionPlanner&) = delete;
+  MotionPlanner(MotionPlanner&&) = delete;
+  MotionPlanner& operator=(MotionPlanner&&) = delete;
 
   /** @brief Get the name of this planner */
-  const std::string& getName() const { return name_; }
+  virtual const std::string& getName() const = 0;
 
 #ifdef SWIG
 %rename(_solve) solve;
@@ -77,6 +78,9 @@ public:
   /** @brief Clear the data structures used by the planner */
   virtual void clear() = 0;
 
+  /** @brief Clone the motion planner */
+  virtual MotionPlanner::Ptr clone() const = 0;
+
 #ifdef SWIG
   %pythoncode %{
   def solve(self, check_type=PostPlanCheckType_DISCRETE_CONTINUOUS_COLLISION, verbose=False):
@@ -86,8 +90,6 @@ public:
   %}
 #endif // SWIG
 
-protected:
-  std::string name_; /**< @brief The name of this planner */
 };
 }  // namespace tesseract_planning
 #endif  // TESSERACT_PLANNING_PLANNER_H

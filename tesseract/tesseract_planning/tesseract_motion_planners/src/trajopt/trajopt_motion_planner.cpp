@@ -37,6 +37,8 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/trajopt/trajopt_motion_planner.h>
+#include <tesseract_motion_planners/trajopt/profile/trajopt_default_plan_profile.h>
+#include <tesseract_motion_planners/trajopt/profile/trajopt_default_composite_profile.h>
 #include <tesseract_command_language/command_language.h>
 #include <tesseract_command_language/utils/utils.h>
 #include <tesseract_motion_planners/core/utils.h>
@@ -71,10 +73,14 @@ std::string TrajOptMotionPlannerStatusCategory::message(int code) const
   }
 }
 
-TrajOptMotionPlanner::TrajOptMotionPlanner(std::string name)
-  : MotionPlanner(std::move(name)), status_category_(std::make_shared<const TrajOptMotionPlannerStatusCategory>(name_))
+TrajOptMotionPlanner::TrajOptMotionPlanner()
+  : status_category_(std::make_shared<const TrajOptMotionPlannerStatusCategory>(name_))
 {
+  plan_profiles[DEFAULT_PROFILE_KEY] = std::make_shared<TrajOptDefaultPlanProfile>();
+  composite_profiles[DEFAULT_PROFILE_KEY] = std::make_shared<TrajOptDefaultCompositeProfile>();
 }
+
+const std::string& TrajOptMotionPlanner::getName() const { return name_; }
 
 bool TrajOptMotionPlanner::terminate()
 {
@@ -87,6 +93,8 @@ void TrajOptMotionPlanner::clear()
   params = sco::BasicTrustRegionSQPParameters();
   callbacks.clear();
 }
+
+MotionPlanner::Ptr TrajOptMotionPlanner::clone() const { return std::make_shared<TrajOptMotionPlanner>(); }
 
 tesseract_common::StatusCode TrajOptMotionPlanner::solve(const PlannerRequest& request,
                                                          PlannerResponse& response,

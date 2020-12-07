@@ -45,6 +45,8 @@ InverseKinematics::Ptr KDLInvKinChainNR::clone() const
   return cloned_invkin;
 }
 
+bool KDLInvKinChainNR::update() { return init(scene_graph_, kdl_data_.base_name, kdl_data_.tip_name, name_); }
+
 bool KDLInvKinChainNR::calcInvKinHelper(Eigen::VectorXd& solutions,
                                         const Eigen::Isometry3d& pose,
                                         const Eigen::Ref<const Eigen::VectorXd>& seed,
@@ -159,11 +161,34 @@ const std::vector<std::string>& KDLInvKinChainNR::getActiveLinkNames() const
 
 const tesseract_common::KinematicLimits& KDLInvKinChainNR::getLimits() const { return kdl_data_.limits; }
 
+void KDLInvKinChainNR::setLimits(tesseract_common::KinematicLimits limits)
+{
+  unsigned int nj = numJoints();
+  if (limits.joint_limits.rows() != nj || limits.velocity_limits.size() != nj ||
+      limits.acceleration_limits.size() != nj)
+    throw std::runtime_error("Kinematics limits assigned are invalid!");
+
+  kdl_data_.limits = std::move(limits);
+}
+
+unsigned int KDLInvKinChainNR::numJoints() const { return kdl_data_.robot_chain.getNrOfJoints(); }
+
+const std::string& KDLInvKinChainNR::getBaseLinkName() const { return kdl_data_.base_name; }
+
+const std::string& KDLInvKinChainNR::getTipLinkName() const { return kdl_data_.tip_name; }
+
+const std::string& KDLInvKinChainNR::getName() const { return name_; }
+
+const std::string& KDLInvKinChainNR::getSolverName() const { return solver_name_; }
+
+tesseract_scene_graph::SceneGraph::ConstPtr KDLInvKinChainNR::getSceneGraph() const { return scene_graph_; }
+
 bool KDLInvKinChainNR::init(tesseract_scene_graph::SceneGraph::ConstPtr scene_graph,
                             const std::vector<std::pair<std::string, std::string>>& chains,
                             std::string name)
 {
   initialized_ = false;
+  kdl_data_ = KDLChainData();
 
   if (scene_graph == nullptr)
   {
@@ -214,6 +239,16 @@ bool KDLInvKinChainNR::init(const KDLInvKinChainNR& kin)
   ik_vel_solver_ = std::make_unique<KDL::ChainIkSolverVel_pinv>(kdl_data_.robot_chain);
   ik_solver_ = std::make_unique<KDL::ChainIkSolverPos_NR>(kdl_data_.robot_chain, *fk_solver_, *ik_vel_solver_);
   scene_graph_ = kin.scene_graph_;
+
+  return initialized_;
+}
+
+bool KDLInvKinChainNR::checkInitialized() const
+{
+  if (!initialized_)
+  {
+    CONSOLE_BRIDGE_logError("Kinematics has not been initialized!");
+  }
 
   return initialized_;
 }

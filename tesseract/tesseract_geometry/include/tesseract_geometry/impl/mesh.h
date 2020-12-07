@@ -47,7 +47,7 @@ namespace tesseract_geometry
 %nodefaultctor Mesh;
 #endif // SWIG
 
-class TESSERACT_GEOMETRY_PUBLIC Mesh : public Geometry
+class Mesh : public Geometry
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

@@ -34,7 +34,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/simple/profile/simple_planner_profile.h>
-#include <tesseract_motion_planners/simple/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::SimplePlannerDefaultLVSPlanProfile)
@@ -42,14 +41,14 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
-class TESSERACT_MOTION_PLANNERS_SIMPLE_PUBLIC SimplePlannerDefaultLVSPlanProfile : public SimplePlannerPlanProfile
+class SimplePlannerDefaultLVSPlanProfile : public SimplePlannerPlanProfile
 {
 public:
   using Ptr = std::shared_ptr<SimplePlannerDefaultLVSPlanProfile>;
   using ConstPtr = std::shared_ptr<const SimplePlannerDefaultLVSPlanProfile>;
 
   SimplePlannerDefaultLVSPlanProfile(double state_longest_valid_segment_length = 5 * M_PI / 180,
-                                     double translation_longest_valid_segment_length = 0.15,
+                                     double translation_longest_valid_segment_length = 0.1,
                                      double rotation_longest_valid_segment_length = 5 * M_PI / 180,
                                      int min_steps = 1);
 

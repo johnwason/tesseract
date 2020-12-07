@@ -47,7 +47,7 @@ CompositeInstruction fixedSizeAssignStateWaypoint(const Eigen::Ref<const Eigen::
   ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   // Get Kinematics Object
-  auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
 
   // Convert to MoveInstructions
   MoveInstructionType mv_type;
@@ -66,6 +66,7 @@ CompositeInstruction fixedSizeAssignStateWaypoint(const Eigen::Ref<const Eigen::
     MoveInstruction move_instruction(StateWaypoint(fwd_kin->getJointNames(), position), mv_type);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
 
@@ -107,7 +108,7 @@ CompositeInstruction fixedSizeAssignStateWaypoint(const CartesianWaypoint& /*sta
 {
   assert(!(manip_info.empty() && base_instruction.getManipulatorInfo().empty()));
   ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
-  auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
   Eigen::VectorXd position = request.env_state->getJointValues(fwd_kin->getJointNames());
   return fixedSizeAssignStateWaypoint(position, base_instruction, request, manip_info, steps);
 }

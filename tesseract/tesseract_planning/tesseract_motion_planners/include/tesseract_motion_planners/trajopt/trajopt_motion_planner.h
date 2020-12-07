@@ -33,7 +33,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/core/planner.h>
 #include <tesseract_motion_planners/trajopt/profile/trajopt_profile.h>
-#include <tesseract_motion_planners/trajopt/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::TrajOptMotionPlannerStatusCategory)
@@ -48,17 +47,19 @@ using TrajOptProblemGeneratorFn = std::function<trajopt::TrajOptProb::Ptr(const 
                                                                           const TrajOptPlanProfileMap&,
                                                                           const TrajOptCompositeProfileMap&)>;
 
-class TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC TrajOptMotionPlanner : public MotionPlanner
+class TrajOptMotionPlanner : public MotionPlanner
 {
 public:
   /** @brief Construct a basic planner */
-  TrajOptMotionPlanner(std::string name = "TRAJOPT");
+  TrajOptMotionPlanner();
 
   ~TrajOptMotionPlanner() override = default;
-  TrajOptMotionPlanner(const TrajOptMotionPlanner&) = default;
-  TrajOptMotionPlanner& operator=(const TrajOptMotionPlanner&) = default;
-  TrajOptMotionPlanner(TrajOptMotionPlanner&&) = default;
-  TrajOptMotionPlanner& operator=(TrajOptMotionPlanner&&) = default;
+  TrajOptMotionPlanner(const TrajOptMotionPlanner&) = delete;
+  TrajOptMotionPlanner& operator=(const TrajOptMotionPlanner&) = delete;
+  TrajOptMotionPlanner(TrajOptMotionPlanner&&) = delete;
+  TrajOptMotionPlanner& operator=(TrajOptMotionPlanner&&) = delete;
+
+  const std::string& getName() const override;
 
   TrajOptProblemGeneratorFn problem_generator;
 
@@ -103,12 +104,14 @@ public:
 
   void clear() override;
 
+  MotionPlanner::Ptr clone() const override;
+
 protected:
+  std::string name_{ "TRAJOPT" };
   std::shared_ptr<const TrajOptMotionPlannerStatusCategory> status_category_; /** @brief The planners status codes */
 };
 
-class TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC TrajOptMotionPlannerStatusCategory
-  : public tesseract_common::StatusCategory
+class TrajOptMotionPlannerStatusCategory : public tesseract_common::StatusCategory
 {
 public:
   TrajOptMotionPlannerStatusCategory(std::string name);

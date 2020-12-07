@@ -53,72 +53,59 @@ CompositeInstruction LVSInterpolateStateWaypoint(const JointWaypoint& start,
   assert(static_cast<long>(end.joint_names.size()) == end.size());
 
   assert(!(manip_info.empty() && base_instruction.getManipulatorInfo().empty()));
+  ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   CompositeInstruction composite;
 
+  // Initialize
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
+  auto world_to_base = request.env_state->link_transforms.at(fwd_kin->getBaseLinkName());
+  const Eigen::Isometry3d& tcp = request.tesseract->findTCP(mi);
+
+  // Calculate FK for start and end
+  Eigen::Isometry3d p1 = Eigen::Isometry3d::Identity();
+  if (!fwd_kin->calcFwdKin(p1, start))
+    throw std::runtime_error("LVSInterpolateStateWaypoint: failed to find forward kinematics solution!");
+  p1 = world_to_base * p1 * tcp;
+
+  Eigen::Isometry3d p2 = Eigen::Isometry3d::Identity();
+  if (!fwd_kin->calcFwdKin(p2, end))
+    throw std::runtime_error("LVSInterpolateStateWaypoint: failed to find forward kinematics solution!");
+  p2 = world_to_base * p2 * tcp;
+
+  double trans_dist = (p2.translation() - p1.translation()).norm();
+  // maybe rotation instead of linear
+  double rot_dist = Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));
+  double joint_dist = (end - start).norm();
+
+  int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
+  int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
+  int joint_steps = int(joint_dist / state_longest_valid_segment_length) + 1;
+
+  int steps = std::max(trans_steps, rot_steps);
+  steps = std::max(steps, joint_steps);
+  steps = std::max(steps, min_steps);
+
+  // Linearly interpolate in joint space
+  Eigen::MatrixXd states = interpolate(start, end, steps);
+
+  // Get move type base on base instruction type
+  MoveInstructionType move_type;
   if (base_instruction.isLinear())
-  {
-    // Find number of states based on cartesian
-    // Then find values
-    const ManipulatorInfo& mi =
-        (base_instruction.getManipulatorInfo().empty()) ? manip_info : base_instruction.getManipulatorInfo();
-
-    // Initialize
-    auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
-    auto world_to_base = request.env_state->link_transforms.at(fwd_kin->getBaseLinkName());
-    const Eigen::Isometry3d& tcp = request.tesseract->findTCP(mi);
-
-    // Calculate FK for start and end
-    Eigen::Isometry3d p1 = Eigen::Isometry3d::Identity();
-    if (!fwd_kin->calcFwdKin(p1, start))
-      throw std::runtime_error("LVSInterpolateStateWaypoint: failed to find forward kinematics solution!");
-    p1 = world_to_base * p1 * tcp;
-
-    Eigen::Isometry3d p2 = Eigen::Isometry3d::Identity();
-    if (!fwd_kin->calcFwdKin(p2, end))
-      throw std::runtime_error("LVSInterpolateStateWaypoint: failed to find forward kinematics solution!");
-    p2 = world_to_base * p2 * tcp;
-
-    double trans_dist = (p2.translation() - p1.translation()).norm();
-    double rot_dist =
-        Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));  // maybe rotation instead of
-                                                                                           // linear
-    int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
-    int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
-    int steps = std::max(trans_steps, rot_steps);
-    steps = std::max(steps, min_steps);
-
-    // Linearly interpolate in joint space
-    Eigen::MatrixXd states = interpolate(start, end, steps);
-
-    // Convert to MoveInstructions
-    for (long i = 1; i < states.cols(); ++i)
-    {
-      MoveInstruction move_instruction(StateWaypoint(start.joint_names, states.col(i)), MoveInstructionType::LINEAR);
-      move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
-      move_instruction.setDescription(base_instruction.getDescription());
-      composite.push_back(move_instruction);
-    }
-  }
+    move_type = MoveInstructionType::LINEAR;
   else if (base_instruction.isFreespace())
+    move_type = MoveInstructionType::FREESPACE;
+  else
+    throw std::runtime_error("LVS Interpolation: Unsupported Move Instruction Type!");
+
+  // Convert to MoveInstructions
+  for (long i = 1; i < states.cols(); ++i)
   {
-    // calculate steps
-    int steps;
-    double dist = (end - start).norm();
-    steps = int(dist / state_longest_valid_segment_length) + 1;
-    steps = std::max(steps, min_steps);
-
-    // Linearly interpolate in joint space
-    Eigen::MatrixXd states = interpolate(start, end, steps);
-
-    // Convert to MoveInstructions
-    for (long i = 1; i < states.cols(); ++i)
-    {
-      MoveInstruction move_instruction(StateWaypoint(start.joint_names, states.col(i)), MoveInstructionType::FREESPACE);
-      move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
-      move_instruction.setDescription(base_instruction.getDescription());
-      composite.push_back(move_instruction);
-    }
+    MoveInstruction move_instruction(StateWaypoint(start.joint_names, states.col(i)), move_type);
+    move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
+    move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
+    composite.push_back(move_instruction);
   }
 
   return composite;
@@ -135,100 +122,100 @@ CompositeInstruction LVSInterpolateStateWaypoint(const JointWaypoint& start,
                                                  int min_steps)
 {
   assert(!(manip_info.empty() && base_instruction.getManipulatorInfo().empty()));
+  ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   // Joint waypoints should have joint names
   assert(static_cast<long>(start.joint_names.size()) == start.size());
 
-  const ManipulatorInfo& mi =
-      (base_instruction.getManipulatorInfo().empty()) ? manip_info : base_instruction.getManipulatorInfo();
-
   // Initialize
-  auto inv_kin = request.tesseract->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
+  auto inv_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(inv_kin->getBaseLinkName());
   const Eigen::Isometry3d& tcp = request.tesseract->findTCP(mi);
 
-  // Calculate IK for start and end
   Eigen::VectorXd j1 = start;
 
+  // Calculate p2 in kinematics base frame without tcp for accurate comparison with p1
   Eigen::Isometry3d p2 = end * tcp.inverse();
   p2 = world_to_base.inverse() * p2;
+
+  // Calculate FK for start
+  Eigen::Isometry3d p1 = Eigen::Isometry3d::Identity();
+  if (!fwd_kin->calcFwdKin(p1, start))
+    throw std::runtime_error("LVSInterpolateStateWaypoint: failed to find forward kinematics solution!");
+
+  // Calculate steps based on cartesian information
+  double trans_dist = (p2.translation() - p1.translation()).norm();
+  double rot_dist = Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));
+  int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
+  int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
+  int steps = std::max(trans_steps, rot_steps);
+
   Eigen::VectorXd j2, j2_final;
-  if (!inv_kin->calcInvKin(j2, p2, j1))
-    j2 = j1;
-
-  // Find closest solution to the start state
-  double dist = std::numeric_limits<double>::max();
-  const auto dof = inv_kin->numJoints();
-  long num_solutions = j2.size() / dof;
-  j2_final = j2.middleRows(0, dof);
-  for (long i = 0; i < num_solutions; ++i)
-  {
-    /// @todo: May be nice to add contact checking to find best solution, but may not be neccessary because this is
-    /// used to generate the seed.
-    auto solution = j2.middleRows(i * dof, dof);
-    double d = (solution - j1).norm();
-    if (d < dist)
-    {
-      j2_final = solution;
-      dist = d;
-    }
-  }
-
   CompositeInstruction composite;
 
-  if (base_instruction.isLinear())
+  bool j2_found = inv_kin->calcInvKin(j2, p2, j1);
+  if (j2_found)
   {
-    // Initialize
-    auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
-    auto world_to_base = request.env_state->link_transforms.at(fwd_kin->getBaseLinkName());
-    const Eigen::Isometry3d& tcp = request.tesseract->findTCP(mi);
+    // Find closest solution to the start state
+    double dist = std::numeric_limits<double>::max();
+    const auto dof = inv_kin->numJoints();
+    long num_solutions = j2.size() / dof;
+    j2_final = j2.middleRows(0, dof);
+    for (long i = 0; i < num_solutions; ++i)
+    {
+      /// @todo: May be nice to add contact checking to find best solution, but may not be neccessary because this is
+      /// used to generate the seed.
+      auto solution = j2.middleRows(i * dof, dof);
+      double d = (solution - j1).norm();
+      if (d < dist)
+      {
+        j2_final = solution;
+        dist = d;
+      }
+    }
+    double joint_dist = (j2_final - j1).norm();
+    int state_steps = int(joint_dist / state_longest_valid_segment_length) + 1;
+    steps = std::max(steps, state_steps);
+  }
 
-    // Calculate FK for start and end
-    Eigen::Isometry3d p1 = Eigen::Isometry3d::Identity();
-    if (!fwd_kin->calcFwdKin(p1, start))
-      throw std::runtime_error("LVSInterpolateStateWaypoint: failed to find forward kinematics solution!");
-    p1 = world_to_base * p1 * tcp;
+  // Check min steps requirement
+  steps = std::max(steps, min_steps);
 
-    Eigen::Isometry3d p2 = end;
+  // Get move type base on base instruction type
+  MoveInstructionType move_type;
+  if (base_instruction.isLinear())
+    move_type = MoveInstructionType::LINEAR;
+  else if (base_instruction.isFreespace())
+    move_type = MoveInstructionType::FREESPACE;
+  else
+    throw std::runtime_error("LVS Interpolation: Unsupported Move Instruction Type!");
 
-    double trans_dist = (p2.translation() - p1.translation()).norm();
-    double rot_dist =
-        Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));  // maybe rotation instead of
-                                                                                           // linear
-    int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
-    int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
-    int steps = std::max(trans_steps, rot_steps);
-    steps = std::max(steps, min_steps);
-
+  if (j2_found)
+  {
     // Linearly interpolate in joint space
     Eigen::MatrixXd states = interpolate(j1, j2_final, steps);
 
     // Convert to MoveInstructions
     for (long i = 1; i < states.cols(); ++i)
     {
-      MoveInstruction move_instruction(StateWaypoint(start.joint_names, states.col(i)), MoveInstructionType::LINEAR);
+      MoveInstruction move_instruction(StateWaypoint(start.joint_names, states.col(i)), move_type);
       move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
       move_instruction.setDescription(base_instruction.getDescription());
+      move_instruction.setProfile(base_instruction.getProfile());
       composite.push_back(move_instruction);
     }
   }
-  else if (base_instruction.isFreespace())
+  else
   {
-    // calculate steps
-    int steps;
-    double dist2 = (j2_final - j1).norm();
-    steps = int(dist2 / state_longest_valid_segment_length) + 1;
-    steps = std::max(steps, min_steps);
-
-    // Linearly interpolate in joint space
-    Eigen::MatrixXd states = interpolate(j1, j2_final, steps);
-
     // Convert to MoveInstructions
-    for (long i = 1; i < states.cols(); ++i)
+    StateWaypoint swp(start.joint_names, j1);
+    for (long i = 1; i < steps; ++i)
     {
-      MoveInstruction move_instruction(StateWaypoint(start.joint_names, states.col(i)), MoveInstructionType::FREESPACE);
+      MoveInstruction move_instruction(swp, move_type);
       move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
       move_instruction.setDescription(base_instruction.getDescription());
+      move_instruction.setProfile(base_instruction.getProfile());
       composite.push_back(move_instruction);
     }
   }
@@ -247,100 +234,98 @@ CompositeInstruction LVSInterpolateStateWaypoint(const CartesianWaypoint& start,
                                                  int min_steps)
 {
   assert(!(manip_info.empty() && base_instruction.getManipulatorInfo().empty()));
+  ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   // Joint waypoints should have joint names
   assert(static_cast<long>(end.joint_names.size()) == end.size());
 
-  const ManipulatorInfo& mi =
-      (base_instruction.getManipulatorInfo().empty()) ? manip_info : base_instruction.getManipulatorInfo();
-
   // Initialize
-  auto inv_kin = request.tesseract->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
+  auto inv_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(inv_kin->getBaseLinkName());
   const Eigen::Isometry3d& tcp = request.tesseract->findTCP(mi);
 
-  // Calculate IK for start and end
+  // Calculate p1 in kinematics base frame without tcp
   Eigen::Isometry3d p1 = start * tcp.inverse();
   p1 = world_to_base.inverse() * p1;
+
+  // Calculate FK for end state
+  Eigen::Isometry3d p2 = Eigen::Isometry3d::Identity();
+  if (!fwd_kin->calcFwdKin(p2, end))
+    throw std::runtime_error("LVSInterpolateStateWaypoint: failed to find forward kinematics solution!");
+
+  double trans_dist = (p2.translation() - p1.translation()).norm();
+  double rot_dist = Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));
+  int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
+  int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
+  int steps = std::max(trans_steps, rot_steps);
+
   Eigen::VectorXd j1, j1_final;
-  if (!inv_kin->calcInvKin(j1, p1, end))
-    j1 = end;
-
   Eigen::VectorXd j2 = end;
-
-  // Find closest solution to the end state
-  double dist = std::numeric_limits<double>::max();
-  const auto dof = inv_kin->numJoints();
-  long num_solutions = j1.size() / dof;
-  j1_final = j1.middleRows(0, dof);
-  for (long i = 0; i < num_solutions; ++i)
-  {
-    /// @todo: May be nice to add contact checking to find best solution, but may not be neccessary because this is
-    /// used to generate the seed.
-    auto solution = j1.middleRows(i * dof, dof);
-    double d = (j2 - solution).norm();
-    if (d < dist)
-    {
-      j1_final = solution;
-      dist = d;
-    }
-  }
-
   CompositeInstruction composite;
 
-  if (base_instruction.isLinear())
+  bool j1_found = inv_kin->calcInvKin(j1, p1, j2);
+  if (j1_found)
   {
-    // Initialize
-    auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
-    auto world_to_base = request.env_state->link_transforms.at(fwd_kin->getBaseLinkName());
-    const Eigen::Isometry3d& tcp = request.tesseract->findTCP(mi);
+    // Find closest solution to the start state
+    double dist = std::numeric_limits<double>::max();
+    const auto dof = inv_kin->numJoints();
+    long num_solutions = j1.size() / dof;
+    j1_final = j1.middleRows(0, dof);
+    for (long i = 0; i < num_solutions; ++i)
+    {
+      /// @todo: May be nice to add contact checking to find best solution, but may not be neccessary because this is
+      /// used to generate the seed.
+      auto solution = j1.middleRows(i * dof, dof);
+      double d = (solution - j2).norm();
+      if (d < dist)
+      {
+        j1_final = solution;
+        dist = d;
+      }
+    }
+    double joint_dist = (j1_final - j2).norm();
+    int state_steps = int(joint_dist / state_longest_valid_segment_length) + 1;
+    steps = std::max(steps, state_steps);
+  }
 
-    // Calculate FK for start and end
-    Eigen::Isometry3d p1 = start;
+  // Check min steps requirement
+  steps = std::max(steps, min_steps);
 
-    Eigen::Isometry3d p2 = Eigen::Isometry3d::Identity();
-    if (!fwd_kin->calcFwdKin(p2, end))
-      throw std::runtime_error("LVSInterpolateStateWaypoint: failed to find forward kinematics solution!");
-    p2 = world_to_base * p2 * tcp;
+  // Get move type base on base instruction type
+  MoveInstructionType move_type;
+  if (base_instruction.isLinear())
+    move_type = MoveInstructionType::LINEAR;
+  else if (base_instruction.isFreespace())
+    move_type = MoveInstructionType::FREESPACE;
+  else
+    throw std::runtime_error("LVS Interpolation: Unsupported Move Instruction Type!");
 
-    double trans_dist = (p2.translation() - p1.translation()).norm();
-    double rot_dist =
-        Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));  // maybe rotation instead of
-                                                                                           // linear
-    int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
-    int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
-    int steps = std::max(trans_steps, rot_steps);
-    steps = std::max(steps, min_steps);
-
+  if (j1_found)
+  {
     // Linearly interpolate in joint space
     Eigen::MatrixXd states = interpolate(j1_final, j2, steps);
 
     // Convert to MoveInstructions
     for (long i = 1; i < states.cols(); ++i)
     {
-      MoveInstruction move_instruction(StateWaypoint(end.joint_names, states.col(i)), MoveInstructionType::LINEAR);
+      MoveInstruction move_instruction(StateWaypoint(end.joint_names, states.col(i)), move_type);
       move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
       move_instruction.setDescription(base_instruction.getDescription());
+      move_instruction.setProfile(base_instruction.getProfile());
       composite.push_back(move_instruction);
     }
   }
-  else if (base_instruction.isFreespace())
+  else
   {
-    // calculate steps
-    int steps;
-    double dist2 = (j2 - j1_final).norm();
-    steps = int(dist2 / state_longest_valid_segment_length) + 1;
-    steps = std::max(steps, min_steps);
-
-    // Linearly interpolate in joint space
-    Eigen::MatrixXd states = interpolate(j1_final, j2, steps);
-
     // Convert to MoveInstructions
-    for (long i = 1; i < states.cols(); ++i)
+    StateWaypoint swp(end.joint_names, j2);
+    for (long i = 1; i < steps; ++i)
     {
-      MoveInstruction move_instruction(StateWaypoint(end.joint_names, states.col(i)), MoveInstructionType::FREESPACE);
+      MoveInstruction move_instruction(swp, move_type);
       move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
       move_instruction.setDescription(base_instruction.getDescription());
+      move_instruction.setProfile(base_instruction.getProfile());
       composite.push_back(move_instruction);
     }
   }
@@ -359,12 +344,9 @@ CompositeInstruction LVSInterpolateStateWaypoint(const CartesianWaypoint& start,
                                                  int min_steps)
 {
   assert(!(manip_info.empty() && base_instruction.getManipulatorInfo().empty()));
+  ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
-  const ManipulatorInfo& mi =
-      (base_instruction.getManipulatorInfo().empty()) ? manip_info : base_instruction.getManipulatorInfo();
-
-  // Initialize
-  auto inv_kin = request.tesseract->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
+  auto inv_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(inv_kin->getBaseLinkName());
   const Eigen::Isometry3d& tcp = request.tesseract->findTCP(mi);
 
@@ -375,92 +357,119 @@ CompositeInstruction LVSInterpolateStateWaypoint(const CartesianWaypoint& start,
   Eigen::Isometry3d p1 = start * tcp.inverse();
   p1 = world_to_base.inverse() * p1;
   Eigen::VectorXd j1, j1_final;
-  bool found_j1 = false;
-  if (!inv_kin->calcInvKin(j1, p1, seed))
-    j1 = seed;
-  else
-    found_j1 = true;
+  bool found_j1 = inv_kin->calcInvKin(j1, p1, seed);
 
   Eigen::Isometry3d p2 = end * tcp.inverse();
   p2 = world_to_base.inverse() * p2;
   Eigen::VectorXd j2, j2_final;
-  if (!inv_kin->calcInvKin(j2, p2, seed))
-    j2 = j1;
-  else if (!found_j1)
-    j1 = j2;
+  bool found_j2 = inv_kin->calcInvKin(j2, p2, seed);
 
-  // Find closest solution to the end state
-  double dist = std::numeric_limits<double>::max();
-  const auto dof = inv_kin->numJoints();
-  long j1_num_solutions = j1.size() / dof;
-  long j2_num_solutions = j2.size() / dof;
-  j1_final = j1.middleRows(0, dof);
-  j2_final = j2.middleRows(0, dof);
-  for (long i = 0; i < j1_num_solutions; ++i)
+  double trans_dist = (p2.translation() - p1.translation()).norm();
+  double rot_dist = Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));
+  int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
+  int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
+  int steps = std::max(trans_steps, rot_steps);
+
+  if (found_j1 && found_j2)
   {
-    auto j1_solution = j1.middleRows(i * dof, dof);
-    for (long j = 0; j < j2_num_solutions; ++j)
+    // Find closest solution to the end state
+    double dist = std::numeric_limits<double>::max();
+    const auto dof = inv_kin->numJoints();
+    long j1_num_solutions = j1.size() / dof;
+    long j2_num_solutions = j2.size() / dof;
+    j1_final = j1.middleRows(0, dof);
+    j2_final = j2.middleRows(0, dof);
+    for (long i = 0; i < j1_num_solutions; ++i)
     {
-      /// @todo: May be nice to add contact checking to find best solution, but may not be neccessary because this is
-      /// used to generate the seed.
-      auto j2_solution = j2.middleRows(j * dof, dof);
-      double d = (j2 - j1).norm();
-      if (d < dist)
+      auto j1_solution = j1.middleRows(i * dof, dof);
+      for (long j = 0; j < j2_num_solutions; ++j)
       {
-        j1_final = j1_solution;
-        j2_final = j2_solution;
-        dist = d;
+        /// @todo: May be nice to add contact checking to find best solution, but may not be neccessary because this is
+        /// used to generate the seed.
+        auto j2_solution = j2.middleRows(j * dof, dof);
+        double d = (j2_solution - j1_solution).norm();
+        if (d < dist)
+        {
+          j1_final = j1_solution;
+          j2_final = j2_solution;
+          dist = d;
+        }
       }
     }
+    double joint_dist = (j1_final - j2_final).norm();
+    int state_steps = int(joint_dist / state_longest_valid_segment_length) + 1;
+    steps = std::max(steps, state_steps);
   }
+
+  // Check min steps requirement
+  steps = std::max(steps, min_steps);
+
+  // Get move type base on base instruction type
+  MoveInstructionType move_type;
+  if (base_instruction.isLinear())
+    move_type = MoveInstructionType::LINEAR;
+  else if (base_instruction.isFreespace())
+    move_type = MoveInstructionType::FREESPACE;
+  else
+    throw std::runtime_error("LVS Interpolation: Unsupported Move Instruction Type!");
 
   CompositeInstruction composite;
 
-  if (base_instruction.isLinear())
+  if (found_j1 && found_j2)
   {
-    double trans_dist = (end.translation() - start.translation()).norm();
-    double rot_dist =
-        Eigen::Quaterniond(start.linear()).angularDistance(Eigen::Quaterniond(end.linear()));  // maybe rotation instead
-                                                                                               // of linear
-    int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
-    int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
-    int steps = std::max(trans_steps, rot_steps);
-    steps = std::max(steps, min_steps);
-
     // Linearly interpolate in joint space
     Eigen::MatrixXd states = interpolate(j1_final, j2_final, steps);
 
     // Convert to MoveInstructions
     for (long i = 1; i < states.cols(); ++i)
     {
-      MoveInstruction move_instruction(StateWaypoint(inv_kin->getJointNames(), states.col(i)),
-                                       MoveInstructionType::LINEAR);
+      MoveInstruction move_instruction(StateWaypoint(inv_kin->getJointNames(), states.col(i)), move_type);
       move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
       move_instruction.setDescription(base_instruction.getDescription());
+      move_instruction.setProfile(base_instruction.getProfile());
       composite.push_back(move_instruction);
     }
   }
-  else if (base_instruction.isFreespace())
+  else if (found_j1)
   {
-    // calculate steps
-    int steps;
-    double dist2 = (j2_final - j1_final).norm();
-    steps = int(dist2 / state_longest_valid_segment_length) + 1;
-    steps = std::max(steps, min_steps);
-
-    // Linearly interpolate in joint space
-    Eigen::MatrixXd states = interpolate(j1_final, j2_final, steps);
-
     // Convert to MoveInstructions
-    for (long i = 1; i < states.cols(); ++i)
+    StateWaypoint swp(inv_kin->getJointNames(), j1_final);
+    for (long i = 1; i < steps; ++i)
     {
-      MoveInstruction move_instruction(StateWaypoint(inv_kin->getJointNames(), states.col(i)),
-                                       MoveInstructionType::FREESPACE);
+      MoveInstruction move_instruction(swp, move_type);
       move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
       move_instruction.setDescription(base_instruction.getDescription());
+      move_instruction.setProfile(base_instruction.getProfile());
       composite.push_back(move_instruction);
     }
   }
+  else if (found_j2)
+  {
+    // Convert to MoveInstructions
+    StateWaypoint swp(inv_kin->getJointNames(), j2_final);
+    for (long i = 1; i < steps; ++i)
+    {
+      MoveInstruction move_instruction(swp, move_type);
+      move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
+      move_instruction.setDescription(base_instruction.getDescription());
+      move_instruction.setProfile(base_instruction.getProfile());
+      composite.push_back(move_instruction);
+    }
+  }
+  else
+  {
+    // Convert to MoveInstructions
+    StateWaypoint swp(inv_kin->getJointNames(), seed);
+    for (long i = 1; i < steps; ++i)
+    {
+      MoveInstruction move_instruction(swp, move_type);
+      move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
+      move_instruction.setDescription(base_instruction.getDescription());
+      move_instruction.setProfile(base_instruction.getProfile());
+      composite.push_back(move_instruction);
+    }
+  }
+
   return composite;
 }
 
@@ -478,11 +487,10 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const JointWaypoint& start,
   throw std::runtime_error("Not implemented, PR's are welcome!");
 
   assert(!(manip_info.empty() && base_instruction.getManipulatorInfo().empty()));
-  const ManipulatorInfo& mi =
-      (base_instruction.getManipulatorInfo().empty()) ? manip_info : base_instruction.getManipulatorInfo();
+  ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   // Initialize
-  auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(fwd_kin->getBaseLinkName());
   const Eigen::Isometry3d& tcp = request.tesseract->findTCP(mi);
 
@@ -500,9 +508,7 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const JointWaypoint& start,
   p2 = world_to_base * p2 * tcp;
 
   double trans_dist = (p2.translation() - p1.translation()).norm();
-  double rot_dist =
-      Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));  // maybe rotation instead of
-                                                                                         // linear
+  double rot_dist = Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));
   int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
   int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
   int steps = std::max(trans_steps, rot_steps);
@@ -517,6 +523,7 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const JointWaypoint& start,
     tesseract_planning::MoveInstruction move_instruction(CartesianWaypoint(pose), MoveInstructionType::LINEAR);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
 
@@ -537,11 +544,10 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const JointWaypoint& start,
   throw std::runtime_error("Not implemented, PR's are welcome!");
 
   assert(!(manip_info.empty() && base_instruction.getManipulatorInfo().empty()));
-  const ManipulatorInfo& mi =
-      (base_instruction.getManipulatorInfo().empty()) ? manip_info : base_instruction.getManipulatorInfo();
+  ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   // Initialize
-  auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(fwd_kin->getBaseLinkName());
   const Eigen::Isometry3d& tcp = request.tesseract->findTCP(mi);
 
@@ -556,9 +562,7 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const JointWaypoint& start,
   Eigen::Isometry3d p2 = end;
 
   double trans_dist = (p2.translation() - p1.translation()).norm();
-  double rot_dist =
-      Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));  // maybe rotation instead of
-                                                                                         // linear
+  double rot_dist = Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));
   int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
   int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
   int steps = std::max(trans_steps, rot_steps);
@@ -573,6 +577,7 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const JointWaypoint& start,
     tesseract_planning::MoveInstruction move_instruction(CartesianWaypoint(pose), MoveInstructionType::LINEAR);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
 
@@ -593,11 +598,10 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const CartesianWaypoint& st
   throw std::runtime_error("Not implemented, PR's are welcome!");
 
   assert(!(manip_info.empty() && base_instruction.getManipulatorInfo().empty()));
-  const ManipulatorInfo& mi =
-      (base_instruction.getManipulatorInfo().empty()) ? manip_info : base_instruction.getManipulatorInfo();
+  ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   // Initialize
-  auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(fwd_kin->getBaseLinkName());
   const Eigen::Isometry3d& tcp = request.tesseract->findTCP(mi);
 
@@ -612,9 +616,7 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const CartesianWaypoint& st
   p2 = world_to_base * p2 * tcp;
 
   double trans_dist = (p2.translation() - p1.translation()).norm();
-  double rot_dist =
-      Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));  // maybe rotation instead of
-                                                                                         // linear
+  double rot_dist = Eigen::Quaterniond(p1.linear()).angularDistance(Eigen::Quaterniond(p2.linear()));
   int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
   int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
   int steps = std::max(trans_steps, rot_steps);
@@ -629,6 +631,7 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const CartesianWaypoint& st
     tesseract_planning::MoveInstruction move_instruction(CartesianWaypoint(pose), MoveInstructionType::LINEAR);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
 
@@ -651,9 +654,7 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const CartesianWaypoint& st
   CompositeInstruction composite;
 
   double trans_dist = (end.translation() - start.translation()).norm();
-  double rot_dist =
-      Eigen::Quaterniond(start.linear()).angularDistance(Eigen::Quaterniond(end.linear()));  // maybe rotation instead
-                                                                                             // of linear
+  double rot_dist = Eigen::Quaterniond(start.linear()).angularDistance(Eigen::Quaterniond(end.linear()));
   int trans_steps = int(trans_dist / translation_longest_valid_segment_length) + 1;
   int rot_steps = int(rot_dist / rotation_longest_valid_segment_length) + 1;
   int steps = std::max(trans_steps, rot_steps);
@@ -668,6 +669,7 @@ CompositeInstruction LVSInterpolateCartStateWaypoint(const CartesianWaypoint& st
     tesseract_planning::MoveInstruction move_instruction(CartesianWaypoint(pose), MoveInstructionType::LINEAR);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
   return composite;

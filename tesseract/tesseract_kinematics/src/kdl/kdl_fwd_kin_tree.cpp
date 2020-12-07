@@ -45,6 +45,8 @@ ForwardKinematics::Ptr KDLFwdKinTree::clone() const
   return cloned_fwdkin;
 }
 
+bool KDLFwdKinTree::update() { return init(scene_graph_, joint_list_, name_, input_start_state_); }
+
 KDL::JntArray KDLFwdKinTree::getKDLJntArray(const std::vector<std::string>& joint_names,
                                             const Eigen::Ref<const Eigen::VectorXd>& joint_angles) const
 {
@@ -59,6 +61,7 @@ KDL::JntArray KDLFwdKinTree::getKDLJntArray(const std::vector<std::string>& join
 
 void KDLFwdKinTree::setStartState(std::unordered_map<std::string, double> start_state)
 {
+  input_start_state_ = start_state;
   KDL::JntArray kdl_joints;
   kdl_joints.resize(static_cast<unsigned>(start_state.size()));
   for (const auto& jnt : start_state)
@@ -211,12 +214,35 @@ const std::vector<std::string>& KDLFwdKinTree::getActiveLinkNames() const
 
 const tesseract_common::KinematicLimits& KDLFwdKinTree::getLimits() const { return limits_; }
 
+void KDLFwdKinTree::setLimits(tesseract_common::KinematicLimits limits)
+{
+  unsigned int nj = numJoints();
+  if (limits.joint_limits.rows() != nj || limits.velocity_limits.size() != nj ||
+      limits.acceleration_limits.size() != nj)
+    throw std::runtime_error("Kinematics limits assigned are invalid!");
+
+  limits_ = std::move(limits);
+}
+
+unsigned int KDLFwdKinTree::numJoints() const { return static_cast<unsigned>(joint_list_.size()); }
+
+const std::string& KDLFwdKinTree::getBaseLinkName() const { return scene_graph_->getRoot(); }
+
+const std::string& KDLFwdKinTree::getTipLinkName() const { return link_list_.back(); }
+
+const std::string& KDLFwdKinTree::getName() const { return name_; }
+
+const std::string& KDLFwdKinTree::getSolverName() const { return solver_name_; }
+
+tesseract_scene_graph::SceneGraph::ConstPtr KDLFwdKinTree::getSceneGraph() const { return scene_graph_; }
+
 bool KDLFwdKinTree::init(tesseract_scene_graph::SceneGraph::ConstPtr scene_graph,
                          const std::vector<std::string>& joint_names,
                          std::string name,
                          const std::unordered_map<std::string, double>& start_state)
 {
   initialized_ = false;
+  kdl_tree_ = KDL::Tree();
 
   if (scene_graph == nullptr)
   {
@@ -335,6 +361,16 @@ bool KDLFwdKinTree::init(const KDLFwdKinTree& kin)
   joint_to_qnr_ = kin.joint_to_qnr_;
 
   return true;
+}
+
+bool KDLFwdKinTree::checkInitialized() const
+{
+  if (!initialized_)
+  {
+    CONSOLE_BRIDGE_logError("Kinematics has not been initialized!");
+  }
+
+  return initialized_;
 }
 
 }  // namespace tesseract_kinematics

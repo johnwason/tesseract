@@ -32,7 +32,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/inverse_kinematics.h>
-#include <tesseract_kinematics/opw/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::OPWInvKin)
@@ -41,7 +40,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 namespace tesseract_kinematics
 {
 /**@brief OPW Inverse Kinematics Implmentation. */
-class TESSERACT_KINEMATICS_OPW_PUBLIC OPWInvKin : public InverseKinematics
+class OPWInvKin : public InverseKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -57,6 +56,8 @@ public:
   OPWInvKin& operator=(OPWInvKin&&) = delete;
 
   InverseKinematics::Ptr clone() const override;
+
+  bool update() override;
 
 #ifndef SWIG
 
@@ -74,14 +75,15 @@ public:
   bool checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const override;
   unsigned int numJoints() const override;
 
-  const std::vector<std::string>& getJointNames() const override { return joint_names_; }
-  const std::vector<std::string>& getLinkNames() const override { return link_names_; }
-  const std::vector<std::string>& getActiveLinkNames() const override { return active_link_names_; }
-  const tesseract_common::KinematicLimits& getLimits() const override { return limits_; }
-  const std::string& getBaseLinkName() const override { return base_link_name_; }
-  const std::string& getTipLinkName() const override { return tip_link_name_; }
-  const std::string& getName() const override { return name_; }
-  const std::string& getSolverName() const override { return solver_name_; }
+  const std::vector<std::string>& getJointNames() const override;
+  const std::vector<std::string>& getLinkNames() const override;
+  const std::vector<std::string>& getActiveLinkNames() const override;
+  const tesseract_common::KinematicLimits& getLimits() const override;
+  void setLimits(tesseract_common::KinematicLimits limits) override;
+  const std::string& getBaseLinkName() const override;
+  const std::string& getTipLinkName() const override;
+  const std::string& getName() const override;
+  const std::string& getSolverName() const override;
 
   /**
    * @brief init Initialize OPW Inverse Kinematics
@@ -108,15 +110,7 @@ public:
    * @brief Checks if kinematics has been initialized
    * @return True if init() has completed successfully
    */
-  bool checkInitialized() const
-  {
-    if (!initialized_)
-    {
-      CONSOLE_BRIDGE_logError("Kinematics has not been initialized!");
-    }
-
-    return initialized_;
-  }
+  bool checkInitialized() const;
 
 protected:
   bool initialized_{ false };                  /**< @brief Identifies if the object has been initialized */

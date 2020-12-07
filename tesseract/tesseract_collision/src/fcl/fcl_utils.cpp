@@ -40,16 +40,15 @@
  */
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
-#include <fcl/geometry/bvh/BVH_model.h>
-#include <fcl/geometry/shape/box.h>
-#include <fcl/geometry/shape/cylinder.h>
-#include <fcl/geometry/shape/convex.h>
-#include <fcl/geometry/shape/plane.h>
-#include <fcl/geometry/shape/sphere.h>
-#include <fcl/geometry/shape/cone.h>
-#include <fcl/geometry/shape/capsule.h>
-#include <fcl/geometry/octree/octree.h>
-#include <boost/thread/mutex.hpp>
+#include <fcl/geometry/bvh/BVH_model-inl.h>
+#include <fcl/geometry/shape/box-inl.h>
+#include <fcl/geometry/shape/cylinder-inl.h>
+#include <fcl/geometry/shape/convex-inl.h>
+#include <fcl/geometry/shape/plane-inl.h>
+#include <fcl/geometry/shape/sphere-inl.h>
+#include <fcl/geometry/shape/cone-inl.h>
+#include <fcl/geometry/shape/capsule-inl.h>
+#include <fcl/geometry/octree/octree-inl.h>
 #include <memory>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
@@ -126,9 +125,9 @@ CollisionGeometryPtr createShapePrimitive(const tesseract_geometry::ConvexMesh::
 
   if (vertice_count > 0 && face_count > 0)
   {
-    auto faces = std::make_shared<std::vector<int>>(geom->getFaces()->data(),
-                                                    geom->getFaces()->data() + geom->getFaces()->size());
-    return std::make_shared<fcl::Convexd>(geom->getVertices(), face_count, faces);
+    auto faces = std::make_shared<const std::vector<int>>(geom->getFaces()->data(),
+                                                          geom->getFaces()->data() + geom->getFaces()->size());
+    return std::make_shared<fcl::Convexd>(geom->getVertices(), face_count, faces, false);
   }
 
   CONSOLE_BRIDGE_logError("The mesh is empty!");
@@ -296,7 +295,7 @@ bool distanceCallback(fcl::CollisionObjectd* o1, fcl::CollisionObjectd* o2, void
   fcl::DistanceRequestd fcl_request(true, true);
   double d = fcl::distance(o1, o2, fcl_request, fcl_result);
 
-  if (d < cdata->contact_distance)
+  if (d < cdata->collision_margin_data.getMaxCollisionMargin())
   {
     Eigen::Isometry3d tf1 = cd1->getCollisionObjectsTransform();
     Eigen::Isometry3d tf2 = cd2->getCollisionObjectsTransform();
@@ -364,31 +363,6 @@ CollisionObjectWrapper::CollisionObjectWrapper(std::string name,
       collision_objects_.push_back(co);
       collision_objects_raw_.push_back(co.get());
     }
-  }
-}
-
-CollisionObjectWrapper::CollisionObjectWrapper(std::string name,
-                                               const int& type_id,
-                                               CollisionShapesConst shapes,
-                                               tesseract_common::VectorIsometry3d shape_poses,
-                                               std::vector<CollisionGeometryPtr> collision_geometries,
-                                               const std::vector<CollisionObjectPtr>& collision_objects)
-  : name_(std::move(name))
-  , type_id_(type_id)
-  , shapes_(std::move(shapes))
-  , shape_poses_(std::move(shape_poses))
-  , collision_geometries_(std::move(collision_geometries))
-{
-  collision_objects_.reserve(collision_objects.size());
-  collision_objects_raw_.reserve(collision_objects.size());
-  for (const auto& co : collision_objects)
-  {
-    auto collObj = std::make_shared<FCLCollisionObjectWrapper>(*co);
-    collObj->setUserData(this);
-    collObj->setTransform(co->getTransform());
-    collObj->updateAABB();
-    collision_objects_.push_back(collObj);
-    collision_objects_raw_.push_back(collObj.get());
   }
 }
 

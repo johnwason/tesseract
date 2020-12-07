@@ -45,8 +45,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <Eigen/Eigen>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
-#include <tesseract_scene_graph/visibility_control.h>
-
 #ifdef SWIG
 
 %shared_ptr(tesseract_scene_graph::JointDynamics)
@@ -64,7 +62,7 @@ namespace tesseract_scene_graph
 {
 class Link;
 
-class TESSERACT_SCENE_GRAPH_PUBLIC JointDynamics
+class JointDynamics
 {
 public:
   using Ptr = std::shared_ptr<JointDynamics>;
@@ -81,7 +79,7 @@ public:
   }
 };
 
-class TESSERACT_SCENE_GRAPH_PUBLIC JointLimits
+class JointLimits
 {
 public:
   using Ptr = std::shared_ptr<JointLimits>;
@@ -112,7 +110,7 @@ public:
 };
 
 /// \brief Parameters for Joint Safety Controllers
-class TESSERACT_SCENE_GRAPH_PUBLIC JointSafety
+class JointSafety
 {
 public:
   using Ptr = std::shared_ptr<JointSafety>;
@@ -174,7 +172,7 @@ public:
   };
 };
 
-class TESSERACT_SCENE_GRAPH_PUBLIC JointCalibration
+class JointCalibration
 {
 public:
   using Ptr = std::shared_ptr<JointCalibration>;
@@ -199,7 +197,7 @@ public:
   };
 };
 
-class TESSERACT_SCENE_GRAPH_PUBLIC JointMimic
+class JointMimic
 {
 public:
   using Ptr = std::shared_ptr<JointMimic>;
@@ -235,7 +233,7 @@ enum class JointType
   FIXED
 };
 
-class TESSERACT_SCENE_GRAPH_PUBLIC Joint
+class Joint
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

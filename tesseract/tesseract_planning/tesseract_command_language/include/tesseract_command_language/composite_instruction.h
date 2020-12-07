@@ -34,10 +34,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_command_language/core/instruction.h>
+#include <tesseract_command_language/constants.h>
 #include <tesseract_command_language/instruction_type.h>
 #include <tesseract_command_language/manipulator_info.h>
 #include <tesseract_command_language/null_instruction.h>
-#include <tesseract_command_language/visibility_control.h>
 
 namespace tesseract_planning
 {
@@ -48,11 +48,11 @@ enum class CompositeInstructionOrder
   ORDERED_AND_REVERABLE  // Can go forward or reverse the order
 };
 
-class TESSERACT_COMMAND_LANGUAGE_PUBLIC CompositeInstruction
+class CompositeInstruction
 {
 public:
 
-  CompositeInstruction(std::string profile = "DEFAULT",
+  CompositeInstruction(std::string profile = DEFAULT_PROFILE_KEY,
                        CompositeInstructionOrder order = CompositeInstructionOrder::ORDERED,
                        ManipulatorInfo manipulator_info = ManipulatorInfo());
 
@@ -234,7 +234,7 @@ private:
    *
    * If it has a child composite instruction it uses the child composites profile for that section
    */
-  std::string profile_{ "DEFAULT" };
+  std::string profile_{ DEFAULT_PROFILE_KEY };
 
   /** @brief The order of the composite instruction */
   CompositeInstructionOrder order_{ CompositeInstructionOrder::ORDERED };

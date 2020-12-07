@@ -33,7 +33,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/core/planner.h>
 #include <tesseract_motion_planners/ompl/profile/ompl_profile.h>
-#include <tesseract_motion_planners/ompl/visibility_control.h>
 
 namespace ompl
 {
@@ -53,11 +52,13 @@ using OMPLProblemGeneratorFn =
  * @brief This planner is intended to provide an easy to use interface to OMPL for freespace planning. It is made to
  * take a start and end point and automate the generation of the OMPL problem.
  */
-class TESSERACT_MOTION_PLANNERS_OMPL_PUBLIC OMPLMotionPlanner : public MotionPlanner
+class OMPLMotionPlanner : public MotionPlanner
 {
 public:
   /** @brief Construct a planner */
-  OMPLMotionPlanner(std::string name = "OMPL");
+  OMPLMotionPlanner();
+
+  const std::string& getName() const override;
 
   OMPLProblemGeneratorFn problem_generator;
 
@@ -96,7 +97,12 @@ public:
 
   void clear() override;
 
+  MotionPlanner::Ptr clone() const override;
+
 protected:
+  /** @brief Name of planner */
+  std::string name_{ "OMPL" };
+
   /** @brief The planners status codes */
   std::shared_ptr<const OMPLMotionPlannerStatusCategory> status_category_;
 

@@ -34,8 +34,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <cassert>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
-#include <tesseract_common/visibility_control.h>
-
 #ifdef SWIG
 
 %shared_ptr(tesseract_common::StatusCategory)
@@ -46,7 +44,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_common
 {
-class TESSERACT_COMMON_PUBLIC StatusCategory
+class StatusCategory
 {
 public:
   using Ptr = std::shared_ptr<StatusCategory>;
@@ -73,7 +71,7 @@ public:
   }
 };
 
-class TESSERACT_COMMON_PUBLIC GeneralStatusCategory : public StatusCategory
+class GeneralStatusCategory : public StatusCategory
 {
 public:
   GeneralStatusCategory(std::string name = "GeneralStatus") : name_(std::move(name)) {}
@@ -118,7 +116,7 @@ private:
   std::string name_;
 };
 
-class TESSERACT_COMMON_PUBLIC StatusCode
+class StatusCode
 {
 public:
   using Ptr = std::shared_ptr<StatusCode>;

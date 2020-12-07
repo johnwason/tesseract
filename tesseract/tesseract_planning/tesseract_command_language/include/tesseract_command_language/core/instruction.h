@@ -28,11 +28,12 @@
 
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
+#include <string>
 #include <tinyxml2.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_command_language/core/waypoint.h>
-#include <tesseract_command_language/visibility_control.h>
+#include <tesseract_common/sfinae_utils.h>
 
 #ifdef SWIG
 %ignore std::vector<tesseract_planning::Instruction>::vector(size_type);
@@ -43,9 +44,20 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 namespace tesseract_planning
 {
 #ifndef SWIG
-namespace detail
+namespace detail_instruction
 {
-struct TESSERACT_COMMAND_LANGUAGE_LOCAL InstructionInnerBase
+CREATE_MEMBER_CHECK(getType);
+CREATE_MEMBER_CHECK(getDescription);
+CREATE_MEMBER_CHECK(setDescription);
+CREATE_MEMBER_CHECK(print);
+CREATE_MEMBER_CHECK(toXML);
+CREATE_MEMBER_FUNC_SIGNATURE_NOARGS_CHECK(getType, int);
+CREATE_MEMBER_FUNC_SIGNATURE_NOARGS_CHECK(getDescription, const std::string&);
+CREATE_MEMBER_FUNC_SIGNATURE_CHECK(setDescription, void, const std::string&);
+CREATE_MEMBER_FUNC_SIGNATURE_CHECK(print, void, std::string);
+CREATE_MEMBER_FUNC_SIGNATURE_CHECK(toXML, tinyxml2::XMLElement*, tinyxml2::XMLDocument&);
+
+struct InstructionInnerBase
 {
   InstructionInnerBase() = default;
   virtual ~InstructionInnerBase() = default;
@@ -74,7 +86,21 @@ struct TESSERACT_COMMAND_LANGUAGE_LOCAL InstructionInnerBase
 template <typename T>
 struct InstructionInner final : InstructionInnerBase
 {
-  InstructionInner() = default;
+  InstructionInner()
+  {
+    static_assert(has_member_getType<T>::value, "Class does not have member function 'getType'");
+    static_assert(has_member_getDescription<T>::value, "Class does not have member function 'getDescription'");
+    static_assert(has_member_setDescription<T>::value, "Class does not have member function 'setDescription'");
+    static_assert(has_member_print<T>::value, "Class does not have member function 'print'");
+    static_assert(has_member_toXML<T>::value, "Class does not have member function 'toXML'");
+    static_assert(has_member_func_signature_getType<T>::value, "Class 'getType' function has incorrect signature");
+    static_assert(has_member_func_signature_getDescription<T>::value,
+                  "Class 'getDescription' function has incorrect signature");
+    static_assert(has_member_func_signature_setDescription<T>::value,
+                  "Class 'setDescription' function has incorrect signature");
+    static_assert(has_member_func_signature_print<T>::value, "Class 'print' function has incorrect signature");
+    static_assert(has_member_func_signature_toXML<T>::value, "Class 'toXML' function has incorrect signature");
+  }
   ~InstructionInner() override = default;
   InstructionInner(const InstructionInner&) = delete;
   InstructionInner(InstructionInner&&) = delete;
@@ -82,8 +108,37 @@ struct InstructionInner final : InstructionInnerBase
   InstructionInner& operator=(InstructionInner&&) = delete;
 
   // Constructors from T (copy and move variants).
-  explicit InstructionInner(T instruction) : instruction_(std::move(instruction)) {}
-  explicit InstructionInner(T&& instruction) : instruction_(std::move(instruction)) {}
+  explicit InstructionInner(T instruction) : instruction_(std::move(instruction))
+  {
+    static_assert(has_member_getType<T>::value, "Class does not have member function 'getType'");
+    static_assert(has_member_getDescription<T>::value, "Class does not have member function 'getDescription'");
+    static_assert(has_member_setDescription<T>::value, "Class does not have member function 'setDescription'");
+    static_assert(has_member_print<T>::value, "Class does not have member function 'print'");
+    static_assert(has_member_toXML<T>::value, "Class does not have member function 'toXML'");
+    static_assert(has_member_func_signature_getType<T>::value, "Class 'getType' function has incorrect signature");
+    static_assert(has_member_func_signature_getDescription<T>::value,
+                  "Class 'getDescription' function has incorrect signature");
+    static_assert(has_member_func_signature_setDescription<T>::value,
+                  "Class 'setDescription' function has incorrect signature");
+    static_assert(has_member_func_signature_print<T>::value, "Class 'print' function has incorrect signature");
+    static_assert(has_member_func_signature_toXML<T>::value, "Class 'toXML' function has incorrect signature");
+  }
+
+  explicit InstructionInner(T&& instruction) : instruction_(std::move(instruction))
+  {
+    static_assert(has_member_getType<T>::value, "Class does not have member function 'getType'");
+    static_assert(has_member_getDescription<T>::value, "Class does not have member function 'getDescription'");
+    static_assert(has_member_setDescription<T>::value, "Class does not have member function 'setDescription'");
+    static_assert(has_member_print<T>::value, "Class does not have member function 'print'");
+    static_assert(has_member_toXML<T>::value, "Class does not have member function 'toXML'");
+    static_assert(has_member_func_signature_getType<T>::value, "Class 'getType' function has incorrect signature");
+    static_assert(has_member_func_signature_getDescription<T>::value,
+                  "Class 'getDescription' function has incorrect signature");
+    static_assert(has_member_func_signature_setDescription<T>::value,
+                  "Class 'setDescription' function has incorrect signature");
+    static_assert(has_member_func_signature_print<T>::value, "Class 'print' function has incorrect signature");
+    static_assert(has_member_func_signature_toXML<T>::value, "Class 'toXML' function has incorrect signature");
+  }
 
   std::unique_ptr<InstructionInnerBase> clone() const override
   {
@@ -105,11 +160,11 @@ struct InstructionInner final : InstructionInnerBase
   T instruction_;
 };
 
-}  // namespace detail
+}  // namespace detail_instruction
 
 #endif // SWIG
 
-class TESSERACT_COMMAND_LANGUAGE_PUBLIC Instruction
+class Instruction
 {
   template <typename T>
   using uncvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
@@ -123,7 +178,7 @@ public:
 
   template <typename T, generic_ctor_enabler<T> = 0>
   Instruction(T&& instruction)  // NOLINT
-    : instruction_(std::make_unique<detail::InstructionInner<uncvref_t<T>>>(instruction))
+    : instruction_(std::make_unique<detail_instruction::InstructionInner<uncvref_t<T>>>(instruction))
   {
   }
 
@@ -190,7 +245,7 @@ public:
 #endif // SWIG
 
 private:
-  std::unique_ptr<detail::InstructionInnerBase> instruction_;
+  std::unique_ptr<detail_instruction::InstructionInnerBase> instruction_;
 };
 
 }  // namespace tesseract_planning

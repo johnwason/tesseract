@@ -38,7 +38,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/forward_kinematics.h>
-#include <tesseract_kinematics/kdl/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::KDLFwdKinTree)
@@ -52,7 +51,7 @@ namespace tesseract_kinematics
  * Typically, just wrappers around the equivalent KDL calls.
  *
  */
-class TESSERACT_KINEMATICS_KDL_PUBLIC KDLFwdKinTree : public ForwardKinematics
+class KDLFwdKinTree : public ForwardKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -68,6 +67,8 @@ public:
   KDLFwdKinTree& operator=(KDLFwdKinTree&&) = delete;
 
   ForwardKinematics::Ptr clone() const override;
+
+  bool update() override;
 
 #ifndef SWIG
 
@@ -99,16 +100,19 @@ public:
 
   const tesseract_common::KinematicLimits& getLimits() const override;
 
-  tesseract_scene_graph::SceneGraph::ConstPtr getSceneGraph() const { return scene_graph_; }
-  unsigned int numJoints() const override { return static_cast<unsigned>(joint_list_.size()); }
-  const std::string& getBaseLinkName() const override { return scene_graph_->getRoot(); }
-  const std::string& getTipLinkName() const override
-  {
-    return link_list_.back();
-  }  // TODO: Should make this be
-     // provided
-  const std::string& getName() const override { return name_; }
-  const std::string& getSolverName() const override { return solver_name_; }
+  void setLimits(tesseract_common::KinematicLimits limits) override;
+
+  unsigned int numJoints() const override;
+
+  const std::string& getBaseLinkName() const override;
+
+  const std::string& getTipLinkName() const override;  // TODO: Should make this be provided
+
+  const std::string& getName() const override;
+
+  const std::string& getSolverName() const override;
+
+  tesseract_scene_graph::SceneGraph::ConstPtr getSceneGraph() const;
 
   /**
    * @brief Initializes Forward Kinematics as tree
@@ -128,15 +132,7 @@ public:
    * @brief Checks if kinematics has been initialized
    * @return True if init() has completed successfully
    */
-  bool checkInitialized() const
-  {
-    if (!initialized_)
-    {
-      CONSOLE_BRIDGE_logError("Kinematics has not been initialized!");
-    }
-
-    return initialized_;
-  }
+  bool checkInitialized() const;
 
 private:
   bool initialized_{ false };                               /**< Identifies if the object has been initialized */
@@ -145,7 +141,9 @@ private:
   std::string name_;                                        /**< Name of the kinematic chain */
   std::string solver_name_{ "KDLFwdKinTree" };              /**< Name of this solver */
   std::vector<std::string> joint_list_;                     /**< List of joint names */
-  KDL::JntArray start_state_;  /**< Intial state of the tree. Should include all joints in the model. */
+  KDL::JntArray start_state_; /**< Intial state of the tree. Should include all joints in the model. */
+  std::unordered_map<std::string, double> input_start_state_; /**< Input start state before it has been translated into
+                                                                 KDL types */
   std::vector<int> joint_qnr_; /**< The kdl segment number corrisponding to joint in joint_lists_ */
   std::unordered_map<std::string, unsigned int> joint_to_qnr_; /**< The tree joint name to qnr */
   std::vector<std::string> link_list_;                         /**< List of link names */

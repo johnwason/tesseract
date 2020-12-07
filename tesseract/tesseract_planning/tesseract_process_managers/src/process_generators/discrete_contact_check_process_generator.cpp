@@ -35,38 +35,49 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
-DiscreteContactCheckProcessGenerator::DiscreteContactCheckProcessGenerator(std::string name) : name_(std::move(name)) {}
+DiscreteContactCheckProcessGenerator::DiscreteContactCheckProcessGenerator(std::string name) : name_(std::move(name))
+{
+  config.type = tesseract_collision::CollisionEvaluatorType::LVS_DISCRETE;
+  config.longest_valid_segment_length = 0.05;
+  config.collision_margin_data = tesseract_collision::CollisionMarginData(0);
+}
 
 DiscreteContactCheckProcessGenerator::DiscreteContactCheckProcessGenerator(double longest_valid_segment_length,
                                                                            double contact_distance,
                                                                            std::string name)
   : name_(std::move(name))
-  , longest_valid_segment_length_(longest_valid_segment_length)
-  , contact_distance_(contact_distance)
 {
-  if (longest_valid_segment_length_ <= 0)
+  config.longest_valid_segment_length = longest_valid_segment_length;
+  config.type = tesseract_collision::CollisionEvaluatorType::LVS_DISCRETE;
+  config.collision_margin_data = tesseract_collision::CollisionMarginData(contact_distance);
+  if (config.longest_valid_segment_length <= 0)
   {
     CONSOLE_BRIDGE_logWarn("DiscreteContactCheckProcessGenerator: Invalid longest valid segment. Defaulting to 0.05");
-    longest_valid_segment_length_ = 0.05;
+    config.longest_valid_segment_length = 0.05;
   }
 }
 
 const std::string& DiscreteContactCheckProcessGenerator::getName() const { return name_; }
 
-std::function<void()> DiscreteContactCheckProcessGenerator::generateTask(ProcessInput input)
+std::function<void()> DiscreteContactCheckProcessGenerator::generateTask(ProcessInput input, std::size_t unique_id)
 {
-  return [=]() { process(input); };
+  return [=]() { process(input, unique_id); };
 }
 
-std::function<int()> DiscreteContactCheckProcessGenerator::generateConditionalTask(ProcessInput input)
+std::function<int()> DiscreteContactCheckProcessGenerator::generateConditionalTask(ProcessInput input,
+                                                                                   std::size_t unique_id)
 {
-  return [=]() { return conditionalProcess(input); };
+  return [=]() { return conditionalProcess(input, unique_id); };
 }
 
-int DiscreteContactCheckProcessGenerator::conditionalProcess(ProcessInput input) const
+int DiscreteContactCheckProcessGenerator::conditionalProcess(ProcessInput input, std::size_t unique_id) const
 {
   if (abort_)
     return 0;
+
+  auto info = std::make_shared<DiscreteContactCheckProcessInfo>(unique_id, name_);
+  info->return_value = 0;
+  input.addProcessInfo(info);
 
   // --------------------
   // Check that inputs are valid
@@ -74,7 +85,8 @@ int DiscreteContactCheckProcessGenerator::conditionalProcess(ProcessInput input)
   Instruction* input_result = input.getResults();
   if (!isCompositeInstruction(*input_result))
   {
-    CONSOLE_BRIDGE_logError("Input seed to TrajOpt Planner must be a composite instruction");
+    info->message = "Input seed to DiscreteContactCheckProcessGenerator must be a composite instruction";
+    CONSOLE_BRIDGE_logError("%s", info->message.c_str());
     return 0;
   }
 
@@ -82,7 +94,7 @@ int DiscreteContactCheckProcessGenerator::conditionalProcess(ProcessInput input)
   tesseract_environment::StateSolver::Ptr state_solver = input.tesseract->getEnvironment()->getStateSolver();
   tesseract_collision::DiscreteContactManager::Ptr manager =
       input.tesseract->getEnvironment()->getDiscreteContactManager();
-  manager->setContactDistanceThreshold(contact_distance_);
+  manager->setCollisionMarginData(config.collision_margin_data);
 
   // Set the active links based on the manipulator
   std::vector<std::string> active_links_manip;
@@ -90,7 +102,8 @@ int DiscreteContactCheckProcessGenerator::conditionalProcess(ProcessInput input)
     tesseract_environment::AdjacencyMap::Ptr adjacency_map_manip =
         std::make_shared<tesseract_environment::AdjacencyMap>(
             input.tesseract->getEnvironment()->getSceneGraph(),
-            input.tesseract->getManipulatorManager()
+            input.tesseract->getEnvironment()
+                ->getManipulatorManager()
                 ->getFwdKinematicSolver(input.manip_info.manipulator)
                 ->getActiveLinkNames(),
             input.tesseract->getEnvironment()->getCurrentState()->link_transforms);
@@ -100,7 +113,7 @@ int DiscreteContactCheckProcessGenerator::conditionalProcess(ProcessInput input)
 
   const auto* ci = input_result->cast_const<CompositeInstruction>();
   std::vector<tesseract_collision::ContactResultMap> contacts;
-  if (contactCheckProgram(contacts, *manager, *state_solver, *ci, longest_valid_segment_length_))
+  if (contactCheckProgram(contacts, *manager, *state_solver, *ci, config))
   {
     CONSOLE_BRIDGE_logInform("Results are not contact free for process intput: %s !",
                              input_result->getDescription().c_str());
@@ -110,16 +123,25 @@ int DiscreteContactCheckProcessGenerator::conditionalProcess(ProcessInput input)
           CONSOLE_BRIDGE_logDebug(("timestep: " + std::to_string(i) + " Links: " + contact.link_names[0] + ", " +
                                    contact.link_names[1] + " Dist: " + std::to_string(contact.distance))
                                       .c_str());
+    info->contact_results = contacts;
     return 0;
   }
 
   CONSOLE_BRIDGE_logDebug("Discrete contact check succeeded");
+  info->return_value = 1;
   return 1;
 }
 
-void DiscreteContactCheckProcessGenerator::process(ProcessInput input) const { conditionalProcess(input); }
+void DiscreteContactCheckProcessGenerator::process(ProcessInput input, std::size_t unique_id) const
+{
+  conditionalProcess(input, unique_id);
+}
 
 bool DiscreteContactCheckProcessGenerator::getAbort() const { return abort_; }
 void DiscreteContactCheckProcessGenerator::setAbort(bool abort) { abort_ = abort; }
 
+DiscreteContactCheckProcessInfo::DiscreteContactCheckProcessInfo(std::size_t unique_id, std::string name)
+  : ProcessInfo(unique_id, std::move(name))
+{
+}
 }  // namespace tesseract_planning

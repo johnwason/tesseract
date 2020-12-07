@@ -32,11 +32,12 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/simple/simple_motion_planner.h>
-#include <tesseract_motion_planners/simple/profile/simple_planner_default_plan_profile.h>
+#include <tesseract_motion_planners/simple/profile/simple_planner_default_lvs_plan_profile.h>
 #include <tesseract_motion_planners/core/utils.h>
 #include <tesseract_command_language/command_language.h>
 #include <tesseract_command_language/utils/utils.h>
 #include <tesseract_command_language/state_waypoint.h>
+#include <tesseract_motion_planners/planner_utils.h>
 
 using namespace trajopt;
 
@@ -68,11 +69,19 @@ std::string SimpleMotionPlannerStatusCategory::message(int code) const
   }
 }
 
-SimpleMotionPlanner::SimpleMotionPlanner(std::string name)
-  : MotionPlanner(std::move(name)), status_category_(std::make_shared<const SimpleMotionPlannerStatusCategory>(name_))
+SimpleMotionPlanner::SimpleMotionPlanner()
+  : status_category_(std::make_shared<const SimpleMotionPlannerStatusCategory>(name_))
 {
-  plan_profiles["DEFAULT"] = std::make_shared<SimplePlannerDefaultPlanProfile>();
+  plan_profiles[DEFAULT_PROFILE_KEY] = std::make_shared<SimplePlannerDefaultLVSPlanProfile>();
 }
+
+SimpleMotionPlanner::SimpleMotionPlanner(const std::string& name)
+  : name_(name), status_category_(std::make_shared<const SimpleMotionPlannerStatusCategory>(name_))
+{
+  plan_profiles[DEFAULT_PROFILE_KEY] = std::make_shared<SimplePlannerDefaultLVSPlanProfile>();
+}
+
+const std::string& SimpleMotionPlanner::getName() const { return name_; }
 
 bool SimpleMotionPlanner::terminate()
 {
@@ -81,6 +90,8 @@ bool SimpleMotionPlanner::terminate()
 }
 
 void SimpleMotionPlanner::clear() {}
+
+MotionPlanner::Ptr SimpleMotionPlanner::clone() const { return std::make_shared<SimpleMotionPlanner>(); }
 
 tesseract_common::StatusCode SimpleMotionPlanner::solve(const PlannerRequest& request,
                                                         PlannerResponse& response,
@@ -100,7 +111,7 @@ tesseract_common::StatusCode SimpleMotionPlanner::solve(const PlannerRequest& re
   // Initialize
   tesseract_environment::EnvState::ConstPtr current_state = request.env_state;
   tesseract_kinematics::ForwardKinematics::Ptr fwd_kin =
-      request.tesseract->getManipulatorManager()->getFwdKinematicSolver(manipulator);
+      request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(manipulator);
   Waypoint start_waypoint{ NullWaypoint() };
 
   // Create seed
@@ -123,9 +134,8 @@ tesseract_common::StatusCode SimpleMotionPlanner::solve(const PlannerRequest& re
     return response.status;
   }
 
-  // Set start instruction and Manipulator Information
+  // Set start instruction
   seed.setStartInstruction(start_instruction);
-  seed.setManipulatorInfo(request.instructions.getManipulatorInfo());
 
   // Fill out the response
   response.results = seed;
@@ -186,11 +196,10 @@ SimpleMotionPlanner::getStartInstruction(const PlannerRequest& request,
 }
 
 CompositeInstruction SimpleMotionPlanner::processCompositeInstruction(const CompositeInstruction& instructions,
-                                                                      const Waypoint& initial_start_waypoint,
+                                                                      Waypoint& start_waypoint,
                                                                       const PlannerRequest& request) const
 {
-  Waypoint start_waypoint = initial_start_waypoint;
-  CompositeInstruction seed;
+  CompositeInstruction seed(instructions.getProfile(), instructions.getOrder(), instructions.getManipulatorInfo());
   for (const auto& instruction : instructions)
   {
     if (isCompositeInstruction(instruction))
@@ -213,25 +222,11 @@ CompositeInstruction SimpleMotionPlanner::processCompositeInstruction(const Comp
       assert(is_cwp1 || is_jwp1 || is_swp1);
       assert(is_cwp2 || is_jwp2 || is_swp2);
 
-      std::string profile = plan_instruction->getProfile();
-      if (profile.empty())
-        profile = "DEFAULT";
-
-      // Check for remapping of profile
-      auto remap = request.plan_profile_remapping.find(name_);
-      if (remap != request.plan_profile_remapping.end())
-      {
-        auto p = remap->second.find(profile);
-        if (p != remap->second.end())
-          profile = p->second;
-      }
-
-      SimplePlannerPlanProfile::Ptr start_plan_profile{ nullptr };
-      auto it = plan_profiles.find(profile);
-      if (it == plan_profiles.end())
-        start_plan_profile = std::make_shared<SimplePlannerDefaultPlanProfile>();
-      else
-        start_plan_profile = it->second;
+      std::string profile = getProfileString(plan_instruction->getProfile(), name_, request.plan_profile_remapping);
+      SimplePlannerPlanProfile::Ptr start_plan_profile = getProfile<SimplePlannerPlanProfile>(
+          profile, plan_profiles, std::make_shared<SimplePlannerDefaultLVSPlanProfile>());
+      if (!start_plan_profile)
+        throw std::runtime_error("SimpleMotionPlanner: Invalid start profile");
 
       if (plan_instruction->isLinear())
       {

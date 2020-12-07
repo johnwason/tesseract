@@ -36,7 +36,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/trajopt/trajopt_collision_config.h>
 #include <tesseract_motion_planners/trajopt/profile/trajopt_profile.h>
-#include <tesseract_motion_planners/trajopt/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::TrajOptDefaultCompositeProfile)
@@ -44,7 +43,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
-class TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC TrajOptDefaultCompositeProfile : public TrajOptCompositeProfile
+class TrajOptDefaultCompositeProfile : public TrajOptCompositeProfile
 {
 public:
   TrajOptDefaultCompositeProfile() = default;

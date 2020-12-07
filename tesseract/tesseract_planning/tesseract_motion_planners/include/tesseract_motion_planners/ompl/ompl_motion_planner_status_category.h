@@ -32,7 +32,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/status_code.h>
-#include <tesseract_motion_planners/ompl/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::OMPLMotionPlannerStatusCategory)
@@ -40,7 +39,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
-class TESSERACT_MOTION_PLANNERS_OMPL_PUBLIC OMPLMotionPlannerStatusCategory : public tesseract_common::StatusCategory
+class OMPLMotionPlannerStatusCategory : public tesseract_common::StatusCategory
 {
 public:
   OMPLMotionPlannerStatusCategory(std::string name);

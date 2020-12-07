@@ -34,6 +34,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_environment
 {
+int Environment::getRevision() const { return revision_; }
+
+const Commands& Environment::getCommandHistory() const { return commands_; }
+
 bool Environment::applyCommands(const Commands& commands)
 {
   for (const auto& command : commands)
@@ -47,7 +51,7 @@ bool Environment::applyCommands(const Commands& commands)
   return true;
 }
 
-bool Environment::applyCommand(const std::vector<Command>& commands)
+bool Environment::applyCommands(const std::vector<Command>& commands)
 {
   for (const auto& command : commands)
     if (!applyCommand(command))
@@ -172,6 +176,70 @@ bool Environment::applyCommand(const Command& command)
       }
       break;
     }
+    case tesseract_environment::CommandType::CHANGE_JOINT_POSITION_LIMITS:
+    {
+      const auto& cmd = static_cast<const tesseract_environment::ChangeJointPositionLimitsCommand&>(command);
+      if (!changeJointPositionLimits(cmd.getLimits()))
+        return false;
+      break;
+    }
+    case tesseract_environment::CommandType::CHANGE_JOINT_VELOCITY_LIMITS:
+    {
+      const auto& cmd = static_cast<const tesseract_environment::ChangeJointVelocityLimitsCommand&>(command);
+      if (!changeJointVelocityLimits(cmd.getLimits()))
+        return false;
+      break;
+    }
+    case tesseract_environment::CommandType::CHANGE_JOINT_ACCELERATION_LIMITS:
+    {
+      const auto& cmd = static_cast<const tesseract_environment::ChangeJointAccelerationLimitsCommand&>(command);
+      if (!changeJointAccelerationLimits(cmd.getLimits()))
+        return false;
+      break;
+    }
+    case tesseract_environment::CommandType::ADD_KINEMATICS_INFORMATION:
+    {
+      const auto& cmd = static_cast<const tesseract_environment::AddKinematicsInformationCommand&>(command);
+      if (!addKinematicsInformation(cmd.getKinematicsInformation()))
+        return false;
+      break;
+    }
+    case tesseract_environment::CommandType::CHANGE_DEFAULT_CONTACT_MARGIN:
+    {
+      std::lock_guard<std::mutex> lock(mutex_);
+      const auto& cmd = static_cast<const tesseract_environment::ChangeDefaultContactMarginCommand&>(command);
+      tesseract_collision::CollisionMarginData collision_data = continuous_manager_->getCollisionMarginData();
+      collision_data.setDefaultCollisionMarginData(cmd.getDefaultCollisionMargin());
+      continuous_manager_->setCollisionMarginData(collision_data);
+      discrete_manager_->setCollisionMarginData(collision_data);
+
+      ++revision_;
+      commands_.push_back(
+          std::make_shared<tesseract_environment::ChangeDefaultContactMarginCommand>(cmd.getDefaultCollisionMargin()));
+
+      environmentChanged();
+
+      break;
+    }
+    case tesseract_environment::CommandType::CHANGE_PAIR_CONTACT_MARGIN:
+    {
+      std::lock_guard<std::mutex> lock(mutex_);
+      const auto& cmd = static_cast<const tesseract_environment::ChangePairContactMarginCommand&>(command);
+      tesseract_collision::CollisionMarginData collision_data = continuous_manager_->getCollisionMarginData();
+      for (const auto& link_pair : cmd.getPairCollisionMarginData())
+        collision_data.setPairCollisionMarginData(link_pair.first.first, link_pair.first.second, link_pair.second);
+
+      continuous_manager_->setCollisionMarginData(collision_data);
+      discrete_manager_->setCollisionMarginData(collision_data);
+
+      ++revision_;
+      commands_.push_back(
+          std::make_shared<tesseract_environment::ChangePairContactMarginCommand>(cmd.getPairCollisionMarginData()));
+
+      environmentChanged();
+
+      break;
+    }
     default:
     {
       CONSOLE_BRIDGE_logError("Unhandled environment command");
@@ -181,6 +249,30 @@ bool Environment::applyCommand(const Command& command)
 
   return true;
 }
+
+bool Environment::checkInitialized() const { return initialized_; }
+
+const tesseract_scene_graph::SceneGraph::ConstPtr& Environment::getSceneGraph() const { return scene_graph_const_; }
+
+ManipulatorManager::Ptr Environment::getManipulatorManager() { return manipulator_manager_; }
+
+ManipulatorManager::ConstPtr Environment::getManipulatorManager() const { return manipulator_manager_; }
+
+bool Environment::addKinematicsInformation(const tesseract_scene_graph::KinematicsInformation& kin_info)
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+
+  ++revision_;
+  commands_.push_back(std::make_shared<AddKinematicsInformationCommand>(kin_info));
+
+  environmentChanged();
+
+  return true;
+}
+
+void Environment::setName(const std::string& name) { scene_graph_->setName(name); }
+
+const std::string& Environment::getName() const { return scene_graph_->getName(); }
 
 void Environment::setState(const std::unordered_map<std::string, double>& joints)
 {
@@ -227,6 +319,8 @@ EnvState::Ptr Environment::getState(const std::vector<std::string>& joint_names,
 
   return state;
 }
+
+EnvState::ConstPtr Environment::getCurrentState() const { return current_state_; }
 
 bool Environment::addLink(tesseract_scene_graph::Link link)
 {
@@ -360,6 +454,148 @@ bool Environment::changeJointOrigin(const std::string& joint_name, const Eigen::
   environmentChanged();
 
   return true;
+}
+
+bool Environment::changeJointPositionLimits(const std::string& joint_name, double lower, double upper)
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  tesseract_scene_graph::JointLimits::ConstPtr jl = scene_graph_->getJointLimits(joint_name);
+  if (jl == nullptr)
+    return false;
+
+  tesseract_scene_graph::JointLimits jl_copy = *jl;
+  jl_copy.lower = lower;
+  jl_copy.upper = upper;
+
+  if (!scene_graph_->changeJointLimits(joint_name, jl_copy))
+    return false;
+
+  ++revision_;
+  commands_.push_back(std::make_shared<ChangeJointPositionLimitsCommand>(joint_name, lower, upper));
+
+  environmentChanged();
+
+  return true;
+}
+
+bool Environment::changeJointPositionLimits(const std::unordered_map<std::string, std::pair<double, double> >& limits)
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  for (const auto& l : limits)
+  {
+    tesseract_scene_graph::JointLimits::ConstPtr jl = scene_graph_->getJointLimits(l.first);
+    if (jl == nullptr)
+      return false;
+
+    tesseract_scene_graph::JointLimits jl_copy = *jl;
+    jl_copy.lower = l.second.first;
+    jl_copy.upper = l.second.second;
+
+    if (!scene_graph_->changeJointLimits(l.first, jl_copy))
+      return false;
+  }
+
+  ++revision_;
+  commands_.push_back(std::make_shared<ChangeJointPositionLimitsCommand>(limits));
+
+  environmentChanged();
+
+  return true;
+}
+
+bool Environment::changeJointVelocityLimits(const std::string& joint_name, double limit)
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  tesseract_scene_graph::JointLimits::ConstPtr jl = scene_graph_->getJointLimits(joint_name);
+  if (jl == nullptr)
+    return false;
+
+  tesseract_scene_graph::JointLimits jl_copy = *jl;
+  jl_copy.velocity = limit;
+
+  if (!scene_graph_->changeJointLimits(joint_name, jl_copy))
+    return false;
+
+  ++revision_;
+  commands_.push_back(std::make_shared<ChangeJointVelocityLimitsCommand>(joint_name, limit));
+
+  environmentChanged();
+
+  return true;
+}
+
+bool Environment::changeJointVelocityLimits(const std::unordered_map<std::string, double>& limits)
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  for (const auto& l : limits)
+  {
+    tesseract_scene_graph::JointLimits::ConstPtr jl = scene_graph_->getJointLimits(l.first);
+    if (jl == nullptr)
+      return false;
+
+    tesseract_scene_graph::JointLimits jl_copy = *jl;
+    jl_copy.velocity = l.second;
+
+    if (!scene_graph_->changeJointLimits(l.first, jl_copy))
+      return false;
+  }
+
+  ++revision_;
+  commands_.push_back(std::make_shared<ChangeJointVelocityLimitsCommand>(limits));
+
+  environmentChanged();
+
+  return true;
+}
+
+bool Environment::changeJointAccelerationLimits(const std::string& joint_name, double limit)
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  tesseract_scene_graph::JointLimits::ConstPtr jl = scene_graph_->getJointLimits(joint_name);
+  if (jl == nullptr)
+    return false;
+
+  tesseract_scene_graph::JointLimits jl_copy = *jl;
+  jl_copy.acceleration = limit;
+
+  if (!scene_graph_->changeJointLimits(joint_name, jl_copy))
+    return false;
+
+  ++revision_;
+  commands_.push_back(std::make_shared<ChangeJointAccelerationLimitsCommand>(joint_name, limit));
+
+  environmentChanged();
+
+  return true;
+}
+
+bool Environment::changeJointAccelerationLimits(const std::unordered_map<std::string, double>& limits)
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  for (const auto& l : limits)
+  {
+    tesseract_scene_graph::JointLimits::ConstPtr jl = scene_graph_->getJointLimits(l.first);
+    if (jl == nullptr)
+      return false;
+
+    tesseract_scene_graph::JointLimits jl_copy = *jl;
+    jl_copy.acceleration = l.second;
+
+    if (!scene_graph_->changeJointLimits(l.first, jl_copy))
+      return false;
+  }
+
+  ++revision_;
+  commands_.push_back(std::make_shared<ChangeJointAccelerationLimitsCommand>(limits));
+
+  environmentChanged();
+
+  return true;
+}
+
+tesseract_scene_graph::JointLimits::ConstPtr Environment::getJointLimits(const std::string& joint_name) const
+{
+  return scene_graph_->getJointLimits(joint_name);
 }
 
 void Environment::setLinkCollisionEnabled(const std::string& name, bool enabled)
@@ -585,6 +821,22 @@ bool Environment::setActiveContinuousContactManager(const std::string& name)
   return true;
 }
 
+tesseract_collision::DiscreteContactManager::Ptr Environment::getDiscreteContactManager() const
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  if (!discrete_manager_)
+    return nullptr;
+  return discrete_manager_->clone();
+}
+
+tesseract_collision::ContinuousContactManager::Ptr Environment::getContinuousContactManager() const
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  if (!continuous_manager_)
+    return nullptr;
+  return continuous_manager_->clone();
+}
+
 tesseract_collision::ContinuousContactManager::Ptr
 Environment::getContinuousContactManager(const std::string& name) const
 {
@@ -597,6 +849,22 @@ Environment::getContinuousContactManager(const std::string& name) const
   }
 
   return manager;
+}
+
+bool Environment::registerDiscreteContactManager(
+    const std::string& name,
+    tesseract_collision::DiscreteContactManagerFactory::CreateMethod create_function)
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  return discrete_factory_.registar(name, std::move(create_function));
+}
+
+bool Environment::registerContinuousContactManager(
+    const std::string& name,
+    tesseract_collision::ContinuousContactManagerFactory::CreateMethod create_function)
+{
+  std::lock_guard<std::mutex> lock(mutex_);
+  return continuous_factory_.registar(name, std::move(create_function));
 }
 
 tesseract_collision::DiscreteContactManager::Ptr
@@ -710,6 +978,7 @@ void Environment::environmentChanged()
     continuous_manager_->setActiveCollisionObjects(active_link_names_);
 
   state_solver_->onEnvironmentChanged(commands_);
+  manipulator_manager_->onEnvironmentChanged(commands_);
 
   currentStateChanged();
 }
@@ -789,12 +1058,16 @@ Environment::Ptr Environment::clone() const
 {
   auto cloned_env = std::make_shared<Environment>();
 
+  if (!initialized_)
+    return cloned_env;
+
   std::lock_guard<std::mutex> lock(mutex_);
   cloned_env->initialized_ = initialized_;
   cloned_env->revision_ = revision_;
   cloned_env->commands_ = commands_;
   cloned_env->scene_graph_ = scene_graph_->clone();
   cloned_env->scene_graph_const_ = cloned_env->scene_graph_;
+  cloned_env->manipulator_manager_ = manipulator_manager_->clone(cloned_env->getSceneGraph());
   cloned_env->current_state_ = std::make_shared<EnvState>(*current_state_);
   cloned_env->state_solver_ = state_solver_->clone();
   cloned_env->link_names_ = link_names_;

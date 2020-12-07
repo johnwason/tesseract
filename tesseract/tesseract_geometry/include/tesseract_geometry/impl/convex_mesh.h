@@ -47,7 +47,7 @@ namespace tesseract_geometry
 %nodefaultctor ConvexMesh;
 #endif // SWIG
 
-class TESSERACT_GEOMETRY_PUBLIC ConvexMesh : public Geometry
+class ConvexMesh : public Geometry
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

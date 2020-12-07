@@ -37,7 +37,8 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_scene_graph/joint.h>
 #include <tesseract_scene_graph/link.h>
 #include <tesseract_scene_graph/graph.h>
-#include <tesseract_environment/core/visibility_control.h>
+#include <tesseract_scene_graph/kinematics_information.h>
+#include <tesseract_collision/core/types.h>
 
 #ifdef SWIG
 
@@ -93,10 +94,16 @@ enum class CommandType
   ADD_ALLOWED_COLLISION = 9,
   REMOVE_ALLOWED_COLLISION = 10,
   REMOVE_ALLOWED_COLLISION_LINK = 11,
-  ADD_SCENE_GRAPH = 12
+  ADD_SCENE_GRAPH = 12,
+  CHANGE_JOINT_POSITION_LIMITS = 13,
+  CHANGE_JOINT_VELOCITY_LIMITS = 14,
+  CHANGE_JOINT_ACCELERATION_LIMITS = 15,
+  ADD_KINEMATICS_INFORMATION = 16,
+  CHANGE_DEFAULT_CONTACT_MARGIN = 17,
+  CHANGE_PAIR_CONTACT_MARGIN = 18
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC Command
+class Command
 {
 public:
   using Ptr = std::shared_ptr<Command>;
@@ -104,10 +111,10 @@ public:
 
   explicit Command(CommandType type) : type_(type) {}
   virtual ~Command() = default;
-  Command(const Command&) = default;
-  Command& operator=(const Command&) = default;
-  Command(Command&&) = default;
-  Command& operator=(Command&&) = default;
+  Command(const Command&) = delete;
+  Command& operator=(const Command&) = delete;
+  Command(Command&&) = delete;
+  Command& operator=(Command&&) = delete;
 
   CommandType getType() const { return type_; }
 
@@ -118,7 +125,7 @@ private:
 
 using Commands = std::vector<Command::ConstPtr>;
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC AddCommand : public Command
+class AddCommand : public Command
 {
 public:
   AddCommand(tesseract_scene_graph::Link::ConstPtr link, tesseract_scene_graph::Joint::ConstPtr joint)
@@ -134,7 +141,7 @@ private:
   tesseract_scene_graph::Joint::ConstPtr joint_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC MoveLinkCommand : public Command
+class MoveLinkCommand : public Command
 {
 public:
   MoveLinkCommand(tesseract_scene_graph::Joint::ConstPtr joint)
@@ -148,7 +155,7 @@ private:
   tesseract_scene_graph::Joint::ConstPtr joint_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC MoveJointCommand : public Command
+class MoveJointCommand : public Command
 {
 public:
   MoveJointCommand(std::string joint_name, std::string parent_link)
@@ -164,7 +171,7 @@ private:
   std::string parent_link_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC RemoveLinkCommand : public Command
+class RemoveLinkCommand : public Command
 {
 public:
   RemoveLinkCommand(std::string link_name) : Command(CommandType::REMOVE_LINK), link_name_(std::move(link_name)) {}
@@ -175,7 +182,7 @@ private:
   std::string link_name_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC RemoveJointCommand : public Command
+class RemoveJointCommand : public Command
 {
 public:
   RemoveJointCommand(std::string joint_name) : Command(CommandType::REMOVE_JOINT), joint_name_(std::move(joint_name)) {}
@@ -186,7 +193,7 @@ private:
   std::string joint_name_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC ChangeLinkOriginCommand : public Command
+class ChangeLinkOriginCommand : public Command
 {
 public:
   ChangeLinkOriginCommand(std::string link_name, const Eigen::Isometry3d& origin)
@@ -202,7 +209,7 @@ private:
   Eigen::Isometry3d origin_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC ChangeJointOriginCommand : public Command
+class ChangeJointOriginCommand : public Command
 {
 public:
   ChangeJointOriginCommand(std::string joint_name, const Eigen::Isometry3d& origin)
@@ -218,7 +225,7 @@ private:
   Eigen::Isometry3d origin_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC ChangeLinkCollisionEnabledCommand : public Command
+class ChangeLinkCollisionEnabledCommand : public Command
 {
 public:
   ChangeLinkCollisionEnabledCommand(std::string link_name, bool enabled)
@@ -234,7 +241,7 @@ private:
   bool enabled_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC ChangeLinkVisibilityCommand : public Command
+class ChangeLinkVisibilityCommand : public Command
 {
 public:
   ChangeLinkVisibilityCommand(std::string link_name, bool enabled)
@@ -250,7 +257,7 @@ private:
   bool enabled_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC AddAllowedCollisionCommand : public Command
+class AddAllowedCollisionCommand : public Command
 {
 public:
   AddAllowedCollisionCommand(std::string link_name1, std::string link_name2, std::string reason)
@@ -271,7 +278,7 @@ private:
   std::string reason_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC RemoveAllowedCollisionCommand : public Command
+class RemoveAllowedCollisionCommand : public Command
 {
 public:
   RemoveAllowedCollisionCommand(std::string link_name1, std::string link_name2)
@@ -289,7 +296,7 @@ private:
   std::string link_name2_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC RemoveAllowedCollisionLinkCommand : public Command
+class RemoveAllowedCollisionLinkCommand : public Command
 {
 public:
   RemoveAllowedCollisionLinkCommand(std::string link_name)
@@ -303,7 +310,7 @@ private:
   std::string link_name_;
 };
 
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC AddSceneGraphCommand : public Command
+class AddSceneGraphCommand : public Command
 {
 public:
   AddSceneGraphCommand(const tesseract_scene_graph::SceneGraph& scene_graph,
@@ -324,6 +331,120 @@ private:
   tesseract_scene_graph::SceneGraph::ConstPtr scene_graph_;
   tesseract_scene_graph::Joint::ConstPtr joint_;
   std::string prefix_;
+};
+
+class AddKinematicsInformationCommand : public Command
+{
+public:
+  AddKinematicsInformationCommand(tesseract_scene_graph::KinematicsInformation kinematics_information)
+    : Command(CommandType::ADD_KINEMATICS_INFORMATION), kinematics_information_(std::move(kinematics_information))
+  {
+  }
+
+  const tesseract_scene_graph::KinematicsInformation& getKinematicsInformation() const
+  {
+    return kinematics_information_;
+  }
+
+private:
+  tesseract_scene_graph::KinematicsInformation kinematics_information_;
+};
+
+class ChangeJointPositionLimitsCommand : public Command
+{
+public:
+  ChangeJointPositionLimitsCommand(std::string joint_name, double lower, double upper)
+    : Command(CommandType::CHANGE_JOINT_POSITION_LIMITS)
+    , limits_({ std::make_pair(joint_name, std::make_pair(lower, upper)) })
+  {
+    assert(upper > lower);
+  }
+
+  ChangeJointPositionLimitsCommand(std::unordered_map<std::string, std::pair<double, double>> limits)
+    : Command(CommandType::CHANGE_JOINT_POSITION_LIMITS), limits_(std::move(limits))
+  {
+    assert(std::all_of(limits_.begin(), limits_.end(), [](const auto& p) { return p.second.second > p.second.first; }));
+  }
+
+  const std::unordered_map<std::string, std::pair<double, double>>& getLimits() const { return limits_; }
+
+private:
+  std::unordered_map<std::string, std::pair<double, double>> limits_;
+};
+
+class ChangeJointVelocityLimitsCommand : public Command
+{
+public:
+  ChangeJointVelocityLimitsCommand(std::string joint_name, double limit)
+    : Command(CommandType::CHANGE_JOINT_VELOCITY_LIMITS), limits_({ std::make_pair(joint_name, limit) })
+  {
+    assert(limit > 0);
+  }
+
+  ChangeJointVelocityLimitsCommand(std::unordered_map<std::string, double> limits)
+    : Command(CommandType::CHANGE_JOINT_VELOCITY_LIMITS), limits_(std::move(limits))
+  {
+    assert(std::all_of(limits_.begin(), limits_.end(), [](const auto& p) { return p.second > 0; }));
+  }
+
+  const std::unordered_map<std::string, double>& getLimits() const { return limits_; }
+
+private:
+  std::unordered_map<std::string, double> limits_;
+};
+
+class ChangeJointAccelerationLimitsCommand : public Command
+{
+public:
+  ChangeJointAccelerationLimitsCommand(std::string joint_name, double limit)
+    : Command(CommandType::CHANGE_JOINT_ACCELERATION_LIMITS), limits_({ std::make_pair(joint_name, limit) })
+  {
+    assert(limit > 0);
+  }
+
+  ChangeJointAccelerationLimitsCommand(std::unordered_map<std::string, double> limits)
+    : Command(CommandType::CHANGE_JOINT_ACCELERATION_LIMITS), limits_(std::move(limits))
+  {
+    assert(std::all_of(limits_.begin(), limits_.end(), [](const auto& p) { return p.second > 0; }));
+  }
+
+  const std::unordered_map<std::string, double>& getLimits() const { return limits_; }
+
+private:
+  std::unordered_map<std::string, double> limits_;
+};
+
+class ChangeDefaultContactMarginCommand : public Command
+{
+public:
+  ChangeDefaultContactMarginCommand(double default_margin)
+    : Command(CommandType::CHANGE_DEFAULT_CONTACT_MARGIN), default_margin_(default_margin)
+  {
+  }
+
+  double getDefaultCollisionMargin() const { return default_margin_; }
+
+private:
+  double default_margin_{ 0 };
+};
+
+class ChangePairContactMarginCommand : public Command
+{
+public:
+  ChangePairContactMarginCommand(
+      std::unordered_map<tesseract_common::LinkNamesPair, double, tesseract_common::PairHash> link_pair_margin)
+    : Command(CommandType::CHANGE_PAIR_CONTACT_MARGIN), link_pair_margin_(std::move(link_pair_margin))
+  {
+  }
+
+  const std::unordered_map<tesseract_common::LinkNamesPair, double, tesseract_common::PairHash>&
+  getPairCollisionMarginData() const
+  {
+    return link_pair_margin_;
+  }
+
+private:
+  std::unordered_map<tesseract_common::LinkNamesPair, double, tesseract_common::PairHash> link_pair_margin_;
 };
 
 }  // namespace tesseract_environment

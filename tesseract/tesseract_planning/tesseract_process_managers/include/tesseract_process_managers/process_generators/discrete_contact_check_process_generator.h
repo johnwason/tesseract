@@ -32,11 +32,11 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_process_managers/process_generator.h>
-#include <tesseract_process_managers/visibility_control.h>
+#include <tesseract_process_managers/process_input.h>
 
 namespace tesseract_planning
 {
-class TESSERACT_PROCESS_MANAGERS_PUBLIC DiscreteContactCheckProcessGenerator : public ProcessGenerator
+class DiscreteContactCheckProcessGenerator : public ProcessGenerator
 {
 public:
   using UPtr = std::unique_ptr<DiscreteContactCheckProcessGenerator>;
@@ -55,13 +55,15 @@ public:
 
   const std::string& getName() const override;
 
-  std::function<void()> generateTask(ProcessInput input) override;
+  std::function<void()> generateTask(ProcessInput input, std::size_t unique_id) override;
 
-  std::function<int()> generateConditionalTask(ProcessInput input) override;
+  std::function<int()> generateConditionalTask(ProcessInput input, std::size_t unique_id) override;
 
   bool getAbort() const override;
 
   void setAbort(bool abort) override;
+
+  tesseract_collision::CollisionCheckConfig config;
 
 private:
   /** @brief If true, all tasks return immediately. Workaround for https://github.com/taskflow/taskflow/issues/201 */
@@ -69,13 +71,17 @@ private:
 
   std::string name_;
 
-  double longest_valid_segment_length_{ 0.05 };
+  int conditionalProcess(ProcessInput input, std::size_t unique_id) const;
 
-  double contact_distance_{ 0 };
+  void process(ProcessInput input, std::size_t unique_id) const;
+};
 
-  int conditionalProcess(ProcessInput input) const;
+class DiscreteContactCheckProcessInfo : public ProcessInfo
+{
+public:
+  DiscreteContactCheckProcessInfo(std::size_t unique_id, std::string name = "Discrete Contact Check Trajectory");
 
-  void process(ProcessInput input) const;
+  std::vector<tesseract_collision::ContactResultMap> contact_results;
 };
 
 }  // namespace tesseract_planning

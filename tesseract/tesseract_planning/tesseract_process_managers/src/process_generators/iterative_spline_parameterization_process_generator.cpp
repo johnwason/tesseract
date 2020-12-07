@@ -29,6 +29,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <console_bridge/console.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#include <tesseract_motion_planners/planner_utils.h>
 #include <tesseract_process_managers/process_generators/iterative_spline_parameterization_process_generator.h>
 #include <tesseract_command_language/composite_instruction.h>
 #include <tesseract_command_language/move_instruction.h>
@@ -55,20 +56,26 @@ IterativeSplineParameterizationProcessGenerator::IterativeSplineParameterization
 
 const std::string& IterativeSplineParameterizationProcessGenerator::getName() const { return name_; }
 
-std::function<void()> IterativeSplineParameterizationProcessGenerator::generateTask(ProcessInput input)
+std::function<void()> IterativeSplineParameterizationProcessGenerator::generateTask(ProcessInput input,
+                                                                                    std::size_t unique_id)
 {
-  return [=]() { process(input); };
+  return [=]() { process(input, unique_id); };
 }
 
-std::function<int()> IterativeSplineParameterizationProcessGenerator::generateConditionalTask(ProcessInput input)
+std::function<int()> IterativeSplineParameterizationProcessGenerator::generateConditionalTask(ProcessInput input,
+                                                                                              std::size_t unique_id)
 {
-  return [=]() { return conditionalProcess(input); };
+  return [=]() { return conditionalProcess(input, unique_id); };
 }
 
-int IterativeSplineParameterizationProcessGenerator::conditionalProcess(ProcessInput input) const
+int IterativeSplineParameterizationProcessGenerator::conditionalProcess(ProcessInput input, std::size_t unique_id) const
 {
   if (abort_)
     return 0;
+
+  auto info = std::make_shared<IterativeSplineParameterizationProcessInfo>(unique_id, name_);
+  info->return_value = 0;
+  input.addProcessInfo(info);
 
   // --------------------
   // Check that inputs are valid
@@ -82,58 +89,40 @@ int IterativeSplineParameterizationProcessGenerator::conditionalProcess(ProcessI
 
   auto* ci = input_results->cast<CompositeInstruction>();
   const ManipulatorInfo& manip_info = ci->getManipulatorInfo();
-  const auto fwd_kin = input.tesseract->getManipulatorManager()->getFwdKinematicSolver(manip_info.manipulator);
+  const auto fwd_kin =
+      input.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(manip_info.manipulator);
 
-  // Get Composite profile
+  // Get Plan Profile
   std::string profile = ci->getProfile();
-  if (profile.empty())
-    profile = "DEFAULT";
-
-  // Check for remapping of composite profile
-  {
-    auto remap = input.composite_profile_remapping.find(name_);
-    if (remap != input.composite_profile_remapping.end())
-    {
-      auto p = remap->second.find(profile);
-      if (p != remap->second.end())
-        profile = p->second;
-    }
-  }
-
-  // Get the parameters associated with this profile
-  typename IterativeSplineParameterizationProfile::Ptr cur_plan_profile{ nullptr };
-  auto it = composite_profiles.find(profile);
-  if (it == composite_profiles.end())
-    cur_plan_profile = std::make_shared<IterativeSplineParameterizationProfile>();
-  else
-    cur_plan_profile = it->second;
+  profile = getProfileString(profile, name_, input.composite_profile_remapping);
+  auto cur_composite_profile = getProfile<IterativeSplineParameterizationProfile>(
+      profile, composite_profiles, std::make_shared<IterativeSplineParameterizationProfile>());
+  if (!cur_composite_profile)
+    cur_composite_profile = std::make_shared<IterativeSplineParameterizationProfile>();
 
   // Create data structures for checking for plan profile overrides
   auto flattened = flatten(*ci, moveFilter);
   if (flattened.empty())
   {
     CONSOLE_BRIDGE_logWarn("Iterative spline time parameterization found no MoveInstructions to process");
+    info->return_value = 1;
     return 1;
   }
 
   Eigen::VectorXd velocity_scaling_factors = Eigen::VectorXd::Ones(static_cast<Eigen::Index>(flattened.size())) *
-                                             cur_plan_profile->max_velocity_scaling_factor;
+                                             cur_composite_profile->max_velocity_scaling_factor;
   Eigen::VectorXd acceleration_scaling_factors = Eigen::VectorXd::Ones(static_cast<Eigen::Index>(flattened.size())) *
-                                                 cur_plan_profile->max_acceleration_scaling_factor;
+                                                 cur_composite_profile->max_acceleration_scaling_factor;
 
   // Loop over all PlanInstructions
   for (Eigen::Index idx = 0; idx < static_cast<Eigen::Index>(flattened.size()); idx++)
   {
     profile = flattened[static_cast<std::size_t>(idx)].get().cast_const<MoveInstruction>()->getProfile();
 
-    // Check for remapping of plan profile
-    auto remap = input.plan_profile_remapping.find(name_);
-    if (remap != input.plan_profile_remapping.end())
-    {
-      auto p = remap->second.find(profile);
-      if (p != remap->second.end())
-        profile = p->second;
-    }
+    // Check for remapping of the plan profile
+    std::string remap = getProfileString(profile, name_, input.plan_profile_remapping);
+    auto cur_composite_profile = getProfile<IterativeSplineParameterizationProfile>(
+        profile, composite_profiles, std::make_shared<IterativeSplineParameterizationProfile>());
 
     // If there is a move profile associated with it, override the parameters
     auto it = move_profiles.find(profile);
@@ -157,12 +146,21 @@ int IterativeSplineParameterizationProcessGenerator::conditionalProcess(ProcessI
   }
 
   CONSOLE_BRIDGE_logDebug("Iterative spline time parameterization succeeded");
+  info->return_value = 1;
   return 1;
 }
 
-void IterativeSplineParameterizationProcessGenerator::process(ProcessInput input) const { conditionalProcess(input); }
+void IterativeSplineParameterizationProcessGenerator::process(ProcessInput input, std::size_t unique_id) const
+{
+  conditionalProcess(input, unique_id);
+}
 
 bool IterativeSplineParameterizationProcessGenerator::getAbort() const { return abort_; }
 void IterativeSplineParameterizationProcessGenerator::setAbort(bool abort) { abort_ = abort; }
 
+IterativeSplineParameterizationProcessInfo::IterativeSplineParameterizationProcessInfo(std::size_t unique_id,
+                                                                                       std::string name)
+  : ProcessInfo(unique_id, std::move(name))
+{
+}
 }  // namespace tesseract_planning

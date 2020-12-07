@@ -39,7 +39,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_scene_graph/graph.h>
 #include <tesseract_environment/core/types.h>
 #include <tesseract_environment/core/commands.h>
-#include <tesseract_environment/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_environment::StateSolver)
@@ -47,7 +46,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_environment
 {
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC StateSolver
+class StateSolver
 {
 public:
   using Ptr = std::shared_ptr<StateSolver>;

@@ -32,14 +32,13 @@
 #define TESSERACT_ENVIRONMENT_OFKT_NODES_H
 
 #include <tesseract_environment/ofkt/ofkt_node.h>
-#include <tesseract_environment/ofkt/visibility_control.h>
 
 namespace tesseract_environment
 {
 /*********************************************************************/
 /*************************** BASE NODE *******************************/
 /*********************************************************************/
-class TESSERACT_ENVIRONMENT_OFKT_LOCAL OFKTBaseNode : public OFKTNode
+class OFKTBaseNode : public OFKTNode
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -106,7 +105,7 @@ protected:
 /*********************************************************************/
 /*************************** ROOT NODE *******************************/
 /*********************************************************************/
-class TESSERACT_ENVIRONMENT_OFKT_LOCAL OFKTRootNode : public OFKTBaseNode
+class OFKTRootNode : public OFKTBaseNode
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -133,7 +132,7 @@ private:
 /**********************************************************************/
 /*************************** FIXED NODE *******************************/
 /**********************************************************************/
-class TESSERACT_ENVIRONMENT_OFKT_LOCAL OFKTFixedNode : public OFKTBaseNode
+class OFKTFixedNode : public OFKTBaseNode
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -153,7 +152,7 @@ private:
 /*********************************************************************/
 /************************* REVOLUTE NODE *****************************/
 /*********************************************************************/
-class TESSERACT_ENVIRONMENT_OFKT_LOCAL OFKTRevoluteNode : public OFKTBaseNode
+class OFKTRevoluteNode : public OFKTBaseNode
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -162,18 +161,15 @@ public:
                    std::string link_name,
                    std::string joint_name,
                    Eigen::Isometry3d static_tf,
-                   Eigen::Vector3d axis,
-                   Eigen::Vector2d joint_limits);
+                   Eigen::Vector3d axis);
 
   void storeJointValue(double joint_value) override;
   void computeAndStoreLocalTransformation() override;
   Eigen::Isometry3d computeLocalTransformation(double joint_value) const override;
   const Eigen::Vector3d& getAxis() const;
-  const Eigen::Vector2d& getJointLimits() const;
 
 private:
   Eigen::Vector3d axis_;
-  Eigen::Vector2d joint_limits_;
 
   void computeAndStoreLocalTransformationImpl();
 
@@ -183,7 +179,7 @@ private:
 /*********************************************************************/
 /************************ CONTINUOUS NODE ****************************/
 /*********************************************************************/
-class TESSERACT_ENVIRONMENT_OFKT_LOCAL OFKTContinuousNode : public OFKTBaseNode
+class OFKTContinuousNode : public OFKTBaseNode
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -209,7 +205,7 @@ private:
 /*********************************************************************/
 /************************* PRISMATIC NODE ****************************/
 /*********************************************************************/
-class TESSERACT_ENVIRONMENT_OFKT_LOCAL OFKTPrismaticNode : public OFKTBaseNode
+class OFKTPrismaticNode : public OFKTBaseNode
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

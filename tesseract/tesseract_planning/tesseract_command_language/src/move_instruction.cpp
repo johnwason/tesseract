@@ -58,7 +58,10 @@ void MoveInstruction::setManipulatorInfo(ManipulatorInfo info) { manipulator_inf
 const ManipulatorInfo& MoveInstruction::getManipulatorInfo() const { return manipulator_info_; }
 ManipulatorInfo& MoveInstruction::getManipulatorInfo() { return manipulator_info_; }
 
-void MoveInstruction::setProfile(const std::string& profile) { profile_ = (profile.empty()) ? "DEFAULT" : profile; }
+void MoveInstruction::setProfile(const std::string& profile)
+{
+  profile_ = (profile.empty()) ? DEFAULT_PROFILE_KEY : profile;
+}
 const std::string& MoveInstruction::getProfile() const { return profile_; }
 
 int MoveInstruction::getType() const { return type_; }
@@ -69,7 +72,7 @@ void MoveInstruction::setDescription(const std::string& description) { descripti
 
 void MoveInstruction::print(std::string prefix) const
 {
-  std::cout << prefix + "Move Instruction, Type: " << getType() << ", Plan Type: " << static_cast<int>(move_type_)
+  std::cout << prefix + "Move Instruction, Type: " << getType() << ", Move Type: " << static_cast<int>(move_type_)
             << ", ";
   getWaypoint().print();
   std::cout << ", Description: " << getDescription() << std::endl;

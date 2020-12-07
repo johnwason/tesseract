@@ -7,6 +7,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <tesseract_collision/bullet/bullet_discrete_bvh_manager.h>
 #include <tesseract_collision/bullet/bullet_cast_bvh_manager.h>
 #include <tesseract_scene_graph/resource_locator.h>
+#include <tesseract_common/utils.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_environment/core/types.h>
@@ -54,17 +55,32 @@ SceneGraph::Ptr getSceneGraph()
   return tesseract_urdf::parseURDFFile(path, locator);
 }
 
+tesseract_scene_graph::SRDFModel::Ptr getSRDFModel(const SceneGraph::Ptr& scene_graph)
+{
+  std::string path = std::string(TESSERACT_SUPPORT_DIR) + "/urdf/lbr_iiwa_14_r820.srdf";
+
+  tesseract_scene_graph::SRDFModel::Ptr srdf = std::make_shared<tesseract_scene_graph::SRDFModel>();
+  srdf->initFile(*scene_graph, path);
+
+  return srdf;
+}
+
 template <typename S>
 Environment::Ptr getEnvironment()
 {
   tesseract_scene_graph::SceneGraph::Ptr scene_graph = getSceneGraph();
   EXPECT_TRUE(scene_graph != nullptr);
 
+  auto srdf = getSRDFModel(scene_graph);
+  EXPECT_TRUE(srdf != nullptr);
+
   auto env = std::make_shared<Environment>();
   EXPECT_TRUE(env != nullptr);
+  EXPECT_EQ(0, env->getRevision());
 
-  bool success = env->init<S>(*scene_graph);
+  bool success = env->init<S>(*scene_graph, srdf);
   EXPECT_TRUE(success);
+  EXPECT_EQ(2, env->getRevision());
 
   // Register contact manager
   EXPECT_TRUE(env->registerDiscreteContactManager(tesseract_collision_bullet::BulletDiscreteBVHManager::name(),
@@ -137,7 +153,7 @@ void runAddandRemoveLinkTest()
               env->getCurrentState()->joint_transforms.end());
   EXPECT_TRUE(env->getCurrentState()->joints.find(joint_name1) == env->getCurrentState()->joints.end());
 
-  env->getSceneGraph()->saveDOT("/tmp/before_remove_link_unit.dot");
+  env->getSceneGraph()->saveDOT(tesseract_common::getTempPath() + "before_remove_link_unit.dot");
 
   env->removeLink(link_name1);
   link_names = env->getLinkNames();
@@ -157,7 +173,7 @@ void runAddandRemoveLinkTest()
               env->getCurrentState()->joint_transforms.end());
   EXPECT_TRUE(env->getCurrentState()->joints.find(joint_name1) == env->getCurrentState()->joints.end());
 
-  env->getSceneGraph()->saveDOT("/tmp/after_remove_link_unit.dot");
+  env->getSceneGraph()->saveDOT(tesseract_common::getTempPath() + "after_remove_link_unit.dot");
 
   // Test against double removing
   EXPECT_FALSE(env->removeLink(link_name1));
@@ -215,7 +231,7 @@ void runMoveLinkandJointTest()
               env->getCurrentState()->joint_transforms.end());
   EXPECT_TRUE(env->getCurrentState()->joints.find(joint_name2) == env->getCurrentState()->joints.end());
 
-  env->getSceneGraph()->saveDOT("/tmp/before_move_joint_unit.dot");
+  env->getSceneGraph()->saveDOT(tesseract_common::getTempPath() + "before_move_joint_unit.dot");
 
   env->moveJoint(joint_name1, "tool0");
   link_names = env->getLinkNames();
@@ -236,7 +252,7 @@ void runMoveLinkandJointTest()
               env->getCurrentState()->joint_transforms.end());
   EXPECT_TRUE(env->getCurrentState()->joints.find(joint_name2) == env->getCurrentState()->joints.end());
 
-  env->getSceneGraph()->saveDOT("/tmp/after_move_joint_unit.dot");
+  env->getSceneGraph()->saveDOT(tesseract_common::getTempPath() + "after_move_joint_unit.dot");
 }
 
 template <typename S>
@@ -261,7 +277,7 @@ void runChangeJointOriginTest()
               env->getCurrentState()->joint_transforms.end());
   EXPECT_TRUE(env->getCurrentState()->joints.find(joint_name1) == env->getCurrentState()->joints.end());
 
-  env->getSceneGraph()->saveDOT("/tmp/before_change_joint_origin_unit.dot");
+  env->getSceneGraph()->saveDOT(tesseract_common::getTempPath() + "before_change_joint_origin_unit.dot");
 
   Eigen::Isometry3d new_origin = Eigen::Isometry3d::Identity();
   new_origin.translation()(0) += 1.234;
@@ -272,7 +288,70 @@ void runChangeJointOriginTest()
   EXPECT_TRUE(env->getCurrentState()->link_transforms.at(link_name1).isApprox(new_origin));
   EXPECT_TRUE(env->getCurrentState()->joint_transforms.at(joint_name1).isApprox(new_origin));
 
-  env->getSceneGraph()->saveDOT("/tmp/after_change_joint_origin_unit.dot");
+  env->getSceneGraph()->saveDOT(tesseract_common::getTempPath() + "after_change_joint_origin_unit.dot");
+}
+
+template <typename S>
+void runChangeJointLimitsTest()
+{
+  // Get the environment
+  auto env = getEnvironment<S>();
+
+  {
+    JointLimits::ConstPtr limits = env->getJointLimits("not_in_graph");
+    EXPECT_TRUE(limits == nullptr);
+  }
+  {
+    // Note that this will fail artificially if the urdf is changed for some reason
+    JointLimits::ConstPtr limits = env->getJointLimits("joint_a1");
+    EXPECT_NEAR(limits->lower, -2.9668, 1e-5);
+    EXPECT_NEAR(limits->upper, 2.9668, 1e-5);
+    EXPECT_NEAR(limits->velocity, 1.4834, 1e-5);
+    EXPECT_NEAR(limits->effort, 0, 1e-5);
+  }
+  {
+    double new_lower = 1.0;
+    double new_upper = 2.0;
+    double new_velocity = 3.0;
+    double new_acceleration = 4.0;
+
+    int revision = env->getRevision();
+    env->changeJointPositionLimits("joint_a1", new_lower, new_upper);
+    EXPECT_EQ(revision + 1, env->getRevision());
+    env->changeJointVelocityLimits("joint_a1", new_velocity);
+    EXPECT_EQ(revision + 2, env->getRevision());
+    env->changeJointAccelerationLimits("joint_a1", new_acceleration);
+    EXPECT_EQ(revision + 3, env->getRevision());
+
+    // Check that the environment returns the correct limits
+    JointLimits new_limits = *(env->getJointLimits("joint_a1"));
+    EXPECT_NEAR(new_limits.lower, new_lower, 1e-5);
+    EXPECT_NEAR(new_limits.upper, new_upper, 1e-5);
+    EXPECT_NEAR(new_limits.velocity, new_velocity, 1e-5);
+    EXPECT_NEAR(new_limits.acceleration, new_acceleration, 1e-5);
+
+    // Check that the manipulator correctly set the limits
+    auto kin = env->getManipulatorManager()->getFwdKinematicSolver("manipulator");
+    EXPECT_NEAR(kin->getLimits().joint_limits(0, 0), new_lower, 1e-5);
+    EXPECT_NEAR(kin->getLimits().joint_limits(0, 1), new_upper, 1e-5);
+    EXPECT_NEAR(kin->getLimits().velocity_limits(0), new_velocity, 1e-5);
+    EXPECT_NEAR(kin->getLimits().acceleration_limits(0), new_acceleration, 1e-5);
+  }
+  {
+    Eigen::MatrixX2d original;
+    Eigen::MatrixX2d new_limits;
+    {
+      auto kin = env->getManipulatorManager()->getFwdKinematicSolver("manipulator");
+      original = kin->getLimits().joint_limits;
+    }
+    env->changeJointPositionLimits("joint_a1", 0, 1);
+    {
+      auto kin = env->getManipulatorManager()->getFwdKinematicSolver("manipulator");
+      new_limits = kin->getLimits().joint_limits;
+    }
+    EXPECT_EQ(original.rows(), new_limits.rows());
+    EXPECT_EQ(original.cols(), new_limits.cols());
+  }
 }
 
 template <typename S>
@@ -686,6 +765,12 @@ TEST(TesseractEnvironmentUnit, EnvChangeJointOrigin)  // NOLINT
 {
   runChangeJointOriginTest<KDLStateSolver>();
   runChangeJointOriginTest<OFKTStateSolver>();
+}
+
+TEST(TesseractEnvironmentUnit, EnvChangeJointLimits)  // NOLINT
+{
+  runChangeJointLimitsTest<KDLStateSolver>();
+  runChangeJointLimitsTest<OFKTStateSolver>();
 }
 
 TEST(TesseractEnvironmentUnit, EnvCurrentStatePreservedWhenEnvChanges)  // NOLINT

@@ -36,7 +36,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_process_managers/process_manager.h>
 #include <tesseract_process_managers/taskflow_generator.h>
-#include <tesseract_process_managers/visibility_control.h>
 
 namespace tesseract_planning
 {
@@ -60,19 +59,13 @@ namespace tesseract_planning
  *   Composite - to end
  * }
  */
-class TESSERACT_PROCESS_MANAGERS_PUBLIC RasterProcessManager : public ProcessManager
+class RasterProcessManager : public ProcessManager
 {
 public:
   using Ptr = std::shared_ptr<RasterProcessManager>;
   using ConstPtr = std::shared_ptr<const RasterProcessManager>;
 
   RasterProcessManager(TaskflowGenerator::UPtr freespace_taskflow_generator,
-                       TaskflowGenerator::UPtr transition_taskflow_generator,
-                       TaskflowGenerator::UPtr raster_taskflow_generator,
-                       std::size_t n = std::thread::hardware_concurrency());
-
-  RasterProcessManager(TaskflowGenerator::UPtr global_taskflow_generator,
-                       TaskflowGenerator::UPtr freespace_taskflow_generator,
                        TaskflowGenerator::UPtr transition_taskflow_generator,
                        TaskflowGenerator::UPtr raster_taskflow_generator,
                        std::size_t n = std::thread::hardware_concurrency());
@@ -102,20 +95,15 @@ private:
   bool debug_{ false };
   bool profile_{ false };
 
-  TaskflowGenerator::UPtr global_taskflow_generator_;
   TaskflowGenerator::UPtr freespace_taskflow_generator_;
   TaskflowGenerator::UPtr transition_taskflow_generator_;
   TaskflowGenerator::UPtr raster_taskflow_generator_;
   tf::Executor executor_;
   tf::Taskflow taskflow_;
 
-  tf::Task global_task_;
-  tf::Task global_post_task_;
   std::vector<tf::Task> freespace_tasks_;
   std::vector<tf::Task> transition_tasks_;
   std::vector<tf::Task> raster_tasks_;
-
-  static void globalPostProcess(ProcessInput input);
 
   /**
    * @brief Checks that the ProcessInput is in the correct format.
@@ -123,9 +111,6 @@ private:
    * @return True if in the correct format
    */
   bool checkProcessInput(const ProcessInput& input) const;
-
-  bool initDefault(ProcessInput input);
-  bool initGlobal(ProcessInput input);
 };
 
 }  // namespace tesseract_planning

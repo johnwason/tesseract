@@ -28,7 +28,6 @@
 
 #include <tesseract_kinematics/core/forward_kinematics.h>
 #include <tesseract_scene_graph/graph.h>
-#include <tesseract_kinematics/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::ForwardKinematicsFactory)
@@ -43,7 +42,7 @@ enum class ForwardKinematicsFactoryType
   GRAPH = 2
 };
 
-class TESSERACT_KINEMATICS_CORE_PUBLIC ForwardKinematicsFactory
+class ForwardKinematicsFactory
 {
 public:
   using Ptr = std::shared_ptr<ForwardKinematicsFactory>;

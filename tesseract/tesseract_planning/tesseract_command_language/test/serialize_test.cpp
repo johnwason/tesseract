@@ -32,6 +32,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_command_language/utils/utils.h>
 #include <tesseract_command_language/serialize.h>
 #include <tesseract_command_language/deserialize.h>
+#include <tesseract_common/utils.h>
 
 using namespace tesseract_planning;
 
@@ -100,7 +101,7 @@ CompositeInstruction getProgram()
     transition_from_start.setDescription("transition_from_start");
     transition_from_start.push_back(plan_f1);
 
-    CompositeInstruction transitions("DEFAULT", CompositeInstructionOrder::UNORDERED);
+    CompositeInstruction transitions(DEFAULT_PROFILE_KEY, CompositeInstructionOrder::UNORDERED);
     transitions.setDescription("transitions");
     transitions.push_back(transition_from_start);
     transitions.push_back(transition_from_end);
@@ -129,7 +130,7 @@ CompositeInstruction getProgram()
     transition_from_start.setDescription("transition_from_start");
     transition_from_start.push_back(plan_f1);
 
-    CompositeInstruction transitions("DEFAULT", CompositeInstructionOrder::UNORDERED);
+    CompositeInstruction transitions(DEFAULT_PROFILE_KEY, CompositeInstructionOrder::UNORDERED);
     transitions.setDescription("transitions");
     transitions.push_back(transition_from_start);
     transitions.push_back(transition_from_end);
@@ -155,6 +156,17 @@ CompositeInstruction getProgram()
   to_end.push_back(plan_f2);
   program.push_back(to_end);
 
+  // Add a wait instruction
+  WaitInstruction wait_instruction_time(1.5);
+  program.push_back(wait_instruction_time);
+
+  WaitInstruction wait_instruction_io(WaitInstructionType::DIGITAL_INPUT_LOW, 10);
+  program.push_back(wait_instruction_io);
+
+  // Add a timer instruction
+  TimerInstruction timer_instruction(TimerInstructionType::DIGITAL_OUTPUT_LOW, 3.1, 5);
+  program.push_back(timer_instruction);
+
   return program;
 }
 
@@ -162,9 +174,9 @@ TEST(TesseractCommandLanguageSerializeUnit, SerializeToXml)  // NOLINT
 {
   // Write program to file
   CompositeInstruction program = getProgram();
-  toXMLFile(program, "/tmp/raster_example_input.xml");
+  toXMLFile(program, tesseract_common::getTempPath() + "raster_example_input.xml");
 
-  Instruction imported_program = fromXMLFile("/tmp/raster_example_input.xml");
+  Instruction imported_program = fromXMLFile(tesseract_common::getTempPath() + "raster_example_input.xml");
 
   EXPECT_TRUE(isCompositeInstruction(imported_program));
   const auto* ci = imported_program.cast_const<CompositeInstruction>();

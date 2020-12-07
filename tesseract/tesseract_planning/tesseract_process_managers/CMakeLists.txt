@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(tesseract_process_managers VERSION 0.1.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+if(WIN32)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
 
 ## System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
@@ -15,6 +16,17 @@ find_package(tesseract_command_language REQUIRED)
 find_package(tesseract_motion_planners REQUIRED)
 find_package(tesseract_time_parameterization REQUIRED)
 find_package(cmake_common_scripts REQUIRED)
+
+if(NOT TARGET console_bridge::console_bridge)
+  add_library(console_bridge::console_bridge INTERFACE IMPORTED)
+  set_target_properties(console_bridge::console_bridge PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${console_bridge_INCLUDE_DIRS})
+  set_target_properties(console_bridge::console_bridge PROPERTIES INTERFACE_LINK_LIBRARIES ${console_bridge_LIBRARIES})
+else()
+  get_target_property(CHECK_INCLUDE_DIRECTORIES console_bridge::console_bridge INTERFACE_INCLUDE_DIRECTORIES)
+  if (NOT ${CHECK_INCLUDE_DIRECTORIES})
+    set_target_properties(console_bridge::console_bridge PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${console_bridge_INCLUDE_DIRS})
+  endif()
+endif()
 
 set(COVERAGE_EXCLUDE /usr/* /opt/* ${CMAKE_CURRENT_LIST_DIR}/test/* /*/gtest/*)
 add_code_coverage_all_targets(EXCLUDE ${COVERAGE_EXCLUDE})
@@ -34,7 +46,12 @@ add_library(${PROJECT_NAME}
     src/process_generators/fix_state_collision_process_generator.cpp
     src/process_generators/iterative_spline_parameterization_process_generator.cpp
     src/process_generators/motion_planner_process_generator.cpp
+    src/process_generators/profile_switch_process_generator.cpp
+    src/process_generators/seed_min_length_process_generator.cpp
     src/process_managers/raster_process_manager.cpp
+    src/process_managers/raster_global_process_manager.cpp
+    src/process_managers/raster_only_process_manager.cpp
+    src/process_managers/raster_only_global_process_manager.cpp
     src/process_managers/raster_dt_process_manager.cpp
     src/process_managers/raster_waad_process_manager.cpp
     src/process_managers/raster_waad_dt_process_manager.cpp
@@ -46,9 +63,8 @@ add_library(${PROJECT_NAME}
     src/taskflows/trajopt_taskflow.cpp
     src/taskflows/cartesian_taskflow.cpp
     src/taskflows/freespace_taskflow.cpp)
-target_process_export(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} PUBLIC
-    console_bridge
+    console_bridge::console_bridge
     Taskflow::Taskflow
     tesseract::tesseract_common
     tesseract::tesseract_command_language
@@ -57,7 +73,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     tesseract::tesseract_motion_planners_descartes
     tesseract::tesseract_motion_planners_ompl
     tesseract::tesseract_time_parameterization)
-target_compile_options(${PROJECT_NAME} PRIVATE ${TESSERACT_COMPILE_OPTIONS})
+target_compile_options(${PROJECT_NAME} PRIVATE ${TESSERACT_COMPILE_OPTIONS_PRIVATE})
+target_compile_options(${PROJECT_NAME} PUBLIC ${TESSERACT_COMPILE_OPTIONS_PUBLIC})
 target_compile_definitions(${PROJECT_NAME} PUBLIC ${TESSERACT_COMPILE_DEFINITIONS})
 target_clang_tidy(${PROJECT_NAME} ARGUMENTS ${TESSERACT_CLANG_TIDY_ARGS} ENABLE ${TESSERACT_ENABLE_CLANG_TIDY})
 target_cxx_version(${PROJECT_NAME} PUBLIC VERSION ${TESSERACT_CXX_VERSION})

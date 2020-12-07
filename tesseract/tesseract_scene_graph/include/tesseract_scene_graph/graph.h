@@ -34,13 +34,13 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/breadth_first_search.hpp>
 #include <string>
+#include <list>
 #include <unordered_map>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_scene_graph/link.h>
 #include <tesseract_scene_graph/joint.h>
 #include <tesseract_scene_graph/allowed_collision_matrix.h>
-#include <tesseract_scene_graph/visibility_control.h>
 
 #ifdef SWIG
 
@@ -114,7 +114,7 @@ using Graph = boost::
 
 #endif // SWIG
 
-class TESSERACT_SCENE_GRAPH_PUBLIC SceneGraph 
+class SceneGraph 
 #ifndef SWIG
   : public Graph
 #endif // SWIG
@@ -142,7 +142,14 @@ public:
   SceneGraph(SceneGraph&& other) = default;
   SceneGraph& operator=(SceneGraph&& other) = default;
 
+  /**
+   * @brief Clone the scene graph
+   * @return The cloned scene graph
+   */
   SceneGraph::Ptr clone() const;
+
+  /** @brief Clear the scene graph */
+  void clear();
 
   /**
    * @brief Sets the graph name
@@ -283,9 +290,24 @@ public:
   /** @brief Changes the "origin" transform of the joint and recomputes the associated edge
    * @param name Name of the joint to be changed
    * @param new_origin The new transform associated with the joint
-   * @return
+   * @return True if successful.
    */
   bool changeJointOrigin(const std::string& name, const Eigen::Isometry3d& new_origin);
+
+  /**
+   * @brief Changes the limits of a joint. The JointLimits::Ptr remains the same, but the values passed in are assigned
+   * @param name Name of the joint to be changed
+   * @param limits The new limits associated with the joint
+   * @return True if successful.
+   */
+  bool changeJointLimits(const std::string& name, const JointLimits& limits);
+
+  /**
+   * @brief Gets the limits of the joint specified by name
+   * @param name Name of the joint which limits will be retrieved
+   * @return Limits of the joint. Returns nullptr is joint is not found.
+   */
+  JointLimits::ConstPtr getJointLimits(const std::string& name);
 
   /**
    * @brief Disable collision between two collision objects
@@ -419,6 +441,12 @@ public:
    */
   void saveDOT(const std::string& path) const;
 
+  /**
+   * @brief Get the shortest path between two links
+   * @param root The base link
+   * @param tip The tip link
+   * @return The shortest path between the two links
+   */
   Path getShortestPath(const std::string& root, const std::string& tip);
 
   /**

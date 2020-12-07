@@ -31,12 +31,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <boost/filesystem.hpp>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
-#include <tesseract/manipulator_manager.h>
 #include <tesseract_environment/core/environment.h>
 #include <tesseract_scene_graph/resource_locator.h>
 #include <tesseract_scene_graph/graph.h>
 #include <tesseract_scene_graph/srdf_model.h>
-#include <tesseract/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract::TesseractInitInfo)
@@ -53,7 +51,7 @@ enum class TesseractInitType
   URDF_STRING_SRDF_STRING,
   URDF_PATH,
   URDF_PATH_SRDF_PATH,
-  ENVIRONMENT_MANIPULATOR_MANAGER
+  ENVIRONMENT
 };
 
 /** @brief Used to store information about how a given Tesseract was initialized. See the Tesseract init methods.
@@ -61,7 +59,7 @@ enum class TesseractInitType
 Note: Recreating a Tesseract does not guarantee that it is identical to the Tesseract associate with this construction
 info since the kinmeatics managers could have changed and it does not include the environment command history. This will
 simply recreate the Tesseract as it was at construction.  */
-struct TESSERACT_PUBLIC TesseractInitInfo
+struct TesseractInitInfo
 {
   using Ptr = std::shared_ptr<TesseractInitInfo>;
   using ConstPtr = std::shared_ptr<const TesseractInitInfo>;
@@ -84,18 +82,11 @@ struct TESSERACT_PUBLIC TesseractInitInfo
   tesseract_scene_graph::SRDFModel::Ptr srdf_model;
 
   /**
-   * @brief Used when InitType is ENVIRONMENT_MANIPULATOR_MANAGER
+   * @brief Used when InitType is ENVIRONMENT
    *
    * This store a clone of the environment
    */
   tesseract_environment::Environment::Ptr environment;
-
-  /**
-   * @brief Used when InitType is ENVIRONMENT_MANIPULATOR_MANAGER
-   *
-   * This stores a clone of the manipulator manager
-   */
-  tesseract::ManipulatorManager::Ptr manipulator_manager;
 
   /** @brief Used when InitType is URDF_STRING and URDF_STRING_SRDF_STRING*/
   std::string urdf_string;

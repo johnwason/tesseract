@@ -29,17 +29,25 @@
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <memory>
+#include <string>
 #include <tinyxml2.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
-#include <tesseract_command_language/visibility_control.h>
+#include <tesseract_common/sfinae_utils.h>
 
 namespace tesseract_planning
 {
 #ifndef SWIG
-namespace detail
+namespace detail_waypoint
 {
-struct TESSERACT_COMMAND_LANGUAGE_LOCAL WaypointInnerBase
+CREATE_MEMBER_CHECK(getType);
+CREATE_MEMBER_CHECK(print);
+CREATE_MEMBER_CHECK(toXML);
+CREATE_MEMBER_FUNC_SIGNATURE_NOARGS_CHECK(getType, int);
+CREATE_MEMBER_FUNC_SIGNATURE_CHECK(print, void, std::string);
+CREATE_MEMBER_FUNC_SIGNATURE_CHECK(toXML, tinyxml2::XMLElement*, tinyxml2::XMLDocument&);
+
+struct WaypointInnerBase
 {
   WaypointInnerBase() = default;
   virtual ~WaypointInnerBase() = default;
@@ -64,7 +72,15 @@ struct TESSERACT_COMMAND_LANGUAGE_LOCAL WaypointInnerBase
 template <typename T>
 struct WaypointInner final : WaypointInnerBase
 {
-  WaypointInner() = default;
+  WaypointInner()
+  {
+    static_assert(has_member_getType<T>::value, "Class does not have member function 'getType'");
+    static_assert(has_member_print<T>::value, "Class does not have member function 'print'");
+    static_assert(has_member_toXML<T>::value, "Class does not have member function 'toXML'");
+    static_assert(has_member_func_signature_getType<T>::value, "Class 'getType' function has incorrect signature");
+    static_assert(has_member_func_signature_print<T>::value, "Class 'print' function has incorrect signature");
+    static_assert(has_member_func_signature_toXML<T>::value, "Class 'toXML' function has incorrect signature");
+  }
   ~WaypointInner() override = default;
   WaypointInner(const WaypointInner&) = delete;
   WaypointInner(WaypointInner&&) = delete;
@@ -72,8 +88,24 @@ struct WaypointInner final : WaypointInnerBase
   WaypointInner& operator=(WaypointInner&&) = delete;
 
   // Constructors from T (copy and move variants).
-  explicit WaypointInner(T waypoint) : waypoint_(std::move(waypoint)) {}
-  explicit WaypointInner(T&& waypoint) : waypoint_(std::move(waypoint)) {}
+  explicit WaypointInner(T waypoint) : waypoint_(std::move(waypoint))
+  {
+    static_assert(has_member_getType<T>::value, "Class does not have member function 'getType'");
+    static_assert(has_member_print<T>::value, "Class does not have member function 'print'");
+    static_assert(has_member_toXML<T>::value, "Class does not have member function 'toXML'");
+    static_assert(has_member_func_signature_getType<T>::value, "Class 'getType' function has incorrect signature");
+    static_assert(has_member_func_signature_print<T>::value, "Class 'print' function has incorrect signature");
+    static_assert(has_member_func_signature_toXML<T>::value, "Class 'toXML' function has incorrect signature");
+  }
+  explicit WaypointInner(T&& waypoint) : waypoint_(std::move(waypoint))
+  {
+    static_assert(has_member_getType<T>::value, "Class does not have member function 'getType'");
+    static_assert(has_member_print<T>::value, "Class does not have member function 'print'");
+    static_assert(has_member_toXML<T>::value, "Class does not have member function 'toXML'");
+    static_assert(has_member_func_signature_getType<T>::value, "Class 'getType' function has incorrect signature");
+    static_assert(has_member_func_signature_print<T>::value, "Class 'print' function has incorrect signature");
+    static_assert(has_member_func_signature_toXML<T>::value, "Class 'toXML' function has incorrect signature");
+  }
 
   std::unique_ptr<WaypointInnerBase> clone() const override { return std::make_unique<WaypointInner>(waypoint_); }
 
@@ -88,10 +120,10 @@ struct WaypointInner final : WaypointInnerBase
   T waypoint_;
 };
 
-}  // namespace detail
+}  // namespace detail_waypoint
 #endif // SWIG
 
-class TESSERACT_COMMAND_LANGUAGE_PUBLIC Waypoint
+class Waypoint
 {
   template <typename T>
   using uncvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
@@ -105,7 +137,7 @@ public:
 
   template <typename T, generic_ctor_enabler<T> = 0>
   Waypoint(T&& waypoint)  // NOLINT
-    : waypoint_(std::make_unique<detail::WaypointInner<uncvref_t<T>>>(waypoint))
+    : waypoint_(std::make_unique<detail_waypoint::WaypointInner<uncvref_t<T>>>(waypoint))
   {
   }
 
@@ -157,7 +189,7 @@ public:
   }
 
 private:
-  std::unique_ptr<detail::WaypointInnerBase> waypoint_;
+  std::unique_ptr<detail_waypoint::WaypointInnerBase> waypoint_;
 };
 
 }  // namespace tesseract_planning

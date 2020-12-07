@@ -33,9 +33,9 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_command_language/core/waypoint.h>
+#include <tesseract_command_language/constants.h>
 #include <tesseract_command_language/instruction_type.h>
 #include <tesseract_command_language/manipulator_info.h>
-#include <tesseract_command_language/visibility_control.h>
 
 namespace tesseract_planning
 {
@@ -47,13 +47,13 @@ enum class MoveInstructionType : int
   START = 3 /**< This indicates it is a start instruction. */
 };
 
-class TESSERACT_COMMAND_LANGUAGE_PUBLIC MoveInstruction
+class MoveInstruction
 {
 public:
 
   MoveInstruction(Waypoint waypoint,
                   MoveInstructionType type,
-                  const std::string& profile = "DEFAULT",
+                  const std::string& profile = DEFAULT_PROFILE_KEY,
                   ManipulatorInfo manipulator_info = ManipulatorInfo());
 
   void setWaypoint(Waypoint waypoint);
@@ -96,7 +96,7 @@ private:
   std::string description_;
 
   /** @brief The profile used for this move instruction */
-  std::string profile_{ "DEFAULT" };
+  std::string profile_{ DEFAULT_PROFILE_KEY };
 
   /** @brief The assigned waypoint (Cartesian or Joint) */
   Waypoint waypoint_;

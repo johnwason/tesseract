@@ -35,13 +35,14 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_environment/core/types.h>
 #include <tesseract_environment/core/commands.h>
+#include <tesseract_environment/core/state_solver.h>
+#include <tesseract_environment/core/manipulator_manager.h>
 #include <tesseract_collision/core/discrete_contact_manager.h>
 #include <tesseract_collision/core/discrete_contact_manager_factory.h>
 #include <tesseract_collision/core/continuous_contact_manager.h>
 #include <tesseract_collision/core/continuous_contact_manager_factory.h>
 #include <tesseract_scene_graph/graph.h>
-#include <tesseract_environment/core/state_solver.h>
-#include <tesseract_environment/core/visibility_control.h>
+#include <tesseract_scene_graph/utils.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_environment::Environment)
@@ -49,7 +50,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_environment
 {
-class TESSERACT_ENVIRONMENT_CORE_PUBLIC Environment
+class Environment
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -73,7 +74,8 @@ public:
    * @return True if successful, otherwise false
    */
   template <typename S>
-  bool init(const tesseract_scene_graph::SceneGraph& scene_graph)
+  bool init(const tesseract_scene_graph::SceneGraph& scene_graph,
+            const tesseract_scene_graph::SRDFModel::ConstPtr& srdf_model = nullptr)
   {
     initialized_ = false;
     revision_ = 0;
@@ -90,6 +92,9 @@ public:
       CONSOLE_BRIDGE_logError("Failed to insert the scene graph");
       return false;
     }
+
+    if (srdf_model != nullptr)
+      processSRDFAllowedCollisions(*scene_graph_, *srdf_model);
 
     // Add this to the command history. This should always the the first thing in the command history
     ++revision_;
@@ -114,10 +119,29 @@ public:
       return false;
     }
 
+    manipulator_manager_ = std::make_shared<ManipulatorManager>();
+    if (!srdf_model)
+    {
+      CONSOLE_BRIDGE_logDebug("Environment is being initialized without an SRDF Model. Manipulators will not be "
+                              "registered");
+      manipulator_manager_->init(scene_graph_, tesseract_scene_graph::KinematicsInformation());
+    }
+    else
+    {
+      manipulator_manager_->init(scene_graph_, srdf_model->getKinematicsInformation());
+
+      // Add this to the command history.
+      ++revision_;
+      commands_.push_back(
+          std::make_shared<AddKinematicsInformationCommand>(manipulator_manager_->getKinematicsInformation()));
+    }
+
     is_contact_allowed_fn_ = std::bind(&tesseract_scene_graph::SceneGraph::isCollisionAllowed,
                                        scene_graph_,
                                        std::placeholders::_1,
                                        std::placeholders::_2);
+
+    manipulator_manager_->revision_ = revision_;
 
     initialized_ = true;
 
@@ -162,19 +186,23 @@ public:
     return true;
   }
 
+  /**
+   * @brief Clone the environment
+   * @return A clone of the environment
+   */
   Environment::Ptr clone() const;
 
   /**
    * @brief Get the current revision number
    * @return Revision number
    */
-  int getRevision() const { return revision_; }
+  int getRevision() const;
 
   /**
    * @brief Get Environment command history post initialization
    * @return List of commands
    */
-  const Commands& getCommandHistory() const { return commands_; }
+  const Commands& getCommandHistory() const;
 
   /**
    * @brief Applies the commands to the environment
@@ -190,7 +218,7 @@ public:
    * @return true if successful. If returned false, then only a partial set of commands have been applied. Call
    * getCommandHistory to check. Some commands are not checked for success
    */
-  bool applyCommand(const std::vector<Command>& commands);
+  bool applyCommands(const std::vector<Command>& commands);
 
   /**
    * @brief Apply command to the environment
@@ -204,22 +232,44 @@ public:
    * @brief Check if environment has been initialized
    * @return True if initialized otherwise false
    */
-  virtual bool checkInitialized() const { return initialized_; }
+  virtual bool checkInitialized() const;
 
   /**
    * @brief Get the Scene Graph
    * @return SceneGraphConstPtr
    */
-  virtual const tesseract_scene_graph::SceneGraph::ConstPtr& getSceneGraph() const { return scene_graph_const_; }
+  virtual const tesseract_scene_graph::SceneGraph::ConstPtr& getSceneGraph() const;
+
+  /**
+   * @brief Get the manipulator manager
+   * @todo This should go away and should expose methods for adding and removing objects from the manager and storing
+   *       as commands
+   * @warning Changes made to the manager are not capture in the command history.
+   * @return The manipulator manager
+   */
+  virtual ManipulatorManager::Ptr getManipulatorManager();
+
+  /**
+   * @brief Get the manipulator manager const
+   * @return The manipulator manager const
+   */
+  virtual ManipulatorManager::ConstPtr getManipulatorManager() const;
+
+  /**
+   * @brief Add kinematics information to the environment
+   * @param kin_info The kinematics information
+   * @return true if successful, otherwise false
+   */
+  virtual bool addKinematicsInformation(const tesseract_scene_graph::KinematicsInformation& kin_info);
 
   /** @brief Give the environment a name */
-  virtual void setName(const std::string& name) { scene_graph_->setName(name); }
+  virtual void setName(const std::string& name);
 
   /** @brief Get the name of the environment
    *
    * This may be empty, if so check urdf name
    */
-  virtual const std::string& getName() const { return scene_graph_->getName(); }
+  virtual const std::string& getName() const;
 
   /**
    * @brief Set the current state of the environment
@@ -248,7 +298,7 @@ public:
                                  const Eigen::Ref<const Eigen::VectorXd>& joint_values) const;
 
   /** @brief Get the current state of the environment */
-  virtual EnvState::ConstPtr getCurrentState() const { return current_state_; }
+  virtual EnvState::ConstPtr getCurrentState() const;
 
 #ifndef SWIG
   /**
@@ -340,6 +390,58 @@ public:
    * @return
    */
   virtual bool changeJointOrigin(const std::string& joint_name, const Eigen::Isometry3d& new_origin);
+
+  /**
+   * @brief Changes the position limits associated with a joint
+   * @param joint_name Name of the joint to be updated
+   * @param limits New position limits to be set as the joint limits
+   * @return
+   */
+  virtual bool changeJointPositionLimits(const std::string& joint_name, double lower, double upper);
+
+  /**
+   * @brief Changes the position limits associated with a joint
+   * @param limits A map of joint names to new position limits
+   * @return
+   */
+  virtual bool changeJointPositionLimits(const std::unordered_map<std::string, std::pair<double, double>>& limits);
+
+  /**
+   * @brief Changes the velocity limits associated with a joint
+   * @param joint_name Name of the joint to be updated
+   * @param limits New velocity limits to be set as the joint limits
+   * @return
+   */
+  virtual bool changeJointVelocityLimits(const std::string& joint_name, double limit);
+
+  /**
+   * @brief Changes the velocity limits associated with a joint
+   * @param limits A map of joint names to new velocity limits
+   * @return
+   */
+  virtual bool changeJointVelocityLimits(const std::unordered_map<std::string, double>& limits);
+
+  /**
+   * @brief Changes the acceleration limits associated with a joint
+   * @param joint_name Name of the joint to be updated
+   * @param limits New acceleration limits to be set as the joint limits
+   * @return
+   */
+  virtual bool changeJointAccelerationLimits(const std::string& joint_name, double limit);
+
+  /**
+   * @brief Changes the acceleration limits associated with a joint
+   * @param limits A map of joint names to new acceleration limits
+   * @return
+   */
+  virtual bool changeJointAccelerationLimits(const std::unordered_map<std::string, double>& limits);
+
+  /**
+   * @brief Gets the limits associated with a joint
+   * @param joint_name Name of the joint to be updated
+   * @return The joint limits set for the given joint
+   */
+  virtual tesseract_scene_graph::JointLimits::ConstPtr getJointLimits(const std::string& joint_name) const;
 
   /**
    * @brief Set whether a link should be considered during collision checking
@@ -476,12 +578,7 @@ public:
   virtual bool setActiveDiscreteContactManager(const std::string& name);
 
   /** @brief Get a copy of the environments active discrete contact manager */
-  virtual tesseract_collision::DiscreteContactManager::Ptr getDiscreteContactManager() const
-  {
-    if (!discrete_manager_)
-      return nullptr;
-    return discrete_manager_->clone();
-  }
+  virtual tesseract_collision::DiscreteContactManager::Ptr getDiscreteContactManager() const;
 
   /** @brief Get a copy of the environments available discrete contact manager by name */
   virtual tesseract_collision::DiscreteContactManager::Ptr getDiscreteContactManager(const std::string& name) const;
@@ -494,12 +591,7 @@ public:
   virtual bool setActiveContinuousContactManager(const std::string& name);
 
   /** @brief Get a copy of the environments active continuous contact manager */
-  virtual tesseract_collision::ContinuousContactManager::Ptr getContinuousContactManager() const
-  {
-    if (!continuous_manager_)
-      return nullptr;
-    return continuous_manager_->clone();
-  }
+  virtual tesseract_collision::ContinuousContactManager::Ptr getContinuousContactManager() const;
 
   /** @brief Get a copy of the environments available continuous contact manager by name */
   virtual tesseract_collision::ContinuousContactManager::Ptr getContinuousContactManager(const std::string& name) const;
@@ -511,10 +603,7 @@ public:
    * in the environment.
    */
   bool registerDiscreteContactManager(const std::string& name,
-                                      tesseract_collision::DiscreteContactManagerFactory::CreateMethod create_function)
-  {
-    return discrete_factory_.registar(name, std::move(create_function));
-  }
+                                      tesseract_collision::DiscreteContactManagerFactory::CreateMethod create_function);
 
   /**
    * @brief Set the discrete contact manager
@@ -524,10 +613,7 @@ public:
    */
   bool
   registerContinuousContactManager(const std::string& name,
-                                   tesseract_collision::ContinuousContactManagerFactory::CreateMethod create_function)
-  {
-    return continuous_factory_.registar(name, std::move(create_function));
-  }
+                                   tesseract_collision::ContinuousContactManagerFactory::CreateMethod create_function);
 
   /** @brief Merge a graph into the current environment
    * @param scene_graph Const ref to the graph to be merged (said graph will be copied)
@@ -559,6 +645,7 @@ protected:
   Commands commands_;         /**< The history of commands applied to the environment after intialization */
   tesseract_scene_graph::SceneGraph::Ptr scene_graph_;            /**< Tesseract Scene Graph */
   tesseract_scene_graph::SceneGraph::ConstPtr scene_graph_const_; /**< Tesseract Scene Graph Const */
+  ManipulatorManager::Ptr manipulator_manager_;                   /**< Managers for the kinematics objects */
   EnvState::Ptr current_state_;                                   /**< Current state of the environment */
   StateSolver::Ptr state_solver_;                                 /**< Tesseract State Solver */
   std::vector<std::string> link_names_;                           /**< A vector of link names */

@@ -59,6 +59,7 @@ CompositeInstruction fixedSizeInterpolateStateWaypoint(const JointWaypoint& star
     MoveInstruction move_instruction(StateWaypoint(start.joint_names, states.col(i)), MoveInstructionType::FREESPACE);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
   return composite;
@@ -78,7 +79,7 @@ CompositeInstruction fixedSizeInterpolateStateWaypoint(const JointWaypoint& star
   assert(static_cast<long>(start.joint_names.size()) == start.size());
 
   // Initialize
-  auto inv_kin = request.tesseract->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
+  auto inv_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(inv_kin->getBaseLinkName());
   Eigen::Isometry3d tcp = request.tesseract->findTCP(mi);
   assert(start.joint_names.size() == inv_kin->getJointNames().size());
@@ -121,6 +122,7 @@ CompositeInstruction fixedSizeInterpolateStateWaypoint(const JointWaypoint& star
     MoveInstruction move_instruction(StateWaypoint(start.joint_names, states.col(i)), MoveInstructionType::FREESPACE);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
   return composite;
@@ -140,7 +142,7 @@ CompositeInstruction fixedSizeInterpolateStateWaypoint(const CartesianWaypoint& 
   assert(static_cast<long>(end.joint_names.size()) == end.size());
 
   // Initialize
-  auto inv_kin = request.tesseract->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
+  auto inv_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(inv_kin->getBaseLinkName());
   Eigen::Isometry3d tcp = request.tesseract->findTCP(mi);
   assert(end.joint_names.size() == inv_kin->getJointNames().size());
@@ -183,6 +185,7 @@ CompositeInstruction fixedSizeInterpolateStateWaypoint(const CartesianWaypoint& 
     MoveInstruction move_instruction(StateWaypoint(end.joint_names, states.col(i)), MoveInstructionType::FREESPACE);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
 
@@ -200,7 +203,7 @@ CompositeInstruction fixedSizeInterpolateStateWaypoint(const CartesianWaypoint& 
   ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   // Initialize
-  auto inv_kin = request.tesseract->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
+  auto inv_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getInvKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(inv_kin->getBaseLinkName());
   Eigen::Isometry3d tcp = request.tesseract->findTCP(mi);
 
@@ -257,6 +260,7 @@ CompositeInstruction fixedSizeInterpolateStateWaypoint(const CartesianWaypoint& 
                                      MoveInstructionType::FREESPACE);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
 
@@ -277,7 +281,7 @@ CompositeInstruction fixedSizeInterpolateCartStateWaypoint(const JointWaypoint& 
   ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   // Initialize
-  auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(fwd_kin->getBaseLinkName());
   Eigen::Isometry3d tcp = request.tesseract->findTCP(mi);
 
@@ -303,6 +307,7 @@ CompositeInstruction fixedSizeInterpolateCartStateWaypoint(const JointWaypoint& 
     tesseract_planning::MoveInstruction move_instruction(CartesianWaypoint(poses[p]), MoveInstructionType::LINEAR);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
 
@@ -323,7 +328,7 @@ CompositeInstruction fixedSizeInterpolateCartStateWaypoint(const JointWaypoint& 
   ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   // Initialize
-  auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(fwd_kin->getBaseLinkName());
   Eigen::Isometry3d tcp = request.tesseract->findTCP(mi);
 
@@ -346,6 +351,7 @@ CompositeInstruction fixedSizeInterpolateCartStateWaypoint(const JointWaypoint& 
     tesseract_planning::MoveInstruction move_instruction(CartesianWaypoint(poses[p]), MoveInstructionType::LINEAR);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
 
@@ -366,7 +372,7 @@ CompositeInstruction fixedSizeInterpolateCartStateWaypoint(const CartesianWaypoi
   ManipulatorInfo mi = manip_info.getCombined(base_instruction.getManipulatorInfo());
 
   // Initialize
-  auto fwd_kin = request.tesseract->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
+  auto fwd_kin = request.tesseract->getEnvironment()->getManipulatorManager()->getFwdKinematicSolver(mi.manipulator);
   auto world_to_base = request.env_state->link_transforms.at(fwd_kin->getBaseLinkName());
   Eigen::Isometry3d tcp = request.tesseract->findTCP(mi);
 
@@ -389,6 +395,7 @@ CompositeInstruction fixedSizeInterpolateCartStateWaypoint(const CartesianWaypoi
     tesseract_planning::MoveInstruction move_instruction(CartesianWaypoint(poses[p]), MoveInstructionType::LINEAR);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
 
@@ -416,6 +423,7 @@ CompositeInstruction fixedSizeInterpolateCartStateWaypoint(const CartesianWaypoi
     tesseract_planning::MoveInstruction move_instruction(CartesianWaypoint(poses[p]), MoveInstructionType::LINEAR);
     move_instruction.setManipulatorInfo(base_instruction.getManipulatorInfo());
     move_instruction.setDescription(base_instruction.getDescription());
+    move_instruction.setProfile(base_instruction.getProfile());
     composite.push_back(move_instruction);
   }
   return composite;

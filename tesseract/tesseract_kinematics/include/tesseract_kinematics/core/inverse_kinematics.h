@@ -38,7 +38,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/types.h>
-#include <tesseract_kinematics/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::InverseKinematics)
@@ -47,7 +46,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 namespace tesseract_kinematics
 {
 /** @brief Inverse kinematics functions. */
-class TESSERACT_KINEMATICS_CORE_PUBLIC InverseKinematics
+class InverseKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -63,6 +62,12 @@ public:
   InverseKinematics& operator=(InverseKinematics&&) = delete;
 
 #ifndef SWIG
+  /**
+   * @brief Updates kinematics if kinematic parameters have changed
+   * @return True if successful
+   */
+  virtual bool update() = 0;
+
   /**
    * @brief Calculates joint solutions given a pose.
    * @param solutions A vector of solutions, so check the size of the vector to determine the number of solutions
@@ -146,6 +151,12 @@ public:
    * @return Kinematic Limits
    */
   virtual const tesseract_common::KinematicLimits& getLimits() const = 0;
+
+  /**
+   * @brief Setter for kinematic limits (joint, velocity, acceleration, etc.)
+   * @param Kinematic Limits
+   */
+  virtual void setLimits(tesseract_common::KinematicLimits limits) = 0;
 
   /**
    * @brief Number of joints in robot

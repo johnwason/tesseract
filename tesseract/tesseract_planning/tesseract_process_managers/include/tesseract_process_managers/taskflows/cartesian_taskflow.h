@@ -30,17 +30,23 @@
 #include <tesseract_motion_planners/simple/profile/simple_planner_profile.h>
 #include <tesseract_motion_planners/descartes/profile/descartes_profile.h>
 #include <tesseract_motion_planners/trajopt/profile/trajopt_profile.h>
-#include <tesseract_process_managers/visibility_control.h>
 
 namespace tesseract_planning
 {
-TESSERACT_PROCESS_MANAGERS_PUBLIC GraphTaskflow::UPtr createCartesianTaskflow(
-    bool create_seed,
-    const SimplePlannerPlanProfileMap& simple_plan_profiles = SimplePlannerPlanProfileMap(),
-    const SimplePlannerCompositeProfileMap& simple_composite_profiles = SimplePlannerCompositeProfileMap(),
-    const DescartesPlanProfileMap<double>& descartes_plan_profiles = DescartesPlanProfileMap<double>(),
-    const TrajOptPlanProfileMap& trajopt_plan_profiles = TrajOptPlanProfileMap(),
-    const TrajOptCompositeProfileMap& trajopt_composite_profiles = TrajOptCompositeProfileMap());
-}
+struct CartesianTaskflowParams
+{
+  bool enable_simple_planner{ true };
+  bool enable_post_contact_discrete_check{ false };
+  bool enable_post_contact_continuous_check{ true };
+  bool enable_time_parameterization{ true };
+  SimplePlannerPlanProfileMap simple_plan_profiles;
+  SimplePlannerCompositeProfileMap simple_composite_profiles;
+  DescartesPlanProfileMap<double> descartes_plan_profiles;
+  TrajOptPlanProfileMap trajopt_plan_profiles;
+  TrajOptCompositeProfileMap trajopt_composite_profiles;
+};
+
+GraphTaskflow::UPtr createCartesianTaskflow(CartesianTaskflowParams params);
+}  // namespace tesseract_planning
 
 #endif  // TESSERACT_PROCESS_MANAGERS_CARTESIAN_TASKFLOW_H

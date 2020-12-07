@@ -32,14 +32,13 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_process_managers/process_generator.h>
-#include <tesseract_process_managers/visibility_control.h>
 
 namespace tesseract_planning
 {
 // Forward Declare
 class MotionPlanner;
 
-class TESSERACT_PROCESS_MANAGERS_PUBLIC MotionPlannerProcessGenerator : public ProcessGenerator
+class MotionPlannerProcessGenerator : public ProcessGenerator
 {
 public:
   using UPtr = std::unique_ptr<MotionPlannerProcessGenerator>;
@@ -53,9 +52,9 @@ public:
 
   const std::string& getName() const override;
 
-  std::function<void()> generateTask(ProcessInput input) override;
+  std::function<void()> generateTask(ProcessInput input, std::size_t unique_id) override;
 
-  std::function<int()> generateConditionalTask(ProcessInput input) override;
+  std::function<int()> generateConditionalTask(ProcessInput input, std::size_t unique_id) override;
 
   bool getAbort() const override;
 
@@ -69,9 +68,15 @@ private:
 
   std::string name_;
 
-  int conditionalProcess(ProcessInput input) const;
+  int conditionalProcess(ProcessInput input, std::size_t unique_id) const;
 
-  void process(ProcessInput input) const;
+  void process(ProcessInput input, std::size_t unique_id) const;
+};
+
+class MotionPlannerProcessInfo : public ProcessInfo
+{
+public:
+  MotionPlannerProcessInfo(std::size_t unique_id, std::string name = "Motion Planner Process Generator");
 };
 
 }  // namespace tesseract_planning

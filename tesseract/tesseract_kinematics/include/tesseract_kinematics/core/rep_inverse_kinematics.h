@@ -35,7 +35,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/inverse_kinematics.h>
 #include <tesseract_kinematics/core/forward_kinematics.h>
-#include <tesseract_kinematics/core/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::RobotWithExternalPositionerInvKin)
@@ -49,7 +48,7 @@ namespace tesseract_kinematics
  * In this kinematic arrangement the base link is the tip link of the external positioner and the tip link is the
  * tip link of the manipulator. Therefore all provided target poses are expected to the tip link of the positioner.
  */
-class TESSERACT_KINEMATICS_CORE_PUBLIC RobotWithExternalPositionerInvKin : public InverseKinematics
+class RobotWithExternalPositionerInvKin : public InverseKinematics
 {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -66,7 +65,11 @@ public:
 
   InverseKinematics::Ptr clone() const override;
 
+
+  bool update() override;
+
 #ifndef SWIG
+
   bool calcInvKin(Eigen::VectorXd& solutions,
                   const Eigen::Isometry3d& pose,
                   const Eigen::Ref<const Eigen::VectorXd>& seed) const override;
@@ -86,6 +89,8 @@ public:
   const std::vector<std::string>& getActiveLinkNames() const override;
 
   const tesseract_common::KinematicLimits& getLimits() const override;
+
+  void setLimits(tesseract_common::KinematicLimits limits) override;
 
   tesseract_scene_graph::SceneGraph::ConstPtr getSceneGraph() const;
   unsigned int numJoints() const override;

@@ -29,13 +29,12 @@
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <Eigen/Geometry>
+#include <tesseract_collision/core/types.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/descartes/profile/descartes_profile.h>
 #include <tesseract_motion_planners/descartes/descartes_utils.h>
 #include <tesseract_motion_planners/descartes/types.h>
-
-#include <descartes_light/interface/edge_evaluator.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::DescartesPlanDefaultProfile<double>)
@@ -67,6 +66,9 @@ public:
 #endif // SWIG
 
   DescartesEdgeEvaluatorAllocatorFn<FloatType> edge_evaluator{ nullptr };
+
+  // If not provided it adds a joint limit is valid function
+  DescartesVertexEvaluatorAllocatorFn<FloatType> vertex_evaluator{ nullptr };
   double timing_constraint = std::numeric_limits<FloatType>::max();
 
   // Applied to sampled states
@@ -75,13 +77,9 @@ public:
 
   // Applied during edge evaluation
   bool enable_edge_collision{ false };
-  double edge_collision_saftey_margin{ 0 };
-  double edge_longest_valid_segment_length = 0.1;
-
+  tesseract_collision::CollisionCheckConfig edge_collision_check_config;
   int num_threads{ 1 };
-
   bool allow_collision{ false };
-  DescartesIsValidFn<FloatType> is_valid;  // If not provided it adds a joint limit is valid function
   bool debug{ false };
 
   void apply(DescartesProblem<FloatType>& prob,

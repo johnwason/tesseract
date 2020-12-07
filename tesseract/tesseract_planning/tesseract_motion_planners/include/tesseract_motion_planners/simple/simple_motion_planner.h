@@ -35,7 +35,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/core/planner.h>
 #include <tesseract_motion_planners/simple/profile/simple_planner_profile.h>
-#include <tesseract_motion_planners/simple/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::SimpleMotionPlanner)
@@ -51,20 +50,22 @@ class SimpleMotionPlannerStatusCategory;
  * of the PlanInstructions and then calls the appropriate function from the profile. These functions do not depend on
  * the seed, so this may be used to initialize the seed appropriately using e.g. linear interpolation.
  */
-class TESSERACT_MOTION_PLANNERS_SIMPLE_PUBLIC SimpleMotionPlanner : public MotionPlanner
+class SimpleMotionPlanner : public MotionPlanner
 {
 public:
   using Ptr = std::shared_ptr<SimpleMotionPlanner>;
   using ConstPtr = std::shared_ptr<const SimpleMotionPlanner>;
 
   /** @brief Construct a basic planner */
-  SimpleMotionPlanner(std::string name = "SIMPLE_PLANNER");
-
+  SimpleMotionPlanner();
+  SimpleMotionPlanner(const std::string& name);
   ~SimpleMotionPlanner() override = default;
-  SimpleMotionPlanner(const SimpleMotionPlanner&) = default;
-  SimpleMotionPlanner& operator=(const SimpleMotionPlanner&) = default;
-  SimpleMotionPlanner(SimpleMotionPlanner&&) = default;
-  SimpleMotionPlanner& operator=(SimpleMotionPlanner&&) = default;
+  SimpleMotionPlanner(const SimpleMotionPlanner&) = delete;
+  SimpleMotionPlanner& operator=(const SimpleMotionPlanner&) = delete;
+  SimpleMotionPlanner(SimpleMotionPlanner&&) = delete;
+  SimpleMotionPlanner& operator=(SimpleMotionPlanner&&) = delete;
+
+  const std::string& getName() const override;
 
   /**
    * @brief The available composite profiles
@@ -101,7 +102,10 @@ public:
 
   void clear() override;
 
+  MotionPlanner::Ptr clone() const override;
+
 protected:
+  std::string name_{ "SIMPLE_PLANNER" };
   std::shared_ptr<const SimpleMotionPlannerStatusCategory> status_category_; /** @brief The planners status codes */
 
   MoveInstruction getStartInstruction(const PlannerRequest& request,
@@ -109,12 +113,11 @@ protected:
                                       const tesseract_kinematics::ForwardKinematics::Ptr& fwd_kin) const;
 
   CompositeInstruction processCompositeInstruction(const CompositeInstruction& instructions,
-                                                   const Waypoint& initial_start_waypoint,
+                                                   Waypoint& start_waypoint,
                                                    const PlannerRequest& request) const;
 };
 
-class TESSERACT_MOTION_PLANNERS_SIMPLE_PUBLIC SimpleMotionPlannerStatusCategory
-  : public tesseract_common::StatusCategory
+class SimpleMotionPlannerStatusCategory : public tesseract_common::StatusCategory
 {
 public:
   SimpleMotionPlannerStatusCategory(std::string name);

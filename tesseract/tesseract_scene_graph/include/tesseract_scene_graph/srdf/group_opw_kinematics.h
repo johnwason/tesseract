@@ -12,7 +12,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/utils.h>
 #include <tesseract_scene_graph/graph.h>
-#include <tesseract_scene_graph/srdf/types.h>
+#include <tesseract_scene_graph/kinematics_information.h>
 
 namespace tesseract_scene_graph
 {
@@ -124,7 +124,19 @@ inline GroupOPWKinematics parseGroupOPWKinematics(const tesseract_scene_graph::S
 
       // No need to check return values because the tokens are verified above
       for (std::size_t i = 0; i < 6; ++i)
-        tesseract_common::toNumeric<signed char>(tokens[i], group_opw->second.sign_corrections[i]);
+      {
+        int sc{ 0 };
+        tesseract_common::toNumeric<int>(tokens[i], sc);
+        if (sc == 1)
+          group_opw->second.sign_corrections[i] = 1;
+        else if (sc == -1)
+          group_opw->second.sign_corrections[i] = -1;
+        else
+        {
+          CONSOLE_BRIDGE_logError("OPW Group '%s' has incorrect sign correction values!", group_name_string.c_str());
+          break;
+        }
+      }
     }
   }
 

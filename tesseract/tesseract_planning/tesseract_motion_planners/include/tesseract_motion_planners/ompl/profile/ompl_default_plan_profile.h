@@ -37,7 +37,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_motion_planners/ompl/ompl_planner_configurator.h>
 #include <tesseract_motion_planners/ompl/profile/ompl_profile.h>
 #include <tesseract_motion_planners/ompl/types.h>
-#include <tesseract_motion_planners/ompl/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::OMPLDefaultPlanProfile)
@@ -52,7 +51,7 @@ namespace tesseract_planning
  * every plan instruction will be its a seperate ompl motion plan and therefore planning information is relevent
  * for this motion planner in the profile.
  */
-class TESSERACT_MOTION_PLANNERS_OMPL_PUBLIC OMPLDefaultPlanProfile : public OMPLPlanProfile
+class OMPLDefaultPlanProfile : public OMPLPlanProfile
 {
 public:
   using Ptr = std::shared_ptr<OMPLDefaultPlanProfile>;

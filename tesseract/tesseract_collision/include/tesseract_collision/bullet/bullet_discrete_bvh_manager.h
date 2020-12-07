@@ -44,7 +44,6 @@
 #include <tesseract_collision/bullet/bullet_utils.h>
 #include <tesseract_collision/core/discrete_contact_manager.h>
 #include <tesseract_collision/bullet/tesseract_collision_configuration.h>
-#include <tesseract_collision/bullet/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_collision::tesseract_collision_bullet::BulletDiscreteBVHManager)
@@ -55,7 +54,7 @@ namespace tesseract_collision
 namespace tesseract_collision_bullet
 {
 /** @brief A BVH implementaiton of a bullet manager */
-class TESSERACT_COLLISION_BULLET_PUBLIC BulletDiscreteBVHManager : public DiscreteContactManager
+class BulletDiscreteBVHManager : public DiscreteContactManager
 {
 public:
   using Ptr = std::shared_ptr<BulletDiscreteBVHManager>;
@@ -107,7 +106,11 @@ public:
 
   void setContactDistanceThreshold(double contact_distance) override;
 
+  void setCollisionMarginData(CollisionMarginData collision_margin_data) override;
+
   double getContactDistanceThreshold() const override;
+
+  const CollisionMarginData& getCollisionMarginData() const override;
 
   void setIsContactAllowedFn(IsContactAllowedFn fn) override;
 

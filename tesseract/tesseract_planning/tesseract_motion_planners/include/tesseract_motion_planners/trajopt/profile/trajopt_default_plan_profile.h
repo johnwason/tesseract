@@ -34,7 +34,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/trajopt/profile/trajopt_profile.h>
-#include <tesseract_motion_planners/trajopt/visibility_control.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::TrajOptDefaultPlanProfile)
@@ -42,7 +41,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
-class TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC TrajOptDefaultPlanProfile : public TrajOptPlanProfile
+class TrajOptDefaultPlanProfile : public TrajOptPlanProfile
 {
 public:
   using Ptr = std::shared_ptr<TrajOptDefaultPlanProfile>;
@@ -93,7 +92,7 @@ public:
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const override;
 
 protected:
-  void addConstraintErrorFunctions(trajopt::ProblemConstructionInfo& pci, const std::vector<int>& fixed_steps) const;
+  void addConstraintErrorFunctions(trajopt::ProblemConstructionInfo& pci, int index) const;
 
   void addAvoidSingularity(trajopt::ProblemConstructionInfo& pci, const std::vector<int>& fixed_steps) const;
 };
