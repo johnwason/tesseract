@@ -64,13 +64,13 @@ public:
   ForwardKinematics(ForwardKinematics&&) = delete;
   ForwardKinematics& operator=(ForwardKinematics&&) = delete;
 
-#ifndef SWIG
   /**
    * @brief Updates kinematics if kinematic parameters have changed
    * @return True if successful
    */
   virtual bool update() = 0;
 
+#ifndef SWIG
   /**
    * @brief Calculates tool pose of robot chain
    * @param pose Transform of end-of-tip relative to root

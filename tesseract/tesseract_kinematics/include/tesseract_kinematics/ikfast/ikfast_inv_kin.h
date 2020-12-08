@@ -112,9 +112,9 @@ public:
                   const Eigen::Ref<const Eigen::VectorXd>& seed,
                   const std::string& link_name) const override;
 
-  bool checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const override;
 #endif // SWIG
 
+  bool checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const override;
   unsigned int numJoints() const override;
 
   const std::vector<std::string>& getJointNames() const override;

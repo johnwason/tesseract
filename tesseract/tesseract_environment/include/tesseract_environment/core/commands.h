@@ -56,6 +56,13 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 %shared_ptr(tesseract_environment::RemoveAllowedCollisionCommand)
 %shared_ptr(tesseract_environment::RemoveAllowedCollisionLinkCommand)
 %shared_ptr(tesseract_environment::AddSceneGraphCommand)
+%shared_ptr(tesseract_environment::AddSceneGraphCommand)
+%shared_ptr(tesseract_environment::AddKinematicsInformationCommand)
+%shared_ptr(tesseract_environment::ChangeJointPositionLimitsCommand)
+%shared_ptr(tesseract_environment::ChangeJointVelocityLimitsCommand)
+%shared_ptr(tesseract_environment::ChangeJointAccelerationLimitsCommand)
+%shared_ptr(tesseract_environment::ChangeDefaultContactMarginCommand)
+%shared_ptr(tesseract_environment::ChangePairContactMarginCommand)
 
 %shared_factory(
   tesseract_environment::Command,
@@ -71,7 +78,13 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 	tesseract_environment::AddAllowedCollisionCommand,
   tesseract_environment::RemoveAllowedCollisionCommand,
   tesseract_environment::RemoveAllowedCollisionLinkCommand,
-  tesseract_environment::AddSceneGraphCommand
+  tesseract_environment::AddSceneGraphCommand,
+  tesseract_environment::AddKinematicsInformationCommand,
+  tesseract_environment::ChangeJointPositionLimitsCommand,
+  tesseract_environment::ChangeJointVelocityLimitsCommand,
+  tesseract_environment::ChangeJointAccelerationLimitsCommand,
+  tesseract_environment::ChangeDefaultContactMarginCommand,
+  tesseract_environment::ChangePairContactMarginCommand
 )
 
 %template(Commands) std::vector<tesseract_environment::Command::ConstPtr>;

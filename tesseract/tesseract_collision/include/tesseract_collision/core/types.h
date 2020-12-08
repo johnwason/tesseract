@@ -415,8 +415,6 @@ struct CollisionCheckConfig
 };
 }  // namespace tesseract_collision
 
-}  // namespace tesseract_collision
-
 #ifdef SWIG
 tesseract_aligned_vector(ContactResultVector, tesseract_collision::ContactResult);
 tesseract_aligned_map_of_aligned_vector(ContactResultMap, %arg(std::pair<std::string,std::string>), tesseract_collision::ContactResult);

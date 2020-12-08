@@ -61,13 +61,13 @@ public:
   InverseKinematics(InverseKinematics&&) = delete;
   InverseKinematics& operator=(InverseKinematics&&) = delete;
 
-#ifndef SWIG
   /**
    * @brief Updates kinematics if kinematic parameters have changed
    * @return True if successful
    */
   virtual bool update() = 0;
 
+#ifndef SWIG
   /**
    * @brief Calculates joint solutions given a pose.
    * @param solutions A vector of solutions, so check the size of the vector to determine the number of solutions

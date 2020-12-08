@@ -67,7 +67,6 @@ struct CollisionCostConfig
   double coeff = 20;
 
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
-
 };
 
 /**
@@ -95,7 +94,6 @@ struct CollisionConstraintConfig
   double coeff = 20;
 
   tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const;
-
 };
 }  // namespace tesseract_planning
 
