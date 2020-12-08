@@ -67,7 +67,7 @@
 #include <tesseract_scene_graph/allowed_collision_matrix.h>
 #include <tesseract_scene_graph/graph.h>
 #include <tesseract_scene_graph/resource_locator.h>
-#include <tesseract_scene_graph/srdf/types.h>
+#include <tesseract_scene_graph/kinematics_information.h>
 #include <tesseract_scene_graph/srdf_model.h>
 
 // tesseract_kinematics
@@ -247,6 +247,7 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 #define EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 #define TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #define TESSERACT_COMMON_IGNORE_WARNINGS_POP
+#define DEPRECATED(msg)
 
 // tesseract_common
 #define TESSERACT_COMMON_PUBLIC
@@ -267,7 +268,7 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 %include "tesseract_scene_graph/allowed_collision_matrix.h"
 %include "tesseract_scene_graph/graph.h"
 %include "tesseract_scene_graph/resource_locator.h"
-%include "tesseract_scene_graph/srdf/types.h"
+%include "tesseract_scene_graph/kinematics_information.h"
 %include "tesseract_scene_graph/srdf_model.h"
 
 // tesseract_kinematics
@@ -311,6 +312,7 @@ tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 #define TESSERACT_ENVIRONMENT_CORE_PUBLIC
 %include "tesseract_environment/core/types.h"
 %include "tesseract_environment/core/commands.h"
+%include "tesseract_environment/core/manipulator_manager.h"
 %include "tesseract_environment/core/state_solver.h"
 %include "tesseract_environment/core/environment.h"
 
@@ -370,7 +372,6 @@ namespace std
 
 // tesseract
 #define TESSERACT_PUBLIC
-%include "tesseract/manipulator_manager.h"
 %include "tesseract/tesseract_init_info.h"
 %include "tesseract/tesseract.h"
 

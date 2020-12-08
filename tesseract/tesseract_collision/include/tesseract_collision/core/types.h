@@ -217,7 +217,6 @@ inline std::size_t flattenResults(ContactResultMap&& m, ContactResultVector& v)
 
 #endif // SWIG
 
-#ifndef SWIG
 /** @brief Stores information about how the margins allowed between collision objects */
 struct CollisionMarginData
 {
@@ -329,6 +328,7 @@ private:
   std::unordered_map<tesseract_common::LinkNamesPair, double, tesseract_common::PairHash> lookup_table_;
 };
 
+#ifndef SWIG
 /**
  * @brief This data is intended only to be used internal to the collision checkers as a container and should not
  *        be externally used by other libraries or packages.

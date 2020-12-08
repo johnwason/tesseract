@@ -65,10 +65,13 @@ public:
   };
 #endif // SWIG
 
+#ifndef SWIG
   DescartesEdgeEvaluatorAllocatorFn<FloatType> edge_evaluator{ nullptr };
 
   // If not provided it adds a joint limit is valid function
   DescartesVertexEvaluatorAllocatorFn<FloatType> vertex_evaluator{ nullptr };
+#endif
+
   double timing_constraint = std::numeric_limits<FloatType>::max();
 
   // Applied to sampled states

@@ -14,7 +14,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #ifdef SWIG
 
 %shared_ptr(tesseract_scene_graph::AllowedCollisionMatrix)
-%template(AllowedCollisionEntries) std::unordered_map<std::pair<std::string,std::string>, std::string, tesseract_scene_graph::AllowedCollisionMatrix::PairHash>;
+%template(AllowedCollisionEntries) std::unordered_map<std::pair<std::string,std::string>, std::string, tesseract_common::PairHash>;
 
 #endif // SWIG
 
