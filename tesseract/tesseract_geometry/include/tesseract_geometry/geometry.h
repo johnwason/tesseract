@@ -88,8 +88,8 @@ using GeometrysConst = std::vector<Geometry::ConstPtr>;
 }  // namespace tesseract_geometry
 
 #ifdef SWIG
-%template(tesseract_geometry_Geometries) std::vector<std::shared_ptr<tesseract_geometry::Geometry> >;
-%template(tesseract_geometry_GeometriesConst) std::vector<std::shared_ptr<const tesseract_geometry::Geometry> >;
+%template(Geometries) std::vector<std::shared_ptr<tesseract_geometry::Geometry> >;
+%template(GeometriesConst) std::vector<std::shared_ptr<const tesseract_geometry::Geometry> >;
 #endif // SWIG
 
 #endif  // TESSERACT_GEOMETRY_GEOMETRY_H

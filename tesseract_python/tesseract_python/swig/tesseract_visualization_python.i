@@ -1,6 +1,6 @@
 /**
- * @file tesseract_python.i
- * @brief The tesseract_python SWIG master file.
+ * @file tesseract_visualization_python.i
+ * @brief The tesseract_visualization_python SWIG master file.
  *
  * @author John Wason
  * @date December 8, 2020
@@ -24,7 +24,7 @@
  * limitations under the License.
  */
 
-%module(directors="1", package="tesseract") tesseract_python
+%module(directors="1", package="tesseract_visualization") tesseract_visualization_python
 
 #pragma SWIG nowarn=473
 
@@ -35,13 +35,15 @@
 %import "tesseract_collision_python.i"
 %import "tesseract_environment_python.i"
 %import "tesseract_command_language_python.i"
+%import "tesseract_python.i"
 
 %{
-// tesseract
-#include <tesseract/tesseract.h>
+// tesseract_visualization
+#include <tesseract_visualization/visualization.h>
 %}
 
-// tesseract
-#define TESSERACT_PUBLIC
-%include "tesseract/tesseract_init_info.h"
-%include "tesseract/tesseract.h"
+// tesseract_visualization
+#define TESSERACT_VISUALIZATION_PUBLIC
+%include "tesseract_visualization/visualization.h"
+
+

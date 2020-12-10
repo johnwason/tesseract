@@ -1,6 +1,6 @@
 /**
- * @file tesseract_python.i
- * @brief The tesseract_python SWIG master file.
+ * @file tesseract_environment_python.i
+ * @brief The tesseract_environment_python SWIG master file.
  *
  * @author John Wason
  * @date December 8, 2020
@@ -24,7 +24,7 @@
  * limitations under the License.
  */
 
-%module(directors="1", package="tesseract") tesseract_python
+%module(directors="1", package="tesseract_environment") tesseract_environment_python
 
 #pragma SWIG nowarn=473
 
@@ -33,15 +33,19 @@
 %import "tesseract_scene_graph_python.i"
 %import "tesseract_kinematics_python.i"
 %import "tesseract_collision_python.i"
-%import "tesseract_environment_python.i"
-%import "tesseract_command_language_python.i"
 
 %{
-// tesseract
-#include <tesseract/tesseract.h>
+// tesseract_environment
+#include <tesseract_environment/core/types.h>
+#include <tesseract_environment/core/commands.h>
+#include <tesseract_environment/core/state_solver.h>
+#include <tesseract_environment/core/environment.h>
 %}
 
-// tesseract
-#define TESSERACT_PUBLIC
-%include "tesseract/tesseract_init_info.h"
-%include "tesseract/tesseract.h"
+// tesseract_environment
+#define TESSERACT_ENVIRONMENT_CORE_PUBLIC
+%include "tesseract_environment/core/types.h"
+%include "tesseract_environment/core/commands.h"
+%include "tesseract_environment/core/manipulator_manager.h"
+%include "tesseract_environment/core/state_solver.h"
+%include "tesseract_environment/core/environment.h"

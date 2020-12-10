@@ -1,6 +1,6 @@
 /**
- * @file tesseract_python.i
- * @brief The tesseract_python SWIG master file.
+ * @file tesseract_time_parameterization_python.i
+ * @brief The tesseract_time_parameterization_python SWIG master file.
  *
  * @author John Wason
  * @date December 8, 2020
@@ -24,7 +24,7 @@
  * limitations under the License.
  */
 
-%module(directors="1", package="tesseract") tesseract_python
+%module(directors="1", package="tesseract_time_parameterization") tesseract_time_parameterization_python
 
 #pragma SWIG nowarn=473
 
@@ -35,13 +35,16 @@
 %import "tesseract_collision_python.i"
 %import "tesseract_environment_python.i"
 %import "tesseract_command_language_python.i"
+%import "tesseract_python.i"
+%import "tesseract_motion_planners_python.i"
 
 %{
-// tesseract
-#include <tesseract/tesseract.h>
+// tesseract_time_parameterization
+#include <tesseract_time_parameterization/iterative_spline_parameterization.h>
 %}
 
-// tesseract
-#define TESSERACT_PUBLIC
-%include "tesseract/tesseract_init_info.h"
-%include "tesseract/tesseract.h"
+// tesseract_time_parameterization
+#define TESSERACT_TIME_PARAMETERIZATION_PUBLIC
+%include "tesseract_time_parameterization/iterative_spline_parameterization.h"
+
+

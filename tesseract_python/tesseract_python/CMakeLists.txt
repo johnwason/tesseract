@@ -81,52 +81,14 @@ include(FindSWIG)
 find_package(SWIG 4.0 REQUIRED)
 include(UseSWIG)
 
-# Primary tesseract_python library
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/tesseract_python_module.cmake)
 
-set(SWIG_CXX_EXTENSION cxx)
-set_property(SOURCE swig/tesseract_python.i PROPERTY CPLUSPLUS ON)
-if (${PYTHON_VERSION_MAJOR} LESS 3)
-set_property(SOURCE swig/tesseract_python.i PROPERTY SWIG_FLAGS -relativeimport -threads)
-else()
-set_property(SOURCE swig/tesseract_python.i PROPERTY SWIG_FLAGS -relativeimport -threads -py3)
-endif()
-set_property(SOURCE swig/tesseract_python.i PROPERTY USE_LIBRARY_INCLUDE_DIRECTORIES TRUE)
+tesseract_python_module(tesseract_common_python SWIG_SRCS swig/tesseract_common_python.i PACKAGE tesseract_common LIBS tesseract::tesseract_common )
+tesseract_python_module(tesseract_geometry_python SWIG_SRCS swig/tesseract_geometry_python.i PACKAGE tesseract_geometry LIBS tesseract::tesseract_geometry )
 
-set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract)
-set(SWIG_OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR})
-swig_add_module(tesseract_python python swig/tesseract_python.i)
-swig_link_libraries(tesseract_python tesseract::tesseract_motion_planners_trajopt tesseract::tesseract_motion_planners_ompl
-  tesseract::tesseract_motion_planners_descartes tesseract::tesseract_motion_planners_simple
-  tesseract::tesseract_time_parameterization tesseract::tesseract_scene_graph
-  tesseract::tesseract_kinematics_core  tesseract::tesseract_kinematics_ikfast tesseract::tesseract_kinematics_opw
-  tesseract::tesseract_kinematics_kdl
-  tesseract::tesseract_collision_bullet tesseract::tesseract_collision_fcl
-  tesseract::tesseract_motion_planners_core tesseract::tesseract_visualization tesseract::tesseract 
-  
-  trajopt::trajopt ${PYTHON_LIBRARIES} ${EIGEN3_LIBRARIES} ${PYTHON_LIBRARIES})
-target_include_directories(${SWIG_MODULE_tesseract_python_REAL_NAME} PUBLIC 
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/swig>"
-    "$<INSTALL_INTERFACE:include>")
-target_include_directories(${SWIG_MODULE_tesseract_python_REAL_NAME}  SYSTEM PUBLIC
-    ${EIGEN3_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIRS}
-    ${TinyXML2_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
-    ${NUMPY_INCLUDE_DIR}
-    $<TARGET_PROPERTY:tesseract::tesseract,INTERFACE_INCLUDE_DIRECTORIES>)
+install(CODE "MESSAGE(\"INSTALL TODO!\")")
 
-
-set_target_properties(${SWIG_MODULE_tesseract_python_REAL_NAME}
-  PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract)
-set_target_properties(${SWIG_MODULE_tesseract_python_REAL_NAME}
-  PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract)
-set_target_properties(${SWIG_MODULE_tesseract_python_REAL_NAME}
-  PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract)
-
-add_custom_command(TARGET ${SWIG_MODULE_tesseract_python_REAL_NAME} POST_BUILD COMMAND 
-${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/swig/__init__.py
-$<SHELL_PATH:$<TARGET_FILE_DIR:${SWIG_MODULE_tesseract_python_REAL_NAME}>>/__init__.py)
+if(0)
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/setup.py.in" "${CMAKE_CURRENT_BINARY_DIR}/python/setup.py" @ONLY)
 
@@ -182,5 +144,7 @@ if(TESSERACT_ENABLE_TESTING)
   set_tests_properties(python-tests PROPERTIES ENVIRONMENT "TESSERACT_SUPPORT_DIR=${TESSERACT_SUPPORT_DIR}")
   endif()
   
+
+endif()
 
 endif()

@@ -1,6 +1,6 @@
 /**
- * @file tesseract_python.i
- * @brief The tesseract_python SWIG master file.
+ * @file tesseract_geometry_python.i
+ * @brief The tesseract_common_python SWIG master file.
  *
  * @author John Wason
  * @date December 8, 2020
@@ -24,24 +24,27 @@
  * limitations under the License.
  */
 
-%module(directors="1", package="tesseract") tesseract_python
+%module(directors="1", package="tesseract_geometry") tesseract_geometry_python
 
 #pragma SWIG nowarn=473
 
+%include "tesseract_swig_include.i"
+
 %import "tesseract_common_python.i"
-%import "tesseract_geometry_python.i"
-%import "tesseract_scene_graph_python.i"
-%import "tesseract_kinematics_python.i"
-%import "tesseract_collision_python.i"
-%import "tesseract_environment_python.i"
-%import "tesseract_command_language_python.i"
 
 %{
-// tesseract
-#include <tesseract/tesseract.h>
+#include <tesseract_common/status_code.h>
+
+// tesseract_geometry
+#include <tesseract_geometry/geometry.h>
+#include <tesseract_geometry/geometries.h>
+#include <tesseract_geometry/utils.h>
+#include <tesseract_geometry/mesh_parser.h>
 %}
 
-// tesseract
-#define TESSERACT_PUBLIC
-%include "tesseract/tesseract_init_info.h"
-%include "tesseract/tesseract.h"
+// tesseract_geometry
+#define TESSERACT_GEOMETRY_PUBLIC
+%include "tesseract_geometry/geometry.h"
+%include "tesseract_geometry/geometries.h"
+%include "tesseract_geometry/utils.h"
+%include "tesseract_geometry/mesh_parser.h"

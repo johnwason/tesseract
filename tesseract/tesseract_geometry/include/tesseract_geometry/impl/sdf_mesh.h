@@ -38,7 +38,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_geometry::SDFMesh)
-%template(tesseract_geometry_SDFMeshVector) std::vector<tesseract_geometry::SDFMesh::Ptr>;
+%template(SDFMeshVector) std::vector<std::shared_ptr<tesseract_geometry::SDFMesh> >;
 #endif // SWIG
 
 namespace tesseract_geometry

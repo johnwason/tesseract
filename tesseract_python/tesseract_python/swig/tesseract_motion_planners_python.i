@@ -1,6 +1,6 @@
 /**
- * @file tesseract_python.i
- * @brief The tesseract_python SWIG master file.
+ * @file tesseract_motion_planners_python.i
+ * @brief The tesseract_motion_planners_python SWIG master file.
  *
  * @author John Wason
  * @date December 8, 2020
@@ -24,7 +24,7 @@
  * limitations under the License.
  */
 
-%module(directors="1", package="tesseract") tesseract_python
+%module(directors="1", package="tesseract_motion_planners") tesseract_motion_planners_python
 
 #pragma SWIG nowarn=473
 
@@ -35,13 +35,19 @@
 %import "tesseract_collision_python.i"
 %import "tesseract_environment_python.i"
 %import "tesseract_command_language_python.i"
+%import "tesseract_python.i"
 
 %{
-// tesseract
-#include <tesseract/tesseract.h>
+// tesseract_motion_planners
+#include <tesseract_motion_planners/core/planner.h>
+#include <tesseract_motion_planners/robot_config.h>
+#include <tesseract_motion_planners/interface_utils.h>
 %}
 
-// tesseract
-#define TESSERACT_PUBLIC
-%include "tesseract/tesseract_init_info.h"
-%include "tesseract/tesseract.h"
+// tesseract_motion_planners
+#define TESSERACT_MOTION_PLANNERS_CORE_PUBLIC
+%include "tesseract_motion_planners/core/types.h"
+%include "tesseract_motion_planners/core/trajectory_validator.h"
+%include "tesseract_motion_planners/core/planner.h"
+%include "tesseract_motion_planners/robot_config.h"
+%include "tesseract_motion_planners/interface_utils.h"
