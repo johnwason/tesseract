@@ -237,23 +237,12 @@ public:
   /** @brief Get the active function for determining if two links are allowed to be in collision */
   virtual IsContactAllowedFn getIsContactAllowedFn() const = 0;
 
-#ifndef SWIG
   /**
    * @brief Perform a contact test for all objects based
    * @param collisions The Contact results data
    * @param type The type of contact test
    */
   virtual void contactTest(ContactResultMap& collisions, const ContactRequest& request) = 0;
-#else // SWIG
-  %extend {
-    tesseract_collision::ContactResultMap contactTest(const ContactRequest& request)
-    {
-        tesseract_collision::ContactResultMap contacts;
-        $self->contactTest(contacts, request);
-        return contacts;
-    }
-  }
-#endif // SWIG
 };
 
 }  // namespace tesseract_collision

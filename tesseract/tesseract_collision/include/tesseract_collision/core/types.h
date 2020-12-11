@@ -41,6 +41,11 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <tesseract_common/types.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#ifdef SWIG
+tesseract_aligned_vector(ContactResultVector, tesseract_collision::ContactResult);
+tesseract_aligned_map_of_aligned_vector(ContactResultMap, %arg(std::pair<std::string,std::string>), tesseract_collision::ContactResult);
+#endif // SWIG
+
 namespace tesseract_collision
 {
 using CollisionShapesConst = std::vector<tesseract_geometry::Geometry::ConstPtr>;
@@ -155,8 +160,8 @@ struct ContactResult
 using ContactResultVector = tesseract_common::AlignedVector<ContactResult>;
 using ContactResultMap = tesseract_common::AlignedMap<std::pair<std::string, std::string>, ContactResultVector>;
 #else
-using ContactResultVector = std::vector<ContactResult, Eigen::aligned_allocator<ContactResult>>;
-using ContactResultMap = std::map<std::pair<std::string, std::string>, std::vector<ContactResult, Eigen::aligned_allocator<ContactResult>>, std::less<std::pair<std::string, std::string>>, Eigen::aligned_allocator<std::pair<const std::pair<std::string, std::string>, std::vector<ContactResult, Eigen::aligned_allocator<ContactResult>>>>>;
+tesseract_aligned_vector_using(ContactResultVector, tesseract_collision::ContactResult);
+tesseract_aligned_map_of_aligned_vector_using(ContactResultMap, %arg(std::pair<std::string,std::string>), tesseract_collision::ContactResult);
 #endif
 /**
  * @brief Should return true if contact results are valid, otherwise false.
@@ -187,8 +192,6 @@ struct ContactRequest
   ContactRequest(ContactTestType type = ContactTestType::ALL) : type(type) {}
 };
 
-#ifndef SWIG
-
 inline std::size_t flattenMoveResults(ContactResultMap&& m, ContactResultVector& v)
 {
   v.clear();
@@ -214,8 +217,6 @@ inline std::size_t flattenResults(ContactResultMap&& m, ContactResultVector& v)
 {
   return flattenMoveResults(std::move(m), v);
 }
-
-#endif // SWIG
 
 /** @brief Stores information about how the margins allowed between collision objects */
 struct CollisionMarginData
@@ -414,22 +415,5 @@ struct CollisionCheckConfig
   double longest_valid_segment_length{ 0.005 };
 };
 }  // namespace tesseract_collision
-
-#ifdef SWIG
-tesseract_aligned_vector(ContactResultVector, tesseract_collision::ContactResult);
-tesseract_aligned_map_of_aligned_vector(ContactResultMap, %arg(std::pair<std::string,std::string>), tesseract_collision::ContactResult);
-
-%inline
-{
-//TODO: this function has lousy performance
-tesseract_collision::ContactResultVector flattenResults(tesseract_collision::ContactResultMap m)
-{
-    tesseract_collision::ContactResultVector v;
-    tesseract_collision::flattenResults(std::move(m),v);
-    return v;
-}
-}
-
-#endif // SWIG
 
 #endif  // TESSERACT_COLLISION_TYPES_H

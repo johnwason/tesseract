@@ -85,6 +85,10 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/tesseract_python_module.cmake)
 
 tesseract_python_module(tesseract_common_python SWIG_SRCS swig/tesseract_common_python.i PACKAGE tesseract_common LIBS tesseract::tesseract_common )
 tesseract_python_module(tesseract_geometry_python SWIG_SRCS swig/tesseract_geometry_python.i PACKAGE tesseract_geometry LIBS tesseract::tesseract_geometry )
+tesseract_python_module(tesseract_collision_python SWIG_SRCS swig/tesseract_collision_python.i PACKAGE tesseract_collision LIBS tesseract::tesseract_collision_core )
+tesseract_python_module(tesseract_collision_bullet_python SWIG_SRCS swig/tesseract_collision_bullet_python.i PACKAGE tesseract_collision_bullet LIBS tesseract::tesseract_collision_bullet )
+tesseract_python_module(tesseract_collision_fcl_python SWIG_SRCS swig/tesseract_collision_fcl_python.i PACKAGE tesseract_collision_fcl LIBS tesseract::tesseract_collision_fcl )
+
 
 install(CODE "MESSAGE(\"INSTALL TODO!\")")
 

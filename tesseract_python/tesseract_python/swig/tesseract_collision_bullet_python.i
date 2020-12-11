@@ -24,32 +24,28 @@
  * limitations under the License.
  */
 
-%module(directors="1", package="tesseract_collision") tesseract_collision_python
+%module(directors="1", package="tesseract_collision_bullet") tesseract_collision_bullet_python
 
 #pragma SWIG nowarn=473
-
-%pythondynamic tesseract_collision::ContactResult;
 
 %include "tesseract_swig_include.i"
 
 //%import "tesseract_common_python.i"
-%import "tesseract_geometry_python.i"
+//%import "tesseract_geometry_python.i"
+%import "tesseract_collision_python.i"
 
 %{
 #include <tesseract_common/status_code.h>
 // tesseract_collision
-#include <tesseract_collision/core/types.h>
-#include <tesseract_collision/core/discrete_contact_manager.h>
-#include <tesseract_collision/core/discrete_contact_manager_factory.h>
-#include <tesseract_collision/core/continuous_contact_manager.h>
-#include <tesseract_collision/core/continuous_contact_manager_factory.h>
+#include <tesseract_collision/bullet/bullet_cast_bvh_manager.h>
+#include <tesseract_collision/bullet/bullet_cast_simple_manager.h>
+#include <tesseract_collision/bullet/bullet_discrete_bvh_manager.h>
+#include <tesseract_collision/bullet/bullet_discrete_simple_manager.h>
 %}
 
 // tesseract_collision
-#define TESSERACT_COLLISION_CORE_PUBLIC
-%include "tesseract_collision/core/types.h"
-%include "tesseract_collision/core/discrete_contact_manager.h"
-%include "tesseract_collision/core/discrete_contact_manager_factory.h"
-%include "tesseract_collision/core/continuous_contact_manager.h"
-%include "tesseract_collision/core/continuous_contact_manager_factory.h"
-
+#define TESSERACT_COLLISION_BULLET_PUBLIC
+%include "tesseract_collision/bullet/bullet_cast_bvh_manager.h"
+%include "tesseract_collision/bullet/bullet_cast_simple_manager.h"
+%include "tesseract_collision/bullet/bullet_discrete_bvh_manager.h"
+%include "tesseract_collision/bullet/bullet_discrete_simple_manager.h"

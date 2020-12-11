@@ -1,3 +1,8 @@
+%{
+#define SWIG_PYTHON_EXTRA_NATIVE_CONTAINERS
+%}
+
+
 %include <std_shared_ptr.i>
 %include <std_string.i>
 %include <std_vector.i>
