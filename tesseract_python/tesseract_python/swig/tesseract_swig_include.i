@@ -19,3 +19,39 @@
 %include "shared_factory.i"
 %include "json_typemaps.i"
 %include "eigen_types.i"
+
+%{
+namespace std
+{
+  template<typename T> struct remove_reference<swig::SwigPySequence_Ref<T>>
+  {
+    typedef T type;
+  };
+
+  template<typename T> struct remove_reference<const swig::SwigPySequence_Ref<T>>
+  {
+    typedef const T type;
+  };
+
+  template<typename T> struct remove_reference<SwigValueWrapper<T>>
+  {
+    typedef T type;
+  };
+
+  template<typename T> struct remove_reference<const SwigValueWrapper<T>>
+  {
+    typedef const T type;
+  };
+
+  template<typename T> struct remove_reference<SwigValueWrapper<T>&>
+  {
+    typedef T type;
+  };
+
+  template<typename T> struct remove_reference<const SwigValueWrapper<T>&>
+  {
+    typedef const T type;
+  };
+
+}
+%}

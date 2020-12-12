@@ -46,41 +46,6 @@
 
 // tesseract_command_language
 #define TESSERACT_COMMAND_LANGUAGE_PUBLIC
-%{
-namespace std
-{
-  template<typename T> struct remove_reference<swig::SwigPySequence_Ref<T>>
-  {
-    typedef T type;
-  };
-
-  template<typename T> struct remove_reference<const swig::SwigPySequence_Ref<T>>
-  {
-    typedef const T type;
-  };
-
-  template<typename T> struct remove_reference<SwigValueWrapper<T>>
-  {
-    typedef T type;
-  };
-
-  template<typename T> struct remove_reference<const SwigValueWrapper<T>>
-  {
-    typedef const T type;
-  };
-
-  template<typename T> struct remove_reference<SwigValueWrapper<T>&>
-  {
-    typedef T type;
-  };
-
-  template<typename T> struct remove_reference<const SwigValueWrapper<T>&>
-  {
-    typedef const T type;
-  };
-
-}
-%}
 
 %define %tesseract_erasure_ctor(class_type,inner_type)
 %extend tesseract_planning::class_type {

@@ -35,8 +35,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
-%feature("director") ResourceLocator;
+%feature("director") tesseract_scene_graph::ResourceLocator;
 %shared_ptr(tesseract_scene_graph::ResourceLocator)
+%shared_ptr(tesseract_scene_graph::SimpleResourceLocator)
+%shared_ptr(tesseract_scene_graph::SimpleLocatedResource)
 #endif // SWIG
 
 
@@ -65,26 +67,21 @@ public:
   virtual tesseract_common::Resource::Ptr locateResource(const std::string& url) = 0;
 };
 
-#ifndef SWIG
+using SimpleResourceLocatorFn = std::function<std::string(const std::string&)>;
 
-/**
- * @brief Resource locator implementation using a provided function to locate file resources
- *
- */
+/** @brief Resource locator implementation using a provided function to locate file resources */
 class SimpleResourceLocator : public ResourceLocator
 {
 public:
   using Ptr = std::shared_ptr<SimpleResourceLocator>;
   using ConstPtr = std::shared_ptr<const SimpleResourceLocator>;
-
-  using ResourceLocatorFn = std::function<std::string(const std::string&)>;
-
+  
   /**
    * @brief Construct a new Simple Resource Locator object
    *
    * @param locator_function Function to use to resolve resource file paths from URLs
    */
-  SimpleResourceLocator(ResourceLocatorFn locator_function);
+  SimpleResourceLocator(SimpleResourceLocatorFn locator_function);
   ~SimpleResourceLocator() override = default;
   SimpleResourceLocator(const SimpleResourceLocator&) = delete;
   SimpleResourceLocator& operator=(const SimpleResourceLocator&) = delete;
@@ -94,7 +91,7 @@ public:
   tesseract_common::Resource::Ptr locateResource(const std::string& url) override;
 
 protected:
-  ResourceLocatorFn locator_function_;
+  SimpleResourceLocatorFn locator_function_;
 };
 
 /** @brief Resource implementation for a local file */
@@ -125,8 +122,6 @@ protected:
   std::string url_;
   std::string filename_;
 };
-
-#endif // SWIG
 
 }  // namespace tesseract_scene_graph
 

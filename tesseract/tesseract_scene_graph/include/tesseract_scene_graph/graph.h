@@ -45,10 +45,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #ifdef SWIG
 
 %shared_ptr(tesseract_scene_graph::SceneGraph)
-%template(tesseract_scene_graph_LinkVector) std::vector<std::shared_ptr<tesseract_scene_graph::Link> >;
-%template(tesseract_scene_graph_JointVector) std::vector<std::shared_ptr<tesseract_scene_graph::Joint> >;
-%template(tesseract_scene_graph_LinkConstVector) std::vector<std::shared_ptr<tesseract_scene_graph::Link const> >;
-%template(tesseract_scene_graph_JointConstVector) std::vector<std::shared_ptr<tesseract_scene_graph::Joint const> >;
+%template(LinkVector) std::vector<std::shared_ptr<tesseract_scene_graph::Link> >;
+%template(JointVector) std::vector<std::shared_ptr<tesseract_scene_graph::Joint> >;
+%template(LinkConstVector) std::vector<std::shared_ptr<tesseract_scene_graph::Link const> >;
+%template(JointConstVector) std::vector<std::shared_ptr<tesseract_scene_graph::Joint const> >;
 
 #endif // SWIG
 
@@ -449,6 +449,7 @@ public:
    */
   Path getShortestPath(const std::string& root, const std::string& tip);
 
+#ifndef SWIG
   /**
    * @brief Get the graph vertex by name
    * @param name The vertex/link name
@@ -462,7 +463,7 @@ public:
    * @return Graph Edge
    */
   Edge getEdge(const std::string& name) const;
-
+#endif
   /**
    * @brief Merge a graph into the current graph
    * @param scene_graph Const ref to the graph to be merged (said graph will be copied)
@@ -491,7 +492,7 @@ public:
                         const std::string& prefix = "");
 #endif // SWIG
 
-public:
+protected:
   /**
    * @brief Adds a link to the graph
    *
@@ -636,5 +637,33 @@ inline std::ostream& operator<<(std::ostream& os, const SceneGraph::Path& path)
 }
 
 }  // namespace tesseract_scene_graph
+
+#ifdef SWIG
+%extend tesseract_scene_graph::SceneGraph
+{
+
+  bool addJoint(tesseract_scene_graph::Joint::Ptr joint)
+  {
+    return $self->addJoint(std::move(joint->clone()));
+  }
+
+  bool addLink(tesseract_scene_graph::Link::Ptr link)
+  {
+    return $self->addLink(std::move(link->clone()));
+  }
+  
+  bool addLink(tesseract_scene_graph::Link::Ptr link, tesseract_scene_graph::Joint::Ptr joint)
+  {
+    return $self->addLink(std::move(link->clone()),std::move(joint->clone()));
+  }
+
+  bool insertSceneGraph(const tesseract_scene_graph::SceneGraph& scene_graph,
+                        tesseract_scene_graph::Joint::Ptr joint,
+                        const std::string& prefix = "")
+  {
+    return $self->insertSceneGraph(scene_graph,std::move(joint->clone()),prefix);
+  }
+}
+#endif // SWIG
 
 #endif  // TESSERACT_SCENE_GRAPH_GRAPH_H

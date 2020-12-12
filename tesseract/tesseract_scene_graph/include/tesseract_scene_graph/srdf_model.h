@@ -87,11 +87,10 @@ public:
   /** @brief Get the name of this model */
   const std::string& getName() const;
   std::string& getName();
-#ifndef SWIG
-  // TODO: this function isn't implemented
+
   /** @brief Get the version number {major, minor, patch} */
   const std::array<int, 3>& getVersion() const;
-#endif //
+
   /** @brief Get the allowed collision matrix */
   const AllowedCollisionMatrix& getAllowedCollisionMatrix() const;
   AllowedCollisionMatrix& getAllowedCollisionMatrix();

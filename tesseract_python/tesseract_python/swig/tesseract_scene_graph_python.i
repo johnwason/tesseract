@@ -28,7 +28,9 @@
 
 #pragma SWIG nowarn=473
 
-%import "tesseract_common_python.i"
+%include "tesseract_swig_include.i"
+
+//%import "tesseract_common_python.i"
 %import "tesseract_geometry_python.i"
 
 %{
@@ -39,6 +41,9 @@
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/breadth_first_search.hpp>
 
+#include <tesseract_common/status_code.h>
+#include <tesseract_geometry/geometries.h>
+
 // tesseract_scene_graph
 #include <tesseract_scene_graph/link.h>
 #include <tesseract_scene_graph/joint.h>
@@ -47,10 +52,15 @@
 #include <tesseract_scene_graph/resource_locator.h>
 #include <tesseract_scene_graph/kinematics_information.h>
 #include <tesseract_scene_graph/srdf_model.h>
+#include <tesseract_scene_graph/utils.h>
 
 %}
 
 %pythondynamic tesseract_scene_graph::ResourceLocator;
+
+%include "tesseract_std_function.i"
+
+%tesseract_std_function(SimpleResourceLocatorFn,tesseract_scene_graph,std::string,const std::string&,a);
 
 // tesseract_scene_graph
 #define TESSERACT_SCENE_GRAPH_PUBLIC
@@ -61,3 +71,4 @@
 %include "tesseract_scene_graph/resource_locator.h"
 %include "tesseract_scene_graph/kinematics_information.h"
 %include "tesseract_scene_graph/srdf_model.h"
+%include "tesseract_scene_graph/utils.h"

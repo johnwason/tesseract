@@ -64,6 +64,7 @@
 %template(pair_string) std::pair<std::string, std::string>;
 %template(vector_pair_string) std::vector<std::pair<std::string, std::string> >;
 %template(map_string_vector_pair_string) std::unordered_map<std::string, std::vector<std::pair<std::string, std::string>>>;
+%template(pair_vector_string) std::pair<std::vector<std::string>, std::vector<std::string>>;
 
 %template(vector_double) std::vector<double>;
 %template(map_string_vector_double) std::unordered_map<std::string, std::vector<double> >;

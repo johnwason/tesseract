@@ -36,14 +36,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/types.h>
 
-#ifdef SWIG
-
-%template(GroupOPWKinematics) std::unordered_map<std::string, tesseract_scene_graph::OPWKinematicParameters>;
-%template(GroupROPKinematics) std::unordered_map<std::string, tesseract_scene_graph::ROPKinematicParameters>;
-%template(GroupREPKinematics) std::unordered_map<std::string, tesseract_scene_graph::REPKinematicParameters>;
-
-#endif // SWIG
-
 namespace tesseract_scene_graph
 {
 /** @brief A structure to hold opw kinematics data */
@@ -73,6 +65,17 @@ struct REPKinematicParameters
   std::string positioner_fk_solver;
   std::unordered_map<std::string, double> positioner_sample_resolution;
 };
+
+} // namespace tesseract_scene_graph
+
+#ifdef SWIG
+%template(GroupOPWKinematics) std::unordered_map<std::string, tesseract_scene_graph::OPWKinematicParameters>;
+%template(GroupROPKinematics) std::unordered_map<std::string, tesseract_scene_graph::ROPKinematicParameters>;
+%template(GroupREPKinematics) std::unordered_map<std::string, tesseract_scene_graph::REPKinematicParameters>;
+#endif // SWIG
+
+namespace tesseract_scene_graph
+{
 
 using GroupsJointState = std::unordered_map<std::string, double>;
 using GroupsJointStates = std::unordered_map<std::string, GroupsJointState>;

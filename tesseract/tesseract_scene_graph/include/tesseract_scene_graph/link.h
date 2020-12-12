@@ -227,4 +227,19 @@ private:
 
 }  // namespace tesseract_scene_graph
 
+#ifdef SWIG
+%extend tesseract_scene_graph::Link
+{
+  tesseract_scene_graph::Link::Ptr clone() const
+  {
+    return std::make_shared<tesseract_scene_graph::Link>(std::move($self->clone()));
+  }
+
+  tesseract_scene_graph::Link::Ptr clone(const std::string& name) const
+  {
+    return std::make_shared<tesseract_scene_graph::Link>(std::move($self->clone(name)));
+  }
+}
+#endif
+
 #endif  // TESSERACT_SCENE_GRAPH_LINK_H

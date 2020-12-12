@@ -394,4 +394,19 @@ inline std::ostream& operator<<(std::ostream& os, const JointType& type)
 }
 }  // namespace tesseract_scene_graph
 
+#ifdef SWIG
+%extend tesseract_scene_graph::Joint
+{
+  tesseract_scene_graph::Joint::Ptr clone() const
+  {
+    return std::make_shared<tesseract_scene_graph::Joint>(std::move($self->clone()));
+  }
+
+  tesseract_scene_graph::Joint::Ptr clone(const std::string& name) const
+  {
+    return std::make_shared<tesseract_scene_graph::Joint>(std::move($self->clone(name)));
+  }
+}
+#endif
+
 #endif  // TESSERACT_SCENE_GRAPH_JOINT_H
