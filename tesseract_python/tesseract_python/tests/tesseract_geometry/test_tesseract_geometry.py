@@ -1,4 +1,5 @@
 import tesseract_geometry
+import tesseract_common
 import numpy as np
 import numpy.testing as nptest
 import os
@@ -121,3 +122,67 @@ def test_geometry_load_mesh():
     assert(len(meshes)==1)
     assert(meshes[0].getFaceCount() == 6)
     assert(meshes[0].getVerticeCount() == 8)
+
+def test_mesh():
+    vertices = tesseract_common.VectorVector3d()
+    vertices.append(np.array([1,1,0],dtype=np.float64))
+    vertices.append(np.array([1,-1,0],dtype=np.float64))
+    vertices.append(np.array([-1,-1,0],dtype=np.float64))
+    vertices.append(np.array([1,-1,0],dtype=np.float64))
+
+    faces = np.array([3,0,1,2,3,0,2,3],np.int32)
+
+    geom = tesseract_geometry.Mesh(vertices,faces)
+    assert len(geom.getVertices()) > 0
+    assert len(geom.getTriangles()) > 0
+    assert geom.getVerticeCount() == 4
+    assert geom.getTriangleCount() == 2
+
+    geom_clone = geom.clone()
+    assert len(geom_clone.getVertices()) > 0
+    assert len(geom_clone.getTriangles()) > 0
+    assert geom_clone.getVerticeCount() == 4
+    assert geom_clone.getTriangleCount() == 2
+
+def test_convex_mesh():
+    vertices = tesseract_common.VectorVector3d()
+    vertices.append(np.array([1,1,0],dtype=np.float64))
+    vertices.append(np.array([1,-1,0],dtype=np.float64))
+    vertices.append(np.array([-1,-1,0],dtype=np.float64))
+    vertices.append(np.array([1,-1,0],dtype=np.float64))
+
+    faces = np.array([4,0,1,2,3],np.int32)
+
+    geom = tesseract_geometry.ConvexMesh(vertices,faces)
+    assert len(geom.getVertices()) > 0
+    assert len(geom.getFaces()) > 0
+    assert geom.getVerticeCount() == 4
+    assert geom.getFaceCount() == 1
+
+    geom_clone = geom.clone()
+    assert len(geom_clone.getVertices()) > 0
+    assert len(geom_clone.getFaces()) > 0
+    assert geom_clone.getVerticeCount() == 4
+    assert geom_clone.getFaceCount() == 1
+
+def test_sdf_mesh():
+    vertices = tesseract_common.VectorVector3d()
+    vertices.append(np.array([1,1,0],dtype=np.float64))
+    vertices.append(np.array([1,-1,0],dtype=np.float64))
+    vertices.append(np.array([-1,-1,0],dtype=np.float64))
+    vertices.append(np.array([1,-1,0],dtype=np.float64))
+
+    faces = np.array([3,0,1,2,3,0,2,3],np.int32)
+
+    geom = tesseract_geometry.SDFMesh(vertices,faces)
+    assert len(geom.getVertices()) > 0
+    assert len(geom.getTriangles()) > 0
+    assert geom.getVerticeCount() == 4
+    assert geom.getTriangleCount() == 2
+
+    geom_clone = geom.clone()
+    assert len(geom_clone.getVertices()) > 0
+    assert len(geom_clone.getTriangles()) > 0
+    assert geom_clone.getVerticeCount() == 4
+    assert geom_clone.getTriangleCount() == 2
+    

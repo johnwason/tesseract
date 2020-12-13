@@ -118,6 +118,21 @@ public:
 
 #endif // SWIG
 
+#ifdef SWIG
+  %extend
+  {
+    Mesh(const tesseract_common::VectorVector3d& vertices,
+       const Eigen::VectorXi& triangles,
+       tesseract_common::Resource::Ptr resource = nullptr,
+       Eigen::Vector3d scale = Eigen::Vector3d(1, 1, 1))
+    {
+      return new tesseract_geometry::Mesh(std::make_shared<tesseract_common::VectorVector3d>(vertices),
+        std::make_shared<Eigen::VectorXi>(triangles),
+        resource, scale);
+    }
+  }
+#endif // SWIG
+
   ~Mesh() override = default;
   Mesh(const Mesh&) = delete;
   Mesh& operator=(const Mesh&) = delete;
