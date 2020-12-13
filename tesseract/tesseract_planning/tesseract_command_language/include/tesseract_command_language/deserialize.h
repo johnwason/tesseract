@@ -35,7 +35,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
-#ifndef SWIG
 using WaypointParserFn = std::function<Waypoint(const tinyxml2::XMLElement&, int)>;
 using InstructionParserFn = std::function<Instruction(const tinyxml2::XMLElement&, int, WaypointParserFn)>;
 
@@ -56,10 +55,8 @@ Instruction fromXMLString(const std::string& xml_string,
                           InstructionParserFn instruction_parser = defaultInstructionParser,
                           WaypointParserFn waypoint_parser = defaultWaypointParser);
 
-#else // SWIG
-%rename(commandFromXMLString) fromXMLString(const std::string& xml_string);
+
 Instruction fromXMLString(const std::string& xml_string);
-#endif // SWIG
 
 }  // namespace tesseract_planning
 

@@ -43,21 +43,6 @@
 
 %}
 
-%exception {
-  try {
-    $action
-  }
-  SWIG_CATCH_STDEXCEPT
-}
-
-%feature("director:except") {
-    if ($error != NULL) {
-        throw Swig::DirectorMethodException();
-    }
-}
-
-%pythonnondynamic;
-
 %pythondynamic sco::ModelType;
 
 %template(vector_string) std::vector<std::string>;

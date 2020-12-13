@@ -33,7 +33,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
-#ifndef SWIG
 OMPLDefaultPlanProfile omplPlanParser(const tinyxml2::XMLElement& xml_element);
 
 OMPLDefaultPlanProfile omplPlanFromXMLElement(const tinyxml2::XMLElement* profile_xml);
@@ -41,7 +40,6 @@ OMPLDefaultPlanProfile omplPlanFromXMLElement(const tinyxml2::XMLElement* profil
 OMPLDefaultPlanProfile omplPlanFromXMLDocument(const tinyxml2::XMLDocument& xml_doc);
 
 OMPLDefaultPlanProfile omplPlanFromXMLFile(const std::string& file_path);
-#endif // SWIG
 
 OMPLDefaultPlanProfile omplPlanFromXMLString(const std::string& xml_string);
 

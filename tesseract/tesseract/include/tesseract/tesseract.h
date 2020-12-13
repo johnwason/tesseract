@@ -83,13 +83,10 @@ public:
   bool init(const std::string& urdf_string,
             const std::string& srdf_string,
             const tesseract_scene_graph::ResourceLocator::Ptr& locator);
-
-  #ifndef SWIG
   bool init(const boost::filesystem::path& urdf_path, const tesseract_scene_graph::ResourceLocator::Ptr& locator);
   bool init(const boost::filesystem::path& urdf_path,
             const boost::filesystem::path& srdf_path,
             const tesseract_scene_graph::ResourceLocator::Ptr& locator);
-  #endif // SWIG
 
   bool init(const TesseractInitInfo::Ptr& init_info);
 

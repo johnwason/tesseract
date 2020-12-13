@@ -15,11 +15,27 @@
 %include <exception.i>
 %include <pybuffer.i>
 
+%exception {
+  try {
+    $action
+  }
+  SWIG_CATCH_STDEXCEPT
+}
+
+%feature("director:except") {
+    if ($error != NULL) {
+        throw Swig::DirectorMethodException();
+    }
+}
+
+%pythonnondynamic;
+
 %include "eigen.i"
 %include "shared_factory.i"
 %include "json_typemaps.i"
 %include "eigen_types.i"
 %include "tinyxml2.i"
+%include "boost_filesystem_path.i"
 
 %{
 namespace std

@@ -93,12 +93,10 @@ struct TesseractInitInfo
   /** @brief Used when InitType is URDF_STRING_SRDF_STRING*/
   std::string srdf_string;
 
-#ifndef SWIG
   /** @brief Used when InitType is URDF_PATH and URDF_PATH_SRDF_PATH*/
   boost::filesystem::path urdf_path;
   /** @brief Used when InitType is URDF_PATH_SRDF_PATH*/
   boost::filesystem::path srdf_path;
-#endif // SWIG
 
   /** @brief Used when InitType is URDF_STRING, URDF_STRING_SRDF_STRING, URDF_PATH, and URDF_PATH_SRDF_PATH */
   tesseract_scene_graph::ResourceLocator::Ptr resource_locator;
