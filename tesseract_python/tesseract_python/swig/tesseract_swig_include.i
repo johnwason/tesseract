@@ -19,6 +19,7 @@
 %include "shared_factory.i"
 %include "json_typemaps.i"
 %include "eigen_types.i"
+%include "tinyxml2.i"
 
 %{
 namespace std
