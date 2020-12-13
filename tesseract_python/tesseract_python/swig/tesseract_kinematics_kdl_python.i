@@ -1,6 +1,6 @@
 /**
- * @file tesseract_kinematics_python.i
- * @brief The tesseract_kinematics_python SWIG master file.
+ * @file tesseract_kinematics_kdl_python.i
+ * @brief The tesseract_kinematics_kdl_python SWIG master file.
  *
  * @author John Wason
  * @date December 8, 2020
@@ -24,7 +24,7 @@
  * limitations under the License.
  */
 
-%module(directors="1", package="tesseract_kinematics") tesseract_kinematics_python
+%module(directors="1", package="tesseract_kinematic_kdl") tesseract_kinematics_kdl_python
 
 #pragma SWIG nowarn=473
 
@@ -32,7 +32,7 @@
 
 //%import "tesseract_common_python.i"
 //%import "tesseract_geometry_python.i"
-%import "tesseract_scene_graph_python.i"
+%import "tesseract_kinematics_python.i"
 
 %{
 
@@ -53,28 +53,17 @@
 #include <tesseract_kinematics/core/inverse_kinematics_factory.h>
 #include <tesseract_kinematics/core/rep_inverse_kinematics.h>
 #include <tesseract_kinematics/core/rop_inverse_kinematics.h>
+//#include <tesseract_kinematics/ikfast/ikfast_inv_kin.h>
+#include <tesseract_kinematics/kdl/kdl_fwd_kin_chain.h>
+#include <tesseract_kinematics/kdl/kdl_fwd_kin_chain_factory.h>
+#include <tesseract_kinematics/kdl/kdl_fwd_kin_tree.h>
+#include <tesseract_kinematics/kdl/kdl_fwd_kin_tree_factory.h>
+#include <tesseract_kinematics/kdl/kdl_inv_kin_chain_lma.h>
+#include <tesseract_kinematics/kdl/kdl_inv_kin_chain_lma_factory.h>
+#include <tesseract_kinematics/kdl/kdl_inv_kin_chain_nr.h>
+#include <tesseract_kinematics/kdl/kdl_inv_kin_chain_nr_factory.h>
 
 %}
-
-%template(pair_bool_matrix) std::pair<bool,Eigen::MatrixXd>;
-
-%extend tesseract_kinematics::ForwardKinematics {
-
-  bool calcJacobian(Eigen::MatrixXd& jacobian, const Eigen::Ref<const Eigen::VectorXd>& joint_angles) const
-  {
-    jacobian = Eigen::MatrixXd(6, joint_angles.rows());
-    bool res = $self->calcJacobian(jacobian, joint_angles);
-    
-    return res;
-  }
-
-  bool calcJacobian(Eigen::MatrixXd& jacobian, const Eigen::Ref<const Eigen::VectorXd>& joint_angles, const std::string& link_name) const
-  {
-    jacobian = Eigen::MatrixXd(6, joint_angles.rows());
-    bool res = $self->calcJacobian(jacobian, joint_angles, link_name);
-    return res;
-  }
-}
 
 %ignore calcJacobian;
 
@@ -83,11 +72,12 @@
 #define TESSERACT_KINEMATICS_IKFAST_PUBLIC
 #define TESSERACT_KINEMATICS_KDL_PUBLIC
 #define TESSERACT_KINEMATICS_OPW_PUBLIC
-%include "tesseract_kinematics/core/forward_kinematics.h"
-%include "tesseract_kinematics/core/forward_kinematics_factory.h"
-%include "tesseract_kinematics/core/inverse_kinematics.h"
-%include "tesseract_kinematics/core/inverse_kinematics_factory.h"
-%include "tesseract_kinematics/core/rop_inverse_kinematics.h"
-%include "tesseract_kinematics/core/rep_inverse_kinematics.h"
 
-
+%include "tesseract_kinematics/kdl/kdl_fwd_kin_chain.h"
+%include "tesseract_kinematics/kdl/kdl_fwd_kin_chain_factory.h"
+%include "tesseract_kinematics/kdl/kdl_fwd_kin_tree.h"
+%include "tesseract_kinematics/kdl/kdl_fwd_kin_tree_factory.h"
+%include "tesseract_kinematics/kdl/kdl_inv_kin_chain_lma.h"
+%include "tesseract_kinematics/kdl/kdl_inv_kin_chain_lma_factory.h"
+%include "tesseract_kinematics/kdl/kdl_inv_kin_chain_nr.h"
+%include "tesseract_kinematics/kdl/kdl_inv_kin_chain_nr_factory.h"

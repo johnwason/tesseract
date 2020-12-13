@@ -132,7 +132,7 @@ struct KinematicsInformation
   /** @brief A map of group default forward kinematics solvers */
   GroupDefaultKinematicsSolver group_default_fwd_kin;
 
-  /**< @brief A map of group default forward kinematics solvers */
+  /** @brief A map of group default forward kinematics solvers */
   GroupDefaultKinematicsSolver group_default_inv_kin;
 
   /** @brief Clear the kinematics information */

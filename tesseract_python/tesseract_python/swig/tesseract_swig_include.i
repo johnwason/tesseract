@@ -34,8 +34,6 @@
 %include "shared_factory.i"
 %include "json_typemaps.i"
 %include "eigen_types.i"
-%include "tinyxml2.i"
-%include "boost_filesystem_path.i"
 
 %{
 namespace std

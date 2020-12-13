@@ -67,8 +67,6 @@ public:
 
   bool update() override;
 
-#ifndef SWIG
-
   bool calcInvKin(Eigen::VectorXd& solutions,
                   const Eigen::Isometry3d& pose,
                   const Eigen::Ref<const Eigen::VectorXd>& seed) const override;
@@ -77,8 +75,6 @@ public:
                   const Eigen::Isometry3d& pose,
                   const Eigen::Ref<const Eigen::VectorXd>& seed,
                   const std::string& link_name) const override;
-
-#endif // SWIG
 
   bool checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const override;
 

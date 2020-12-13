@@ -70,7 +70,6 @@ public:
    */
   virtual bool update() = 0;
 
-#ifndef SWIG
   /**
    * @brief Calculates tool pose of robot chain
    * @param pose Transform of end-of-tip relative to root
@@ -118,61 +117,6 @@ public:
   virtual bool calcJacobian(Eigen::Ref<Eigen::MatrixXd> jacobian,
                             const Eigen::Ref<const Eigen::VectorXd>& joint_angles,
                             const std::string& link_name) const = 0;
-
-#else // SWIG
-
-  %extend {
-    Eigen::Isometry3d calcFwdKin(const Eigen::Ref<const Eigen::VectorXd>& joint_angles) const
-    {
-        Eigen::Isometry3d pose;
-        if (!$self->calcFwdKin(pose,joint_angles))
-        {
-            throw std::runtime_error("calcFwdKin failed");
-        }
-        return pose;
-    }
-
-    tesseract_common::VectorIsometry3d calcFwdKin2(const Eigen::Ref<const Eigen::VectorXd>& joint_angles) const
-    {
-        tesseract_common::VectorIsometry3d poses;
-        if (!$self->calcFwdKin(poses,joint_angles))
-        {
-            throw std::runtime_error("calcFwdKin2 failed");
-        }
-        return poses;
-    }
-
-    Eigen::Isometry3d calcFwdKin(const Eigen::Ref<const Eigen::VectorXd>& joint_angles, const std::string& link_name) const
-    {
-        Eigen::Isometry3d pose;
-        if (!$self->calcFwdKin(pose,joint_angles, link_name))
-        {
-            throw std::runtime_error("calcFwdKin failed");
-        }
-        return pose;
-    }
-
-    Eigen::MatrixXd calcJacobian(const Eigen::Ref<const Eigen::VectorXd>& joint_angles) const
-    {
-      Eigen::MatrixXd jacobian(6, joint_angles.rows());
-      if (!$self->calcJacobian(jacobian, joint_angles))
-      {
-          throw std::runtime_error("calcJacobian failed");
-      }
-      return jacobian;
-    }
-
-    Eigen::MatrixXd calcJacobian(const Eigen::Ref<const Eigen::VectorXd>& joint_angles, const std::string& link_name) const
-    {
-      Eigen::MatrixXd jacobian(6, joint_angles.rows());
-      if (!$self->calcJacobian(jacobian, joint_angles, link_name))
-      {
-          throw std::runtime_error("calcJacobian failed");
-      }
-      return jacobian;
-    }
-  }
-#endif // SWIG
 
   /**
    * @brief Check for consistency in # and limits of joints

@@ -43,6 +43,9 @@
 
 %}
 
+%include "tinyxml2.i"
+%include "boost_filesystem_path.i"
+
 %pythondynamic sco::ModelType;
 
 %template(vector_string) std::vector<std::string>;

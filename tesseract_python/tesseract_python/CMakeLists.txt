@@ -91,6 +91,9 @@ tesseract_python_module(tesseract_collision_bullet_python SWIG_SRCS swig/tessera
 tesseract_python_module(tesseract_collision_fcl_python SWIG_SRCS swig/tesseract_collision_fcl_python.i PACKAGE tesseract_collision_fcl LIBS tesseract::tesseract_collision_fcl )
 tesseract_python_module(tesseract_scene_graph_python SWIG_SRCS swig/tesseract_scene_graph_python.i PACKAGE tesseract_scene_graph LIBS tesseract::tesseract_scene_graph )
 tesseract_python_module(tesseract_urdf_python SWIG_SRCS swig/tesseract_urdf_python.i PACKAGE tesseract_urdf LIBS tesseract::tesseract_urdf )
+tesseract_python_module(tesseract_kinematics_python SWIG_SRCS swig/tesseract_kinematics_python.i PACKAGE tesseract_kinematics LIBS tesseract::tesseract_kinematics_core )
+tesseract_python_module(tesseract_kinematics_kdl_python SWIG_SRCS swig/tesseract_kinematics_kdl_python.i PACKAGE tesseract_kinematics_kdl LIBS tesseract::tesseract_kinematics_kdl )
+tesseract_python_module(tesseract_kinematics_opw_python SWIG_SRCS swig/tesseract_kinematics_opw_python.i PACKAGE tesseract_kinematics_opw LIBS tesseract::tesseract_kinematics_opw )
 
 
 install(CODE "MESSAGE(\"INSTALL TODO!\")")

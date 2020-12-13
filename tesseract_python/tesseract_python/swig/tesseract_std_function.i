@@ -56,7 +56,7 @@ class Name(Name##Base):
     super(Name,self).__init__()
     self._fn = fn
 
-  def call(*args):
+  def call(self,*args):
     return self._fn(*args)
 %}
 
