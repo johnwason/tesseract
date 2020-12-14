@@ -94,6 +94,7 @@ tesseract_python_module(tesseract_urdf_python SWIG_SRCS swig/tesseract_urdf_pyth
 tesseract_python_module(tesseract_kinematics_python SWIG_SRCS swig/tesseract_kinematics_python.i PACKAGE tesseract_kinematics LIBS tesseract::tesseract_kinematics_core )
 tesseract_python_module(tesseract_kinematics_kdl_python SWIG_SRCS swig/tesseract_kinematics_kdl_python.i PACKAGE tesseract_kinematics_kdl LIBS tesseract::tesseract_kinematics_kdl )
 tesseract_python_module(tesseract_kinematics_opw_python SWIG_SRCS swig/tesseract_kinematics_opw_python.i PACKAGE tesseract_kinematics_opw LIBS tesseract::tesseract_kinematics_opw )
+tesseract_python_module(tesseract_environment_python SWIG_SRCS swig/tesseract_environment_python.i PACKAGE tesseract_environment LIBS tesseract::tesseract_environment_core )
 
 
 install(CODE "MESSAGE(\"INSTALL TODO!\")")

@@ -54,6 +54,8 @@
 #include <tesseract_scene_graph/srdf_model.h>
 #include <tesseract_scene_graph/utils.h>
 
+#include "tesseract_scene_graph_python_std_functions.h"
+
 %}
 
 %pythondynamic tesseract_scene_graph::ResourceLocator;

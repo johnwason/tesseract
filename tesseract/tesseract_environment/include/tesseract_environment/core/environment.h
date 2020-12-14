@@ -300,6 +300,7 @@ public:
   /** @brief Get the current state of the environment */
   virtual EnvState::ConstPtr getCurrentState() const;
 
+#ifndef SWIG
   /**
    * @brief Adds a link to the environment
    *
@@ -317,7 +318,7 @@ public:
    * @return Return False if a link with the same name allready exists, otherwise true
    */
   virtual bool addLink(tesseract_scene_graph::Link link, tesseract_scene_graph::Joint joint);
-
+#endif // SWIG
   /**
    * @brief Removes a link from the environment
    *
@@ -328,6 +329,7 @@ public:
    */
   virtual bool removeLink(const std::string& name);
 
+#ifndef SWIG
   /**
    * @brief Move a link in the environment
    *
@@ -337,7 +339,7 @@ public:
    * @return Return False if a link does not exists or has no parent joint, otherwise true
    */
   virtual bool moveLink(tesseract_scene_graph::Joint joint);
-
+#endif // SWIG
   /**
    * @brief Get a link in the environment
    * @param name The name of the link
@@ -596,7 +598,7 @@ public:
    * in the environment.
    */
   bool registerDiscreteContactManager(const std::string& name,
-                                      tesseract_collision::DiscreteContactManagerFactory::CreateMethod create_function);
+                                      tesseract_collision::DiscreteContactManagerFactory_CreateMethod create_function);
 
   /**
    * @brief Set the discrete contact manager
@@ -606,7 +608,7 @@ public:
    */
   bool
   registerContinuousContactManager(const std::string& name,
-                                   tesseract_collision::ContinuousContactManagerFactory::CreateMethod create_function);
+                                   tesseract_collision::ContinuousContactManagerFactory_CreateMethod create_function);
 
   /** @brief Merge a graph into the current environment
    * @param scene_graph Const ref to the graph to be merged (said graph will be copied)
@@ -618,6 +620,7 @@ public:
    * different names */
   virtual bool addSceneGraph(const tesseract_scene_graph::SceneGraph& scene_graph, const std::string& prefix = "");
 
+#ifndef SWIG
   /** @brief Merge a graph into the current environment
    * @param scene_graph Const ref to the graph to be merged (said graph will be copied)
    * @param root_joint Const ptr to the joint that connects current environment with root of the merged graph
@@ -629,6 +632,7 @@ public:
   virtual bool addSceneGraph(const tesseract_scene_graph::SceneGraph& scene_graph,
                              tesseract_scene_graph::Joint joint,
                              const std::string& prefix = "");
+#endif // SWIG
 
 protected:
   bool initialized_{ false }; /**< Identifies if the object has been initialized */
@@ -671,5 +675,35 @@ private:
   tesseract_collision::ContinuousContactManager::Ptr getContinuousContactManagerHelper(const std::string& name) const;
 };
 }  // namespace tesseract_environment
+
+#ifdef SWIG
+%extend tesseract_environment::Environment
+{
+
+  bool addLink(tesseract_scene_graph::Link::Ptr link)
+  {
+    return $self->addLink(std::move(link->clone()));
+  }
+  
+  bool addLink(tesseract_scene_graph::Link::Ptr link, tesseract_scene_graph::Joint::Ptr joint)
+  {
+    return $self->addLink(std::move(link->clone()),std::move(joint->clone()));
+  }
+
+  bool moveLink(tesseract_scene_graph::Joint::Ptr joint)
+  {
+    return $self->moveLink(std::move(joint->clone()));
+  }
+
+  bool addSceneGraph(const tesseract_scene_graph::SceneGraph& scene_graph,
+                             tesseract_scene_graph::Joint::Ptr joint,
+                             const std::string& prefix = "")
+  {
+    return $self->addSceneGraph(scene_graph,std::move(joint->clone()),prefix);
+  }
+
+}
+#endif // SWIG
+
 
 #endif  // TESSERACT_ENVIRONMENT_ENVIRONMENT_H

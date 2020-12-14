@@ -853,7 +853,7 @@ Environment::getContinuousContactManager(const std::string& name) const
 
 bool Environment::registerDiscreteContactManager(
     const std::string& name,
-    tesseract_collision::DiscreteContactManagerFactory::CreateMethod create_function)
+    tesseract_collision::DiscreteContactManagerFactory_CreateMethod create_function)
 {
   std::lock_guard<std::mutex> lock(mutex_);
   return discrete_factory_.registar(name, std::move(create_function));
@@ -861,7 +861,7 @@ bool Environment::registerDiscreteContactManager(
 
 bool Environment::registerContinuousContactManager(
     const std::string& name,
-    tesseract_collision::ContinuousContactManagerFactory::CreateMethod create_function)
+    tesseract_collision::ContinuousContactManagerFactory_CreateMethod create_function)
 {
   std::lock_guard<std::mutex> lock(mutex_);
   return continuous_factory_.registar(name, std::move(create_function));

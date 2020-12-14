@@ -28,18 +28,34 @@
 
 #pragma SWIG nowarn=473
 
-%import "tesseract_common_python.i"
-%import "tesseract_geometry_python.i"
-%import "tesseract_scene_graph_python.i"
+%include "tesseract_swig_include.i"
+
 %import "tesseract_kinematics_python.i"
 %import "tesseract_collision_python.i"
 
 %{
+
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/directed_graph.hpp>
+#include <boost/graph/properties.hpp>
+#include <boost/graph/depth_first_search.hpp>
+#include <boost/graph/breadth_first_search.hpp>
+
+#include <tesseract_common/status_code.h>
+#include <tesseract_geometry/geometries.h>
+
+#include <tesseract_scene_graph/resource_locator.h>
+#include <tesseract_kinematics/core/rep_inverse_kinematics.h>
+#include <tesseract_kinematics/core/rop_inverse_kinematics.h>
+
 // tesseract_environment
 #include <tesseract_environment/core/types.h>
 #include <tesseract_environment/core/commands.h>
 #include <tesseract_environment/core/state_solver.h>
 #include <tesseract_environment/core/environment.h>
+
+#include "tesseract_scene_graph_python_std_functions.h"
+#include "tesseract_collisions_python_std_functions.h"
 %}
 
 // tesseract_environment
