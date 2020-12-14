@@ -1,4 +1,5 @@
 import tesseract_scene_graph as sg
+import tesseract_common
 import numpy as np
 import re
 import os
@@ -6,7 +7,7 @@ import os
 def _translation(p):
     H = np.eye(4)
     H[0:3,3] = p
-    return H
+    return tesseract_common.Isometry3d(H)
 
 def test_tesseract_scene_graph():
     g = sg.SceneGraph()

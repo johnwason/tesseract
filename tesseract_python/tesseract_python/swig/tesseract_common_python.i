@@ -45,6 +45,7 @@
 
 %include "tinyxml2.i"
 %include "boost_filesystem_path.i"
+%include "eigen_geometry.i"
 
 %pythondynamic sco::ModelType;
 

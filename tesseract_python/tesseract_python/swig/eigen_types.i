@@ -39,13 +39,17 @@ namespace Eigen
 %eigen_typemaps(Eigen::Vector2d);
 %eigen_typemaps(Eigen::Vector3d);
 %eigen_typemaps(Eigen::Vector4d);
-%eigen_typemaps(Eigen::Isometry3d);
+//%eigen_typemaps(Eigen::Isometry3d);
 %eigen_typemaps(Eigen::VectorXd);
 %eigen_typemaps(Eigen::MatrixXd);
 %eigen_typemaps(%arg(Eigen::Matrix3Xd));
 %eigen_typemaps(%arg(Eigen::Matrix<uint32_t,3,Eigen::Dynamic>));
 %eigen_typemaps(%arg(Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>));
 %eigen_typemaps(Eigen::VectorXi);
+%eigen_typemaps(Eigen::Matrix3d);
+%eigen_typemaps(Eigen::Matrix4d);
+
+/*
 //Workaround typemaps for Isometry3d
 
 %typemap(in, fragment="Eigen_Fragments") Eigen::Isometry3d const& (Eigen::Isometry3d temp)
@@ -96,3 +100,4 @@ namespace Eigen
 %typemap(in, numinputs=0) Eigen::Isometry3d & (Eigen::Isometry3d temp) {
   $1 = &temp;
 }
+*/

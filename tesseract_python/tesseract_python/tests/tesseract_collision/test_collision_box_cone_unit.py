@@ -15,7 +15,7 @@ def addCollisionObjects(checker):
     obj1_shapes = tesseract_geometry.GeometriesConst()
     obj1_shapes.append(box)
     obj1_poses = tesseract_common.VectorIsometry3d()
-    obj1_poses.append(box_pose)
+    obj1_poses.append(tesseract_common.Isometry3d(box_pose))
 
     checker.addCollisionObject("box_link", 0, obj1_shapes, obj1_poses, False)
     checker.enableCollisionObject("box_link")
@@ -27,7 +27,7 @@ def addCollisionObjects(checker):
     obj2_shapes = tesseract_geometry.GeometriesConst()
     obj2_shapes.append(thin_box)
     obj2_poses = tesseract_common.VectorIsometry3d()
-    obj2_poses.append(thin_box_pose)
+    obj2_poses.append(tesseract_common.Isometry3d(thin_box_pose))
 
     checker.addCollisionObject("thin_box_link", 0, obj2_shapes, obj2_poses)
     checker.disableCollisionObject("thin_box_link")
@@ -39,7 +39,7 @@ def addCollisionObjects(checker):
     obj3_shapes = tesseract_geometry.GeometriesConst()
     obj3_shapes.append(cone)
     obj3_poses = tesseract_common.VectorIsometry3d()
-    obj3_poses.append(cone_pose)
+    obj3_poses.append(tesseract_common.Isometry3d(cone_pose))
 
     checker.addCollisionObject("cone_link", 0, obj3_shapes, obj3_poses)
 
@@ -50,7 +50,7 @@ def addCollisionObjects(checker):
     obj4_shapes = tesseract_geometry.GeometriesConst()
     obj4_shapes.append(remove_box)
     obj4_poses = tesseract_common.VectorIsometry3d()
-    obj4_poses.append(remove_box_pose)
+    obj4_poses.append(tesseract_common.Isometry3d(remove_box_pose))
 
     checker.addCollisionObject("remove_box_link", 0, obj4_shapes, obj4_poses)
     assert len(checker.getCollisionObjects()) == 4
@@ -75,7 +75,7 @@ def addCollisionObjects(checker):
         tfs = checker.getCollisionObjectGeometriesTransforms(co)
         for i in range(len(tfs)):
             cgt = tfs[i]
-            nptest.assert_almost_equal(cgt, np.eye(4))
+            nptest.assert_almost_equal(cgt.matrix(), np.eye(4))
 
 
 def run_test(checker):
@@ -90,10 +90,10 @@ def run_test(checker):
 
     # Set the collision object transforms
     location = tesseract_common.TransformMap()
-    location["box_link"] = np.eye(4)
+    location["box_link"] = tesseract_common.Isometry3d(np.eye(4))
     cone_link_transform = np.eye(4)
     cone_link_transform[0][3] = 0.2
-    location["cone_link"] = cone_link_transform
+    location["cone_link"] = tesseract_common.Isometry3d(cone_link_transform)
     checker.setCollisionObjectsTransform(location)
 
     # Perform collision check

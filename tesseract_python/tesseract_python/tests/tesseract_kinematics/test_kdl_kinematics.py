@@ -2,6 +2,7 @@ import tesseract_kinematics
 import tesseract_scene_graph
 import tesseract_kinematics_kdl
 import tesseract_urdf
+import tesseract_common
 
 import re
 import os
@@ -82,13 +83,13 @@ def run_inv_kin_test(inv_kin, fwd_kin):
     pose[2,3] = 1.306
 
     seed = np.array([-0.785398, 0.785398, -0.785398, 0.785398, -0.785398, 0.785398, -0.785398])
-    res, solutions = inv_kin.calcInvKin(pose,seed)
+    res, solutions = inv_kin.calcInvKin(tesseract_common.Isometry3d(pose),seed)
     assert res
 
     res, result = fwd_kin.calcFwdKin(solutions)
     assert res
 
-    nptest.assert_almost_equal(pose,result,decimal=3)
+    nptest.assert_almost_equal(pose,result.matrix(),decimal=3)
 
 def test_kdl_kin_chain_lma_inverse_kinematic():
     inv_kin = tesseract_kinematics_kdl.KDLInvKinChainLMA()
