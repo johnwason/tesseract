@@ -38,6 +38,7 @@
 #include <tesseract_common/status_code.h>
 // tesseract_collision
 #include <tesseract_collision/fcl/fcl_discrete_managers.h>
+#include "tesseract_collisions_python_std_functions.h"
 %}
 
 // tesseract_collision

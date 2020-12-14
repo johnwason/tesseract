@@ -41,6 +41,8 @@
 #include <tesseract_collision/bullet/bullet_cast_simple_manager.h>
 #include <tesseract_collision/bullet/bullet_discrete_bvh_manager.h>
 #include <tesseract_collision/bullet/bullet_discrete_simple_manager.h>
+
+#include "tesseract_collisions_python_std_functions.h"
 %}
 
 // tesseract_collision

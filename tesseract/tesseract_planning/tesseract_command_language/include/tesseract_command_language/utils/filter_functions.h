@@ -45,6 +45,7 @@ using flattenFilterFn =
 using locateFilterFn =
     std::function<bool(const Instruction&, const CompositeInstruction&, bool parent_is_first_composite)>;
 
+#ifndef SWIG
 static locateFilterFn moveFilter =
     [](const Instruction& i, const CompositeInstruction& /*composite*/, bool parent_is_first_composite) {
       if (isMoveInstruction(i))
@@ -68,6 +69,7 @@ static locateFilterFn planFilter =
       }
       return false;
     };
+#endif // SWIG
 
 }  // namespace tesseract_planning
 

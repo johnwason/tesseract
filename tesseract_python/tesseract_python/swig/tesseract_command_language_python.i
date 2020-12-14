@@ -28,12 +28,9 @@
 
 #pragma SWIG nowarn=473
 
+%include "tesseract_swig_include.i"
+
 %import "tesseract_common_python.i"
-%import "tesseract_geometry_python.i"
-%import "tesseract_scene_graph_python.i"
-%import "tesseract_kinematics_python.i"
-%import "tesseract_collision_python.i"
-%import "tesseract_environment_python.i"
 
 %{
 // tesseract_command_language
@@ -42,6 +39,15 @@
 #include <tesseract_command_language/command_language.h>
 #include <tesseract_command_language/serialize.h>
 #include <tesseract_command_language/deserialize.h>
+
+#include <tesseract_command_language/utils/utils.h>
+#include <tesseract_command_language/utils/get_instruction_utils.h>
+#include <tesseract_command_language/utils/filter_functions.h>
+#include <tesseract_command_language/utils/flatten_utils.h>
+
+#include <tesseract_common/status_code.h>
+#include <tesseract_geometry/geometries.h>
+#include <tesseract_common/resource.h>
 %}
 
 // tesseract_command_language
@@ -62,3 +68,7 @@
 %include "tesseract_command_language/command_language.h"
 %include "tesseract_command_language/serialize.h"
 %include "tesseract_command_language/deserialize.h"
+%include "tesseract_command_language/utils/filter_functions.h"
+%include "tesseract_command_language/utils/utils.h"
+%include "tesseract_command_language/utils/get_instruction_utils.h"
+%include "tesseract_command_language/utils/flatten_utils.h"

@@ -108,6 +108,9 @@ public:
 
 #ifndef SWIG
 
+  template< class InputIt >
+  CompositeInstruction(InputIt first, InputIt last) : container_(first,last) {}
+
   ///////////////
   // Iterators //
   ///////////////
@@ -138,8 +141,6 @@ public:
   /** @brief returns a reverse iterator to the end */
   const_reverse_iterator const crend();
 
-#endif // SWIG
-
   //////////////
   // Capacity //
   //////////////
@@ -155,8 +156,6 @@ public:
   size_type capacity() const;
   /** @brief reduces memory usage by freeing unused memory  */
   void shrink_to_fit();
-
-#ifndef SWIG
 
   ////////////////////
   // Element Access //
@@ -191,6 +190,8 @@ public:
   iterator insert(const_iterator p, const value_type& x);
   iterator insert(const_iterator p, value_type&& x);
   iterator insert(const_iterator p, std::initializer_list<value_type> l);
+  template< class InputIt >
+  void insert( iterator pos, InputIt first, InputIt last) { container_.insert(pos,first,last); }
 
   /** @brief constructs element in-place */
   template <class... Args>
@@ -216,6 +217,20 @@ public:
   /** @brief swaps the contents  */
   void swap(std::vector<value_type>& other);
 
+#endif // SWIG
+
+#ifdef SWIG
+  %ignore get_allocator;
+  %ignore resize;
+  %ignore assign;
+  %ignore swap;
+  %ignore insert;
+  %ignore CompositeInstruction();
+  %ignore CompositeInstruction(const CompositeInstruction&);
+  %ignore CompositeInstruction(size_type);
+  %ignore CompositeInstruction(size_type, value_type const &); 
+  %swig_vector_methods(tesseract_planning::CompositeInstruction)
+  %std_vector_methods(CompositeInstruction)
 #endif // SWIG
 
 private:

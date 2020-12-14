@@ -28,18 +28,27 @@
 
 #pragma SWIG nowarn=473
 
-%import "tesseract_common_python.i"
-%import "tesseract_geometry_python.i"
-%import "tesseract_scene_graph_python.i"
-%import "tesseract_kinematics_python.i"
-%import "tesseract_collision_python.i"
+%include "tesseract_swig_include.i"
+%include "tesseract_std_function.i"
+
 %import "tesseract_environment_python.i"
 %import "tesseract_command_language_python.i"
 
 %{
 // tesseract
 #include <tesseract/tesseract.h>
+
+#include <tesseract_common/status_code.h>
+#include <tesseract_geometry/geometries.h>
+
+#include <tesseract_scene_graph/resource_locator.h>
+
+#include "tesseract_python_std_functions.h"
+#include <tesseract_kinematics/core/rep_inverse_kinematics.h>
+#include <tesseract_kinematics/core/rop_inverse_kinematics.h>
 %}
+
+%tesseract_std_function(FindTCPCallbackFn,tesseract,Eigen::Isometry3d,const tesseract_planning::ManipulatorInfo&,a);
 
 // tesseract
 #define TESSERACT_PUBLIC

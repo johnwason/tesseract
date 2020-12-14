@@ -103,10 +103,12 @@ public:
   tesseract_environment::Environment::Ptr getEnvironment();
   tesseract_environment::Environment::ConstPtr getEnvironment() const;
 
+#ifndef SWIG
   DEPRECATED("Please use getEnvironment->getManipulatorManager()")
   tesseract_environment::ManipulatorManager::Ptr getManipulatorManager();
   DEPRECATED("Please use getEnvironment->getManipulatorManager()")
   tesseract_environment::ManipulatorManager::ConstPtr getManipulatorManager() const;
+#endif // SWIG
 
   /**
    * @brief Find tool center point provided in the manipulator info

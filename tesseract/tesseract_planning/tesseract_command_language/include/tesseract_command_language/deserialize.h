@@ -55,9 +55,6 @@ Instruction fromXMLString(const std::string& xml_string,
                           InstructionParserFn instruction_parser = defaultInstructionParser,
                           WaypointParserFn waypoint_parser = defaultWaypointParser);
 
-
-Instruction fromXMLString(const std::string& xml_string);
-
 }  // namespace tesseract_planning
 
 #endif  // TESSERACT_COMMAND_LANGUAGE_DESERAILIZE_H

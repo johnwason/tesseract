@@ -125,6 +125,7 @@ namespace Eigen
         Translation3d();
         Translation3d(const Translation3d& other);
         Translation3d(const Eigen::Vector3d& vector);
+        Translation3d(double x, double y, double z);
 
         %rename(__mul__) operator*;        
         Translation3d operator* (const Translation3d& other);

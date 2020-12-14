@@ -56,6 +56,7 @@
 
 #include "tesseract_scene_graph_python_std_functions.h"
 #include "tesseract_collisions_python_std_functions.h"
+#include "tesseract_environment/kdl/kdl_state_solver.h"
 %}
 
 // tesseract_environment
@@ -65,3 +66,11 @@
 %include "tesseract_environment/core/manipulator_manager.h"
 %include "tesseract_environment/core/state_solver.h"
 %include "tesseract_environment/core/environment.h"
+
+%extend tesseract_environment::Environment {
+    bool init(const tesseract_scene_graph::SceneGraph& scene_graph,
+            const tesseract_scene_graph::SRDFModel::ConstPtr& srdf_model = nullptr)
+    {
+        $self->init<tesseract_environment::KDLStateSolver>(scene_graph,srdf_model);
+    }
+}

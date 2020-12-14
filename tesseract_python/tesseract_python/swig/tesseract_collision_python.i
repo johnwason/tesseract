@@ -31,6 +31,7 @@
 %pythondynamic tesseract_collision::ContactResult;
 
 %include "tesseract_swig_include.i"
+%include "tesseract_std_function.i"
 
 //%import "tesseract_common_python.i"
 %import "tesseract_geometry_python.i"
@@ -46,6 +47,8 @@
 
 #include "tesseract_collisions_python_std_functions.h"
 %}
+
+%ignore getIsContactAllowedFn;
 
 %tesseract_std_function(IsContactAllowedFn,tesseract_collision,bool,const std::string&,a,const std::string&,b);
 %tesseract_std_function(IsContactValidFn,tesseract_collision,bool,const tesseract_collision::ContactResult&,a);

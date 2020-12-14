@@ -53,10 +53,6 @@ public:
   /** @brief Get the name of this planner */
   virtual const std::string& getName() const = 0;
 
-#ifdef SWIG
-%rename(_solve) solve;
-#endif // SWIG
-
   /**
    * @brief Solve the planner request problem
    * @param request The planning request
@@ -80,15 +76,6 @@ public:
 
   /** @brief Clone the motion planner */
   virtual MotionPlanner::Ptr clone() const = 0;
-
-#ifdef SWIG
-  %pythoncode %{
-  def solve(self, check_type=PostPlanCheckType_DISCRETE_CONTINUOUS_COLLISION, verbose=False):
-      response = PlannerResponse()
-      status_code = self._solve(response, verbose)
-      return status_code, response
-  %}
-#endif // SWIG
 
 };
 }  // namespace tesseract_planning
