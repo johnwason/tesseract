@@ -98,6 +98,7 @@ tesseract_python_module(tesseract_environment_python SWIG_SRCS swig/tesseract_en
 tesseract_python_module(tesseract_command_language_python SWIG_SRCS swig/tesseract_command_language_python.i PACKAGE tesseract_command_language LIBS tesseract::tesseract_command_language)
 tesseract_python_module(tesseract_python SWIG_SRCS swig/tesseract_python.i PACKAGE tesseract LIBS tesseract::tesseract)
 tesseract_python_module(tesseract_motion_planners_python SWIG_SRCS swig/tesseract_motion_planners_python.i PACKAGE tesseract_motion_planners LIBS tesseract::tesseract_motion_planners_core )
+tesseract_python_module(tesseract_motion_planners_simple_python SWIG_SRCS swig/tesseract_motion_planners_simple_python.i PACKAGE tesseract_motion_planners_simple LIBS tesseract::tesseract_motion_planners_simple )
 
 
 install(CODE "MESSAGE(\"INSTALL TODO!\")")

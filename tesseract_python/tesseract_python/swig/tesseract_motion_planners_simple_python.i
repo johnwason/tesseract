@@ -28,33 +28,47 @@
 
 #pragma SWIG nowarn=473
 
-%import "tesseract_common_python.i"
-%import "tesseract_geometry_python.i"
-%import "tesseract_scene_graph_python.i"
-%import "tesseract_kinematics_python.i"
-%import "tesseract_collision_python.i"
-%import "tesseract_environment_python.i"
-%import "tesseract_command_language_python.i"
-%import "tesseract_python.i"
+%include "tesseract_swig_include.i"
+%include "tesseract_std_function.i"
+
 %import "tesseract_motion_planners_python.i"
 
 %{
 // tesseract_motion_planners_simple
 #include <tesseract_motion_planners/simple/profile/simple_planner_profile.h>
+#include <tesseract_motion_planners/simple/profile/simple_planner_default_plan_profile.h>
 #include <tesseract_motion_planners/simple/profile/simple_planner_default_lvs_plan_profile.h>
 #include <tesseract_motion_planners/simple/profile/simple_planner_interpolation_plan_profile.h>
 #include <tesseract_motion_planners/simple/step_generators/fixed_size_assign_position.h>
 #include <tesseract_motion_planners/simple/step_generators/fixed_size_interpolation.h>
 #include <tesseract_motion_planners/simple/step_generators/lvs_interpolation.h>
 #include <tesseract_motion_planners/simple/simple_motion_planner.h>
+
+#include <tesseract_common/status_code.h>
+#include <tesseract_geometry/geometries.h>
+
+#include <tesseract_scene_graph/resource_locator.h>
+
+#include "tesseract_python_std_functions.h"
+#include <tesseract_kinematics/core/rep_inverse_kinematics.h>
+#include <tesseract_kinematics/core/rop_inverse_kinematics.h>
 %}
 
+%tesseract_std_function_base(JointJointStepGenerator,tesseract_planning,tesseract_planning::CompositeInstruction,const tesseract_planning::JointWaypoint&,a,const tesseract_planning::JointWaypoint&,b,const tesseract_planning::PlanInstruction&,c,const tesseract_planning::PlannerRequest&,d,const tesseract_planning::ManipulatorInfo&,e);
+%tesseract_std_function(JointJointStepGenerator,tesseract_planning,tesseract_planning::CompositeInstruction,const tesseract_planning::JointWaypoint&,a,const tesseract_planning::JointWaypoint&,b,const tesseract_planning::PlanInstruction&,c,const tesseract_planning::PlannerRequest&,d,const tesseract_planning::ManipulatorInfo&,e);
+%tesseract_std_function_base(JointCartStepGenerator,tesseract_planning,tesseract_planning::CompositeInstruction,const tesseract_planning::JointWaypoint&,a,const tesseract_planning::CartesianWaypoint&,b,const tesseract_planning::PlanInstruction&,c,const tesseract_planning::PlannerRequest&,d,const tesseract_planning::ManipulatorInfo&,e);
+%tesseract_std_function(JointCartStepGenerator,tesseract_planning,tesseract_planning::CompositeInstruction,const tesseract_planning::JointWaypoint&,a,const tesseract_planning::CartesianWaypoint&,b,const tesseract_planning::PlanInstruction&,c,const tesseract_planning::PlannerRequest&,d,const tesseract_planning::ManipulatorInfo&,e);
+%tesseract_std_function_base(CartJointStepGenerator,tesseract_planning,tesseract_planning::CompositeInstruction,const tesseract_planning::CartesianWaypoint&,a,const tesseract_planning::JointWaypoint&,b,const tesseract_planning::PlanInstruction&,c,const tesseract_planning::PlannerRequest&,d,const tesseract_planning::ManipulatorInfo&,e);
+%tesseract_std_function(CartJointStepGenerator,tesseract_planning,tesseract_planning::CompositeInstruction,const tesseract_planning::CartesianWaypoint&,a,const tesseract_planning::JointWaypoint&,b,const tesseract_planning::PlanInstruction&,c,const tesseract_planning::PlannerRequest&,d,const tesseract_planning::ManipulatorInfo&,e);
+%tesseract_std_function_base(CartCartStepGenerator,tesseract_planning,tesseract_planning::CompositeInstruction,const tesseract_planning::CartesianWaypoint&,a,const tesseract_planning::CartesianWaypoint&,b,const tesseract_planning::PlanInstruction&,c,const tesseract_planning::PlannerRequest&,d,const tesseract_planning::ManipulatorInfo&,e);
+%tesseract_std_function(CartCartStepGenerator,tesseract_planning,tesseract_planning::CompositeInstruction,const tesseract_planning::CartesianWaypoint&,a,const tesseract_planning::CartesianWaypoint&,b,const tesseract_planning::PlanInstruction&,c,const tesseract_planning::PlannerRequest&,d,const tesseract_planning::ManipulatorInfo&,e);
 
 // tesseract_motion_planners_simple
 #define TESSERACT_MOTION_PLANNERS_SIMPLE_PUBLIC
 %include "tesseract_motion_planners/simple/profile/simple_planner_profile.h"
 %include "tesseract_motion_planners/simple/profile/simple_planner_default_lvs_plan_profile.h"
 %include "tesseract_motion_planners/simple/profile/simple_planner_interpolation_plan_profile.h"
+%include "tesseract_motion_planners/simple/profile/simple_planner_default_plan_profile.h"
 %include "tesseract_motion_planners/simple/step_generators/fixed_size_assign_position.h"
 %include "tesseract_motion_planners/simple/step_generators/fixed_size_interpolation.h"
 %include "tesseract_motion_planners/simple/step_generators/lvs_interpolation.h"
