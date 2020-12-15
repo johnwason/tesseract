@@ -38,7 +38,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #ifdef SWIG
 %ignore std::vector<tesseract_planning::Instruction>::vector(size_type);
 %ignore std::vector<tesseract_planning::Instruction>::resize(size_type);
-%template(tesseract_planning_InstructionVector) std::vector<tesseract_planning::Instruction>;
+%template(Instructions) std::vector<tesseract_planning::Instruction>;
 #endif // SWIG
 
 namespace tesseract_planning

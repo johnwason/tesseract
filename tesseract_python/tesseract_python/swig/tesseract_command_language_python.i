@@ -29,6 +29,7 @@
 #pragma SWIG nowarn=473
 
 %include "tesseract_swig_include.i"
+%include "tesseract_std_function.i"
 
 %import "tesseract_common_python.i"
 
@@ -48,7 +49,11 @@
 #include <tesseract_common/status_code.h>
 #include <tesseract_geometry/geometries.h>
 #include <tesseract_common/resource.h>
+
+#include "tesseract_command_language_python_std_functions.h"
 %}
+
+%include "tesseract_vector_reference_wrapper_instruction_typemaps.i"
 
 // tesseract_command_language
 #define TESSERACT_COMMAND_LANGUAGE_PUBLIC
@@ -62,6 +67,8 @@
 }
 %enddef
 
+%tesseract_std_function(flattenFilterFn,tesseract_planning,bool,const tesseract_planning::Instruction&,a,const tesseract_planning::CompositeInstruction&,b,bool,c);
+%tesseract_std_function(locateFilterFn,tesseract_planning,bool,const tesseract_planning::Instruction&,a,const tesseract_planning::CompositeInstruction&,b,bool,c);
 
 %include "tesseract_command_language/core/waypoint.h"
 %include "tesseract_command_language/core/instruction.h"

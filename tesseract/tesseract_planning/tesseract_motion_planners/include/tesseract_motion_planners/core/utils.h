@@ -155,6 +155,7 @@ inline std::vector<Waypoint> interpolate_waypoint(const Waypoint& start, const W
   }
 }
 
+#ifndef SWIG
 static flattenFilterFn programFlattenFilter =
     [](const Instruction& i, const CompositeInstruction& /*composite*/, bool parent_is_first_composite) {
       if (isMoveInstruction(i))
@@ -174,6 +175,7 @@ static flattenFilterFn programFlattenFilter =
 
       return true;
     };
+#endif
 
 /**
  * @brief Flattens a CompositeInstruction into a vector of Instruction&
@@ -563,6 +565,8 @@ inline bool contactCheckProgram(std::vector<tesseract_collision::ContactResultMa
   return found;
 }
 
+#ifndef SWIG
+
 /// Deprecated overloads
 inline bool DEPRECATED("Please use overload with CollisionCheckConfig")
     contactCheckProgram(std::vector<tesseract_collision::ContactResultMap>& contacts,
@@ -623,6 +627,9 @@ inline bool DEPRECATED("Please use overload with CollisionCheckConfig")
   config.longest_valid_segment_length = longest_valid_segment_length;
   return contactCheckProgram(contacts, manager, state_solver, program, config);
 }
+
+#endif // SWIG
+
 }  // namespace tesseract_planning
 
 #endif  // TESSERACT_PLANNING_UTILS_H

@@ -28,13 +28,8 @@
 
 #pragma SWIG nowarn=473
 
-%import "tesseract_common_python.i"
-%import "tesseract_geometry_python.i"
-%import "tesseract_scene_graph_python.i"
-%import "tesseract_kinematics_python.i"
-%import "tesseract_collision_python.i"
-%import "tesseract_environment_python.i"
-%import "tesseract_command_language_python.i"
+%include "tesseract_swig_include.i"
+
 %import "tesseract_python.i"
 
 %{
@@ -42,6 +37,16 @@
 #include <tesseract_motion_planners/core/planner.h>
 #include <tesseract_motion_planners/robot_config.h>
 #include <tesseract_motion_planners/interface_utils.h>
+#include <tesseract_motion_planners/core/utils.h>
+
+#include <tesseract_common/status_code.h>
+#include <tesseract_geometry/geometries.h>
+
+#include <tesseract_scene_graph/resource_locator.h>
+
+#include "tesseract_python_std_functions.h"
+#include <tesseract_kinematics/core/rep_inverse_kinematics.h>
+#include <tesseract_kinematics/core/rop_inverse_kinematics.h>
 %}
 
 // tesseract_motion_planners
@@ -51,3 +56,4 @@
 %include "tesseract_motion_planners/core/planner.h"
 %include "tesseract_motion_planners/robot_config.h"
 %include "tesseract_motion_planners/interface_utils.h"
+%include "tesseract_motion_planners/core/utils.h"
