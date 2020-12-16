@@ -1,11 +1,11 @@
-import tesseract_scene_graph
-import tesseract_collision
-import tesseract_environment
-from tesseract_common import Isometry3d, Translation3d, AngleAxisd
-import tesseract_common
-import tesseract_collision
-import tesseract_collision_bullet
-import tesseract_urdf
+from tesseract import tesseract_scene_graph
+from tesseract import tesseract_collision
+from tesseract import tesseract_environment
+from tesseract.tesseract_common import Isometry3d, Translation3d, AngleAxisd
+from tesseract import tesseract_common
+from tesseract import tesseract_collision
+from tesseract import tesseract_collision_bullet
+from tesseract import tesseract_urdf
 import os
 import re
 

@@ -1,11 +1,11 @@
 import numpy as np
 import numpy.testing as nptest
-import tesseract_geometry
-import tesseract_collision_bullet
-import tesseract_collision_fcl
-import tesseract_geometry
-import tesseract_common
-import tesseract_collision
+from tesseract import tesseract_geometry
+from tesseract import tesseract_collision_bullet
+from tesseract import tesseract_collision_fcl
+from tesseract import tesseract_geometry
+from tesseract import tesseract_common
+from tesseract import tesseract_collision
 
 def addCollisionObjects(checker):
 

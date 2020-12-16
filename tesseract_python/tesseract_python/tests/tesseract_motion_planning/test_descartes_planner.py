@@ -4,14 +4,14 @@ import os
 import numpy as np
 import numpy.testing as nptest
 
-from tesseract_scene_graph import SimpleResourceLocator, SimpleResourceLocatorFn
-from tesseract_core import Tesseract
-from tesseract_common import FilesystemPath, Isometry3d, Translation3d, Quaterniond
-from tesseract_command_language import ManipulatorInfo, JointWaypoint, CartesianWaypoint, Waypoint, \
+from tesseract.tesseract_scene_graph import SimpleResourceLocator, SimpleResourceLocatorFn
+from tesseract.tesseract_core import Tesseract
+from tesseract.tesseract_common import FilesystemPath, Isometry3d, Translation3d, Quaterniond
+from tesseract.tesseract_command_language import ManipulatorInfo, JointWaypoint, CartesianWaypoint, Waypoint, \
     PlanInstructionType_FREESPACE, PlanInstructionType_START, PlanInstruction, Instruction, \
     isMoveInstruction, isStateWaypoint, CompositeInstruction, flatten, isMoveInstruction, isStateWaypoint
-from tesseract_motion_planners import PlannerRequest, PlannerResponse, generateSeed
-from tesseract_motion_planners_descartes import DescartesDefaultPlanProfileD, \
+from tesseract.tesseract_motion_planners import PlannerRequest, PlannerResponse, generateSeed
+from tesseract.tesseract_motion_planners_descartes import DescartesDefaultPlanProfileD, \
     DescartesProblemGeneratorFnD, DescartesMotionPlannerD, DefaultDescartesProblemGeneratorD, DescartesMotionPlannerStatusCategory
 
 def _locate_resource(url):

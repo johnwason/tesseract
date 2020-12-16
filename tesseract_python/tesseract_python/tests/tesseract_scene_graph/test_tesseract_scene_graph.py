@@ -1,5 +1,5 @@
-import tesseract_scene_graph as sg
-import tesseract_common
+import tesseract.tesseract_scene_graph as sg
+from tesseract import tesseract_common
 import numpy as np
 import re
 import os

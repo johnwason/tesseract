@@ -1,5 +1,5 @@
-import tesseract_geometry
-import tesseract_common
+from tesseract import tesseract_geometry
+from tesseract import tesseract_common
 import numpy as np
 import numpy.testing as nptest
 import os
