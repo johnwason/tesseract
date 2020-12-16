@@ -19,6 +19,7 @@ else()
   add_compile_options(/bigobj)
 endif()
 
+find_package(cmake_common_scripts REQUIRED)
 find_package(trajopt REQUIRED)
 find_package(tesseract REQUIRED)
 find_package(tesseract_motion_planners REQUIRED)
@@ -149,7 +150,7 @@ endif()
 if(TESSERACT_ENABLE_TESTING)
   enable_testing()
 
-  tesseract_add_run_tests_target(ENABLE ${TESSERACT_ENABLE_RUN_TESTING})
+  add_run_tests_target(ENABLE ${TESSERACT_ENABLE_RUN_TESTING})
 
   add_test (NAME python-tests
   COMMAND ${PYTHON_EXECUTABLE} -m pytest -p no:cacheprovider
