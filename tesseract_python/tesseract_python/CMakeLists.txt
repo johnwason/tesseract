@@ -106,9 +106,7 @@ tesseract_python_module(tesseract_time_parameterization_python SWIG_SRCS swig/te
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/__package_init__.py.in ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract/__init__.py @ONLY)
 
-install(CODE "MESSAGE(\"INSTALL TODO!\")")
-
-if(0)
+#install(CODE "MESSAGE(\"INSTALL TODO!\")")
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/setup.py.in" "${CMAKE_CURRENT_BINARY_DIR}/python/setup.py" @ONLY)
 
@@ -164,7 +162,5 @@ if(TESSERACT_ENABLE_TESTING)
   set_tests_properties(python-tests PROPERTIES ENVIRONMENT "TESSERACT_SUPPORT_DIR=${TESSERACT_SUPPORT_DIR}")
   endif()
   
-
-endif()
 
 endif()
