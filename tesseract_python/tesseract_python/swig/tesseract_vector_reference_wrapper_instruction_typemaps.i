@@ -68,3 +68,9 @@
   
   %set_output(SWIG_NewPointerObj(%new_copy(temp_out, std::vector<tesseract_planning::Instruction>), $descriptor(std::vector<tesseract_planning::Instruction>&), SWIG_POINTER_OWN | %newpointer_flags));
 }
+
+%typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER,noblock=1) std::vector<std::reference_wrapper<tesseract_planning::Instruction>> & {
+  void *vptr = 0;
+  int res = SWIG_ConvertPtr($input, &vptr, $descriptor(std::vector<tesseract_planning::Instruction>&), SWIG_POINTER_NO_NULL);
+  $1 = SWIG_CheckState(res);
+}
