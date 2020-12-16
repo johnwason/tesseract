@@ -24,7 +24,7 @@
  * limitations under the License.
  */
 
-%module(directors="1", package="tesseract") tesseract_python
+%module(directors="1", package="tesseract_core") tesseract_core_python
 
 #pragma SWIG nowarn=473
 

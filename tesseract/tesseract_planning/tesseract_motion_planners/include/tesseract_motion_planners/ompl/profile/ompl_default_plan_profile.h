@@ -41,7 +41,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #ifdef SWIG
 %shared_ptr(tesseract_planning::OMPLDefaultPlanProfile)
 %ignore tesseract_planning::OMPLDefaultPlanProfile::allocWeightedRealVectorStateSampler;
-%template(OMPLPlanners) std::vector<tesseract_planning::OMPLPlannerConfigurator::ConstPtr>;
 #endif // SWIG
 
 namespace tesseract_planning

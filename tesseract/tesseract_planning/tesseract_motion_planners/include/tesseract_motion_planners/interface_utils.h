@@ -39,9 +39,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_planning
 {
-#ifdef SWIG
-%rename(planningGenerateSeed) generateSeed;
-#endif // SWIG
 /** @brief Provided for backwards compatibility */
 CompositeInstruction generateSeed(const CompositeInstruction& instructions,
                                          const tesseract_environment::EnvState::ConstPtr& current_state,

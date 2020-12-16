@@ -38,6 +38,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::TrajOptPlanProfile)
+%shared_ptr(tesseract_planning::TrajOptCompositeProfile)
 #endif // SWIG
 
 namespace tesseract_planning

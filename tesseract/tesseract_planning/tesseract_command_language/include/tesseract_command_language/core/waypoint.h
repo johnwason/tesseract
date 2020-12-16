@@ -35,6 +35,10 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/sfinae_utils.h>
 
+#ifdef SWIG
+//%template(Waypoints) std::vector<tesseract_planning::Waypoint>;
+#endif // SWIG
+
 namespace tesseract_planning
 {
 #ifndef SWIG
@@ -187,6 +191,17 @@ public:
   {
     return static_cast<const T*>(waypoint_->recover());
   }
+
+#ifdef SWIG
+  %template(cast_NullWaypoint) cast<tesseract_planning::NullWaypoint>;
+  %template(cast_const_NullWaypoint) cast_const<tesseract_planning::NullWaypoint>;
+  %template(cast_JointWaypoint) cast<tesseract_planning::JointWaypoint>;
+  %template(cast_const_JointWaypoint) cast_const<tesseract_planning::JointWaypoint>;
+  %template(cast_CartesianWaypoint) cast<tesseract_planning::CartesianWaypoint>;
+  %template(cast_const_CartesianWaypoint) cast_const<tesseract_planning::CartesianWaypoint>;
+  %template(cast_StateWaypoint) cast<tesseract_planning::StateWaypoint>;
+  %template(cast_const_StateWaypoint) cast_const<tesseract_planning::StateWaypoint>;
+#endif // SWIG
 
 private:
   std::unique_ptr<detail_waypoint::WaypointInnerBase> waypoint_;

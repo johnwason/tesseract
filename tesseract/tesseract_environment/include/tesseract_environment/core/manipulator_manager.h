@@ -38,7 +38,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_environment/core/commands.h>
 
 #ifdef SWIG
-%shared_ptr(tesseract::ManipulatorManager)
+%shared_ptr(tesseract_environment::ManipulatorManager)
 #endif // SWIG
 
 namespace tesseract_environment

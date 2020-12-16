@@ -28,17 +28,15 @@
 
 #pragma SWIG nowarn=473
 
-%import "tesseract_common_python.i"
-%import "tesseract_geometry_python.i"
-%import "tesseract_scene_graph_python.i"
-%import "tesseract_kinematics_python.i"
-%import "tesseract_collision_python.i"
-%import "tesseract_environment_python.i"
+%include "tesseract_swig_include.i"
+
 %import "tesseract_command_language_python.i"
-%import "tesseract_python.i"
-%import "tesseract_motion_planners_python.i"
 
 %{
+
+#include <tesseract_common/status_code.h>
+#include <tesseract_geometry/geometries.h>
+
 // tesseract_time_parameterization
 #include <tesseract_time_parameterization/iterative_spline_parameterization.h>
 %}

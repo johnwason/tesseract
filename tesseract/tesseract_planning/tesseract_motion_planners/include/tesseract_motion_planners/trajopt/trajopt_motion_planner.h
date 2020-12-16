@@ -107,8 +107,10 @@ public:
   MotionPlanner::Ptr clone() const override;
 
 protected:
-  std::string name_{ "TRAJOPT" };
+#ifndef SWIG
+  std::string name_ { "TRAJOPT" };
   std::shared_ptr<const TrajOptMotionPlannerStatusCategory> status_category_; /** @brief The planners status codes */
+#endif
 };
 
 class TrajOptMotionPlannerStatusCategory : public tesseract_common::StatusCategory

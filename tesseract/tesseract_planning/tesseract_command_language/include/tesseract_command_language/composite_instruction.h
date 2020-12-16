@@ -97,6 +97,7 @@ public:
   using size_type = typename std::vector<value_type>::size_type;
   /** difference_type */
   using difference_type = typename std::vector<value_type>::difference_type;
+#ifndef SWIG
   /** iterator */
   using iterator = typename std::vector<value_type>::iterator;
   /** const_iterator */
@@ -105,12 +106,14 @@ public:
   using reverse_iterator = typename std::vector<value_type>::reverse_iterator;
   /** const_reverse_iterator */
   using const_reverse_iterator = typename std::vector<value_type>::const_reverse_iterator;
+#endif
 
 #ifndef SWIG
 
   template< class InputIt >
   CompositeInstruction(InputIt first, InputIt last) : container_(first,last) {}
 
+#ifndef SWIG
   ///////////////
   // Iterators //
   ///////////////
@@ -140,6 +143,7 @@ public:
   const_reverse_iterator const crbegin();
   /** @brief returns a reverse iterator to the end */
   const_reverse_iterator const crend();
+#endif
 
   //////////////
   // Capacity //
