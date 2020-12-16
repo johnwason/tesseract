@@ -59,13 +59,13 @@
 #include <tesseract_kinematics/core/rop_inverse_kinematics.h>
 %}
 
-%tesseract_std_function_base(TrajOptProblemGeneratorFn,tesseract_planning,trajopt::TrajOptProb::Ptr,const std::string&,a,const tesseract_planning::PlannerRequest&,b,const tesseract_planning::TrajOptPlanProfileMap&,c,const tesseract_planning::TrajOptCompositeProfileMap&,d);
-%tesseract_std_function(TrajOptProblemGeneratorFn,tesseract_planning,trajopt::TrajOptProb::Ptr,const std::string&,a,const tesseract_planning::PlannerRequest&,b,const tesseract_planning::TrajOptPlanProfileMap&,c,const tesseract_planning::TrajOptCompositeProfileMap&,d);
-
 // trajopt
 
 // Including trajopt headers is too noisy, use *.i file instead
 %include "trajopt/problem_description.i"
+
+%tesseract_std_function_base(TrajOptProblemGeneratorFn,tesseract_planning,trajopt::TrajOptProb::Ptr,const std::string&,a,const tesseract_planning::PlannerRequest&,b,const tesseract_planning::TrajOptPlanProfileMap&,c,const tesseract_planning::TrajOptCompositeProfileMap&,d);
+%tesseract_std_function(TrajOptProblemGeneratorFn,tesseract_planning,trajopt::TrajOptProb::Ptr,const std::string&,a,const tesseract_planning::PlannerRequest&,b,const tesseract_planning::TrajOptPlanProfileMap&,c,const tesseract_planning::TrajOptCompositeProfileMap&,d);
 
 // tesseract_motion_planners_trajopt
 #define TESSERACT_MOTION_PLANNERS_TRAJOPT_PUBLIC

@@ -146,4 +146,8 @@ struct OMPLProblem
 
 }  // namespace tesseract_planning
 
+#ifdef SWIG
+%template(OMPLProblems) std::vector<std::shared_ptr<tesseract_planning::OMPLProblem>>;
+#endif
+
 #endif  // TESSERACT_MOTION_PLANNERS_OMPL_OMPL_PROBLEM_H

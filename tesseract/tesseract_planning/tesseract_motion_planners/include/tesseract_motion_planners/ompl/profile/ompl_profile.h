@@ -96,7 +96,7 @@ using OMPLPlanProfileMap = std::unordered_map<std::string, OMPLPlanProfile::Ptr>
 }  // namespace tesseract_planning
 
 #ifdef SWIG
-%template(OMPLPlanProfileMap) std::unordered_map<std::string, tesseract_planning::OMPLPlanProfile::Ptr>;
+%template(OMPLPlanProfileMap) std::unordered_map<std::string, std::shared_ptr<tesseract_planning::OMPLPlanProfile>>;
 #endif // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_OMPL_OMPL_PROFILE_H

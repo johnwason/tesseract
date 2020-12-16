@@ -28,14 +28,9 @@
 
 #pragma SWIG nowarn=473
 
-%import "tesseract_common_python.i"
-%import "tesseract_geometry_python.i"
-%import "tesseract_scene_graph_python.i"
-%import "tesseract_kinematics_python.i"
-%import "tesseract_collision_python.i"
-%import "tesseract_environment_python.i"
-%import "tesseract_command_language_python.i"
-%import "tesseract_python.i"
+%include "tesseract_swig_include.i"
+%include "tesseract_std_function.i"
+
 %import "tesseract_motion_planners_python.i"
 
 %{
@@ -49,8 +44,17 @@
 #include <tesseract_motion_planners/ompl/problem_generators/default_problem_generator.h>
 #include <tesseract_motion_planners/ompl/serialize.h>
 #include <tesseract_motion_planners/ompl/deserialize.h>
-%}
 
+#include <tesseract_common/status_code.h>
+#include <tesseract_geometry/geometries.h>
+#include <tesseract_common/resource.h>
+
+#include "tesseract_command_language_python_std_functions.h"
+
+#include "tesseract_python_std_functions.h"
+#include <tesseract_kinematics/core/rep_inverse_kinematics.h>
+#include <tesseract_kinematics/core/rop_inverse_kinematics.h>
+%}
 
 // tesseract_motion_planners_ompl
 #define TESSERACT_MOTION_PLANNERS_OMPL_PUBLIC
@@ -59,6 +63,10 @@
 %include "tesseract_motion_planners/ompl/ompl_motion_planner_status_category.h"
 %include "tesseract_motion_planners/ompl/profile/ompl_profile.h"
 %include "tesseract_motion_planners/ompl/profile/ompl_default_plan_profile.h"
+
+%tesseract_std_function_base(OMPLProblemGeneratorFn,tesseract_planning,std::vector<std::shared_ptr<tesseract_planning::OMPLProblem>>,const std::string&,a,const tesseract_planning::PlannerRequest&,b,const tesseract_planning::OMPLPlanProfileMap&,c);
+%tesseract_std_function(OMPLProblemGeneratorFn,tesseract_planning,std::vector<std::shared_ptr<tesseract_planning::OMPLProblem>>,const std::string&,a,const tesseract_planning::PlannerRequest&,b,const tesseract_planning::OMPLPlanProfileMap&,c);
+
 %include "tesseract_motion_planners/ompl/ompl_motion_planner.h"
 %include "tesseract_motion_planners/ompl/problem_generators/default_problem_generator.h"
 %include "tesseract_motion_planners/ompl/serialize.h"
