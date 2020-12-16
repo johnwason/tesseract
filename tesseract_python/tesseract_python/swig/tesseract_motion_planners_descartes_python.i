@@ -66,6 +66,18 @@
 %tesseract_std_function(DescartesProblemGeneratorFnD,tesseract_planning,std::shared_ptr<tesseract_planning::DescartesProblemD>,const std::string&,a,const tesseract_planning::PlannerRequest&,b,const tesseract_planning::DescartesPlanProfileMapD&,c);
 
 %include "tesseract_motion_planners/descartes/descartes_motion_planner.h"
-%include "tesseract_motion_planners/descartes/problem_generators/default_problem_generator.h"
+//%include "tesseract_motion_planners/descartes/problem_generators/default_problem_generator.h"
+
+%inline
+{
+std::shared_ptr<tesseract_planning::DescartesProblemD>
+DefaultDescartesProblemGeneratorD(const std::string& name,
+                                 const tesseract_planning::PlannerRequest& request,
+                                 const tesseract_planning::DescartesPlanProfileMapD& plan_profiles)
+{
+    return tesseract_planning::DefaultDescartesProblemGenerator<double>(name,request,plan_profiles);
+}
+}
+
 %include "tesseract_motion_planners/descartes/serialize.h"
 %include "tesseract_motion_planners/descartes/deserialize.h"
