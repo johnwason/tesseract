@@ -77,12 +77,19 @@ public:
 template <typename FloatType>
 using DescartesPlanProfileMap = std::unordered_map<std::string, typename DescartesPlanProfile<FloatType>::Ptr>;
 
+#ifndef SWIG
+using DescartesPlanProfileMapD = DescartesPlanProfileMap<double>;
+using DescartesPlanProfileMapF = DescartesPlanProfileMap<float>;
+#else
+using DescartesPlanProfileMapD = std::unordered_map<std::string, std::shared_ptr<DescartesPlanProfile<double>>>;
+#endif // SWIG
+
 /** @todo Currently descartes does not have support of composite profile everything is handled by the plan profile */
 }  // namespace tesseract_planning
 
 #ifdef SWIG
 %template(DescartesPlanProfileD) std::shared_ptr<tesseract_planning::DescartesPlanProfile<double> >;
-%template(DescartesPlanProfileMapD) std::unordered_map<std::string, typename tesseract_planning::DescartesPlanProfile<double>::Ptr>;
+%template(DescartesPlanProfileMapD) std::unordered_map<std::string, std::shared_ptr<tesseract_planning::DescartesPlanProfile<double>>>;
 #endif // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_DESCARTES_DESCARTES_PROFILE_H

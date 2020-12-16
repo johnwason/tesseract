@@ -28,14 +28,9 @@
 
 #pragma SWIG nowarn=473
 
-%import "tesseract_common_python.i"
-%import "tesseract_geometry_python.i"
-%import "tesseract_scene_graph_python.i"
-%import "tesseract_kinematics_python.i"
-%import "tesseract_collision_python.i"
-%import "tesseract_environment_python.i"
-%import "tesseract_command_language_python.i"
-%import "tesseract_python.i"
+%include "tesseract_swig_include.i"
+%include "tesseract_std_function.i"
+
 %import "tesseract_motion_planners_python.i"
 
 %{
@@ -48,6 +43,16 @@
 #include <tesseract_motion_planners/descartes/problem_generators/default_problem_generator.h>
 #include <tesseract_motion_planners/descartes/serialize.h>
 #include <tesseract_motion_planners/descartes/deserialize.h>
+
+#include <tesseract_common/status_code.h>
+#include <tesseract_geometry/geometries.h>
+#include <tesseract_common/resource.h>
+
+#include "tesseract_command_language_python_std_functions.h"
+
+#include "tesseract_python_std_functions.h"
+#include <tesseract_kinematics/core/rep_inverse_kinematics.h>
+#include <tesseract_kinematics/core/rop_inverse_kinematics.h>
 %}
 
 // tesseract_motion_planner_descartes
@@ -56,6 +61,10 @@
 %include "tesseract_motion_planners/descartes/descartes_motion_planner_status_category.h"
 %include "tesseract_motion_planners/descartes/profile/descartes_profile.h"
 %include "tesseract_motion_planners/descartes/profile/descartes_default_plan_profile.h"
+
+%tesseract_std_function_base(DescartesProblemGeneratorFnD,tesseract_planning,std::shared_ptr<tesseract_planning::DescartesProblemD>,const std::string&,a,const tesseract_planning::PlannerRequest&,b,const tesseract_planning::DescartesPlanProfileMapD&,c);
+%tesseract_std_function(DescartesProblemGeneratorFnD,tesseract_planning,std::shared_ptr<tesseract_planning::DescartesProblemD>,const std::string&,a,const tesseract_planning::PlannerRequest&,b,const tesseract_planning::DescartesPlanProfileMapD&,c);
+
 %include "tesseract_motion_planners/descartes/descartes_motion_planner.h"
 %include "tesseract_motion_planners/descartes/problem_generators/default_problem_generator.h"
 %include "tesseract_motion_planners/descartes/serialize.h"

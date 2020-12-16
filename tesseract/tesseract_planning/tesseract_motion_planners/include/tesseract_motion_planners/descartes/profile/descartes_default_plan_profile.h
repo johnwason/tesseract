@@ -37,7 +37,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_motion_planners/descartes/types.h>
 
 #ifdef SWIG
-%shared_ptr(tesseract_planning::DescartesPlanDefaultProfile<double>)
+%shared_ptr(tesseract_planning::DescartesDefaultPlanProfile<double>)
 %ignore tesseract_planning::DescartesDefaultPlanProfile::edge_evaluator;
 %ignore tesseract_planning::DescartesDefaultPlanProfile::is_valid;
 #endif // SWIG

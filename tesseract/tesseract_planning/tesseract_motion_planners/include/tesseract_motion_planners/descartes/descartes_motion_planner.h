@@ -24,6 +24,19 @@ using DescartesProblemGeneratorFn =
                                                                const PlannerRequest&,
                                                                const DescartesPlanProfileMap<FloatType>&)>;
 
+    using DescartesProblemGeneratorFnD = DescartesProblemGeneratorFn<double>;
+    using DescartesProblemGeneratorFnF = DescartesProblemGeneratorFn<float>;
+
+} // namespace tesseract_planning
+
+#ifdef SWIG
+%template(DescartesProblemGeneratorFnD) tesseract_planning::DescartesProblemGeneratorFn<double>;
+%shared_ptr(tesseract_planning::DescartesMotionPlannerD);
+#endif // SWIG
+
+namespace tesseract_planning
+{
+
 template <typename FloatType>
 class DescartesMotionPlanner : public MotionPlanner
 {
@@ -38,7 +51,11 @@ public:
 
   const std::string& getName() const override;
 
+#ifndef SWIG
   DescartesProblemGeneratorFn<FloatType> problem_generator;
+#else
+  DescartesProblemGeneratorFnD problem_generator;
+#endif
 
   /**
    * @brief The available plan profiles
@@ -46,7 +63,11 @@ public:
    * Plan instruction profiles are used to control waypoint specific information like fixed waypoint, toleranced
    * waypoint, corner distance waypoint, etc.
    */
+#ifndef SWIG
   DescartesPlanProfileMap<FloatType> plan_profiles;
+#else
+  DescartesPlanProfileMapD plan_profiles;
+#endif
 
   /**
    * @brief Sets up the opimizer and solves a SQP problem read from json with no callbacks and dafault parameterss
