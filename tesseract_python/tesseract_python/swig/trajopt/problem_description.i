@@ -17,6 +17,7 @@
 %shared_ptr(trajopt::CollisionTermInfo);
 %shared_ptr(trajopt::TotalTimeTermInfo);
 %shared_ptr(trajopt::SafetyMarginData);
+%shared_ptr(trajopt::ProblemConstructionInfo);
 
 
 //%template(DblVec) std::vector<double>;

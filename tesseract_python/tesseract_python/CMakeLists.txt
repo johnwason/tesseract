@@ -150,7 +150,18 @@ endif()
 if(TESSERACT_ENABLE_TESTING)
   enable_testing()
 
-  add_run_tests_target(ENABLE ${TESSERACT_ENABLE_RUN_TESTING})
+  add_run_tests_target(ENABLE OFF)
+
+  if (${TESSERACT_ENABLE_RUN_TESTING})
+  add_dependencies(run_tests _tesseract_common_python _tesseract_geometry_python _tesseract_collision_python 
+    _tesseract_collision_bullet_python _tesseract_collision_fcl_python _tesseract_scene_graph_python
+    _tesseract_urdf_python _tesseract_kinematics_python _tesseract_kinematics_kdl_python
+    _tesseract_kinematics_opw_python _tesseract_environment_python _tesseract_command_language_python
+    _tesseract_core_python _tesseract_motion_planners_python _tesseract_motion_planners_simple_python
+    _tesseract_motion_planners_trajopt_python _tesseract_motion_planners_ompl_python
+    _tesseract_motion_planners_descartes_python _tesseract_time_parameterization_python
+    _tesseract_visualization_python)
+    endif()
 
   add_test (NAME python-tests
   COMMAND ${PYTHON_EXECUTABLE} -m pytest -p no:cacheprovider

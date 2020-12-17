@@ -38,6 +38,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::TrajOptPlanProfile)
+%shared_ptr(tesseract_planning::TrajOptSolverProfile)
 %shared_ptr(tesseract_planning::TrajOptCompositeProfile)
 #endif // SWIG
 
@@ -99,8 +100,9 @@ using TrajOptPlanProfileMap = std::unordered_map<std::string, TrajOptPlanProfile
 }  // namespace tesseract_planning
 
 #ifdef SWIG
-%template(TrajOptCompositeProfileMap) std::unordered_map<std::string, tesseract_planning::TrajOptCompositeProfile::Ptr>;
-%template(TrajOptPlanProfileMap) std::unordered_map<std::string, tesseract_planning::TrajOptPlanProfile::Ptr>;
+%template(TrajOptSolverProfileMap) std::unordered_map<std::string, std::shared_ptr<const tesseract_planning::TrajOptSolverProfile>>;
+%template(TrajOptCompositeProfileMap) std::unordered_map<std::string, std::shared_ptr<const tesseract_planning::TrajOptCompositeProfile>>;
+%template(TrajOptPlanProfileMap) std::unordered_map<std::string, std::shared_ptr<const tesseract_planning::TrajOptPlanProfile>>;
 #endif // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_TRAJOPT_PROFILE_H

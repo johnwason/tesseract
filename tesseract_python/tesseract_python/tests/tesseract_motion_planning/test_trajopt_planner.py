@@ -77,7 +77,7 @@ def test_trajopt_freespace_joint_cart():
     request.tesseract = tesseract
     request.env_state = tesseract.getEnvironment().getCurrentState()
 
-    problem = DefaultTrajoptProblemGenerator(test_planner.getName(), request, test_planner.plan_profiles, test_planner.composite_profiles)
+    problem = DefaultTrajoptProblemGenerator(test_planner.getName(), request, test_planner.plan_profiles, test_planner.composite_profiles, test_planner.solver_profiles)
 
     response = PlannerResponse()
 
