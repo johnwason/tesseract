@@ -38,6 +38,11 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract/tesseract.h>
 #include <tesseract_environment/core/environment.h>
 
+#ifdef SWIG
+%shared_ptr(tesseract_planning::DescartesProblem<double>)
+%shared_ptr(DescartesProblemD)
+#endif // SWIG
+
 namespace tesseract_planning
 {
 template <typename FloatType>
