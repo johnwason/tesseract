@@ -50,7 +50,6 @@ enum class MoveInstructionType : int
 class MoveInstruction
 {
 public:
-
   MoveInstruction(Waypoint waypoint,
                   MoveInstructionType type,
                   const std::string& profile = DEFAULT_PROFILE_KEY,

@@ -44,7 +44,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #ifdef SWIG
 tesseract_aligned_vector(ContactResultVector, tesseract_collision::ContactResult);
 tesseract_aligned_map_of_aligned_vector(ContactResultMap, %arg(std::pair<std::string,std::string>), tesseract_collision::ContactResult);
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_collision
 {
@@ -89,19 +89,19 @@ struct ContactResult
   /** @brief The distance between two links */
   double distance;
   /** @brief A user defined type id that is added to the contact shapes */
-  std::array<int,2> type_id;
+  std::array<int, 2> type_id;
   /** @brief The two links that are in contact */
-  std::array<std::string,2> link_names;
+  std::array<std::string, 2> link_names;
   /** @brief The two shapes that are in contact. Each link can be made up of multiple shapes */
-  std::array<int,2> shape_id;
+  std::array<int, 2> shape_id;
   /** @brief Some shapes like octomap and mesh have subshape (boxes and triangles) */
-  std::array<int,2> subshape_id;
+  std::array<int, 2> subshape_id;
   /** @brief The nearest point on both links in world coordinates */
-  std::array<Eigen::Vector3d,2> nearest_points;
+  std::array<Eigen::Vector3d, 2> nearest_points;
   /** @brief The nearest point on both links in local(link) coordinates */
-  std::array<Eigen::Vector3d,2> nearest_points_local;
+  std::array<Eigen::Vector3d, 2> nearest_points_local;
   /** @brief The transform of link in world coordinates */
-  std::array<Eigen::Isometry3d,2> transform;
+  std::array<Eigen::Isometry3d, 2> transform;
   /**
    * @brief The normal vector to move the two objects out of contact in world coordinates
    *
@@ -110,7 +110,7 @@ struct ContactResult
    */
   Eigen::Vector3d normal;
   /** @brief This is between 0 and 1 indicating the point of contact */
-  std::array<double,2> cc_time;
+  std::array<double, 2> cc_time;
   /** @brief The type of continuous contact */
   std::array<ContinuousCollisionType, 2> cc_type;
   /** @brief The transform of link in world coordinates at its desired final location.
@@ -118,7 +118,7 @@ struct ContactResult
    *       continuous collision checking. If you desire the location of contact use cc_time and interpolate between
    *       transform and cc_transform;
    */
-  std::array<Eigen::Isometry3d,2> cc_transform;
+  std::array<Eigen::Isometry3d, 2> cc_transform;
 
   /** @brief Some collision checkers only provide a single contact point for a given pair. This is used to indicate
    * if only one contact point is provided which means nearest_points[0] must equal nearest_points[1].
@@ -160,8 +160,10 @@ struct ContactResult
 using ContactResultVector = tesseract_common::AlignedVector<ContactResult>;
 using ContactResultMap = tesseract_common::AlignedMap<std::pair<std::string, std::string>, ContactResultVector>;
 #else
+// clang-format off
 tesseract_aligned_vector_using(ContactResultVector, tesseract_collision::ContactResult);
 tesseract_aligned_map_of_aligned_vector_using(ContactResultMap, %arg(std::pair<std::string,std::string>), tesseract_collision::ContactResult);
+// clang-format on
 #endif
 /**
  * @brief Should return true if contact results are valid, otherwise false.
@@ -174,10 +176,10 @@ using IsContactResultValidFn = std::function<bool(const ContactResult&)>;
 struct ContactRequest
 {
   /** @brief This controls the exit condition for the contact test type */
-  ContactTestType type = ContactTestType::ALL ;
+  ContactTestType type = ContactTestType::ALL;
 
   /** @brief This enables the calculation of penetration contact data if two objects are in collision */
-  bool calculate_penetration = true ;
+  bool calculate_penetration = true;
 
   /** @brief This enables the calculation of distance data if two objects are within the contact threshold */
   bool calculate_distance = true;
@@ -370,7 +372,7 @@ struct ContactTestData
   /** @brief Indicate if search is finished */
   bool done = false;
 };
-#endif // SWIG
+#endif  // SWIG
 
 /**
  * @brief High level descriptor used in planners and utilities to specify what kind of collision check is desired.

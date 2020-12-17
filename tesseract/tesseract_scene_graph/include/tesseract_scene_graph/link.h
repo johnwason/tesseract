@@ -60,7 +60,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 %template(tesseract_scene_graph_VisualVector) std::vector<std::shared_ptr<tesseract_scene_graph::Visual> >;
 %template(tesseract_scene_graph_CollisionVector) std::vector<std::shared_ptr<tesseract_scene_graph::Collision> >;
 
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_scene_graph
 {
@@ -91,7 +91,7 @@ private:
 
 #ifndef SWIG
 static auto DEFAULT_TESSERACT_MATERIAL = std::make_shared<Material>("default_tesseract_material");
-#endif // SWIG
+#endif  // SWIG
 
 class Inertial
 {
@@ -219,7 +219,7 @@ public:
     }
     return ret;
   }
-#endif // SWIG
+#endif  // SWIG
 
 private:
   std::string name_;

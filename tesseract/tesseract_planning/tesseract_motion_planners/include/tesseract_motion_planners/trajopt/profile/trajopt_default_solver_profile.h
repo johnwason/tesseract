@@ -31,7 +31,7 @@
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::TrajOptDefaultSolverProfile)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {

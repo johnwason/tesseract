@@ -196,12 +196,12 @@ public:
 
   /** @returns a writable expression of the translation vector of the transformation */
   inline TranslationPart translation() { return waypoint.translation(); }
-#else // SWIG
+#else   // SWIG
   Eigen::Matrix3d linear() const;
   Eigen::Matrix3d linear();
   Eigen::Vector3d translation() const;
   Eigen::Vector3d translation();
-#endif // SWIG
+#endif  // SWIG
 
   /** @returns true if two are approximate */
   inline bool isApprox(const Eigen::Isometry3d& other, double prec = 1e-12) { return waypoint.isApprox(other, prec); }

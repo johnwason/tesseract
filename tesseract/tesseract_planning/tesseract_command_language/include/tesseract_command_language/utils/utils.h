@@ -126,7 +126,7 @@ CompositeInstruction generateSkeletonSeed(const CompositeInstruction& composite_
 bool validateSeedStructure(const CompositeInstruction& composite_instructions,
                            const CompositeInstruction& composite_seed);
 
-#endif // SWIG
+#endif  // SWIG
 
 }  // namespace tesseract_planning
 

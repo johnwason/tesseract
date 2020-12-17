@@ -48,7 +48,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 %shared_ptr(tesseract_scene_graph::SRDFModel)
 
-#endif // SWIG
+#endif  // SWIG
 
 /// Main namespace
 namespace tesseract_scene_graph

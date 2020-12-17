@@ -5,5 +5,5 @@
 class SimpleResourceLocatorFnBase
 {
 public:
-    virtual std::string call(const std::string& a) = 0;
+  virtual std::string call(const std::string& a) = 0;
 };

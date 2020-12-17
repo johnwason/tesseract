@@ -40,7 +40,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 %shared_ptr(tesseract_common::GeneralStatusCategory)
 %shared_ptr(tesseract_common::StatusCode)
 
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_common
 {

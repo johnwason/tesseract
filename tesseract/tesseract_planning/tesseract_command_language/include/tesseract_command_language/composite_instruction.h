@@ -51,7 +51,6 @@ enum class CompositeInstructionOrder
 class CompositeInstruction
 {
 public:
-
   CompositeInstruction(std::string profile = DEFAULT_PROFILE_KEY,
                        CompositeInstructionOrder order = CompositeInstructionOrder::ORDERED,
                        ManipulatorInfo manipulator_info = ManipulatorInfo());
@@ -110,8 +109,10 @@ public:
 
 #ifndef SWIG
 
-  template< class InputIt >
-  CompositeInstruction(InputIt first, InputIt last) : container_(first,last) {}
+  template <class InputIt>
+  CompositeInstruction(InputIt first, InputIt last) : container_(first, last)
+  {
+  }
 
 #ifndef SWIG
   ///////////////
@@ -194,8 +195,11 @@ public:
   iterator insert(const_iterator p, const value_type& x);
   iterator insert(const_iterator p, value_type&& x);
   iterator insert(const_iterator p, std::initializer_list<value_type> l);
-  template< class InputIt >
-  void insert( iterator pos, InputIt first, InputIt last) { container_.insert(pos,first,last); }
+  template <class InputIt>
+  void insert(iterator pos, InputIt first, InputIt last)
+  {
+    container_.insert(pos, first, last);
+  }
 
   /** @brief constructs element in-place */
   template <class... Args>
@@ -221,7 +225,7 @@ public:
   /** @brief swaps the contents  */
   void swap(std::vector<value_type>& other);
 
-#endif // SWIG
+#endif  // SWIG
 
 #ifdef SWIG
   %ignore get_allocator;
@@ -235,7 +239,7 @@ public:
   %ignore CompositeInstruction(size_type, value_type const &); 
   %swig_vector_methods(tesseract_planning::CompositeInstruction)
   %std_vector_methods(CompositeInstruction)
-#endif // SWIG
+#endif  // SWIG
 
 private:
   std::vector<value_type> container_;
@@ -267,7 +271,6 @@ private:
   value_type start_instruction_{ NullInstruction() };
 
 public:
-
 #ifdef SWIG
 
   %extend
@@ -285,8 +288,7 @@ public:
     }
   }
 
-#endif // SWIG
-
+#endif  // SWIG
 };
 
 }  // namespace tesseract_planning

@@ -40,7 +40,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 %ignore std::vector<tesseract_planning::Instruction>::resize(size_type);
 %pythondynamic tesseract_planning::Instruction;
 %template(Instructions) std::vector<tesseract_planning::Instruction>;
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
@@ -163,7 +163,7 @@ struct InstructionInner final : InstructionInnerBase
 
 }  // namespace detail_instruction
 
-#endif // SWIG
+#endif  // SWIG
 
 class Instruction
 {
@@ -176,7 +176,6 @@ class Instruction
   using generic_ctor_enabler = std::enable_if_t<!std::is_same<Instruction, uncvref_t<T>>::value, int>;
 
 public:
-
   template <typename T, generic_ctor_enabler<T> = 0>
   Instruction(T&& instruction)  // NOLINT
     : instruction_(std::make_unique<detail_instruction::InstructionInner<uncvref_t<T>>>(instruction))
@@ -247,7 +246,7 @@ public:
   %template(cast_const_TimerInstruction) cast_const<tesseract_planning::TimerInstruction>;
   %template(cast_WaitInstruction) cast<tesseract_planning::WaitInstruction>;
   %template(cast_const_WaitInstruction) cast_const<tesseract_planning::WaitInstruction>;
-#endif // SWIG
+#endif  // SWIG
 
 private:
   std::unique_ptr<detail_instruction::InstructionInnerBase> instruction_;
@@ -262,6 +261,6 @@ private:
 %tesseract_erasure_ctor(Instruction,CompositeInstruction);
 %tesseract_erasure_ctor(Instruction,TimerInstruction);
 %tesseract_erasure_ctor(Instruction,WaitInstruction);
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_COMMAND_LANGUAGE_INSTRUCTION_H

@@ -38,7 +38,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::OMPLPlanProfile)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
@@ -97,6 +97,6 @@ using OMPLPlanProfileMap = std::unordered_map<std::string, OMPLPlanProfile::Cons
 
 #ifdef SWIG
 %template(OMPLPlanProfileMap) std::unordered_map<std::string, std::shared_ptr<const tesseract_planning::OMPLPlanProfile>>;
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_OMPL_OMPL_PROFILE_H

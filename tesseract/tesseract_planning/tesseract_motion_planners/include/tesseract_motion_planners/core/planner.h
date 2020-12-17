@@ -76,7 +76,6 @@ public:
 
   /** @brief Clone the motion planner */
   virtual MotionPlanner::Ptr clone() const = 0;
-
 };
 }  // namespace tesseract_planning
 #endif  // TESSERACT_PLANNING_PLANNER_H

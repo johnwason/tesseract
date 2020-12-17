@@ -43,7 +43,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract::Tesseract)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract
 {
@@ -108,7 +108,7 @@ public:
   tesseract_environment::ManipulatorManager::Ptr getManipulatorManager();
   DEPRECATED("Please use getEnvironment->getManipulatorManager()")
   tesseract_environment::ManipulatorManager::ConstPtr getManipulatorManager() const;
-#endif // SWIG
+#endif  // SWIG
 
   /**
    * @brief Find tool center point provided in the manipulator info

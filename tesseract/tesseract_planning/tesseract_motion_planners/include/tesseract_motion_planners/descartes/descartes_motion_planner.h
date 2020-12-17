@@ -24,19 +24,18 @@ using DescartesProblemGeneratorFn =
                                                                const PlannerRequest&,
                                                                const DescartesPlanProfileMap<FloatType>&)>;
 
-    using DescartesProblemGeneratorFnD = DescartesProblemGeneratorFn<double>;
-    using DescartesProblemGeneratorFnF = DescartesProblemGeneratorFn<float>;
+using DescartesProblemGeneratorFnD = DescartesProblemGeneratorFn<double>;
+using DescartesProblemGeneratorFnF = DescartesProblemGeneratorFn<float>;
 
-} // namespace tesseract_planning
+}  // namespace tesseract_planning
 
 #ifdef SWIG
 %template(DescartesProblemGeneratorFnD) tesseract_planning::DescartesProblemGeneratorFn<double>;
 %shared_ptr(tesseract_planning::DescartesMotionPlannerD);
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
-
 template <typename FloatType>
 class DescartesMotionPlanner : public MotionPlanner
 {
@@ -102,6 +101,6 @@ using DescartesMotionPlannerF = DescartesMotionPlanner<float>;
 
 #ifdef SWIG
 %template(DescartesMotionPlannerD) tesseract_planning::DescartesMotionPlanner<double>;
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_DECARTES_MOTION_PLANNER_H

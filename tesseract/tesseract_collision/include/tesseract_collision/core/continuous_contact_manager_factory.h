@@ -31,11 +31,10 @@
 
 #ifdef SWIG
 %shared_ptr(tesseract_collision::ContinuousContactManagerFactory)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_collision
 {
-
 using ContinuousContactManagerFactory_CreateMethod = std::function<ContinuousContactManager::Ptr()>;
 class ContinuousContactManagerFactory
 {

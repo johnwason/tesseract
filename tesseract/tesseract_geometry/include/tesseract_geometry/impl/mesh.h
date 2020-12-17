@@ -39,13 +39,13 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #ifdef SWIG
 %shared_ptr(tesseract_geometry::Mesh)
 %template(MeshVector) std::vector<std::shared_ptr<tesseract_geometry::Mesh> >;
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_geometry
 {
 #ifdef SWIG
 %nodefaultctor Mesh;
-#endif // SWIG
+#endif  // SWIG
 
 class Mesh : public Geometry
 {
@@ -116,7 +116,7 @@ public:
     assert((triangle_count_ * 4) == triangles_->size());
   }
 
-#endif // SWIG
+#endif  // SWIG
 
 #ifdef SWIG
   %extend
@@ -131,7 +131,7 @@ public:
         resource, scale);
     }
   }
-#endif // SWIG
+#endif  // SWIG
 
   ~Mesh() override = default;
   Mesh(const Mesh&) = delete;
@@ -153,20 +153,16 @@ public:
    */
   const std::shared_ptr<const Eigen::VectorXi>& getTriangles() const { return triangles_; }
 
-#else // SWIG
-  %extend {
+#else   // SWIG
+  //clang-format off
+  %extend
+  {
+    tesseract_common::VectorVector3d getVertices() { return *$self->getVertices(); }
 
-    tesseract_common::VectorVector3d getVertices()
-    {
-      return *$self->getVertices();
-    }
-
-    Eigen::VectorXi getTriangles()
-    {
-      return *$self->getTriangles();
-    }
+    Eigen::VectorXi getTriangles() { return *$self->getTriangles(); }
   }
-#endif // SWIG
+  // clang-format on
+#endif  // SWIG
 
   /**
    * @brief Get vertice count

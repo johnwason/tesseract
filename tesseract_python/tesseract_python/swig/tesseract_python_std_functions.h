@@ -5,5 +5,5 @@
 class FindTCPCallbackFnBase
 {
 public:
-    virtual Eigen::Isometry3d call(const tesseract_planning::ManipulatorInfo& a) = 0;
-}; 
+  virtual Eigen::Isometry3d call(const tesseract_planning::ManipulatorInfo& a) = 0;
+};

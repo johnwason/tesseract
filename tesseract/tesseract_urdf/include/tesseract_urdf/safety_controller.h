@@ -35,7 +35,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_urdf::SafetyStatusCategory)
-#endif // SWIG
+#endif  // SWIG
 
 #include <tesseract_scene_graph/joint.h>
 

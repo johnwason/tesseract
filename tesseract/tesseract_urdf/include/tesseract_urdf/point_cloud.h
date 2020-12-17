@@ -41,7 +41,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_urdf::PointCloudStatusCategory)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_urdf
 {

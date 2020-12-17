@@ -319,13 +319,13 @@ std::vector<std::shared_ptr<T>> createMeshFromResource(tesseract_common::Resourc
  * do not flatten collision meshes.
  * @return
  */
-template<typename T>
-static std::vector<std::shared_ptr<T> > createMeshFromBytes(const std::string& url,
-                                                                      const uint8_t* bytes,
-                                                                      size_t bytes_len,
-                                                                      Eigen::Vector3d scale = Eigen::Vector3d(1, 1, 1),
-                                                                      bool triangulate = false,
-                                                                      bool flatten = false)
+template <typename T>
+static std::vector<std::shared_ptr<T>> createMeshFromBytes(const std::string& url,
+                                                           const uint8_t* bytes,
+                                                           size_t bytes_len,
+                                                           Eigen::Vector3d scale = Eigen::Vector3d(1, 1, 1),
+                                                           bool triangulate = false,
+                                                           bool flatten = false)
 {
   std::shared_ptr<tesseract_common::Resource> resource =
       std::make_shared<tesseract_common::BytesResource>(url, bytes, bytes_len);

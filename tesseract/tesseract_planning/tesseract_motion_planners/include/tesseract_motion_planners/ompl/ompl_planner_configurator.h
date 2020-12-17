@@ -58,7 +58,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 %ignore create(ompl::base::SpaceInformationPtr si) const;
 
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
@@ -98,11 +98,11 @@ struct OMPLPlannerConfigurator
 
   virtual tinyxml2::XMLElement* toXML(tinyxml2::XMLDocument& doc) const = 0;
 };
-}
+}  // namespace tesseract_planning
 
 #ifdef SWIG
 %template(OMPLPlanners) std::vector<tesseract_planning::OMPLPlannerConfigurator::ConstPtr>;
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
@@ -507,6 +507,6 @@ struct SPARSConfigurator : public OMPLPlannerConfigurator
   tesseract_planning::LazyPRMstarConfigurator,
   tesseract_planning::SPARSConfigurator
 )
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_OMPL_PLANNER_CONFIGURATOR_H

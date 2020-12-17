@@ -36,7 +36,7 @@
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::TrajectoryValidator)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {

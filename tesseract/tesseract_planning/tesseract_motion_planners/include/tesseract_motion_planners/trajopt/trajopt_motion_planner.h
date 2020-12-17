@@ -36,7 +36,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::TrajOptMotionPlannerStatusCategory)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
@@ -111,7 +111,7 @@ public:
 
 protected:
 #ifndef SWIG
-  std::string name_ { "TRAJOPT" };
+  std::string name_{ "TRAJOPT" };
   std::shared_ptr<const TrajOptMotionPlannerStatusCategory> status_category_; /** @brief The planners status codes */
 #endif
 };

@@ -39,8 +39,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 %shared_ptr(tesseract_scene_graph::ResourceLocator)
 %shared_ptr(tesseract_scene_graph::SimpleResourceLocator)
 %shared_ptr(tesseract_scene_graph::SimpleLocatedResource)
-#endif // SWIG
-
+#endif  // SWIG
 
 namespace tesseract_scene_graph
 {
@@ -75,7 +74,7 @@ class SimpleResourceLocator : public ResourceLocator
 public:
   using Ptr = std::shared_ptr<SimpleResourceLocator>;
   using ConstPtr = std::shared_ptr<const SimpleResourceLocator>;
-  
+
   /**
    * @brief Construct a new Simple Resource Locator object
    *

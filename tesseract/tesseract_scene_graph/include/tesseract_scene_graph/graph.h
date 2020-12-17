@@ -50,7 +50,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 %template(LinkConstVector) std::vector<std::shared_ptr<tesseract_scene_graph::Link const> >;
 %template(JointConstVector) std::vector<std::shared_ptr<tesseract_scene_graph::Joint const> >;
 
-#endif // SWIG
+#endif  // SWIG
 
 #ifndef SWIG
 
@@ -85,11 +85,10 @@ BOOST_INSTALL_PROPERTY(edge, joint);
 BOOST_INSTALL_PROPERTY(graph, root);
 }  // namespace boost
 
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_scene_graph
 {
-
 #ifndef SWIG
 
 /** @brief Defines the boost graph property. */
@@ -112,12 +111,12 @@ using EdgeProperty = boost::property<boost::edge_joint_t, Joint::Ptr, boost::pro
 using Graph = boost::
     adjacency_list<boost::listS, boost::listS, boost::bidirectionalS, VertexProperty, EdgeProperty, GraphProperty>;
 
-#endif // SWIG
+#endif  // SWIG
 
-class SceneGraph 
+class SceneGraph
 #ifndef SWIG
   : public Graph
-#endif // SWIG
+#endif  // SWIG
 {
 public:
   /**
@@ -198,7 +197,7 @@ public:
    */
   bool addLink(Link link, Joint joint);
 
-#endif // SWIG
+#endif  // SWIG
 
   /**
    * @brief Get a link in the graph
@@ -257,7 +256,7 @@ public:
    */
   bool addJoint(Joint joint);
 
-#endif // SWIG
+#endif  // SWIG
 
   /**
    * @brief Get a joint in the graph
@@ -490,7 +489,7 @@ public:
   bool insertSceneGraph(const tesseract_scene_graph::SceneGraph& scene_graph,
                         tesseract_scene_graph::Joint joint,
                         const std::string& prefix = "");
-#endif // SWIG
+#endif  // SWIG
 
 protected:
   /**
@@ -664,6 +663,6 @@ inline std::ostream& operator<<(std::ostream& os, const SceneGraph::Path& path)
     return $self->insertSceneGraph(scene_graph,std::move(joint->clone()),prefix);
   }
 }
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_SCENE_GRAPH_GRAPH_H

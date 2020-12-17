@@ -46,7 +46,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 %shared_ptr(tesseract_environment::AdjacencyMapPair)
 %shared_ptr(tesseract_environment::AdjacencyMap)
 
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_environment
 {

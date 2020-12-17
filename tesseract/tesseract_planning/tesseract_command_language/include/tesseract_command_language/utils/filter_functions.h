@@ -69,7 +69,7 @@ static locateFilterFn planFilter =
       }
       return false;
     };
-#endif // SWIG
+#endif  // SWIG
 
 }  // namespace tesseract_planning
 

@@ -181,8 +181,10 @@ inline void runTestPrimitive(ContinuousContactManager& checker)
   EXPECT_NEAR(result_vector[0].cc_time[static_cast<size_t>(idx[0])], 0.5, 0.001);
   EXPECT_NEAR(result_vector[0].cc_time[static_cast<size_t>(idx[1])], 0.5, 0.001);
 
-  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] == ContinuousCollisionType::CCType_Between);
-  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] == ContinuousCollisionType::CCType_Between);
+  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] ==
+              ContinuousCollisionType::CCType_Between);
+  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] ==
+              ContinuousCollisionType::CCType_Between);
 
   EXPECT_NEAR(result_vector[0].nearest_points[static_cast<size_t>(idx[0])][0], 0.05, 0.001);
   EXPECT_NEAR(result_vector[0].nearest_points[static_cast<size_t>(idx[0])][1], 0.0, 0.001);
@@ -202,7 +204,8 @@ inline void runTestPrimitive(ContinuousContactManager& checker)
   EXPECT_TRUE(result_vector[0].transform[static_cast<size_t>(idx[0])].isApprox(location_start["sphere_link"], 0.0001));
   EXPECT_TRUE(result_vector[0].transform[static_cast<size_t>(idx[1])].isApprox(location_start["sphere1_link"], 0.0001));
   EXPECT_TRUE(result_vector[0].cc_transform[static_cast<size_t>(idx[0])].isApprox(location_end["sphere_link"], 0.0001));
-  EXPECT_TRUE(result_vector[0].cc_transform[static_cast<size_t>(idx[1])].isApprox(location_end["sphere1_link"], 0.0001));
+  EXPECT_TRUE(
+      result_vector[0].cc_transform[static_cast<size_t>(idx[1])].isApprox(location_end["sphere1_link"], 0.0001));
 
   EXPECT_NEAR(result_vector[0].normal[0], idx[2] * 1.0, 0.001);
   EXPECT_NEAR(result_vector[0].normal[1], idx[2] * 0.0, 0.001);
@@ -249,8 +252,10 @@ inline void runTestPrimitive(ContinuousContactManager& checker)
   EXPECT_NEAR(result_vector[0].cc_time[static_cast<size_t>(idx[0])], 0.3333, 0.001);
   EXPECT_NEAR(result_vector[0].cc_time[static_cast<size_t>(idx[1])], 0.5, 0.001);
 
-  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] == ContinuousCollisionType::CCType_Between);
-  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[1]))] == ContinuousCollisionType::CCType_Between);
+  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] ==
+              ContinuousCollisionType::CCType_Between);
+  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[1]))] ==
+              ContinuousCollisionType::CCType_Between);
 
   EXPECT_NEAR(result_vector[0].nearest_points[static_cast<size_t>(idx[0])][0], 0.05, 0.001);
   EXPECT_NEAR(result_vector[0].nearest_points[static_cast<size_t>(idx[0])][1], 0.0, 0.001);
@@ -270,7 +275,8 @@ inline void runTestPrimitive(ContinuousContactManager& checker)
   EXPECT_TRUE(result_vector[0].transform[static_cast<size_t>(idx[0])].isApprox(location_start["sphere_link"], 0.0001));
   EXPECT_TRUE(result_vector[0].transform[static_cast<size_t>(idx[1])].isApprox(location_start["sphere1_link"], 0.0001));
   EXPECT_TRUE(result_vector[0].cc_transform[static_cast<size_t>(idx[0])].isApprox(location_end["sphere_link"], 0.0001));
-  EXPECT_TRUE(result_vector[0].cc_transform[static_cast<size_t>(idx[1])].isApprox(location_end["sphere1_link"], 0.0001));
+  EXPECT_TRUE(
+      result_vector[0].cc_transform[static_cast<size_t>(idx[1])].isApprox(location_end["sphere1_link"], 0.0001));
 
   EXPECT_NEAR(result_vector[0].normal[0], idx[2] * 1.0, 0.001);
   EXPECT_NEAR(result_vector[0].normal[1], idx[2] * 0.0, 0.001);
@@ -325,8 +331,10 @@ inline void runTestConvex(ContinuousContactManager& checker)
   EXPECT_NEAR(result_vector[0].cc_time[static_cast<size_t>(idx[0])], 0.5, 0.001);
   EXPECT_NEAR(result_vector[0].cc_time[static_cast<size_t>(idx[1])], 0.5, 0.001);
 
-  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] == ContinuousCollisionType::CCType_Between);
-  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] == ContinuousCollisionType::CCType_Between);
+  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] ==
+              ContinuousCollisionType::CCType_Between);
+  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] ==
+              ContinuousCollisionType::CCType_Between);
 
   EXPECT_NEAR(result_vector[0].nearest_points[static_cast<size_t>(idx[0])][0], 0.0377, 0.001);
   EXPECT_NEAR(result_vector[0].nearest_points[static_cast<size_t>(idx[0])][1], 0.0, 0.001);
@@ -346,7 +354,8 @@ inline void runTestConvex(ContinuousContactManager& checker)
   EXPECT_TRUE(result_vector[0].transform[static_cast<size_t>(idx[0])].isApprox(location_start["sphere_link"], 0.0001));
   EXPECT_TRUE(result_vector[0].transform[static_cast<size_t>(idx[1])].isApprox(location_start["sphere1_link"], 0.0001));
   EXPECT_TRUE(result_vector[0].cc_transform[static_cast<size_t>(idx[0])].isApprox(location_end["sphere_link"], 0.0001));
-  EXPECT_TRUE(result_vector[0].cc_transform[static_cast<size_t>(idx[1])].isApprox(location_end["sphere1_link"], 0.0001));
+  EXPECT_TRUE(
+      result_vector[0].cc_transform[static_cast<size_t>(idx[1])].isApprox(location_end["sphere1_link"], 0.0001));
 
   EXPECT_NEAR(result_vector[0].normal[0], idx[2] * 1.0, 0.001);
   EXPECT_NEAR(result_vector[0].normal[1], idx[2] * 0.0, 0.001);
@@ -393,8 +402,10 @@ inline void runTestConvex(ContinuousContactManager& checker)
   EXPECT_NEAR(result_vector[0].cc_time[static_cast<size_t>(idx[0])], 0.3848, 0.001);
   EXPECT_NEAR(result_vector[0].cc_time[static_cast<size_t>(idx[1])], 0.5, 0.001);
 
-  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] == ContinuousCollisionType::CCType_Between);
-  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[1]))] == ContinuousCollisionType::CCType_Between);
+  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[0]))] ==
+              ContinuousCollisionType::CCType_Between);
+  EXPECT_TRUE(result_vector[0].cc_type[static_cast<size_t>(static_cast<size_t>(idx[1]))] ==
+              ContinuousCollisionType::CCType_Between);
 
   EXPECT_NEAR(result_vector[0].nearest_points[static_cast<size_t>(idx[0])][0], 0.0377, 0.001);
   EXPECT_NEAR(result_vector[0].nearest_points[static_cast<size_t>(idx[0])][1], 0.0772, 0.001);
@@ -414,7 +425,8 @@ inline void runTestConvex(ContinuousContactManager& checker)
   EXPECT_TRUE(result_vector[0].transform[static_cast<size_t>(idx[0])].isApprox(location_start["sphere_link"], 0.0001));
   EXPECT_TRUE(result_vector[0].transform[static_cast<size_t>(idx[1])].isApprox(location_start["sphere1_link"], 0.0001));
   EXPECT_TRUE(result_vector[0].cc_transform[static_cast<size_t>(idx[0])].isApprox(location_end["sphere_link"], 0.0001));
-  EXPECT_TRUE(result_vector[0].cc_transform[static_cast<size_t>(idx[1])].isApprox(location_end["sphere1_link"], 0.0001));
+  EXPECT_TRUE(
+      result_vector[0].cc_transform[static_cast<size_t>(idx[1])].isApprox(location_end["sphere1_link"], 0.0001));
 
   EXPECT_NEAR(result_vector[0].normal[0], idx[2] * 1.0, 0.001);
   EXPECT_NEAR(result_vector[0].normal[1], idx[2] * 0.0, 0.001);

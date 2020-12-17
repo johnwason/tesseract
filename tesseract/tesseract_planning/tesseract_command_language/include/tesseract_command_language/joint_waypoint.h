@@ -268,7 +268,7 @@ public:
   // Cartesian Waypoint Container //
   //////////////////////////////////
 
-#endif // SWIG
+#endif  // SWIG
 
   Eigen::VectorXd waypoint;
   std::vector<std::string> joint_names;
@@ -283,6 +283,6 @@ public:
   }
 }
 
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_COMMAND_LANGUAGE_JOINT_WAYPOINT_H

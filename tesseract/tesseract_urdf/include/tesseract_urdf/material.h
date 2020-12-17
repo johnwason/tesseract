@@ -40,7 +40,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_urdf::MaterialStatusCategory)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_urdf
 {

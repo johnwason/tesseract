@@ -38,7 +38,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #ifdef SWIG
 %shared_ptr(tesseract_planning::SimplePlannerPlanProfile)
 %shared_ptr(tesseract_planning::SimplePlannerPlanCompositeProfile)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
@@ -100,6 +100,6 @@ using SimplePlannerCompositeProfileMap = std::unordered_map<std::string, SimpleP
 #ifdef SWIG
 %template(SimplePlannerPlanProfileMap) std::unordered_map<std::string, tesseract_planning::SimplePlannerPlanProfile::ConstPtr>;
 %template(SimplePlannerCompositeProfileMap) std::unordered_map<std::string, tesseract_planning::SimplePlannerCompositeProfile::ConstPtr>;
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_SIMPLE_PROFILE_H

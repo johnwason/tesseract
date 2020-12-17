@@ -55,6 +55,6 @@
 %include "tesseract_command_language/waypoint_type.h"
 %include "tesseract_command_language/timer_instruction.h"
 %include "tesseract_command_language/wait_instruction.h"
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_COMMAND_LANGUAGE_WAYPOINT_TYPE_H

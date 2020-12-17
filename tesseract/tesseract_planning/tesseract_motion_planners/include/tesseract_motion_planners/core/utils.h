@@ -628,7 +628,7 @@ inline bool DEPRECATED("Please use overload with CollisionCheckConfig")
   return contactCheckProgram(contacts, manager, state_solver, program, config);
 }
 
-#endif // SWIG
+#endif  // SWIG
 
 /**
  * @brief This generates a naive seed for the provided program

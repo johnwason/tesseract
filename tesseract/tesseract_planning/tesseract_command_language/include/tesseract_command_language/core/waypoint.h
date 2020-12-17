@@ -37,7 +37,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 //%template(Waypoints) std::vector<tesseract_planning::Waypoint>;
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
@@ -125,7 +125,7 @@ struct WaypointInner final : WaypointInnerBase
 };
 
 }  // namespace detail_waypoint
-#endif // SWIG
+#endif  // SWIG
 
 class Waypoint
 {
@@ -138,7 +138,6 @@ class Waypoint
   using generic_ctor_enabler = std::enable_if_t<!std::is_same<Waypoint, uncvref_t<T>>::value, int>;
 
 public:
-
   template <typename T, generic_ctor_enabler<T> = 0>
   Waypoint(T&& waypoint)  // NOLINT
     : waypoint_(std::make_unique<detail_waypoint::WaypointInner<uncvref_t<T>>>(waypoint))
@@ -201,7 +200,7 @@ public:
   %template(cast_const_CartesianWaypoint) cast_const<tesseract_planning::CartesianWaypoint>;
   %template(cast_StateWaypoint) cast<tesseract_planning::StateWaypoint>;
   %template(cast_const_StateWaypoint) cast_const<tesseract_planning::StateWaypoint>;
-#endif // SWIG
+#endif  // SWIG
 
 private:
   std::unique_ptr<detail_waypoint::WaypointInnerBase> waypoint_;
@@ -214,6 +213,6 @@ private:
 %tesseract_erasure_ctor(Waypoint,JointWaypoint);
 %tesseract_erasure_ctor(Waypoint,NullWaypoint);
 %tesseract_erasure_ctor(Waypoint,StateWaypoint);
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_COMMAND_LANGUAGE_WAYPOINT_H

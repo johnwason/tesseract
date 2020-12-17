@@ -55,8 +55,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 %shared_ptr(tesseract_scene_graph::Joint)
 %shared_ptr(tesseract_scene_graph::Link)
 
-#endif // SWIG
-
+#endif  // SWIG
 
 namespace tesseract_scene_graph
 {
@@ -344,7 +343,7 @@ public:
     }
     return ret;
   }
-#endif // SWIG
+#endif  // SWIG
 
 private:
   std::string name_;

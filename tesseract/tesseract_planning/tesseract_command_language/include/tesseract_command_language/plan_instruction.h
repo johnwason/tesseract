@@ -51,7 +51,6 @@ enum class PlanInstructionType : int
 class PlanInstruction
 {
 public:
-
   PlanInstruction(Waypoint waypoint,
                   PlanInstructionType type,
                   std::string profile = DEFAULT_PROFILE_KEY,

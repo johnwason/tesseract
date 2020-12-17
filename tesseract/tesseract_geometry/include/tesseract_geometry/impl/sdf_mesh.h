@@ -39,13 +39,13 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #ifdef SWIG
 %shared_ptr(tesseract_geometry::SDFMesh)
 %template(SDFMeshVector) std::vector<std::shared_ptr<tesseract_geometry::SDFMesh> >;
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_geometry
 {
 #ifdef SWIG
 %nodefaultctor SDFMesh;
-#endif // SWIG
+#endif  // SWIG
 
 class SDFMesh : public Geometry
 {
@@ -129,7 +129,7 @@ public:
         resource, scale);
     }
   }
-#endif // SWIG
+#endif  // SWIG
 
   ~SDFMesh() override = default;
   SDFMesh(const SDFMesh&) = delete;
@@ -149,20 +149,16 @@ public:
    * @return A vector of triangle indices
    */
   const std::shared_ptr<const Eigen::VectorXi>& getTriangles() const { return triangles_; }
-#else // SWIG
-  %extend {
+#else   // SWIG
+  // clang-format off
+  %extend
+  {
+    tesseract_common::VectorVector3d getVertices() { return *$self->getVertices(); }
 
-    tesseract_common::VectorVector3d getVertices()
-    {
-      return *$self->getVertices();
-    }
-
-    Eigen::VectorXi getTriangles()
-    {
-      return *$self->getTriangles();
-    }
+    Eigen::VectorXi getTriangles() { return *$self->getTriangles(); }
   }
-#endif // SWIG
+  // clang-format on
+#endif  // SWIG
 
   /**
    * @brief Get vertice count

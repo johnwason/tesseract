@@ -41,12 +41,12 @@ namespace tesseract_planning
 {
 /** @brief Provided for backwards compatibility */
 CompositeInstruction generateSeed(const CompositeInstruction& instructions,
-                                         const tesseract_environment::EnvState::ConstPtr& current_state,
-                                         const tesseract::Tesseract::ConstPtr& tesseract,
-                                         double state_longest_valid_segment_length = 5 * M_PI / 180,
-                                         double translation_longest_valid_segment_length = 0.15,
-                                         double rotation_longest_valid_segment_length = 5 * M_PI / 180,
-                                         int min_steps = 1)
+                                  const tesseract_environment::EnvState::ConstPtr& current_state,
+                                  const tesseract::Tesseract::ConstPtr& tesseract,
+                                  double state_longest_valid_segment_length = 5 * M_PI / 180,
+                                  double translation_longest_valid_segment_length = 0.15,
+                                  double rotation_longest_valid_segment_length = 5 * M_PI / 180,
+                                  int min_steps = 1)
 {
   // Fill out request and response
   PlannerRequest request;

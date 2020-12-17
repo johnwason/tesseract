@@ -46,7 +46,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_environment::Environment)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_environment
 {
@@ -319,7 +319,7 @@ public:
    * @return Return False if a link with the same name allready exists, otherwise true
    */
   virtual bool addLink(tesseract_scene_graph::Link link, tesseract_scene_graph::Joint joint);
-#endif // SWIG
+#endif  // SWIG
   /**
    * @brief Removes a link from the environment
    *
@@ -340,7 +340,7 @@ public:
    * @return Return False if a link does not exists or has no parent joint, otherwise true
    */
   virtual bool moveLink(tesseract_scene_graph::Joint joint);
-#endif // SWIG
+#endif  // SWIG
   /**
    * @brief Get a link in the environment
    * @param name The name of the link
@@ -633,7 +633,7 @@ public:
   virtual bool addSceneGraph(const tesseract_scene_graph::SceneGraph& scene_graph,
                              tesseract_scene_graph::Joint joint,
                              const std::string& prefix = "");
-#endif // SWIG
+#endif  // SWIG
 
 protected:
   bool initialized_{ false }; /**< Identifies if the object has been initialized */
@@ -705,7 +705,6 @@ private:
   }
 
 }
-#endif // SWIG
-
+#endif  // SWIG
 
 #endif  // TESSERACT_ENVIRONMENT_ENVIRONMENT_H

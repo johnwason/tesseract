@@ -37,13 +37,13 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_geometry::Octree)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_geometry
 {
 #ifdef SWIG
 %nodefaultctor Octree;
-#endif // SWIG
+#endif  // SWIG
 class Octree : public Geometry
 {
 public:
@@ -77,7 +77,7 @@ public:
 
     octree_ = ot;
   }
-#endif // SWIG
+#endif  // SWIG
 
   ~Octree() override = default;
   Octree(const Octree&) = delete;
@@ -87,7 +87,7 @@ public:
 
 #ifndef SWIG
   const std::shared_ptr<const octomap::OcTree>& getOctree() const { return octree_; }
-#endif // SWIG
+#endif  // SWIG
   SubType getSubType() const { return sub_type_; }
 
   Geometry::Ptr clone() const override { return std::make_shared<Octree>(octree_, sub_type_); }
@@ -196,7 +196,6 @@ private:
   }
 
 public:
-
 #ifndef SWIG
   /**
    * @brief A custom octree prune which will prune if all children are above the occupency threshold.
@@ -219,7 +218,7 @@ public:
         break;
     }
   }
-#endif // SWIG
+#endif  // SWIG
 };
 }  // namespace tesseract_geometry
 #endif

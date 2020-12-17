@@ -89,7 +89,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 %template(Commands) std::vector<tesseract_environment::Command::ConstPtr>;
 
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_environment
 {

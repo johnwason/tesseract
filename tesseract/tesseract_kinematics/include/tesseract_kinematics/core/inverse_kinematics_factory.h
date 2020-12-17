@@ -31,7 +31,7 @@
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::InverseKinematicsFactory)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_kinematics
 {

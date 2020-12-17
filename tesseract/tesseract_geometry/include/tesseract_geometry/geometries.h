@@ -64,6 +64,6 @@
 %include <tesseract_geometry/impl/octree.h>
 %include <tesseract_geometry/impl/sdf_mesh.h>
 
-#endif // SWIG
+#endif  // SWIG
 
 #endif

@@ -40,7 +40,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 %shared_ptr(tesseract_planning::DescartesDefaultPlanProfile<double>)
 %ignore tesseract_planning::DescartesDefaultPlanProfile::edge_evaluator;
 %ignore tesseract_planning::DescartesDefaultPlanProfile::is_valid;
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
@@ -63,7 +63,7 @@ public:
   PoseSamplerFn target_pose_sampler = [](const Eigen::Isometry3d& tool_pose) {
     return tesseract_common::VectorIsometry3d({ tool_pose });
   };
-#endif // SWIG
+#endif  // SWIG
 
 #ifndef SWIG
   DescartesEdgeEvaluatorAllocatorFn<FloatType> edge_evaluator{ nullptr };
@@ -108,6 +108,6 @@ using DescartesDefaultPlanProfileD = DescartesDefaultPlanProfile<double>;
 
 #ifdef SWIG
 %template(DescartesDefaultPlanProfileD) tesseract_planning::DescartesDefaultPlanProfile<double>;
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_DESCARTES_DESCARTES_DEFAULT_PLAN_PROFILE_H

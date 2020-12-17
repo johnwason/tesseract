@@ -47,7 +47,7 @@
 
 #ifdef SWIG
 %shared_ptr(tesseract_collision::tesseract_collision_fcl::FCLDiscreteBVHManager)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_collision
 {
@@ -128,7 +128,7 @@ public:
    * @param cow The tesseract fcl collision object
    */
   void addCollisionObject(COW::Ptr cow);
-#endif // SWIG
+#endif  // SWIG
 
 private:
   /** @brief Broadphase Collision Manager for active collision objects */

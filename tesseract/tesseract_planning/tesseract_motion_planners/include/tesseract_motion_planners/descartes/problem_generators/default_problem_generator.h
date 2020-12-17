@@ -314,6 +314,6 @@ DefaultDescartesProblemGenerator(const std::string& name,
 
 #ifdef SWIG
 %template(DefaultDescartesProblemGeneratorD) tesseract_planning::DefaultDescartesProblemGenerator<double>;
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_DEFAULT_PROBLEM_GENERATOR_H

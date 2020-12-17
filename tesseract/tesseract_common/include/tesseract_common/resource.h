@@ -41,7 +41,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 %pybuffer_binary(const uint8_t* bytes, size_t bytes_len);
 %shared_ptr(tesseract_common::BytesResource)
 
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_common
 {

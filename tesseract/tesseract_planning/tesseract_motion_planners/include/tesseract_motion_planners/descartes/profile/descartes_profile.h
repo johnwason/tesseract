@@ -39,7 +39,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
 %shared_ptr(tesseract_planning::DescartesPlanProfile<double>)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
@@ -82,7 +82,7 @@ using DescartesPlanProfileMapD = DescartesPlanProfileMap<double>;
 using DescartesPlanProfileMapF = DescartesPlanProfileMap<float>;
 #else
 using DescartesPlanProfileMapD = std::unordered_map<std::string, std::shared_ptr<const DescartesPlanProfile<double>>>;
-#endif // SWIG
+#endif  // SWIG
 
 /** @todo Currently descartes does not have support of composite profile everything is handled by the plan profile */
 }  // namespace tesseract_planning
@@ -90,6 +90,6 @@ using DescartesPlanProfileMapD = std::unordered_map<std::string, std::shared_ptr
 #ifdef SWIG
 %template(DescartesPlanProfileD) std::shared_ptr<tesseract_planning::DescartesPlanProfile<double> >;
 %template(DescartesPlanProfileMapD) std::unordered_map<std::string, std::shared_ptr<const tesseract_planning::DescartesPlanProfile<double>>>;
-#endif // SWIG
+#endif  // SWIG
 
 #endif  // TESSERACT_MOTION_PLANNERS_DESCARTES_DESCARTES_PROFILE_H

@@ -39,7 +39,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #ifdef SWIG
 %shared_ptr(tesseract_planning::SimpleMotionPlanner)
 %shared_ptr(tesseract_planning::SimpleMotionPlannerStatusCategory)
-#endif // SWIG
+#endif  // SWIG
 
 namespace tesseract_planning
 {
