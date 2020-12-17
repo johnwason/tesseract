@@ -40,7 +40,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 namespace tesseract_planning
 {
 /** @brief Provided for backwards compatibility */
-CompositeInstruction generateSeed(const CompositeInstruction& instructions,
+static CompositeInstruction generateSeed(const CompositeInstruction& instructions,
                                   const tesseract_environment::EnvState::ConstPtr& current_state,
                                   const tesseract::Tesseract::ConstPtr& tesseract,
                                   double state_longest_valid_segment_length = 5 * M_PI / 180,
