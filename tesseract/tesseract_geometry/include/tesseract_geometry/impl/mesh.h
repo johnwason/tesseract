@@ -154,7 +154,7 @@ public:
   const std::shared_ptr<const Eigen::VectorXi>& getTriangles() const { return triangles_; }
 
 #else   // SWIG
-  //clang-format off
+  // clang-format off
   %extend
   {
     tesseract_common::VectorVector3d getVertices() { return *$self->getVertices(); }
