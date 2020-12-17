@@ -20,25 +20,38 @@ else()
 endif()
 
 find_package(cmake_common_scripts REQUIRED)
-find_package(trajopt REQUIRED)
 find_package(tesseract REQUIRED)
 find_package(tesseract_motion_planners REQUIRED)
 find_package(tesseract_common REQUIRED)
 find_package(tesseract_geometry REQUIRED)
 find_package(tesseract_visualization REQUIRED)
 find_package(tesseract_collision REQUIRED)
-find_package(tesseract_time_parameterization REQUIRED)
+find_package(tesseract_urdf REQUIRED)
 find_package(tesseract_kinematics REQUIRED)
+find_package(tesseract_environment REQUIRED)
+find_package(tesseract_scene_graph REQUIRED)
+find_package(tesseract_command_language REQUIRED)
+find_package(tesseract_time_parameterization REQUIRED)
 find_package(PCL REQUIRED COMPONENTS core features filters io segmentation surface)
 find_package(trajopt REQUIRED)
 find_package(TinyXML2 REQUIRED)
+find_package(opw_kinematics REQUIRED)
 
 include_directories(
+  ${trajopt_INCLUDE_DIRS} 
   ${tesseract_INCLUDE_DIRS} 
   ${tesseract_common_INCLUDE_DIRS}
   ${tesseract_geometry_INCLUDE_DIRS}
   ${tesseract_collision_INCLUDE_DIRS}
   ${tesseract_motion_planners_INCLUDE_DIRS}
+  ${tesseract_kinematics_INCLUDE_DIRS}
+  ${tesseract_urdf_INCLUDE_DIRS}
+  ${tesseract_scene_graph_INCLUDE_DIRS}
+  ${tesseract_environment_INCLUDE_DIRS}
+  ${tesseract_command_language_INCLUDE_DIRS}
+  ${tesseract_time_parameterization_INCLUDE_DIRS}
+  ${tesseract_visualization_INCLUDE_DIRS}
+  ${opw_kinematics_INCLUDE_DIRS}
 )
 
 if(NOT PYTHON_VERSION)
