@@ -26,12 +26,7 @@
 #ifndef TESSERACT_PROCESS_MANAGERS_FIX_STATE_COLLISION_PROCESS_GENERATOR_H
 #define TESSERACT_PROCESS_MANAGERS_FIX_STATE_COLLISION_PROCESS_GENERATOR_H
 
-#include <tesseract_common/macros.h>
-TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
-#include <atomic>
-TESSERACT_COMMON_IGNORE_WARNINGS_POP
-
-#include <tesseract_process_managers/process_generator.h>
+#include <tesseract_process_managers/core/process_generator.h>
 
 namespace tesseract_planning
 {
@@ -101,16 +96,9 @@ public:
 
   std::function<int()> generateConditionalTask(ProcessInput input, std::size_t unique_id) override;
 
-  bool getAbort() const override;
-
-  void setAbort(bool abort) override;
-
   FixStateCollisionProfileMap composite_profiles;
 
 private:
-  /** @brief If true, all tasks return immediately. Workaround for https://github.com/taskflow/taskflow/issues/201 */
-  std::atomic<bool> abort_{ false };
-
   std::string name_;
 
   int conditionalProcess(ProcessInput input, std::size_t unique_id) const;
@@ -134,7 +122,8 @@ public:
  */
 bool StateInCollision(const Eigen::Ref<const Eigen::VectorXd>& start_pos,
                       const ProcessInput& input,
-                      const FixStateCollisionProfile& profile);
+                      const FixStateCollisionProfile& profile,
+                      tesseract_collision::ContactResultMap& contacts);
 
 /**
  * @brief Checks if a waypoint is in collision
@@ -142,7 +131,10 @@ bool StateInCollision(const Eigen::Ref<const Eigen::VectorXd>& start_pos,
  * @param input Process Input associated with waypoint. Needed for kinematics, etc.
  * @return True if in collision
  */
-bool WaypointInCollision(const Waypoint& waypoint, const ProcessInput& input, const FixStateCollisionProfile& profile);
+bool WaypointInCollision(const Waypoint& waypoint,
+                         const ProcessInput& input,
+                         const FixStateCollisionProfile& profile,
+                         tesseract_collision::ContactResultMap& contacts);
 
 /**
  * @brief Takes a waypoint and uses a small trajopt problem to push it out of collision if necessary

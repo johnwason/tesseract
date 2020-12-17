@@ -34,8 +34,8 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <taskflow/taskflow.hpp>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
-#include <tesseract_process_managers/taskflow_generator.h>
-#include <tesseract_process_managers/process_generator.h>
+#include <tesseract_process_managers/core/taskflow_generator.h>
+#include <tesseract_process_managers/core/process_generator.h>
 
 namespace tesseract_planning
 {
@@ -91,15 +91,9 @@ public:
 
   const std::string& getName() const override;
 
-  tf::Taskflow& generateTaskflow(ProcessInput input,
-                                 std::function<void()> done_cb,
-                                 std::function<void()> error_cb) override;
-
-  void abort() override;
-
-  void reset() override;
-
-  void clear() override;
+  TaskflowContainer generateTaskflow(ProcessInput input,
+                                     std::function<void()> done_cb,
+                                     std::function<void()> error_cb) override;
 
   /**
    * @brief Add a node to the taskflow graph along with setting the process type.
@@ -121,12 +115,7 @@ public:
   void addEdge(int src, SourceChannel src_channel, int dest, DestinationChannel dest_channel);
 
 private:
-  /** @brief If true, all tasks return immediately. Workaround for https://github.com/taskflow/taskflow/issues/201 */
-  std::atomic<bool> abort_{ false };
-
   std::vector<Node> nodes_;
-  std::vector<std::shared_ptr<tf::Taskflow>> taskflow_objects_;
-  std::vector<tf::Task> process_tasks_;
   std::string name_;
 };
 

@@ -26,12 +26,7 @@
 #ifndef TESSERACT_PROCESS_MANAGERS_ITERATIVE_SPLINE_PARAMETERIZATION_PROCESS_GENERATOR_H
 #define TESSERACT_PROCESS_MANAGERS_ITERATIVE_SPLINE_PARAMETERIZATION_PROCESS_GENERATOR_H
 
-#include <tesseract_common/macros.h>
-TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
-#include <atomic>
-TESSERACT_COMMON_IGNORE_WARNINGS_POP
-
-#include <tesseract_process_managers/process_generator.h>
+#include <tesseract_process_managers/core/process_generator.h>
 #include <tesseract_time_parameterization/iterative_spline_parameterization.h>
 
 namespace tesseract_planning
@@ -51,7 +46,7 @@ struct IterativeSplineParameterizationProfile
   double max_acceleration_scaling_factor = 1.0;
 };
 using IterativeSplineParameterizationProfileMap =
-    std::unordered_map<std::string, IterativeSplineParameterizationProfile::Ptr>;
+    std::unordered_map<std::string, IterativeSplineParameterizationProfile::ConstPtr>;
 
 class IterativeSplineParameterizationProcessGenerator : public ProcessGenerator
 {
@@ -75,17 +70,10 @@ public:
 
   std::function<int()> generateConditionalTask(ProcessInput input, std::size_t unique_id) override;
 
-  bool getAbort() const override;
-
-  void setAbort(bool abort) override;
-
   IterativeSplineParameterizationProfileMap composite_profiles;
   IterativeSplineParameterizationProfileMap move_profiles;
 
 private:
-  /** @brief If true, all tasks return immediately. Workaround for https://github.com/taskflow/taskflow/issues/201 */
-  std::atomic<bool> abort_{ false };
-
   std::string name_;
 
   IterativeSplineParameterization solver_;

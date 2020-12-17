@@ -42,7 +42,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_motion_planners/ompl/continuous_motion_validator.h>
 #include <tesseract_motion_planners/ompl/discrete_motion_validator.h>
-#include <tesseract_motion_planners/ompl/weighted_real_vector_state_sampler.h>
 #include <tesseract_motion_planners/ompl/state_collision_validator.h>
 #include <tesseract_motion_planners/ompl/compound_state_validator.h>
 
@@ -63,7 +62,6 @@ OMPLDefaultPlanProfile::OMPLDefaultPlanProfile(const tinyxml2::XMLElement& xml_e
                                                                                                      "ntFraction");
   const tinyxml2::XMLElement* longest_valid_segment_length_element = xml_element.FirstChildElement("LongestValidSegment"
                                                                                                    "Length");
-  const tinyxml2::XMLElement* weights_element = xml_element.FirstChildElement("Weights");
 
   tinyxml2::XMLError status;
 
@@ -276,34 +274,16 @@ OMPLDefaultPlanProfile::OMPLDefaultPlanProfile(const tinyxml2::XMLElement& xml_e
 
     tesseract_common::toNumeric<double>(longest_valid_segment_length_string, longest_valid_segment_length);
   }
-
-  if (weights_element)
-  {
-    std::vector<std::string> weights_tokens;
-    std::string weights_string;
-    status = tesseract_common::QueryStringText(weights_element, weights_string);
-    if (status != tinyxml2::XML_NO_ATTRIBUTE && status != tinyxml2::XML_SUCCESS)
-      throw std::runtime_error("OMPLPlanProfile: Error parsing Weights string");
-
-    boost::split(weights_tokens, weights_string, boost::is_any_of(" "), boost::token_compress_on);
-
-    if (!tesseract_common::isNumeric(weights_tokens))
-      throw std::runtime_error("OMPLPlanProfile: Weights are not all numeric values.");
-
-    weights.resize(static_cast<long>(weights_tokens.size()));
-    for (std::size_t i = 0; i < weights_tokens.size(); ++i)
-      tesseract_common::toNumeric<double>(weights_tokens[i], weights[static_cast<long>(i)]);
-  }
 }
 
-void OMPLDefaultPlanProfile::setup(OMPLProblem& prob)
+void OMPLDefaultPlanProfile::setup(OMPLProblem& prob) const
 {
   prob.planners = planners;
   prob.planning_time = planning_time;
   prob.max_solutions = max_solutions;
   prob.simplify = simplify;
   prob.optimize = optimize;
-  prob.contact_checker->setContactDistanceThreshold(collision_safety_margin);
+  prob.contact_checker->setDefaultCollisionMarginData(collision_safety_margin);
 
   tesseract_environment::Environment::ConstPtr env = prob.tesseract->getEnvironment();
   const std::vector<std::string>& joint_names = prob.manip_fwd_kin->getJointNames();
@@ -320,11 +300,6 @@ void OMPLDefaultPlanProfile::setup(OMPLProblem& prob)
   else
     throw std::runtime_error("OMPLMotionPlannerDefaultConfig: Unsupported configuration!");
 
-  if (weights.size() == 1)
-    weights = Eigen::VectorXd::Constant(1, dof, weights(0));
-  else if (weights.size() != dof)
-    weights = Eigen::VectorXd::Ones(dof);
-
   if (prob.state_space == OMPLProblemStateSpace::REAL_STATE_SPACE)
   {
     // Construct the OMPL state space for this manipulator
@@ -336,12 +311,14 @@ void OMPLDefaultPlanProfile::setup(OMPLProblem& prob)
 
     if (state_sampler_allocator)
     {
-      rss->setStateSamplerAllocator(state_sampler_allocator);
+      rss->setStateSamplerAllocator(
+          [=](const ompl::base::StateSpace* space) { return state_sampler_allocator(space, prob); });
     }
     else
     {
+      Eigen::VectorXd weights = Eigen::VectorXd::Ones(dof);
       rss->setStateSamplerAllocator(
-          std::bind(&OMPLDefaultPlanProfile::allocWeightedRealVectorStateSampler, this, std::placeholders::_1, limits));
+          std::bind(&allocWeightedRealVectorStateSampler, std::placeholders::_1, weights, limits));
     }
 
     state_space_ptr = rss;
@@ -368,7 +345,7 @@ void OMPLDefaultPlanProfile::applyGoalStates(OMPLProblem& prob,
                                              const Instruction& parent_instruction,
                                              const ManipulatorInfo& manip_info,
                                              const std::vector<std::string>& /*active_links*/,
-                                             int /*index*/)
+                                             int /*index*/) const
 {
   const auto dof = prob.manip_fwd_kin->numJoints();
   assert(isPlanInstruction(parent_instruction));
@@ -429,7 +406,7 @@ void OMPLDefaultPlanProfile::applyGoalStates(OMPLProblem& prob,
                                              const Instruction& /*parent_instruction*/,
                                              const ManipulatorInfo& /*manip_info*/,
                                              const std::vector<std::string>& /*active_links*/,
-                                             int /*index*/)
+                                             int /*index*/) const
 {
   const auto dof = prob.manip_fwd_kin->numJoints();
 
@@ -462,7 +439,7 @@ void OMPLDefaultPlanProfile::applyStartStates(OMPLProblem& prob,
                                               const Instruction& parent_instruction,
                                               const ManipulatorInfo& manip_info,
                                               const std::vector<std::string>& /*active_links*/,
-                                              int /*index*/)
+                                              int /*index*/) const
 {
   const auto dof = prob.manip_fwd_kin->numJoints();
   assert(isPlanInstruction(parent_instruction));
@@ -525,7 +502,7 @@ void OMPLDefaultPlanProfile::applyStartStates(OMPLProblem& prob,
                                               const Instruction& /*parent_instruction*/,
                                               const ManipulatorInfo& /*manip_info*/,
                                               const std::vector<std::string>& /*active_links*/,
-                                              int /*index*/)
+                                              int /*index*/) const
 {
   const auto dof = prob.manip_fwd_kin->numJoints();
 
@@ -615,13 +592,8 @@ tinyxml2::XMLElement* OMPLDefaultPlanProfile::toXML(tinyxml2::XMLDocument& doc) 
   xml_long_valid_seg_len->SetText(longest_valid_segment_length);
   xml_ompl->InsertEndChild(xml_long_valid_seg_len);
 
-  tinyxml2::XMLElement* xml_weights = doc.NewElement("Weights");
-  std::stringstream weights_stream;
-  weights_stream << weights.format(eigen_format);
-  xml_weights->SetText(weights_stream.str().c_str());
-  xml_ompl->InsertEndChild(xml_weights);
-
-  // TODO: Add plugins for state_sampler_allocator, optimization_objective_allocator, svc_allocator, mv_allocator
+  // TODO: Add plugins for state_sampler_allocator, optimization_objective_allocator, svc_allocator,
+  // mv_allocator
 
   xml_planner->InsertEndChild(xml_ompl);
 
@@ -631,7 +603,7 @@ tinyxml2::XMLElement* OMPLDefaultPlanProfile::toXML(tinyxml2::XMLDocument& doc) 
 ompl::base::StateValidityCheckerPtr
 OMPLDefaultPlanProfile::processStateValidator(OMPLProblem& prob,
                                               const tesseract_environment::Environment::ConstPtr& env,
-                                              const tesseract_kinematics::ForwardKinematics::ConstPtr& kin)
+                                              const tesseract_kinematics::ForwardKinematics::ConstPtr& kin) const
 {
   ompl::base::StateValidityCheckerPtr svc_without_collision;
   auto csvc = std::make_shared<CompoundStateValidator>();
@@ -655,7 +627,7 @@ OMPLDefaultPlanProfile::processStateValidator(OMPLProblem& prob,
 void OMPLDefaultPlanProfile::processMotionValidator(ompl::base::StateValidityCheckerPtr svc_without_collision,
                                                     OMPLProblem& prob,
                                                     const tesseract_environment::Environment::ConstPtr& env,
-                                                    const tesseract_kinematics::ForwardKinematics::ConstPtr& kin)
+                                                    const tesseract_kinematics::ForwardKinematics::ConstPtr& kin) const
 {
   if (mv_allocator != nullptr)
   {
@@ -686,20 +658,13 @@ void OMPLDefaultPlanProfile::processMotionValidator(ompl::base::StateValidityChe
   }
 }
 
-void OMPLDefaultPlanProfile::processOptimizationObjective(OMPLProblem& prob)
+void OMPLDefaultPlanProfile::processOptimizationObjective(OMPLProblem& prob) const
 {
   if (optimization_objective_allocator)
   {
     prob.simple_setup->getProblemDefinition()->setOptimizationObjective(
         optimization_objective_allocator(prob.simple_setup->getSpaceInformation(), prob));
   }
-}
-
-ompl::base::StateSamplerPtr
-OMPLDefaultPlanProfile::allocWeightedRealVectorStateSampler(const ompl::base::StateSpace* space,
-                                                            const Eigen::MatrixX2d& limits) const
-{
-  return std::make_shared<WeightedRealVectorStateSampler>(space, weights, limits);
 }
 
 }  // namespace tesseract_planning

@@ -27,16 +27,19 @@
 #include <tesseract_motion_planners/trajopt/problem_generators/default_problem_generator.h>
 #include <tesseract_motion_planners/trajopt/profile/trajopt_default_composite_profile.h>
 #include <tesseract_motion_planners/trajopt/profile/trajopt_default_plan_profile.h>
+#include <tesseract_motion_planners/trajopt/profile/trajopt_default_solver_profile.h>
 #include <tesseract_motion_planners/core/utils.h>
 #include <tesseract_motion_planners/planner_utils.h>
 
 namespace tesseract_planning
 {
 /// @todo: Restructure this into several smaller functions that are testable and easier to understand
-trajopt::TrajOptProb::Ptr DefaultTrajoptProblemGenerator(const std::string& name,
-                                                         const PlannerRequest& request,
-                                                         const TrajOptPlanProfileMap& plan_profiles,
-                                                         const TrajOptCompositeProfileMap& composite_profiles)
+std::shared_ptr<trajopt::ProblemConstructionInfo>
+DefaultTrajoptProblemGenerator(const std::string& name,
+                               const PlannerRequest& request,
+                               const TrajOptPlanProfileMap& plan_profiles,
+                               const TrajOptCompositeProfileMap& composite_profiles,
+                               const TrajOptSolverProfileMap& solver_profiles)
 {
   auto pci = std::make_shared<trajopt::ProblemConstructionInfo>(request.tesseract);
 
@@ -58,6 +61,16 @@ trajopt::TrajOptProb::Ptr DefaultTrajoptProblemGenerator(const std::string& name
     throw std::runtime_error(error_msg);
   }
 
+  // Apply Solver parameters
+  std::string profile = request.instructions.getProfile();
+  profile = getProfileString(profile, name, PlannerProfileRemapping());
+  TrajOptSolverProfile::ConstPtr solver_profile =
+      getProfile<TrajOptSolverProfile>(profile, solver_profiles, std::make_shared<TrajOptDefaultSolverProfile>());
+  if (!solver_profile)
+    throw std::runtime_error("TrajOptSolverConfig: Invalid profile");
+
+  solver_profile->apply(*pci);
+
   // Flatten the input for planning
   auto instructions_flat = flattenProgram(request.instructions);
   auto seed_flat = flattenProgramToPattern(request.seed, request.instructions);
@@ -74,7 +87,6 @@ trajopt::TrajOptProb::Ptr DefaultTrajoptProblemGenerator(const std::string& name
 
   std::size_t start_index = 0;  // If it has a start instruction then skip first instruction in instructions_flat
   int index = 0;
-  std::string profile;
   Waypoint start_waypoint = NullWaypoint();
   Instruction placeholder_instruction = NullInstruction();
   const Instruction* start_instruction = nullptr;
@@ -107,7 +119,7 @@ trajopt::TrajOptProb::Ptr DefaultTrajoptProblemGenerator(const std::string& name
   }
 
   profile = getProfileString(profile, name, request.plan_profile_remapping);
-  TrajOptPlanProfile::Ptr start_plan_profile =
+  TrajOptPlanProfile::ConstPtr start_plan_profile =
       getProfile<TrajOptPlanProfile>(profile, plan_profiles, std::make_shared<TrajOptDefaultPlanProfile>());
   if (!start_plan_profile)
     throw std::runtime_error("TrajOptPlannerUniversalConfig: Invalid profile");
@@ -158,7 +170,7 @@ trajopt::TrajOptProb::Ptr DefaultTrajoptProblemGenerator(const std::string& name
       auto interpolate_cnt = static_cast<int>(seed_composite->size());
 
       std::string profile = getProfileString(plan_instruction->getProfile(), name, request.plan_profile_remapping);
-      TrajOptPlanProfile::Ptr cur_plan_profile =
+      TrajOptPlanProfile::ConstPtr cur_plan_profile =
           getProfile<TrajOptPlanProfile>(profile, plan_profiles, std::make_shared<TrajOptDefaultPlanProfile>());
       if (!start_plan_profile)
         throw std::runtime_error("TrajOptPlannerUniversalConfig: Invalid profile");
@@ -348,7 +360,6 @@ trajopt::TrajOptProb::Ptr DefaultTrajoptProblemGenerator(const std::string& name
   pci->basic_info.manip = composite_mi.manipulator;
   pci->basic_info.start_fixed = false;
   pci->basic_info.use_time = false;
-  //  pci->basic_info.convex_solver = optimizer;  // TODO: Fix this when port to trajopt_ifopt
 
   // Set trajopt seed
   assert(static_cast<long>(seed_states.size()) == pci->basic_info.n_steps);
@@ -358,17 +369,14 @@ trajopt::TrajOptProb::Ptr DefaultTrajoptProblemGenerator(const std::string& name
     pci->init_info.data.row(i) = seed_states[static_cast<std::size_t>(i)];
 
   profile = getProfileString(request.instructions.getProfile(), name, request.composite_profile_remapping);
-  TrajOptCompositeProfile::Ptr cur_composite_profile = getProfile<TrajOptCompositeProfile>(
+  TrajOptCompositeProfile::ConstPtr cur_composite_profile = getProfile<TrajOptCompositeProfile>(
       profile, composite_profiles, std::make_shared<TrajOptDefaultCompositeProfile>());
   if (!cur_composite_profile)
     throw std::runtime_error("TrajOptPlannerUniversalConfig: Invalid profile");
 
   cur_composite_profile->apply(*pci, 0, pci->basic_info.n_steps - 1, composite_mi, active_links, fixed_steps);
 
-  // Construct Problem
-  trajopt::TrajOptProb::Ptr problem = trajopt::ConstructProblem(*pci);
-
-  return problem;
+  return pci;
 }
 
 }  // namespace tesseract_planning

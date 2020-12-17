@@ -38,8 +38,13 @@ include(GenerateExportHeader)
 
 # Create interface
 add_library(${PROJECT_NAME}
-    src/process_input.cpp
-    src/debug_observer.cpp
+    src/core/process_input.cpp
+    src/core/debug_observer.cpp
+    src/core/process_planning_server.cpp
+    src/core/process_environment_cache.cpp
+    src/core/process_interface.cpp
+    src/core/process_info.cpp
+    src/core/default_process_planners.cpp
     src/process_generators/continuous_contact_check_process_generator.cpp
     src/process_generators/discrete_contact_check_process_generator.cpp
     src/process_generators/fix_state_bounds_process_generator.cpp
@@ -48,21 +53,20 @@ add_library(${PROJECT_NAME}
     src/process_generators/motion_planner_process_generator.cpp
     src/process_generators/profile_switch_process_generator.cpp
     src/process_generators/seed_min_length_process_generator.cpp
-    src/process_managers/raster_process_manager.cpp
-    src/process_managers/raster_global_process_manager.cpp
-    src/process_managers/raster_only_process_manager.cpp
-    src/process_managers/raster_only_global_process_manager.cpp
-    src/process_managers/raster_dt_process_manager.cpp
-    src/process_managers/raster_waad_process_manager.cpp
-    src/process_managers/raster_waad_dt_process_manager.cpp
     src/process_managers/simple_process_manager.cpp
-    src/taskflow_generators/sequential_taskflow.cpp
     src/taskflow_generators/graph_taskflow.cpp
-    src/taskflows/descartes_taskflow.cpp
-    src/taskflows/ompl_taskflow.cpp
-    src/taskflows/trajopt_taskflow.cpp
-    src/taskflows/cartesian_taskflow.cpp
-    src/taskflows/freespace_taskflow.cpp)
+    src/taskflow_generators/raster_taskflow.cpp
+    src/taskflow_generators/raster_global_taskflow.cpp
+    src/taskflow_generators/raster_only_taskflow.cpp
+    src/taskflow_generators/raster_only_global_taskflow.cpp
+    src/taskflow_generators/raster_dt_taskflow.cpp
+    src/taskflow_generators/raster_waad_taskflow.cpp
+    src/taskflow_generators/raster_waad_dt_taskflow.cpp
+    src/taskflow_generators/descartes_taskflow.cpp
+    src/taskflow_generators/ompl_taskflow.cpp
+    src/taskflow_generators/trajopt_taskflow.cpp
+    src/taskflow_generators/cartesian_taskflow.cpp
+    src/taskflow_generators/freespace_taskflow.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC
     console_bridge::console_bridge
     Taskflow::Taskflow

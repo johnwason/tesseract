@@ -71,25 +71,38 @@ TEST_F(FixStateCollisionProcessGeneratorUnit, StateInCollisionTest)
   CompositeInstruction program = freespaceExampleProgramABB();
   const Instruction program_instruction{ program };
   Instruction seed = generateSkeletonSeed(program);
-  ProcessInput input(tesseract_ptr_, &program_instruction, manip_, &seed);
+  ProcessInput input(tesseract_ptr_, &program_instruction, manip_, &seed, false, nullptr);
 
   FixStateCollisionProfile profile;
 
   Eigen::VectorXd state = Eigen::VectorXd::Zero(2);
-  EXPECT_TRUE(StateInCollision(state, input, profile));
+  tesseract_collision::ContactResultMap contacts;
+  EXPECT_TRUE(StateInCollision(state, input, profile, contacts));
+  EXPECT_FALSE(contacts.empty());
   state[0] = 1.5;
-  EXPECT_FALSE(StateInCollision(state, input, profile));
+
+  contacts.clear();
+  EXPECT_FALSE(StateInCollision(state, input, profile, contacts));
+  EXPECT_TRUE(contacts.empty());
   state[0] = 0.0;
   state[1] = 1.5;
-  EXPECT_FALSE(StateInCollision(state, input, profile));
+
+  contacts.clear();
+  EXPECT_FALSE(StateInCollision(state, input, profile, contacts));
+  EXPECT_TRUE(contacts.empty());
 
   // Check that the safety margin is obeyed
   profile.collision_check_config.collision_margin_data = CollisionMarginData(0.1);
   state[0] = 0.0;
   state[1] = 1.05;
-  EXPECT_TRUE(StateInCollision(state, input, profile));
+  contacts.clear();
+  EXPECT_TRUE(StateInCollision(state, input, profile, contacts));
+  EXPECT_FALSE(contacts.empty());
+
   profile.collision_check_config.collision_margin_data = CollisionMarginData(0.01);
-  EXPECT_FALSE(StateInCollision(state, input, profile));
+  contacts.clear();
+  EXPECT_FALSE(StateInCollision(state, input, profile, contacts));
+  EXPECT_TRUE(contacts.empty());
 }
 
 TEST_F(FixStateCollisionProcessGeneratorUnit, WaypointInCollisionTest)
@@ -97,31 +110,46 @@ TEST_F(FixStateCollisionProcessGeneratorUnit, WaypointInCollisionTest)
   CompositeInstruction program = freespaceExampleProgramABB();
   const Instruction program_instruction{ program };
   Instruction seed = generateSkeletonSeed(program);
-  ProcessInput input(tesseract_ptr_, &program_instruction, manip_, &seed);
+  ProcessInput input(tesseract_ptr_, &program_instruction, manip_, &seed, false, nullptr);
 
   FixStateCollisionProfile profile;
 
   Eigen::VectorXd state = Eigen::VectorXd::Zero(2);
   JointWaypoint waypoint({ "boxbot_x_joint", "boxbot_y_joint" }, state);
+  tesseract_collision::ContactResultMap contacts;
 
-  EXPECT_TRUE(WaypointInCollision(waypoint, input, profile));
+  EXPECT_TRUE(WaypointInCollision(waypoint, input, profile, contacts));
+  EXPECT_FALSE(contacts.empty());
+
   waypoint[0] = 1.5;
-  EXPECT_FALSE(WaypointInCollision(waypoint, input, profile));
+  contacts.clear();
+  EXPECT_FALSE(WaypointInCollision(waypoint, input, profile, contacts));
+  EXPECT_TRUE(contacts.empty());
+
   waypoint[0] = 0.0;
   waypoint[1] = 1.5;
-  EXPECT_FALSE(WaypointInCollision(waypoint, input, profile));
+  contacts.clear();
+  EXPECT_FALSE(WaypointInCollision(waypoint, input, profile, contacts));
+  EXPECT_TRUE(contacts.empty());
 
   // Check that the safety margin is obeyed
   profile.collision_check_config.collision_margin_data = CollisionMarginData(0.1);
   waypoint[0] = 0.0;
   waypoint[1] = 1.05;
-  EXPECT_TRUE(WaypointInCollision(waypoint, input, profile));
+  contacts.clear();
+  EXPECT_TRUE(WaypointInCollision(waypoint, input, profile, contacts));
+  EXPECT_FALSE(contacts.empty());
+
   profile.collision_check_config.collision_margin_data = CollisionMarginData(0.01);
-  EXPECT_FALSE(WaypointInCollision(waypoint, input, profile));
+  contacts.clear();
+  EXPECT_FALSE(WaypointInCollision(waypoint, input, profile, contacts));
+  EXPECT_TRUE(contacts.empty());
 
   // Check that it catches invalid inputs correctly
   CartesianWaypoint cart_wp(Eigen::Isometry3d::Identity());
-  EXPECT_FALSE(WaypointInCollision(cart_wp, input, profile));
+  contacts.clear();
+  EXPECT_FALSE(WaypointInCollision(cart_wp, input, profile, contacts));
+  EXPECT_TRUE(contacts.empty());
 }
 
 TEST_F(FixStateCollisionProcessGeneratorUnit, MoveWaypointFromCollisionRandomSamplerTest)
@@ -129,7 +157,7 @@ TEST_F(FixStateCollisionProcessGeneratorUnit, MoveWaypointFromCollisionRandomSam
   CompositeInstruction program = freespaceExampleProgramABB();
   const Instruction program_instruction{ program };
   Instruction seed = generateSkeletonSeed(program);
-  ProcessInput input(tesseract_ptr_, &program_instruction, manip_, &seed);
+  ProcessInput input(tesseract_ptr_, &program_instruction, manip_, &seed, false, nullptr);
 
   FixStateCollisionProfile profile;
 
@@ -142,17 +170,18 @@ TEST_F(FixStateCollisionProcessGeneratorUnit, MoveWaypointFromCollisionRandomSam
   waypoint[0] = 0.0;
   waypoint[1] = 1.09;
   Waypoint wp(waypoint);
+  tesseract_collision::ContactResultMap contacts;
 
   // Attempts are 0, so it should still be in collision
   profile.sampling_attempts = 0;
-  EXPECT_TRUE(WaypointInCollision(wp, input, profile));
+  EXPECT_TRUE(WaypointInCollision(wp, input, profile, contacts));
   EXPECT_FALSE(MoveWaypointFromCollisionRandomSampler(wp, input, profile));
-  EXPECT_TRUE(WaypointInCollision(wp, input, profile));
+  EXPECT_TRUE(WaypointInCollision(wp, input, profile, contacts));
 
   // It is very unlikely that this will still fail
   profile.sampling_attempts = 1000;
   EXPECT_TRUE(MoveWaypointFromCollisionRandomSampler(wp, input, profile));
-  EXPECT_FALSE(WaypointInCollision(wp, input, profile));
+  EXPECT_FALSE(WaypointInCollision(wp, input, profile, contacts));
 }
 
 TEST_F(FixStateCollisionProcessGeneratorUnit, MoveWaypointFromCollisionTrajoptTest)
@@ -160,7 +189,7 @@ TEST_F(FixStateCollisionProcessGeneratorUnit, MoveWaypointFromCollisionTrajoptTe
   CompositeInstruction program = freespaceExampleProgramABB();
   const Instruction program_instruction{ program };
   Instruction seed = generateSkeletonSeed(program);
-  ProcessInput input(tesseract_ptr_, &program_instruction, manip_, &seed);
+  ProcessInput input(tesseract_ptr_, &program_instruction, manip_, &seed, false, nullptr);
 
   FixStateCollisionProfile profile;
 
@@ -173,10 +202,11 @@ TEST_F(FixStateCollisionProcessGeneratorUnit, MoveWaypointFromCollisionTrajoptTe
   waypoint[0] = 0.0;
   waypoint[1] = 1.09;
   Waypoint wp(waypoint);
+  tesseract_collision::ContactResultMap contacts;
 
-  EXPECT_TRUE(WaypointInCollision(wp, input, profile));
+  EXPECT_TRUE(WaypointInCollision(wp, input, profile, contacts));
   EXPECT_TRUE(MoveWaypointFromCollisionTrajopt(wp, input, profile));
-  EXPECT_FALSE(WaypointInCollision(wp, input, profile));
+  EXPECT_FALSE(WaypointInCollision(wp, input, profile, contacts));
 }
 
 int main(int argc, char** argv)
