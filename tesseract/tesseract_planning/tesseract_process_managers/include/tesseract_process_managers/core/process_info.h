@@ -60,7 +60,7 @@ public:
 
   std::string message;
 };
-}
+}  // namespace tesseract_planning
 
 #ifdef SWIG
 %template(ProcessInfoMap) std::map<std::size_t, std::shared_ptr<const tesseract_planning::ProcessInfo>>;
@@ -68,7 +68,6 @@ public:
 
 namespace tesseract_planning
 {
-
 /** @brief A threadsafe container for ProcessInfos */
 struct ProcessInfoContainer
 {
