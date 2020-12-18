@@ -68,45 +68,45 @@
 %template(array2_Isometry3d) std::array<Eigen::Isometry3d,2>;
 %template(array2_double) std::array<double,2>;
 
-%define tesseract_aligned_vector(name,T)
+%define %tesseract_aligned_vector(name,T)
 %template(name) std::vector<T , Eigen::aligned_allocator<T >>;
 %enddef
 
-%define tesseract_aligned_map(name,Key,Value)
+%define %tesseract_aligned_map(name,Key,Value)
 %template(name) std::map<Key, Value, std::less<Key>, Eigen::aligned_allocator<std::pair<const Key, Value>>>;
 %enddef
 
-%define tesseract_aligned_map_of_aligned_vector(name,Key,Value)
-tesseract_aligned_map(name, %arg(Key), %arg(std::vector<Value , Eigen::aligned_allocator<Value >>));
+%define %tesseract_aligned_map_of_aligned_vector(name,Key,Value)
+%tesseract_aligned_map(name, %arg(Key), %arg(std::vector<Value , Eigen::aligned_allocator<Value >>));
 %enddef
 
-%define tesseract_aligned_unordered_map(name,Key,Value)
+%define %tesseract_aligned_unordered_map(name,Key,Value)
 %template(name) std::unordered_map<Key,Value,std::hash<Key>,std::equal_to<Key>,Eigen::aligned_allocator<std::pair<const Key, Value>>>;
 %enddef
 
-tesseract_aligned_vector(VectorIsometry3d, Eigen::Isometry3d);
+%tesseract_aligned_vector(VectorIsometry3d, Eigen::Isometry3d);
 %template(VectorVector3d) std::vector<Eigen::Vector3d>;
-tesseract_aligned_vector(VectorVector4d, Eigen::Vector4d);
-tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
+%tesseract_aligned_vector(VectorVector4d, Eigen::Vector4d);
+%tesseract_aligned_map(TransformMap, std::string, Eigen::Isometry3d);
 
 // SWIG is not smart enough to expand templated using, override the behavior
-%define tesseract_aligned_vector_using(name,T)
+%define %tesseract_aligned_vector_using(name,T)
 using name = std::vector<T , Eigen::aligned_allocator<T >>;
 %enddef
 
-%define tesseract_aligned_map_using(name,Key,Value)
+%define %tesseract_aligned_map_using(name,Key,Value)
 using name = std::map<Key, Value, std::less<Key>, Eigen::aligned_allocator<std::pair<const Key, Value>>>;
 %enddef
 
-%define tesseract_aligned_map_of_aligned_vector_using(name,Key,Value)
-tesseract_aligned_map_using(name, %arg(Key), %arg(std::vector<Value , Eigen::aligned_allocator<Value >>));
+%define %tesseract_aligned_map_of_aligned_vector_using(name,Key,Value)
+%tesseract_aligned_map_using(name, %arg(Key), %arg(std::vector<Value , Eigen::aligned_allocator<Value >>));
 %enddef
 
 namespace tesseract_common
 {
-tesseract_aligned_vector_using(VectorIsometry3d, Eigen::Isometry3d);
-tesseract_aligned_vector_using(VectorVector4d, Eigen::Vector4d);
-tesseract_aligned_map_using(TransformMap, std::string, Eigen::Isometry3d);
+%tesseract_aligned_vector_using(VectorIsometry3d, Eigen::Isometry3d);
+%tesseract_aligned_vector_using(VectorVector4d, Eigen::Vector4d);
+%tesseract_aligned_map_using(TransformMap, std::string, Eigen::Isometry3d);
 }
 
 %ignore toXML(tinyxml2::XMLDocument& doc) const;

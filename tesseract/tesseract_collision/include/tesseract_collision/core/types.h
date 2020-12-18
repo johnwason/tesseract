@@ -42,8 +42,8 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #ifdef SWIG
-tesseract_aligned_vector(ContactResultVector, tesseract_collision::ContactResult);
-tesseract_aligned_map_of_aligned_vector(ContactResultMap, %arg(std::pair<std::string,std::string>), tesseract_collision::ContactResult);
+%tesseract_aligned_vector(ContactResultVector, tesseract_collision::ContactResult);
+%tesseract_aligned_map_of_aligned_vector(ContactResultMap, %arg(std::pair<std::string,std::string>), tesseract_collision::ContactResult);
 #endif  // SWIG
 
 namespace tesseract_collision
@@ -161,8 +161,8 @@ using ContactResultVector = tesseract_common::AlignedVector<ContactResult>;
 using ContactResultMap = tesseract_common::AlignedMap<std::pair<std::string, std::string>, ContactResultVector>;
 #else
 // clang-format off
-tesseract_aligned_vector_using(ContactResultVector, tesseract_collision::ContactResult);
-tesseract_aligned_map_of_aligned_vector_using(ContactResultMap, %arg(std::pair<std::string,std::string>), tesseract_collision::ContactResult);
+%tesseract_aligned_vector_using(ContactResultVector, tesseract_collision::ContactResult);
+%tesseract_aligned_map_of_aligned_vector_using(ContactResultMap, %arg(std::pair<std::string,std::string>), tesseract_collision::ContactResult);
 // clang-format on
 #endif
 /**
