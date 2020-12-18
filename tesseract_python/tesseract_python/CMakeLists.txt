@@ -8,7 +8,8 @@ FILE (STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/package.xml" tesseract_python_version
 IF ("${tesseract_python_version1}" STREQUAL "" )
 MESSAGE(FATAL_ERROR "Could not read tesseract_python version.")
 ENDIF()
-STRING (REGEX REPLACE "<version>([0-9]+\\.[0-9]+\\.[0-9]+)</version>" "\\1" tesseract_python_version ${tesseract_python_version1})
+STRING (REGEX REPLACE "<version>([0-9]+\\.[0-9]+\\.[0-9]+)</version>" "\\1" tesseract_python_version2 ${tesseract_python_version1})
+STRING (STRIP ${tesseract_python_version2} tesseract_python_version)
 MESSAGE(STATUS "tesseract_python version: ${tesseract_python_version}")
 
 set(CMAKE_CXX_STANDARD 14)
@@ -32,6 +33,7 @@ find_package(tesseract_environment REQUIRED)
 find_package(tesseract_scene_graph REQUIRED)
 find_package(tesseract_command_language REQUIRED)
 find_package(tesseract_time_parameterization REQUIRED)
+find_package(tesseract_process_managers REQUIRED)
 find_package(PCL REQUIRED COMPONENTS core features filters io segmentation surface)
 find_package(trajopt REQUIRED)
 find_package(TinyXML2 REQUIRED)
@@ -51,6 +53,7 @@ include_directories(
   ${tesseract_command_language_INCLUDE_DIRS}
   ${tesseract_time_parameterization_INCLUDE_DIRS}
   ${tesseract_visualization_INCLUDE_DIRS}
+  ${tesseract_process_managers_INCLUDE_DIRS}
   ${opw_kinematics_INCLUDE_DIRS}
 )
 
@@ -118,6 +121,7 @@ tesseract_python_module(tesseract_motion_planners_ompl_python SWIG_SRCS swig/tes
 tesseract_python_module(tesseract_motion_planners_descartes_python SWIG_SRCS swig/tesseract_motion_planners_descartes_python.i PACKAGE tesseract_motion_planners_descartes LIBS tesseract::tesseract_motion_planners_descartes )
 tesseract_python_module(tesseract_time_parameterization_python SWIG_SRCS swig/tesseract_time_parameterization_python.i PACKAGE tesseract_time_parameterization LIBS tesseract::tesseract_time_parameterization )
 tesseract_python_module(tesseract_visualization_python SWIG_SRCS swig/tesseract_visualization_python.i PACKAGE tesseract_visualization LIBS tesseract::tesseract_visualization)
+tesseract_python_module(tesseract_process_managers_python SWIG_SRCS swig/tesseract_process_managers_python.i PACKAGE tesseract_process_managers LIBS tesseract::tesseract_process_managers )
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/__package_init__.py.in ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract/__init__.py @ONLY)
 
