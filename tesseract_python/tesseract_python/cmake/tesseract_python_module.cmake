@@ -43,6 +43,9 @@ function(tesseract_python_module PY_MOD_NAME )
   set_target_properties(${PY_MOD_REAL_NAME}
     PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract/${PY_MOD_PACKAGE})
 
+  target_compile_options(${PY_MOD_REAL_NAME} PRIVATE ${TESSERACT_COMPILE_OPTIONS_PRIVATE})
+  target_compile_options(${PY_MOD_REAL_NAME} PUBLIC ${TESSERACT_COMPILE_OPTIONS_PUBLIC})
+
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/__init__.py.in ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract/${PY_MOD_PACKAGE}/__init__.py @ONLY)
 
 endfunction()
