@@ -35,6 +35,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_motion_planners/trajopt/profile/trajopt_profile.h>
 
 #ifdef SWIG
+%shared_ptr(tesseract_planning::TrajOptMotionPlanner)
 %shared_ptr(tesseract_planning::TrajOptMotionPlannerStatusCategory)
 #endif  // SWIG
 

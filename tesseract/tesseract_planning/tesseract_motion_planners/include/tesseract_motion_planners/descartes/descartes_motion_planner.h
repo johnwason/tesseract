@@ -32,6 +32,7 @@ using DescartesProblemGeneratorFnF = DescartesProblemGeneratorFn<float>;
 #ifdef SWIG
 %template(DescartesProblemGeneratorFnD) tesseract_planning::DescartesProblemGeneratorFn<double>;
 %shared_ptr(tesseract_planning::DescartesMotionPlannerD);
+%shared_ptr(tesseract_planning::DescartesMotionPlanner<double>);
 #endif  // SWIG
 
 namespace tesseract_planning

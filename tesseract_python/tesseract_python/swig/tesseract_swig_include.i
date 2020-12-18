@@ -15,6 +15,10 @@
 %include <exception.i>
 %include <pybuffer.i>
 
+namespace std {
+    typedef ::size_t size_t;
+}
+
 %exception {
   try {
     $action
