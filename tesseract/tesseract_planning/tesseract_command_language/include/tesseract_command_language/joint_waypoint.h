@@ -283,6 +283,7 @@ public:
   }
 }
 
+%tesseract_command_language_add_waypoint_type(JointWaypoint)
 #endif  // SWIG
 
 #endif  // TESSERACT_COMMAND_LANGUAGE_JOINT_WAYPOINT_H

@@ -106,4 +106,8 @@ private:
 
 }  // namespace tesseract_planning
 
+#ifdef SWIG
+%tesseract_command_language_add_instruction_type(MoveInstruction)
+#endif  // SWIG
+
 #endif  // TESSERACT_COMMAND_LANGUAGE_MOVE_INSTRUCTION_H

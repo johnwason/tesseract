@@ -191,28 +191,10 @@ public:
     return static_cast<const T*>(waypoint_->recover());
   }
 
-#ifdef SWIG
-  %template(cast_NullWaypoint) cast<tesseract_planning::NullWaypoint>;
-  %template(cast_const_NullWaypoint) cast_const<tesseract_planning::NullWaypoint>;
-  %template(cast_JointWaypoint) cast<tesseract_planning::JointWaypoint>;
-  %template(cast_const_JointWaypoint) cast_const<tesseract_planning::JointWaypoint>;
-  %template(cast_CartesianWaypoint) cast<tesseract_planning::CartesianWaypoint>;
-  %template(cast_const_CartesianWaypoint) cast_const<tesseract_planning::CartesianWaypoint>;
-  %template(cast_StateWaypoint) cast<tesseract_planning::StateWaypoint>;
-  %template(cast_const_StateWaypoint) cast_const<tesseract_planning::StateWaypoint>;
-#endif  // SWIG
-
 private:
   std::unique_ptr<detail_waypoint::WaypointInnerBase> waypoint_;
 };
 
 }  // namespace tesseract_planning
-
-#ifdef SWIG
-%tesseract_erasure_ctor(Waypoint,CartesianWaypoint);
-%tesseract_erasure_ctor(Waypoint,JointWaypoint);
-%tesseract_erasure_ctor(Waypoint,NullWaypoint);
-%tesseract_erasure_ctor(Waypoint,StateWaypoint);
-#endif  // SWIG
 
 #endif  // TESSERACT_COMMAND_LANGUAGE_WAYPOINT_H

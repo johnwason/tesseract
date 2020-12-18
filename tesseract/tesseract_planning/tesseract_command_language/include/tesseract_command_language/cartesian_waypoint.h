@@ -268,4 +268,8 @@ public:
 
 }  // namespace tesseract_planning
 
+#ifdef SWIG
+%tesseract_command_language_add_waypoint_type(CartesianWaypoint)
+#endif  // SWIG
+
 #endif  // TESSERACT_COMMAND_LANGUAGE_CARTESIAN_WAYPOINT_H

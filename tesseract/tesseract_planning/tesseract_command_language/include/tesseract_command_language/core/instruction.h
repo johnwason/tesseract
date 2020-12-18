@@ -233,34 +233,10 @@ public:
     return static_cast<const T*>(instruction_->recover());
   }
 
-#ifdef SWIG
-  %template(cast_NullInstruction) cast<tesseract_planning::NullInstruction>;
-  %template(cast_const_NullInstruction) cast_const<tesseract_planning::NullInstruction>;
-  %template(cast_PlanInstruction) cast<tesseract_planning::PlanInstruction>;
-  %template(cast_const_PlanInstruction) cast_const<tesseract_planning::PlanInstruction>;
-  %template(cast_MoveInstruction) cast<tesseract_planning::MoveInstruction>;
-  %template(cast_const_MoveInstruction) cast_const<tesseract_planning::MoveInstruction>;
-  %template(cast_CompositeInstruction) cast<tesseract_planning::CompositeInstruction>;
-  %template(cast_const_CompositeInstruction) cast_const<tesseract_planning::CompositeInstruction>;
-  %template(cast_TimerInstruction) cast<tesseract_planning::TimerInstruction>;
-  %template(cast_const_TimerInstruction) cast_const<tesseract_planning::TimerInstruction>;
-  %template(cast_WaitInstruction) cast<tesseract_planning::WaitInstruction>;
-  %template(cast_const_WaitInstruction) cast_const<tesseract_planning::WaitInstruction>;
-#endif  // SWIG
-
 private:
   std::unique_ptr<detail_instruction::InstructionInnerBase> instruction_;
 };
 
 }  // namespace tesseract_planning
-
-#ifdef SWIG
-%tesseract_erasure_ctor(Instruction,NullInstruction);
-%tesseract_erasure_ctor(Instruction,PlanInstruction);
-%tesseract_erasure_ctor(Instruction,MoveInstruction);
-%tesseract_erasure_ctor(Instruction,CompositeInstruction);
-%tesseract_erasure_ctor(Instruction,TimerInstruction);
-%tesseract_erasure_ctor(Instruction,WaitInstruction);
-#endif  // SWIG
 
 #endif  // TESSERACT_COMMAND_LANGUAGE_INSTRUCTION_H

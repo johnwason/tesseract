@@ -109,4 +109,8 @@ private:
 
 }  // namespace tesseract_planning
 
+#ifdef SWIG
+%tesseract_command_language_add_instruction_type(PlanInstruction)
+#endif  // SWIG
+
 #endif  // TESSERACT_COMMAND_LANGUAGE_PLAN_INSTRUCTION_H

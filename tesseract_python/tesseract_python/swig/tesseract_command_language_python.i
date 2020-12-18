@@ -67,6 +67,18 @@
 }
 %enddef
 
+%define %tesseract_command_language_add_waypoint_type(TYPE)
+%template(cast_##TYPE) tesseract_planning::Waypoint::cast<tesseract_planning::TYPE>;
+%template(cast_const_##TYPE) tesseract_planning::Waypoint::cast_const<tesseract_planning::TYPE>;
+%tesseract_erasure_ctor(Waypoint,TYPE);
+%enddef
+
+%define %tesseract_command_language_add_instruction_type(TYPE)
+%template(cast_##TYPE) tesseract_planning::Instruction::cast<tesseract_planning::TYPE>;
+%template(cast_const_##TYPE) tesseract_planning::Instruction::cast_const<tesseract_planning::TYPE>;
+%tesseract_erasure_ctor(Instruction,TYPE);
+%enddef
+
 %tesseract_std_function(flattenFilterFn,tesseract_planning,bool,const tesseract_planning::Instruction&,a,const tesseract_planning::CompositeInstruction&,b,bool,c);
 %tesseract_std_function(locateFilterFn,tesseract_planning,bool,const tesseract_planning::Instruction&,a,const tesseract_planning::CompositeInstruction&,b,bool,c);
 
