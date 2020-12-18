@@ -16,13 +16,13 @@ public:
   virtual bool call(const tesseract_collision::ContactResult& a) = 0;
 };
 
-class ContinuousContactManagerFactory_CreateMethodBase
+class ContinuousContactManagerFactoryCreateMethodBase
 {
 public:
   virtual tesseract_collision::ContinuousContactManager::Ptr call() = 0;
 };
 
-class DiscreteContactManagerFactory_CreateMethodBase
+class DiscreteContactManagerFactoryCreateMethodBase
 {
 public:
   virtual tesseract_collision::DiscreteContactManager::Ptr call() = 0;

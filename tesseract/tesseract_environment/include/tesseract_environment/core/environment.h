@@ -599,7 +599,7 @@ public:
    * in the environment.
    */
   bool registerDiscreteContactManager(const std::string& name,
-                                      tesseract_collision::DiscreteContactManagerFactory_CreateMethod create_function);
+                                      tesseract_collision::DiscreteContactManagerFactoryCreateMethod create_function);
 
   /**
    * @brief Set the discrete contact manager
@@ -609,7 +609,7 @@ public:
    */
   bool
   registerContinuousContactManager(const std::string& name,
-                                   tesseract_collision::ContinuousContactManagerFactory_CreateMethod create_function);
+                                   tesseract_collision::ContinuousContactManagerFactoryCreateMethod create_function);
 
   /** @brief Merge a graph into the current environment
    * @param scene_graph Const ref to the graph to be merged (said graph will be copied)

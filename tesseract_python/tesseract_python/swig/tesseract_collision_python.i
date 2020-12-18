@@ -52,8 +52,8 @@
 
 %tesseract_std_function(IsContactAllowedFn,tesseract_collision,bool,const std::string&,a,const std::string&,b);
 %tesseract_std_function(IsContactValidFn,tesseract_collision,bool,const tesseract_collision::ContactResult&,a);
-%tesseract_std_function_noargs(ContinuousContactManagerFactory_CreateMethod,tesseract_collision,tesseract_collision::ContinuousContactManager::Ptr);
-%tesseract_std_function_noargs(DiscreteContactManagerFactory_CreateMethod,tesseract_collision,tesseract_collision::DiscreteContactManager::Ptr);
+%tesseract_std_function_noargs(ContinuousContactManagerFactoryCreateMethod,tesseract_collision,tesseract_collision::ContinuousContactManager::Ptr);
+%tesseract_std_function_noargs(DiscreteContactManagerFactoryCreateMethod,tesseract_collision,tesseract_collision::DiscreteContactManager::Ptr);
 
 // tesseract_collision
 #define TESSERACT_COLLISION_CORE_PUBLIC

@@ -51,11 +51,11 @@ def get_environment():
     assert success
     assert env.getRevision() == 2
 
-    discrete_create_fn = tesseract_collision.DiscreteContactManagerFactory_CreateMethod(tesseract_collision_bullet.BulletDiscreteBVHManager.create)
+    discrete_create_fn = tesseract_collision.DiscreteContactManagerFactoryCreateMethod(tesseract_collision_bullet.BulletDiscreteBVHManager.create)
     assert env.registerDiscreteContactManager(tesseract_collision_bullet.BulletDiscreteBVHManager.name(),
         discrete_create_fn)
 
-    cont_create_fn = tesseract_collision.ContinuousContactManagerFactory_CreateMethod(tesseract_collision_bullet.BulletCastBVHManager.create)
+    cont_create_fn = tesseract_collision.ContinuousContactManagerFactoryCreateMethod(tesseract_collision_bullet.BulletCastBVHManager.create)
     assert env.registerContinuousContactManager(tesseract_collision_bullet.BulletCastBVHManager.name(),
         cont_create_fn)
 

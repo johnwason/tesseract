@@ -35,13 +35,13 @@
 
 namespace tesseract_collision
 {
-using ContinuousContactManagerFactory_CreateMethod = std::function<ContinuousContactManager::Ptr()>;
+using ContinuousContactManagerFactoryCreateMethod = std::function<ContinuousContactManager::Ptr()>;
 class ContinuousContactManagerFactory
 {
 public:
   ContinuousContactManagerFactory() = default;
 
-  bool registar(const std::string& name, ContinuousContactManagerFactory_CreateMethod create_function)
+  bool registar(const std::string& name, ContinuousContactManagerFactoryCreateMethod create_function)
   {
     auto it = continuous_types.find(name);
     if (it == continuous_types.end())
@@ -65,7 +65,7 @@ public:
   const std::vector<std::string>& getAvailableManagers() const { return keys_; }
 
 private:
-  std::unordered_map<std::string, ContinuousContactManagerFactory_CreateMethod> continuous_types;
+  std::unordered_map<std::string, ContinuousContactManagerFactoryCreateMethod> continuous_types;
   std::vector<std::string> keys_;
 };
 }  // namespace tesseract_collision

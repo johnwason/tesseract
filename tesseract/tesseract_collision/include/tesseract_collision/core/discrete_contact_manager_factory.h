@@ -34,13 +34,13 @@
 
 namespace tesseract_collision
 {
-using DiscreteContactManagerFactory_CreateMethod = std::function<DiscreteContactManager::Ptr()>;
+using DiscreteContactManagerFactoryCreateMethod = std::function<DiscreteContactManager::Ptr()>;
 class DiscreteContactManagerFactory
 {
 public:
   DiscreteContactManagerFactory() = default;
 
-  bool registar(const std::string& name, DiscreteContactManagerFactory_CreateMethod create_function)
+  bool registar(const std::string& name, DiscreteContactManagerFactoryCreateMethod create_function)
   {
     auto it = discrete_types.find(name);
     if (it == discrete_types.end())
@@ -64,7 +64,7 @@ public:
   const std::vector<std::string>& getAvailableManagers() const { return keys_; }
 
 private:
-  std::unordered_map<std::string, DiscreteContactManagerFactory_CreateMethod> discrete_types;
+  std::unordered_map<std::string, DiscreteContactManagerFactoryCreateMethod> discrete_types;
   std::vector<std::string> keys_;
 };
 }  // namespace tesseract_collision
