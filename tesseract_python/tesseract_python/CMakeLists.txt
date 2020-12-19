@@ -169,7 +169,7 @@ endif()
 if(TESSERACT_ENABLE_TESTING)
   enable_testing()
 
-  add_run_tests_target(ENABLE OFF)
+  add_run_tests_target(ENABLE ${TESSERACT_ENABLE_RUN_TESTING})
 
   if (${TESSERACT_ENABLE_RUN_TESTING})
   add_dependencies(run_tests _tesseract_common_python _tesseract_geometry_python _tesseract_collision_python 
