@@ -12,7 +12,6 @@ STRING (REGEX REPLACE "<version>([0-9]+\\.[0-9]+\\.[0-9]+)</version>" "\\1" tess
 STRING (STRIP ${tesseract_python_version2} tesseract_python_version)
 MESSAGE(STATUS "tesseract_python version: ${tesseract_python_version}")
 
-set(CMAKE_CXX_STANDARD 14)
 
 if (NOT MSVC)
   add_compile_options(-w)
@@ -38,6 +37,8 @@ find_package(trajopt REQUIRED)
 find_package(TinyXML2 REQUIRED)
 find_package(opw_kinematics REQUIRED)
 
+tesseract_variables()
+
 include_directories(
   ${trajopt_INCLUDE_DIRS} 
   ${tesseract_common_INCLUDE_DIRS}
@@ -53,6 +54,7 @@ include_directories(
   ${tesseract_visualization_INCLUDE_DIRS}
   ${tesseract_process_managers_INCLUDE_DIRS}
   ${opw_kinematics_INCLUDE_DIRS}
+  ${TinyXML2_INCLUDE_DIRS}
 )
 
 if(NOT PYTHON_VERSION)
@@ -142,7 +144,7 @@ if (${PYTHON_VERSION_MAJOR} LESS 3)
 --root=/ --prefix=${CMAKE_INSTALL_PREFIX} ${SETUPTOOLS_ARG_EXTRA} --single-version-externally-managed WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/python)")
 else()
   install(CODE "message(STATUS \"Running setup.py in ${CMAKE_CURRENT_BINARY_DIR}/python\")
-  execute_process(COMMAND python3 setup.py install -f
+  execute_process(COMMAND ${PYTHON_EXECUTABLE} setup.py install -f
   --root=/ --prefix=${CMAKE_INSTALL_PREFIX} ${SETUPTOOLS_ARG_EXTRA} --single-version-externally-managed WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/python)")
 endif()
 
@@ -164,7 +166,7 @@ endif()
 if(TESSERACT_ENABLE_TESTING)
   enable_testing()
 
-  add_run_tests_target(ENABLE OFF)
+  add_run_tests_target(ENABLE ${TESSERACT_ENABLE_RUN_TESTING})
 
   if (${TESSERACT_ENABLE_RUN_TESTING})
   add_dependencies(run_tests _tesseract_common_python _tesseract_geometry_python _tesseract_collision_python 
