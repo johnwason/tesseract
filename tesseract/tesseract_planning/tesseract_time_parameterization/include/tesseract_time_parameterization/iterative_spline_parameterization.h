@@ -216,11 +216,13 @@ public:
                const Eigen::Ref<const Eigen::VectorXd>& max_velocity_scaling_factors,
                const Eigen::Ref<const Eigen::VectorXd>& max_acceleration_scaling_factors) const;
 
-#ifndef SWIG
 private:
-  bool add_points_;  /// @brief If true, add two points to trajectory (first and last segments).
-                     /// If false, move the 2nd and 2nd-last points.
-#endif               // SWIG
+  /**
+   * @brief If true, add two points to trajectory (first and last segments).
+   * 
+   * If false, move the 2nd and 2nd-last points.
+   */
+  bool add_points_; 
 };
 }  // namespace tesseract_planning
 

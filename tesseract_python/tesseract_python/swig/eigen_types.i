@@ -39,7 +39,6 @@ namespace Eigen
 %eigen_typemaps(Eigen::Vector2d);
 %eigen_typemaps(Eigen::Vector3d);
 %eigen_typemaps(Eigen::Vector4d);
-//%eigen_typemaps(Eigen::Isometry3d);
 %eigen_typemaps(Eigen::VectorXd);
 %eigen_typemaps(Eigen::MatrixXd);
 %eigen_typemaps(%arg(Eigen::Matrix3Xd));
