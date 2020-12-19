@@ -1,5 +1,5 @@
 /**
- * @file tesseract_python_std_functions.h
+ * @file tesseract_environment_python_std_functions.h
  * @brief Callback directors for tesseract_python module
  *
  * @author John Wason
@@ -24,13 +24,13 @@
  * limitations under the License.
  */
 
-#include <tesseract/tesseract.h>
+#include <tesseract_environment/core/environment.h>
 
 #pragma once
 
 class FindTCPCallbackFnBase
 {
 public:
-  virtual Eigen::Isometry3d call(const tesseract_planning::ManipulatorInfo& a) = 0;
+  virtual Eigen::Isometry3d call(const tesseract_common::ManipulatorInfo& a) = 0;
   virtual ~FindTCPCallbackFnBase() {}
 };

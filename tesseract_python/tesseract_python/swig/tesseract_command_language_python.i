@@ -82,6 +82,7 @@
 %tesseract_std_function(flattenFilterFn,tesseract_planning,bool,const tesseract_planning::Instruction&,a,const tesseract_planning::CompositeInstruction&,b,bool,c);
 %tesseract_std_function(locateFilterFn,tesseract_planning,bool,const tesseract_planning::Instruction&,a,const tesseract_planning::CompositeInstruction&,b,bool,c);
 
+%include "tesseract_command_language/types.h"
 %include "tesseract_command_language/core/waypoint.h"
 %include "tesseract_command_language/core/instruction.h"
 %include "tesseract_command_language/command_language.h"

@@ -44,7 +44,6 @@
 #ifdef SWIG
 %include "tesseract_command_language/instruction_type.h"
 %include "tesseract_command_language/cartesian_waypoint.h"
-%include "tesseract_command_language/manipulator_info.h"
 %include "tesseract_command_language/composite_instruction.h"
 %include "tesseract_command_language/joint_waypoint.h"
 %include "tesseract_command_language/move_instruction.h"

@@ -55,7 +55,7 @@
 
 #include "tesseract_command_language_python_std_functions.h"
 
-#include "tesseract_python_std_functions.h"
+#include "tesseract_environment_python_std_functions.h"
 #include <tesseract_kinematics/core/rep_inverse_kinematics.h>
 #include <tesseract_kinematics/core/rop_inverse_kinematics.h>
 %}

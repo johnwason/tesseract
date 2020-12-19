@@ -57,7 +57,11 @@
 #include "tesseract_scene_graph_python_std_functions.h"
 #include "tesseract_collisions_python_std_functions.h"
 #include "tesseract_environment/kdl/kdl_state_solver.h"
+
+#include "tesseract_environment_python_std_functions.h"
 %}
+
+%tesseract_std_function(FindTCPCallbackFn,tesseract,Eigen::Isometry3d,const tesseract_common::ManipulatorInfo&,a);
 
 // tesseract_environment
 #define TESSERACT_ENVIRONMENT_CORE_PUBLIC

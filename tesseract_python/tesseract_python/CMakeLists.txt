@@ -21,7 +21,6 @@ else()
 endif()
 
 find_package(cmake_common_scripts REQUIRED)
-find_package(tesseract REQUIRED)
 find_package(tesseract_motion_planners REQUIRED)
 find_package(tesseract_common REQUIRED)
 find_package(tesseract_geometry REQUIRED)
@@ -41,7 +40,6 @@ find_package(opw_kinematics REQUIRED)
 
 include_directories(
   ${trajopt_INCLUDE_DIRS} 
-  ${tesseract_INCLUDE_DIRS} 
   ${tesseract_common_INCLUDE_DIRS}
   ${tesseract_geometry_INCLUDE_DIRS}
   ${tesseract_collision_INCLUDE_DIRS}
@@ -113,7 +111,6 @@ tesseract_python_module(tesseract_kinematics_kdl_python SWIG_SRCS swig/tesseract
 tesseract_python_module(tesseract_kinematics_opw_python SWIG_SRCS swig/tesseract_kinematics_opw_python.i PACKAGE tesseract_kinematics_opw LIBS tesseract::tesseract_kinematics_opw )
 tesseract_python_module(tesseract_environment_python SWIG_SRCS swig/tesseract_environment_python.i PACKAGE tesseract_environment LIBS tesseract::tesseract_environment_core tesseract::tesseract_environment_kdl )
 tesseract_python_module(tesseract_command_language_python SWIG_SRCS swig/tesseract_command_language_python.i PACKAGE tesseract_command_language LIBS tesseract::tesseract_command_language)
-tesseract_python_module(tesseract_core_python SWIG_SRCS swig/tesseract_python.i PACKAGE tesseract_core LIBS tesseract::tesseract)
 tesseract_python_module(tesseract_motion_planners_python SWIG_SRCS swig/tesseract_motion_planners_python.i PACKAGE tesseract_motion_planners LIBS tesseract::tesseract_motion_planners_simple tesseract::tesseract_motion_planners_core )
 tesseract_python_module(tesseract_motion_planners_simple_python SWIG_SRCS swig/tesseract_motion_planners_simple_python.i PACKAGE tesseract_motion_planners_simple LIBS tesseract::tesseract_motion_planners_simple )
 tesseract_python_module(tesseract_motion_planners_trajopt_python SWIG_SRCS swig/tesseract_motion_planners_trajopt_python.i PACKAGE tesseract_motion_planners_trajopt LIBS tesseract::tesseract_motion_planners_trajopt )
@@ -174,7 +171,7 @@ if(TESSERACT_ENABLE_TESTING)
     _tesseract_collision_bullet_python _tesseract_collision_fcl_python _tesseract_scene_graph_python
     _tesseract_urdf_python _tesseract_kinematics_python _tesseract_kinematics_kdl_python
     _tesseract_kinematics_opw_python _tesseract_environment_python _tesseract_command_language_python
-    _tesseract_core_python _tesseract_motion_planners_python _tesseract_motion_planners_simple_python
+    _tesseract_motion_planners_python _tesseract_motion_planners_simple_python
     _tesseract_motion_planners_trajopt_python _tesseract_motion_planners_ompl_python
     _tesseract_motion_planners_descartes_python _tesseract_time_parameterization_python
     _tesseract_visualization_python)

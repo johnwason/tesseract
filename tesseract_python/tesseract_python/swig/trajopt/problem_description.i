@@ -234,7 +234,7 @@ public:
 
   tesseract_kinematics::ForwardKinematics::ConstPtr getManipulator(const std::string& name) const;
 
-  ProblemConstructionInfo(tesseract::Tesseract::ConstPtr tesseract);
+  ProblemConstructionInfo(tesseract_environment::Environment::ConstPtr env);
   void fromJson(const Json::Value& v);
 };
 
@@ -377,7 +377,7 @@ struct TotalTimeTermInfo : public TermInfo
 };
 
 TrajOptProb::Ptr ConstructProblem(const ProblemConstructionInfo&);
-TrajOptProb::Ptr ConstructProblem(const Json::Value&, const tesseract::Tesseract::ConstPtr& tesseract);
+TrajOptProb::Ptr ConstructProblem(const Json::Value&, const tesseract_environment::Environment::ConstPtr& tesseract);
 TrajOptResult::Ptr OptimizeProblem(TrajOptProb::Ptr,
                                                const tesseract_visualization::Visualization::Ptr& plotter = nullptr);
 

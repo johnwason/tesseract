@@ -33,7 +33,7 @@ function(tesseract_python_module PY_MOD_NAME )
     ${TinyXML2_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${NUMPY_INCLUDE_DIR}
-    $<TARGET_PROPERTY:tesseract::tesseract,INTERFACE_INCLUDE_DIRECTORIES>)
+    )
   target_compile_definitions(${PY_MOD_REAL_NAME} PRIVATE -DSWIG_TYPE_TABLE=tesseract_python )
  
   set_target_properties(${PY_MOD_REAL_NAME}
