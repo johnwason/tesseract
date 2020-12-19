@@ -45,6 +45,7 @@ function(tesseract_python_module PY_MOD_NAME )
 
   target_compile_options(${PY_MOD_REAL_NAME} PRIVATE ${TESSERACT_COMPILE_OPTIONS_PRIVATE})
   target_compile_options(${PY_MOD_REAL_NAME} PUBLIC ${TESSERACT_COMPILE_OPTIONS_PUBLIC})
+  target_cxx_version(${PY_MOD_REAL_NAME} PUBLIC VERSION ${TESSERACT_CXX_VERSION})
 
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/__init__.py.in ${CMAKE_CURRENT_BINARY_DIR}/python/tesseract/${PY_MOD_PACKAGE}/__init__.py @ONLY)
 

@@ -77,7 +77,7 @@ public:
     AUTO_SOLVER
   };
 
-  static const std::vector<std::string> MODEL_NAMES_;
+  //static const std::vector<std::string> MODEL_NAMES_;
 
   ModelType();  
   ModelType(const int& v);

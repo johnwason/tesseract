@@ -168,7 +168,7 @@ struct InstructionInner final : InstructionInnerBase
 class Instruction
 {
   template <typename T>
-  using uncvref_t = std::remove_cv_t<std::remove_reference_t<T>>;
+  using uncvref_t = std::remove_cv_t<typename std::remove_reference<T>::type>;
 
   // Enable the generic ctor only if ``T`` is not a ForwardKinematics (after removing const/reference qualifiers)
   // If ``T`` is of type ForwardKinematics we disable so it will use the copy or move constructors of this class.
