@@ -5,9 +5,10 @@ import numpy as np
 import numpy.testing as nptest
 
 from tesseract.tesseract_scene_graph import SimpleResourceLocator, SimpleResourceLocatorFn
-from tesseract.tesseract_core import Tesseract
-from tesseract.tesseract_common import FilesystemPath, Isometry3d, Translation3d, Quaterniond
-from tesseract.tesseract_command_language import ManipulatorInfo, JointWaypoint, CartesianWaypoint, Waypoint, \
+from tesseract.tesseract_environment import Environment
+from tesseract.tesseract_common import FilesystemPath, Isometry3d, Translation3d, Quaterniond, \
+    ManipulatorInfo
+from tesseract.tesseract_command_language import JointWaypoint, CartesianWaypoint, Waypoint, \
     PlanInstructionType_FREESPACE, PlanInstructionType_START, PlanInstruction, Instruction, \
     isMoveInstruction, isStateWaypoint, CompositeInstruction, flatten, isMoveInstruction, isStateWaypoint
 from tesseract.tesseract_process_managers import ProcessPlanningServer, ProcessPlanningRequest, \
@@ -28,7 +29,7 @@ def _locate_resource(url):
 def get_tesseract():
     locate_resource_fn = SimpleResourceLocatorFn(_locate_resource)
     locator = SimpleResourceLocator(locate_resource_fn)
-    tesseract = Tesseract()
+    tesseract = Environment()
     tesseract_support = os.environ["TESSERACT_SUPPORT_DIR"]
     urdf_path = FilesystemPath(os.path.join(tesseract_support, "urdf/lbr_iiwa_14_r820.urdf"))
     srdf_path = FilesystemPath(os.path.join(tesseract_support, "urdf/lbr_iiwa_14_r820.srdf"))

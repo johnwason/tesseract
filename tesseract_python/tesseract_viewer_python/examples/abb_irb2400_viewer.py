@@ -1,7 +1,8 @@
-from tesseract.tesseract_common import FilesystemPath, Isometry3d, Translation3d, Quaterniond
-from tesseract.tesseract_core import Tesseract
+from tesseract.tesseract_common import FilesystemPath, Isometry3d, Translation3d, Quaterniond, \
+    ManipulatorInfo
+from tesseract.tesseract_environment import Environment
 from tesseract.tesseract_scene_graph import SimpleResourceLocator, SimpleResourceLocatorFn
-from tesseract.tesseract_command_language import ManipulatorInfo, CartesianWaypoint, Waypoint, \
+from tesseract.tesseract_command_language import CartesianWaypoint, Waypoint, \
     PlanInstructionType_FREESPACE, PlanInstructionType_START, PlanInstruction, Instruction, \
     CompositeInstruction, flatten
 from tesseract.tesseract_process_managers import ProcessPlanningServer, ProcessPlanningRequest, \
@@ -31,13 +32,12 @@ def _locate_resource(url):
 abb_irb2400_urdf_fname = FilesystemPath(os.path.join(TESSERACT_SUPPORT_DIR,"urdf","abb_irb2400.urdf"))
 abb_irb2400_srdf_fname = FilesystemPath(os.path.join(TESSERACT_SUPPORT_DIR,"urdf","abb_irb2400.srdf"))
 
-t = Tesseract()
+t_env = Environment()
 
 # locator_fn must be kept alive by maintaining a reference
 locator_fn = SimpleResourceLocatorFn(_locate_resource)
-t.init(abb_irb2400_urdf_fname, abb_irb2400_srdf_fname, SimpleResourceLocator(locator_fn))
+t_env.init(abb_irb2400_urdf_fname, abb_irb2400_srdf_fname, SimpleResourceLocator(locator_fn))
 
-t_env = t.getEnvironment()
 manip_info = ManipulatorInfo()
 manip_info.manipulator = "manipulator"
 
@@ -63,7 +63,7 @@ program.setStartInstruction(Instruction(start_instruction))
 program.setManipulatorInfo(manip_info)
 program.append(Instruction(plan_f1))
 
-planning_server = ProcessPlanningServer(t, 1)
+planning_server = ProcessPlanningServer(t_env, 1)
 planning_server.loadDefaultProcessPlanners()
 request = ProcessPlanningRequest()
 request.name = FREESPACE_PLANNER_NAME

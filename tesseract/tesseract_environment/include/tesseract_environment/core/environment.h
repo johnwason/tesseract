@@ -823,13 +823,21 @@ private:
     return $self->addSceneGraph(scene_graph,std::move(joint->clone()),prefix);
   }
 
-  bool init(const tesseract_scene_graph::SceneGraph& scene_graph,
+  /*bool init(const tesseract_scene_graph::SceneGraph& scene_graph,
             const tesseract_scene_graph::SRDFModel::ConstPtr& srdf_model = nullptr)
   {
       return $self->init<tesseract_environment::KDLStateSolver>(scene_graph,srdf_model);
-  }
+  }*/
 
 }
+
+namespace tesseract_environment
+{
+  class KDLStateSolver;
+}
+
+%template(init) tesseract_environment::Environment::init<tesseract_environment::KDLStateSolver>;
+
 #endif  // SWIG
 
 #endif  // TESSERACT_ENVIRONMENT_ENVIRONMENT_H

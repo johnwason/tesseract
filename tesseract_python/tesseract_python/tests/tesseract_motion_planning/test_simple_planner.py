@@ -4,9 +4,9 @@ import os
 import numpy as np
 
 from tesseract.tesseract_scene_graph import SimpleResourceLocator, SimpleResourceLocatorFn
-from tesseract.tesseract_core import Tesseract
-from tesseract.tesseract_common import FilesystemPath
-from tesseract.tesseract_command_language import ManipulatorInfo, JointWaypoint, CartesianWaypoint, Waypoint, \
+from tesseract.tesseract_environment import Environment
+from tesseract.tesseract_common import FilesystemPath, ManipulatorInfo
+from tesseract.tesseract_command_language import JointWaypoint, CartesianWaypoint, Waypoint, \
     PlanInstructionType_FREESPACE, PlanInstruction, Instruction, isMoveInstruction, isStateWaypoint
 from tesseract.tesseract_motion_planners import PlannerRequest
 from tesseract.tesseract_motion_planners_simple import LVSInterpolateStateWaypoint
@@ -26,14 +26,14 @@ def _locate_resource(url):
 def get_tesseract():
     locate_resource_fn = SimpleResourceLocatorFn(_locate_resource)
     locator = SimpleResourceLocator(locate_resource_fn)
-    tesseract = Tesseract()
+    tesseract = Environment()
     tesseract_support = os.environ["TESSERACT_SUPPORT_DIR"]
     urdf_path = FilesystemPath(os.path.join(tesseract_support, "urdf/lbr_iiwa_14_r820.urdf"))
     srdf_path = FilesystemPath(os.path.join(tesseract_support, "urdf/lbr_iiwa_14_r820.srdf"))
     assert tesseract.init(urdf_path, srdf_path, locator)
     manip_info = ManipulatorInfo()
     manip_info.manipulator = "manipulator"
-    joint_names = tesseract.getEnvironment().getManipulatorManager().getFwdKinematicSolver("manipulator").getJointNames()
+    joint_names = tesseract.getManipulatorManager().getFwdKinematicSolver("manipulator").getJointNames()
 
     return tesseract, manip_info, joint_names
 
@@ -44,9 +44,9 @@ def test_interpolatestatewaypoint_jointcart_freespace():
     tesseract, manip_info, joint_names = get_tesseract()
 
     request = PlannerRequest()
-    request.tesseract = tesseract
-    request.env_state = tesseract.getEnvironment().getCurrentState()
-    fwd_kin = tesseract.getEnvironment().getManipulatorManager().getFwdKinematicSolver(manip_info.manipulator)
+    request.env = tesseract
+    request.env_state = tesseract.getCurrentState()
+    fwd_kin = tesseract.getManipulatorManager().getFwdKinematicSolver(manip_info.manipulator)
     wp1 = JointWaypoint(joint_names, np.zeros((7,),dtype=np.float64))
     wp2 = CartesianWaypoint(fwd_kin.calcFwdKin(np.ones((7,),dtype=np.float64))[1])
     instr = PlanInstruction(Waypoint(wp1), PlanInstructionType_FREESPACE, "TEST_PROFILE", manip_info)

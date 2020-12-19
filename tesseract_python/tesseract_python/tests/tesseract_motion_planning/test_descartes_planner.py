@@ -5,9 +5,10 @@ import numpy as np
 import numpy.testing as nptest
 
 from tesseract.tesseract_scene_graph import SimpleResourceLocator, SimpleResourceLocatorFn
-from tesseract.tesseract_core import Tesseract
-from tesseract.tesseract_common import FilesystemPath, Isometry3d, Translation3d, Quaterniond
-from tesseract.tesseract_command_language import ManipulatorInfo, JointWaypoint, CartesianWaypoint, Waypoint, \
+from tesseract.tesseract_environment import Environment
+from tesseract.tesseract_common import FilesystemPath, Isometry3d, Translation3d, Quaterniond, \
+    ManipulatorInfo
+from tesseract.tesseract_command_language import JointWaypoint, CartesianWaypoint, Waypoint, \
     PlanInstructionType_FREESPACE, PlanInstructionType_START, PlanInstruction, Instruction, \
     isMoveInstruction, isStateWaypoint, CompositeInstruction, flatten, isMoveInstruction, isStateWaypoint
 from tesseract.tesseract_motion_planners import PlannerRequest, PlannerResponse, generateSeed
@@ -29,7 +30,7 @@ def _locate_resource(url):
 def get_tesseract():
     locate_resource_fn = SimpleResourceLocatorFn(_locate_resource)
     locator = SimpleResourceLocator(locate_resource_fn)
-    tesseract = Tesseract()
+    tesseract = Environment()
     tesseract_support = os.environ["TESSERACT_SUPPORT_DIR"]
     urdf_path = FilesystemPath(os.path.join(tesseract_support, "urdf/lbr_iiwa_14_r820.urdf"))
     srdf_path = FilesystemPath(os.path.join(tesseract_support, "urdf/lbr_iiwa_14_r820.srdf"))
@@ -43,10 +44,10 @@ def test_ompl_freespace_joint_cart():
 
     tesseract, manip = get_tesseract()
 
-    fwd_kin = tesseract.getEnvironment().getManipulatorManager().getFwdKinematicSolver(manip.manipulator)
-    inv_kin = tesseract.getEnvironment().getManipulatorManager().getInvKinematicSolver(manip.manipulator)
+    fwd_kin = tesseract.getManipulatorManager().getFwdKinematicSolver(manip.manipulator)
+    inv_kin = tesseract.getManipulatorManager().getInvKinematicSolver(manip.manipulator)
     joint_names = fwd_kin.getJointNames()
-    cur_state = tesseract.getEnvironment().getCurrentState()
+    cur_state = tesseract.getCurrentState()
 
     wp1 = JointWaypoint(joint_names, np.array([0,0,0,-1.57,0,0,0],dtype=np.float64))
     wp2 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(-.2,.4,0.2) * Quaterniond(0,0,1.0,0))
@@ -71,8 +72,8 @@ def test_ompl_freespace_joint_cart():
     request = PlannerRequest()
     request.seed = seed
     request.instructions = program
-    request.tesseract = tesseract
-    request.env_state = tesseract.getEnvironment().getCurrentState()
+    request.env = tesseract
+    request.env_state = tesseract.getCurrentState()
     
     response = PlannerResponse()
 

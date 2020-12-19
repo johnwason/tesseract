@@ -1,4 +1,4 @@
-from tesseract.tesseract_core import Tesseract
+from tesseract.tesseract_environment import Environment
 from tesseract.tesseract_scene_graph import SimpleResourceLocator, SimpleResourceLocatorFn
 import os
 import re
@@ -85,13 +85,11 @@ def _locate_resource(url):
     except:
         traceback.print_exc()
 
-t = Tesseract()
+t_env = Environment()
 
 # locator_fn must be kept alive by maintaining a reference
 locator_fn = SimpleResourceLocatorFn(_locate_resource)
-t.init(shapes_urdf, SimpleResourceLocator(locator_fn))
-
-t_env = t.getEnvironment()
+t_env.init(shapes_urdf, SimpleResourceLocator(locator_fn))
 
 viewer = TesseractViewer()
 

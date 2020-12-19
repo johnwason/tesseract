@@ -51,7 +51,9 @@ def get_environment():
     assert success
     assert env.getRevision() == 2
 
-    discrete_create_fn = tesseract_collision.DiscreteContactManagerFactoryCreateMethod(tesseract_collision_bullet.BulletDiscreteBVHManager.create)
+    # env.init() now populates contact managers?
+
+    """discrete_create_fn = tesseract_collision.DiscreteContactManagerFactoryCreateMethod(tesseract_collision_bullet.BulletDiscreteBVHManager.create)
     assert env.registerDiscreteContactManager(tesseract_collision_bullet.BulletDiscreteBVHManager.name(),
         discrete_create_fn)
 
@@ -60,7 +62,7 @@ def get_environment():
         cont_create_fn)
 
     env.setActiveDiscreteContactManager(tesseract_collision_bullet.BulletDiscreteBVHManager.name())
-    env.setActiveContinuousContactManager(tesseract_collision_bullet.BulletCastBVHManager.name())
+    env.setActiveContinuousContactManager(tesseract_collision_bullet.BulletCastBVHManager.name())"""
 
     return env
 
