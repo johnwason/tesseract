@@ -35,7 +35,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <vector>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
-#include <tesseract/tesseract.h>
 #include <tesseract_environment/core/environment.h>
 
 #ifdef SWIG
@@ -49,7 +48,7 @@ template <typename FloatType>
 struct DescartesProblem
 {
   // These are required for Tesseract to configure Descartes
-  tesseract::Tesseract::ConstPtr tesseract;
+  tesseract_environment::Environment::ConstPtr env;
   tesseract_environment::EnvState::ConstPtr env_state;
 
   // Kinematic Objects
