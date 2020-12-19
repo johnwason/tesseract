@@ -133,9 +133,9 @@ public:
 #ifdef SWIG
   %extend
   {
-    tesseract_planning::ProcessPlanningFuture* run(const ProcessPlanningRequest& request)
+    std::shared_ptr<tesseract_planning::ProcessPlanningFuture> run(const ProcessPlanningRequest& request)
     {
-      return new tesseract_planning::ProcessPlanningFuture(std::move($self->run(request)));
+      return std::make_shared<tesseract_planning::ProcessPlanningFuture>(std::move($self->run(request)));
     }
   }
 #endif  // SWIG
