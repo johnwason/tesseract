@@ -58,7 +58,9 @@ namespace std {
     }
 }
 
+#ifndef SWIGPYTHON2
 %pythonnondynamic;
+#endif
 
 %include "eigen.i"
 %include "shared_factory.i"
