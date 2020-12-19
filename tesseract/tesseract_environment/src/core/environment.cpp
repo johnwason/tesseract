@@ -462,10 +462,7 @@ void Environment::setResourceLocator(tesseract_scene_graph::ResourceLocator::Ptr
   resource_locator_ = locator;
 }
 
-tesseract_scene_graph::ResourceLocator::Ptr Environment::getResourceLocator() const
-{
-  return resource_locator_;
-}
+tesseract_scene_graph::ResourceLocator::Ptr Environment::getResourceLocator() const { return resource_locator_; }
 
 void Environment::setName(const std::string& name) { scene_graph_->setName(name); }
 

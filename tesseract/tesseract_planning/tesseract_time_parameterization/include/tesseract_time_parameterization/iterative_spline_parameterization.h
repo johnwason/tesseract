@@ -219,10 +219,10 @@ public:
 private:
   /**
    * @brief If true, add two points to trajectory (first and last segments).
-   * 
+   *
    * If false, move the 2nd and 2nd-last points.
    */
-  bool add_points_; 
+  bool add_points_;
 };
 }  // namespace tesseract_planning
 
