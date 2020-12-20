@@ -34,6 +34,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_process_managers/process_generators/fix_state_collision_process_generator.h>
 #include <tesseract_command_language/utils/utils.h>
+#include <tesseract_command_language/utils/filter_functions.h>
 
 namespace tesseract_planning
 {
@@ -265,26 +266,14 @@ bool ApplyCorrectionWorkflow(Waypoint& waypoint,
   return false;
 }
 
-FixStateCollisionProcessGenerator::FixStateCollisionProcessGenerator(std::string name) : name_(std::move(name))
+FixStateCollisionProcessGenerator::FixStateCollisionProcessGenerator(std::string name)
+  : ProcessGenerator(std::move(name))
 {
   // Register default profile
   auto default_profile = std::make_shared<FixStateCollisionProfile>();
   default_profile->collision_check_config.contact_request.type = tesseract_collision::ContactTestType::FIRST;
   default_profile->collision_check_config.type = tesseract_collision::CollisionEvaluatorType::DISCRETE;
   composite_profiles["DEFAULT"] = default_profile;
-}
-
-const std::string& FixStateCollisionProcessGenerator::getName() const { return name_; }
-
-std::function<void()> FixStateCollisionProcessGenerator::generateTask(ProcessInput input, std::size_t unique_id)
-{
-  return [=]() { process(input, unique_id); };
-}
-
-std::function<int()> FixStateCollisionProcessGenerator::generateConditionalTask(ProcessInput input,
-                                                                                std::size_t unique_id)
-{
-  return [=]() { return conditionalProcess(input, unique_id); };
 }
 
 int FixStateCollisionProcessGenerator::conditionalProcess(ProcessInput input, std::size_t unique_id) const

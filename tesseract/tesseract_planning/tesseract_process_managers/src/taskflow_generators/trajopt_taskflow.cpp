@@ -28,6 +28,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <functional>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
+#include <tesseract_process_managers/core/utils.h>
 #include <tesseract_process_managers/taskflow_generators/trajopt_taskflow.h>
 
 #include <tesseract_process_managers/process_generators/motion_planner_process_generator.h>
@@ -49,9 +50,7 @@ TrajOptTaskflow::TrajOptTaskflow(TrajOptTaskflowParams params, std::string name)
 
 const std::string& TrajOptTaskflow::getName() const { return name_; }
 
-TaskflowContainer TrajOptTaskflow::generateTaskflow(ProcessInput input,
-                                                    std::function<void()> done_cb,
-                                                    std::function<void()> error_cb)
+TaskflowContainer TrajOptTaskflow::generateTaskflow(ProcessInput input, TaskflowVoidFn done_cb, TaskflowVoidFn error_cb)
 {
   // This should make all of the isComposite checks so that you can safely cast below
   if (!checkProcessInput(input))
@@ -95,16 +94,14 @@ TaskflowContainer TrajOptTaskflow::generateTaskflow(ProcessInput input,
       interpolator->composite_profiles = input.profiles->getProfileEntry<SimplePlannerCompositeProfile>();
   }
   ProcessGenerator::UPtr interpolator_generator = std::make_unique<MotionPlannerProcessGenerator>(interpolator);
-  interpolator_task.work(interpolator_generator->generateConditionalTask(input, interpolator_task.hash_value()));
-  interpolator_task.name(interpolator_generator->getName());
+  interpolator_generator->assignConditionalTask(input, interpolator_task);
   container.generators.push_back(std::move(interpolator_generator));
 
   // Setup Seed Min Length Process Generator
   // This is required because trajopt requires a minimum length trajectory. This is used to correct the seed if it is
   // to short.
   ProcessGenerator::UPtr seed_min_length_generator = std::make_unique<SeedMinLengthProcessGenerator>();
-  seed_min_length_task.work(seed_min_length_generator->generateTask(input, seed_min_length_task.hash_value()));
-  seed_min_length_task.name(seed_min_length_generator->getName());
+  seed_min_length_generator->assignTask(input, seed_min_length_task);
   container.generators.push_back(std::move(seed_min_length_generator));
 
   // Setup TrajOpt
@@ -122,8 +119,7 @@ TaskflowContainer TrajOptTaskflow::generateTaskflow(ProcessInput input,
       trajopt_planner->solver_profiles = input.profiles->getProfileEntry<TrajOptSolverProfile>();
   }
   ProcessGenerator::UPtr trajopt_generator = std::make_unique<MotionPlannerProcessGenerator>(trajopt_planner);
-  trajopt_task.work(trajopt_generator->generateConditionalTask(input, trajopt_task.hash_value()));
-  trajopt_task.name(trajopt_generator->getName());
+  trajopt_generator->assignConditionalTask(input, trajopt_task);
   container.generators.push_back(std::move(trajopt_generator));
 
   ProcessGenerator::UPtr contact_check_generator;
@@ -144,14 +140,12 @@ TaskflowContainer TrajOptTaskflow::generateTaskflow(ProcessInput input,
   if (has_contact_check && params_.enable_time_parameterization)
   {
     tf::Task contact_task = container.taskflow->placeholder();
-    contact_task.work(contact_check_generator->generateConditionalTask(input, contact_task.hash_value()));
-    contact_task.name(contact_check_generator->getName());
+    contact_check_generator->assignConditionalTask(input, contact_task);
     trajopt_task.precede(error_task, contact_task);
     container.generators.push_back(std::move(contact_check_generator));
 
     tf::Task time_task = container.taskflow->placeholder();
-    time_task.work(time_parameterization_generator->generateConditionalTask(input, time_task.hash_value()));
-    time_task.name(time_parameterization_generator->getName());
+    time_parameterization_generator->assignConditionalTask(input, time_task);
     container.generators.push_back(std::move(time_parameterization_generator));
     contact_task.precede(error_task, time_task);
     time_task.precede(error_task, done_task);
@@ -160,8 +154,7 @@ TaskflowContainer TrajOptTaskflow::generateTaskflow(ProcessInput input,
   else if (has_contact_check && !params_.enable_time_parameterization)
   {
     tf::Task contact_task = container.taskflow->placeholder();
-    contact_task.work(contact_check_generator->generateConditionalTask(input, contact_task.hash_value()));
-    contact_task.name(contact_check_generator->getName());
+    contact_check_generator->assignConditionalTask(input, contact_task);
     trajopt_task.precede(error_task, contact_task);
     contact_task.precede(error_task, done_task);
     container.generators.push_back(std::move(contact_check_generator));
@@ -169,8 +162,7 @@ TaskflowContainer TrajOptTaskflow::generateTaskflow(ProcessInput input,
   else if (!has_contact_check && params_.enable_time_parameterization)
   {
     tf::Task time_task = container.taskflow->placeholder();
-    time_task.work(time_parameterization_generator->generateConditionalTask(input, time_task.hash_value()));
-    time_task.name(time_parameterization_generator->getName());
+    time_parameterization_generator->assignConditionalTask(input, time_task);
     container.generators.push_back(std::move(time_parameterization_generator));
     trajopt_task.precede(error_task, time_task);
     time_task.precede(error_task, done_task);

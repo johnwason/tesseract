@@ -59,11 +59,7 @@ public:
   DescartesDefaultPlanProfile& operator=(DescartesDefaultPlanProfile&&) noexcept = default;
   DescartesDefaultPlanProfile(const tinyxml2::XMLElement& xml_element);
 
-#ifndef SWIG
-  PoseSamplerFn target_pose_sampler = [](const Eigen::Isometry3d& tool_pose) {
-    return tesseract_common::VectorIsometry3d({ tool_pose });
-  };
-#endif  // SWIG
+  PoseSamplerFn target_pose_sampler = sampleFixed;
 
 #ifndef SWIG
   DescartesEdgeEvaluatorAllocatorFn<FloatType> edge_evaluator{ nullptr };
