@@ -74,35 +74,6 @@ Eigen::MatrixXd interpolate(const Eigen::Ref<const Eigen::VectorXd>& start,
  */
 std::vector<Waypoint> interpolate_waypoint(const Waypoint& start, const Waypoint& stop, int steps);
 
-<<<<<<< HEAD
-      return result;
-    }
-    case static_cast<int>(WaypointType::JOINT_WAYPOINT):
-    {
-      const auto* jwp1 = start.cast_const<JointWaypoint>();
-      //      const auto* jwp2 = stop.cast_const<JointWaypoint>();
-
-      // TODO: Should check joint names are in the same order
-
-      const auto* w1 = start.cast_const<Eigen::VectorXd>();
-      const auto* w2 = stop.cast_const<Eigen::VectorXd>();
-      Eigen::MatrixXd joint_poses = interpolate(*w1, *w2, steps);
-
-      std::vector<Waypoint> result;
-      result.reserve(static_cast<std::size_t>(joint_poses.cols()));
-      for (int i = 0; i < joint_poses.cols(); ++i)
-        result.emplace_back(JointWaypoint(jwp1->joint_names, joint_poses.col(i)));
-
-      return result;
-    }
-    default:
-    {
-      CONSOLE_BRIDGE_logError("Interpolator for Waypoint type %d is currently not support!", start.getType());
-      return std::vector<Waypoint>();
-    }
-  }
-}
-
 /**
  * @brief A program flatten filter
  * @param instruction The instruction to flatten
