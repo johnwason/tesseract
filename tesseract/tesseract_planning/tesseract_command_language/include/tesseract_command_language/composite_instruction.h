@@ -114,6 +114,8 @@ public:
   {
   }
 
+#endif  // SWIG
+
 #ifndef SWIG
   ///////////////
   // Iterators //
@@ -144,7 +146,6 @@ public:
   const_reverse_iterator const crbegin();
   /** @brief returns a reverse iterator to the end */
   const_reverse_iterator const crend();
-#endif
 
   //////////////
   // Capacity //
@@ -196,7 +197,7 @@ public:
   iterator insert(const_iterator p, value_type&& x);
   iterator insert(const_iterator p, std::initializer_list<value_type> l);
   template <class InputIt>
-  void insert(iterator pos, InputIt first, InputIt last)
+  void insert(const_iterator pos, InputIt first, InputIt last)
   {
     container_.insert(pos, first, last);
   }
