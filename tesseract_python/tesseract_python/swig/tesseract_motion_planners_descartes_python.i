@@ -57,6 +57,10 @@
 
 // tesseract_motion_planner_descartes
 #define TESSERACT_MOTION_PLANNERS_DESCARTES_PUBLIC
+
+%include "tesseract_motion_planners/descartes/descartes_utils.h"
+%tesseract_std_function_base(PoseSamplerFn,tesseract_planning,tesseract_common::VectorIsometry3d,const Eigen::Isometry3d&,a);
+%tesseract_std_function(PoseSamplerFn,tesseract_planning,tesseract_common::VectorIsometry3d,const Eigen::Isometry3d&,a);
 %include "tesseract_motion_planners/descartes/descartes_problem.h"
 %include "tesseract_motion_planners/descartes/descartes_motion_planner_status_category.h"
 %include "tesseract_motion_planners/descartes/profile/descartes_profile.h"
