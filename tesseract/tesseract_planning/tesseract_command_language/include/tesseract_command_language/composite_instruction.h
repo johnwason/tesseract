@@ -274,6 +274,8 @@ private:
 public:
   std::vector<tesseract_planning::Instruction>& getInstructions() { return container_; }
 
+  const std::vector<tesseract_planning::Instruction>& getInstructions() const { return container_; }
+
   void setInstructions(std::vector<tesseract_planning::Instruction> instructions) { container_.swap(instructions); }
 };
 
