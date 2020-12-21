@@ -272,24 +272,9 @@ private:
   value_type start_instruction_{ NullInstruction() };
 
 public:
-#ifdef SWIG
+  std::vector<tesseract_planning::Instruction>& getInstructions() { return container_; }
 
-  %extend
-  {
-    std::vector<tesseract_planning::Instruction> getInstructions()
-    {
-      std::vector<tesseract_planning::Instruction> o;
-      std::copy($self->begin(), $self->end(), std::back_inserter(o));
-      return o;
-    }
-
-    void setInstructions(std::vector<tesseract_planning::Instruction> instructions)
-    {
-      $self->swap(instructions);
-    }
-  }
-
-#endif  // SWIG
+  void setInstructions(std::vector<tesseract_planning::Instruction> instructions) { container_.swap(instructions); }
 };
 
 }  // namespace tesseract_planning
