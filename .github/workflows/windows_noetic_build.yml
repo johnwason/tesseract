@@ -2,9 +2,9 @@ name: Windows-Noetic-Build
 
 on:
   push:
-    branches:
-      - master
-      - feature/CommandLanguage
+    # branches:
+    #   - master
+    #   - feature/CommandLanguage
   pull_request:
   schedule:
     - cron: '0 5 * * *'
