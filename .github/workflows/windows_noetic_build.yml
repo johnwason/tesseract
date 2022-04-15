@@ -4,7 +4,7 @@ on:
   push:
     # branches:
     #   - master
-    #   - feature/CommandLanguage
+    #   - feature/CommandLanguage 
   pull_request:
   schedule:
     - cron: '0 5 * * *'
