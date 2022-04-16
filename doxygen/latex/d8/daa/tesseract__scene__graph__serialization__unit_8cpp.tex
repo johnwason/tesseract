@@ -1,0 +1,181 @@
+\hypertarget{tesseract__scene__graph__serialization__unit_8cpp}{}\doxysection{tesseract\+\_\+scene\+\_\+graph/test/tesseract\+\_\+scene\+\_\+graph\+\_\+serialization\+\_\+unit.cpp File Reference}
+\label{tesseract__scene__graph__serialization__unit_8cpp}\index{tesseract\_scene\_graph/test/tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph/test/tesseract\_scene\_graph\_serialization\_unit.cpp}}
+
+
+Tests serialization of \mbox{\hyperlink{namespacetesseract__scene__graph}{tesseract\+\_\+scene\+\_\+graph}}.  
+
+
+{\ttfamily \#include $<$tesseract\+\_\+common/macros.\+h$>$}\newline
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$boost/serialization/shared\+\_\+ptr.\+hpp$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+common/serialization.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+common/unit\+\_\+test\+\_\+utils.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+common/utils.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+geometry/geometries.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+scene\+\_\+graph/graph.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+scene\+\_\+graph/joint.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+scene\+\_\+graph/link.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+scene\+\_\+graph/scene\+\_\+state.\+h$>$}\newline
+Include dependency graph for tesseract\+\_\+scene\+\_\+graph\+\_\+serialization\+\_\+unit.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d9/d8f/tesseract__scene__graph__serialization__unit_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_a189ca997b9057a69500bd645f9b251da}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1JointDynamics}{Joint\+Dynamics}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_ae243af89aea4268ad53fb761fb5b12a3}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1JointLimits}{Joint\+Limits}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_ac539a4f994a3fc7e0913fd3353a048e7}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1JointSafety}{Joint\+Safety}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_ae8cee8b72ab60312907b75a3be0a472e}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1JointCalibration}{Joint\+Calibration}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_a6dcc2cc28bd66bcc28759cbb22d6daa6}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1JointMimic}{Joint\+Mimic}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_abd9192eacb82d476fd535ed7c67b4144}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_abac4ff48ff1121aaf2551e3815c2090a}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1Material}{Material}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_ac0028f8d124b729d724089d37e5196ab}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1Inertial}{Inertial}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_a5d68757f46e769474272d9a86a80b988}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual}{Visual}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_afbb78d68c47656cd0f2df19ce20a5e71}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1Collision}{Collision}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_a2dba128bba114a0d7d4ac0453cc15d5a}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}})
+\item 
+\mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph}{tesseract\+\_\+scene\+\_\+graph\+::\+Scene\+Graph}} \mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_ae3c5d136c1a7167198e8ddb07247c9db}{create\+Test\+Scene\+Graph}} ()
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_abca57f42a0eac2f4b6c0fb976b5e7af9}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph}{Scene\+Graph}})
+\item 
+\mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_af725214ceba8cf6e991c180ab19ca03b}{TEST}} (Tesseract\+Scene\+Graph\+Serialization\+Unit, \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{Scene\+State}})
+\item 
+int \mbox{\hyperlink{tesseract__scene__graph__serialization__unit_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Tests serialization of \mbox{\hyperlink{namespacetesseract__scene__graph}{tesseract\+\_\+scene\+\_\+graph}}. 
+
+\begin{DoxyAuthor}{Author}
+Levi Armstrong 
+
+Matthew Powelson 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+March 18, 2022 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+TODO 
+\end{DoxyVersion}
+\begin{DoxyRefDesc}{Bug}
+\item[\mbox{\hyperlink{bug__bug000211}{Bug}}]No known bugs\end{DoxyRefDesc}
+
+
+\begin{DoxyParagraph}{License}
+Software License Agreement (Apache License) 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Licensed under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at \href{http://www.apache.org/licenses/LICENSE-2.0}{\texttt{ http\+://www.\+apache.\+org/licenses/\+LICENSE-\/2.\+0}} 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+AS IS\char`\"{} BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. 
+\end{DoxyParagraph}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_ae3c5d136c1a7167198e8ddb07247c9db}\label{tesseract__scene__graph__serialization__unit_8cpp_ae3c5d136c1a7167198e8ddb07247c9db}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!createTestSceneGraph@{createTestSceneGraph}}
+\index{createTestSceneGraph@{createTestSceneGraph}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{createTestSceneGraph()}{createTestSceneGraph()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph}{tesseract\+\_\+scene\+\_\+graph\+::\+Scene\+Graph}} create\+Test\+Scene\+Graph (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{tesseract__scene__graph__serialization__unit_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!main@{main}}
+\index{main@{main}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_afbb78d68c47656cd0f2df19ce20a5e71}\label{tesseract__scene__graph__serialization__unit_8cpp_afbb78d68c47656cd0f2df19ce20a5e71}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [1/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1Collision}{Collision}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_ac0028f8d124b729d724089d37e5196ab}\label{tesseract__scene__graph__serialization__unit_8cpp_ac0028f8d124b729d724089d37e5196ab}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [2/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1Inertial}{Inertial}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_abd9192eacb82d476fd535ed7c67b4144}\label{tesseract__scene__graph__serialization__unit_8cpp_abd9192eacb82d476fd535ed7c67b4144}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [3/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_ae8cee8b72ab60312907b75a3be0a472e}\label{tesseract__scene__graph__serialization__unit_8cpp_ae8cee8b72ab60312907b75a3be0a472e}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [4/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1JointCalibration}{Joint\+Calibration}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_a189ca997b9057a69500bd645f9b251da}\label{tesseract__scene__graph__serialization__unit_8cpp_a189ca997b9057a69500bd645f9b251da}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [5/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1JointDynamics}{Joint\+Dynamics}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_ae243af89aea4268ad53fb761fb5b12a3}\label{tesseract__scene__graph__serialization__unit_8cpp_ae243af89aea4268ad53fb761fb5b12a3}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [6/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1JointLimits}{Joint\+Limits}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_a6dcc2cc28bd66bcc28759cbb22d6daa6}\label{tesseract__scene__graph__serialization__unit_8cpp_a6dcc2cc28bd66bcc28759cbb22d6daa6}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [7/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1JointMimic}{Joint\+Mimic}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_ac539a4f994a3fc7e0913fd3353a048e7}\label{tesseract__scene__graph__serialization__unit_8cpp_ac539a4f994a3fc7e0913fd3353a048e7}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [8/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1JointSafety}{Joint\+Safety}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_a2dba128bba114a0d7d4ac0453cc15d5a}\label{tesseract__scene__graph__serialization__unit_8cpp_a2dba128bba114a0d7d4ac0453cc15d5a}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [9/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_abac4ff48ff1121aaf2551e3815c2090a}\label{tesseract__scene__graph__serialization__unit_8cpp_abac4ff48ff1121aaf2551e3815c2090a}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [10/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1Material}{Material}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_abca57f42a0eac2f4b6c0fb976b5e7af9}\label{tesseract__scene__graph__serialization__unit_8cpp_abca57f42a0eac2f4b6c0fb976b5e7af9}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [11/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph}{Scene\+Graph}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_af725214ceba8cf6e991c180ab19ca03b}\label{tesseract__scene__graph__serialization__unit_8cpp_af725214ceba8cf6e991c180ab19ca03b}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [12/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{Scene\+State}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__scene__graph__serialization__unit_8cpp_a5d68757f46e769474272d9a86a80b988}\label{tesseract__scene__graph__serialization__unit_8cpp_a5d68757f46e769474272d9a86a80b988}} 
+\index{tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_scene\_graph\_serialization\_unit.cpp@{tesseract\_scene\_graph\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [13/13]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Scene\+Graph\+Serialization\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__scene__graph_1_1Visual}{Visual}}}]{ }\end{DoxyParamCaption})}
+

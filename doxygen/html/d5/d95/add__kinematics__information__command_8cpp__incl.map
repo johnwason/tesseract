@@ -1,0 +1,43 @@
+<map id="tesseract_environment/src/commands/add_kinematics_information_command.cpp" name="tesseract_environment/src/commands/add_kinematics_information_command.cpp">
+<area shape="rect" id="node1" title=" " alt="" coords="3021,5,3227,61"/>
+<area shape="rect" id="node2" href="$de/d3c/macros_8h.html" title="Common Tesseract Macros." alt="" coords="2826,653,3017,679"/>
+<area shape="rect" id="node3" title=" " alt="" coords="3315,556,3442,597"/>
+<area shape="rect" id="node4" title=" " alt="" coords="3645,117,3771,158"/>
+<area shape="rect" id="node5" title=" " alt="" coords="3795,117,3922,158"/>
+<area shape="rect" id="node6" title=" " alt="" coords="2665,563,2733,590"/>
+<area shape="rect" id="node7" title=" " alt="" coords="1551,474,1606,501"/>
+<area shape="rect" id="node8" href="$dc/d79/tesseract__common_2include_2tesseract__common_2utils_8h.html" title="Common Tesseract Utility Functions." alt="" coords="2051,303,2221,329"/>
+<area shape="rect" id="node30" href="$d6/d07/add__kinematics__information__command_8h.html" title="Used to kinematics information to the environment." alt="" coords="3031,109,3217,165"/>
+<area shape="rect" id="node33" href="$dd/d50/serialization_8h.html" title="Additional Boost serialization wrappers." alt="" coords="733,303,947,329"/>
+<area shape="rect" id="node9" title=" " alt="" coords="2732,385,2783,411"/>
+<area shape="rect" id="node10" title=" " alt="" coords="2808,563,2867,590"/>
+<area shape="rect" id="node11" title=" " alt="" coords="1392,385,1461,411"/>
+<area shape="rect" id="node12" title=" " alt="" coords="2119,385,2198,411"/>
+<area shape="rect" id="node13" title=" " alt="" coords="1739,385,1805,411"/>
+<area shape="rect" id="node14" title=" " alt="" coords="1829,385,1896,411"/>
+<area shape="rect" id="node15" title=" " alt="" coords="1631,653,1716,679"/>
+<area shape="rect" id="node16" title=" " alt="" coords="1920,385,1992,411"/>
+<area shape="rect" id="node17" title=" " alt="" coords="2017,385,2095,411"/>
+<area shape="rect" id="node18" href="$d2/d01/allowed__collision__matrix_8h.html" title=" " alt="" coords="2425,377,2607,419"/>
+<area shape="rect" id="node21" href="$dd/ddb/tesseract__common_2include_2tesseract__common_2types_8h.html" title="Common Tesseract Types." alt="" coords="2084,474,2263,501"/>
+<area shape="rect" id="node19" title=" " alt="" coords="2337,474,2428,501"/>
+<area shape="rect" id="node20" title=" " alt="" coords="2459,563,2570,590"/>
+<area shape="rect" id="node28" title=" " alt="" coords="2959,556,3086,597"/>
+<area shape="rect" id="node29" title=" " alt="" coords="1291,556,1418,597"/>
+<area shape="rect" id="node22" title=" " alt="" coords="1740,653,1855,679"/>
+<area shape="rect" id="node23" title=" " alt="" coords="2594,563,2641,590"/>
+<area shape="rect" id="node24" title=" " alt="" coords="2105,563,2245,590"/>
+<area shape="rect" id="node25" title=" " alt="" coords="2269,563,2384,590"/>
+<area shape="rect" id="node26" href="$d9/dc2/kinematic__limits_8h.html" title="Common Tesseract Kinematic Limits and Related Utility Functions." alt="" coords="1835,556,2029,597"/>
+<area shape="rect" id="node27" title=" " alt="" coords="1879,645,2006,687"/>
+<area shape="rect" id="node31" href="$d0/d09/command_8h.html" title="This contains classes for recording operations applied to the environment for tracking changes...." alt="" coords="3161,467,3316,508"/>
+<area shape="rect" id="node32" href="$d3/d7a/kinematics__information_8h.html" title="This hold the kinematics information." alt="" coords="2734,213,2906,255"/>
+<area shape="rect" id="node34" title=" " alt="" coords="328,385,389,411"/>
+<area shape="rect" id="node35" title=" " alt="" coords="414,385,509,411"/>
+<area shape="rect" id="node36" title=" " alt="" coords="533,385,600,411"/>
+<area shape="rect" id="node37" title=" " alt="" coords="625,385,829,411"/>
+<area shape="rect" id="node38" title=" " alt="" coords="853,385,1053,411"/>
+<area shape="rect" id="node39" title=" " alt="" coords="1077,377,1216,419"/>
+<area shape="rect" id="node40" title=" " alt="" coords="5,377,144,419"/>
+<area shape="rect" id="node41" title=" " alt="" coords="169,377,303,419"/>
+</map>

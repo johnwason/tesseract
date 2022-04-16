@@ -1,0 +1,161 @@
+\hypertarget{resource__locator_8h_source}{}\doxysection{resource\+\_\+locator.\+h}
+\label{resource__locator_8h_source}\index{tesseract\_common/include/tesseract\_common/resource\_locator.h@{tesseract\_common/include/tesseract\_common/resource\_locator.h}}
+\mbox{\hyperlink{resource__locator_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef TESSERACT\_COMMON\_RESOURCE\_LOCATOR\_H}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define TESSERACT\_COMMON\_RESOURCE\_LOCATOR\_H}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{macros_8h}{tesseract\_common/macros.h}}>}}
+\DoxyCodeLine{30 \mbox{\hyperlink{macros_8h_a8cc0e3c6a3382c5c0b19eb9e676fc2db}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_PUSH}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <boost/serialization/access.hpp>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{34 \mbox{\hyperlink{namespaceTESSERACT__COMMON__IGNORE__WARNINGS__POP}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_POP}}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#ifdef SWIG}}
+\DoxyCodeLine{37 \%shared\_ptr(\mbox{\hyperlink{classtesseract__common_1_1Resource}{tesseract\_common::Resource}})}
+\DoxyCodeLine{38 \%\textcolor{keyword}{template}(vector\_uint8) std::vector<uint8\_t>;}
+\DoxyCodeLine{39 \%pybuffer\_binary(\textcolor{keyword}{const} uint8\_t* bytes, \textcolor{keywordtype}{size\_t} bytes\_len);}
+\DoxyCodeLine{40 \%shared\_ptr(\mbox{\hyperlink{classtesseract__common_1_1BytesResource}{tesseract\_common::BytesResource}})}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \%feature(\textcolor{stringliteral}{"{}director"{}}) \mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}::ResourceLocator;}
+\DoxyCodeLine{43 \%shared\_ptr(\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}::ResourceLocator)}
+\DoxyCodeLine{44 \%shared\_ptr(\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}::SimpleResourceLocator)}
+\DoxyCodeLine{45 \%shared\_ptr(\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}::SimpleLocatedResource)}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// SWIG}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}}
+\DoxyCodeLine{49 \{}
+\DoxyCodeLine{50 \textcolor{comment}{// Forward declare}}
+\DoxyCodeLine{51 \textcolor{keyword}{class }Resource;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{54 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__common_1_1ResourceLocator}{ResourceLocator}}}
+\DoxyCodeLine{55 \{}
+\DoxyCodeLine{56 \textcolor{keyword}{public}:}
+\DoxyCodeLine{57   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a6695b4edf487788d0fcef4786ebe7d79}{Ptr}} = std::shared\_ptr<ResourceLocator>;}
+\DoxyCodeLine{58   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a61a53e45948c47a9612096d8e7b90252}{ConstPtr}} = std::shared\_ptr<const ResourceLocator>;}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60   \textcolor{keyword}{virtual} \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a660e997527b79fcb757653262d805fd3}{\string~ResourceLocator}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{68   \textcolor{keyword}{virtual} std::shared\_ptr<Resource> \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a9982dcd0225b9addefa4fe5a6e5643b4}{locateResource}}(\textcolor{keyword}{const} std::string\& url) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a0808e2d3c913c41e852ab3819eadd828}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator}{ResourceLocator}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{71   \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator}{ResourceLocator}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{keyword}{private}:}
+\DoxyCodeLine{74   \textcolor{keyword}{friend} \textcolor{keyword}{class }boost::serialization::access;}
+\DoxyCodeLine{75   \textcolor{keyword}{template} <\textcolor{keyword}{class} Archive>}
+\DoxyCodeLine{76   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceboost_1_1serialization_aa09e7bc4ef1e47e77fdac84474259e71}{serialize}}(Archive\& ar, \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} version);  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{77 \};}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{80 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__common_1_1Resource}{Resource}} : \textcolor{keyword}{public} \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator}{ResourceLocator}}}
+\DoxyCodeLine{81 \{}
+\DoxyCodeLine{82 \textcolor{keyword}{public}:}
+\DoxyCodeLine{83   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a6695b4edf487788d0fcef4786ebe7d79}{Ptr}} = std::shared\_ptr<Resource>;}
+\DoxyCodeLine{84   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a61a53e45948c47a9612096d8e7b90252}{ConstPtr}} = std::shared\_ptr<const Resource>;}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{91   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classtesseract__common_1_1Resource_a02ac803c93b947368fdb4fd10ea7009e}{isFile}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{98   \textcolor{keyword}{virtual} std::string \mbox{\hyperlink{classtesseract__common_1_1Resource_a5f2d2d041015de23185c3f0d3f8e870d}{getUrl}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{105   \textcolor{keyword}{virtual} std::string \mbox{\hyperlink{classtesseract__common_1_1Resource_aebc39966d58d01bde580de5a2828aba8}{getFilePath}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{112   \textcolor{keyword}{virtual} std::vector<uint8\_t> \mbox{\hyperlink{classtesseract__common_1_1Resource_acede5a5949fc47aa099d93575e06fff0}{getResourceContents}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{119   \textcolor{keyword}{virtual} std::shared\_ptr<std::istream> \mbox{\hyperlink{classtesseract__common_1_1Resource_a0fff51327ddd31c51771e24ecbff1815}{getResourceContentStream}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a0808e2d3c913c41e852ab3819eadd828}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1Resource}{Resource}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{122   \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1Resource}{Resource}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keyword}{private}:}
+\DoxyCodeLine{125   \textcolor{keyword}{friend} \textcolor{keyword}{class }boost::serialization::access;}
+\DoxyCodeLine{126   \textcolor{keyword}{template} <\textcolor{keyword}{class} Archive>}
+\DoxyCodeLine{127   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceboost_1_1serialization_aa09e7bc4ef1e47e77fdac84474259e71}{serialize}}(Archive\& ar, \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} version);  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{128 \};}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{keyword}{using} \mbox{\hyperlink{namespacetesseract__common_a2ef4ec89c4c07fc0a75c4bc24da9681c}{SimpleResourceLocatorFn}} = std::function<std::string(\textcolor{keyword}{const} std::string\&)>;}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{133 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{SimpleLocatedResource}} : \textcolor{keyword}{public} \mbox{\hyperlink{classtesseract__common_1_1Resource}{Resource}}}
+\DoxyCodeLine{134 \{}
+\DoxyCodeLine{135 \textcolor{keyword}{public}:}
+\DoxyCodeLine{136   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a6695b4edf487788d0fcef4786ebe7d79}{Ptr}} = std::shared\_ptr<SimpleLocatedResource>;}
+\DoxyCodeLine{137   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a61a53e45948c47a9612096d8e7b90252}{ConstPtr}} = std::shared\_ptr<const SimpleLocatedResource>;}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{140   \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource_a587beac45848b6a49778152acf7250bf}{SimpleLocatedResource}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{148   \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{SimpleLocatedResource}}(std::string url, std::string filename, \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a61a53e45948c47a9612096d8e7b90252}{ResourceLocator::ConstPtr}} parent = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{149   \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource_aa2faf3e1e4fa0cd5f24df9117ad1228d}{\string~SimpleLocatedResource}}() \textcolor{keyword}{override} = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{150   \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource_adbdc3b26ffdc5bb5779d5b6145fcf153}{SimpleLocatedResource}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{SimpleLocatedResource}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{151   \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{SimpleLocatedResource}}\& \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource_a53936aae330d1ec4aed69e374b1f5de7}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{SimpleLocatedResource}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{152   \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource_a611254eecba87656124969f1946272a2}{SimpleLocatedResource}}(\mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{SimpleLocatedResource}}\&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{153   \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{SimpleLocatedResource}}\& \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource_a8be2c274c2b1be46c63bcad9b0caad1d}{operator=}}(\mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{SimpleLocatedResource}}\&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155   \textcolor{keywordtype}{bool} isFile() const override final;}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157   std::\textcolor{keywordtype}{string} getUrl() const override final;}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159   std::\textcolor{keywordtype}{string} getFilePath() const override final;}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161   std::\mbox{\hyperlink{FloatMath_8inl_adcf134d50025cc52907d0c8ac798d89d}{vector}}<uint8\_t> getResourceContents() const override final;}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163   std::shared\_ptr<std::istream> getResourceContentStream() const override final;}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165   \mbox{\hyperlink{classtesseract__common_1_1Resource}{Resource}}::\mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a6695b4edf487788d0fcef4786ebe7d79}{Ptr}} locateResource(const std::\textcolor{keywordtype}{string}\& url) const override final;}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167   \textcolor{keywordtype}{bool} operator==(const \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{SimpleLocatedResource}}\& rhs) const;}
+\DoxyCodeLine{168   \textcolor{keywordtype}{bool} operator!=(const \mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{SimpleLocatedResource}}\& rhs) const;}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 private:}
+\DoxyCodeLine{171   std::\textcolor{keywordtype}{string} url\_;}
+\DoxyCodeLine{172   std::\textcolor{keywordtype}{string} filename\_;}
+\DoxyCodeLine{173   \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator}{ResourceLocator}}::\mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a61a53e45948c47a9612096d8e7b90252}{ConstPtr}} parent\_;}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175   friend class \mbox{\hyperlink{namespaceboost}{boost}}::serialization::access;}
+\DoxyCodeLine{176   template <class Archive>}
+\DoxyCodeLine{177   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceboost_1_1serialization_aa09e7bc4ef1e47e77fdac84474259e71}{serialize}}(Archive\& ar, const \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} version);  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{178 \};}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 class \mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}} : public \mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}::\mbox{\hyperlink{classtesseract__common_1_1Resource}{Resource}}}
+\DoxyCodeLine{181 \{}
+\DoxyCodeLine{182 \textcolor{keyword}{public}:}
+\DoxyCodeLine{184   \mbox{\hyperlink{classtesseract__common_1_1BytesResource_aa57107ea990b32a11560f99e01e2b96b}{BytesResource}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186   \mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}(std::string url, std::vector<uint8\_t> bytes, \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a61a53e45948c47a9612096d8e7b90252}{ResourceLocator::ConstPtr}} parent = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{187   \mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}(std::string url, \textcolor{keyword}{const} uint8\_t* bytes, \textcolor{keywordtype}{size\_t} bytes\_len, \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a61a53e45948c47a9612096d8e7b90252}{ResourceLocator::ConstPtr}} parent = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{188   \mbox{\hyperlink{classtesseract__common_1_1BytesResource_a9626a1e23bfd5203b4f5ec5a45a8765b}{\string~BytesResource}}() \textcolor{keyword}{override} = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{189   \mbox{\hyperlink{classtesseract__common_1_1BytesResource_a8186b47dc8e06065dd204edd4a0777a0}{BytesResource}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{190   \mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}\& \mbox{\hyperlink{classtesseract__common_1_1BytesResource_a06c0229309c702dbefc5de8664dc2b02}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{191   \mbox{\hyperlink{classtesseract__common_1_1BytesResource_abed56af3cabeeb157906a089d0cb3e5f}{BytesResource}}(\mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}\&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{192   \mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}\& \mbox{\hyperlink{classtesseract__common_1_1BytesResource_a52783fb16fd2a42854d49d4d500ead49}{operator=}}(\mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}\&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194   \textcolor{keywordtype}{bool} isFile() const override final;}
+\DoxyCodeLine{195   std::\textcolor{keywordtype}{string} getUrl() const override final;}
+\DoxyCodeLine{196   std::\textcolor{keywordtype}{string} getFilePath() const override final;}
+\DoxyCodeLine{197   std::\mbox{\hyperlink{FloatMath_8inl_adcf134d50025cc52907d0c8ac798d89d}{vector}}<uint8\_t> getResourceContents() const override final;}
+\DoxyCodeLine{198   std::shared\_ptr<std::istream> getResourceContentStream() const override final;}
+\DoxyCodeLine{199   \mbox{\hyperlink{classtesseract__common_1_1Resource}{Resource}}::\mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a6695b4edf487788d0fcef4786ebe7d79}{Ptr}} locateResource(const std::\textcolor{keywordtype}{string}\& url) const override final;}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201   \textcolor{keywordtype}{bool} operator==(const \mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}\& rhs) const;}
+\DoxyCodeLine{202   \textcolor{keywordtype}{bool} operator!=(const \mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}\& rhs) const;}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 private:}
+\DoxyCodeLine{205   std::\textcolor{keywordtype}{string} url\_;}
+\DoxyCodeLine{206   std::\mbox{\hyperlink{FloatMath_8inl_adcf134d50025cc52907d0c8ac798d89d}{vector}}<uint8\_t> bytes\_;}
+\DoxyCodeLine{207   \mbox{\hyperlink{classtesseract__common_1_1ResourceLocator}{ResourceLocator}}::\mbox{\hyperlink{classtesseract__common_1_1ResourceLocator_a61a53e45948c47a9612096d8e7b90252}{ConstPtr}} parent\_;}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209   friend class \mbox{\hyperlink{namespaceboost}{boost}}::serialization::access;}
+\DoxyCodeLine{210   template <class Archive>}
+\DoxyCodeLine{211   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceboost_1_1serialization_aa09e7bc4ef1e47e77fdac84474259e71}{serialize}}(Archive\& ar, const \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} version);  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{212 \};}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 \}  \textcolor{comment}{// namespace tesseract\_common}}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 \textcolor{preprocessor}{\#include <boost/serialization/export.hpp>}}
+\DoxyCodeLine{217 \textcolor{preprocessor}{\#include <boost/serialization/tracking.hpp>}}
+\DoxyCodeLine{218 BOOST\_CLASS\_EXPORT\_KEY2(\mbox{\hyperlink{classtesseract__common_1_1SimpleLocatedResource}{tesseract\_common::SimpleLocatedResource}}, \textcolor{stringliteral}{"{}SimpleLocatedResource"{}})}
+\DoxyCodeLine{219 BOOST\_CLASS\_EXPORT\_KEY2(\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}::\mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}, "{}\mbox{\hyperlink{classtesseract__common_1_1BytesResource}{BytesResource}}"{})}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_COMMON\_RESOURCE\_LOCATOR\_H}}
+
+\end{DoxyCode}

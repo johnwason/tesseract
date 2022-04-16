@@ -1,0 +1,443 @@
+\hypertarget{collision__sphere__sphere__cast__unit_8hpp_source}{}\doxysection{collision\+\_\+sphere\+\_\+sphere\+\_\+cast\+\_\+unit.\+hpp}
+\label{collision__sphere__sphere__cast__unit_8hpp_source}\index{tesseract\_collision/core/include/tesseract\_collision/test\_suite/collision\_sphere\_sphere\_cast\_unit.hpp@{tesseract\_collision/core/include/tesseract\_collision/test\_suite/collision\_sphere\_sphere\_cast\_unit.hpp}}
+\mbox{\hyperlink{collision__sphere__sphere__cast__unit_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef TESSERACT\_COLLISION\_COLLISION\_SPHERE\_SPHERE\_CAST\_UNIT\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define TESSERACT\_COLLISION\_COLLISION\_SPHERE\_SPHERE\_CAST\_UNIT\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{convex__hull__utils_8h}{tesseract\_collision/bullet/convex\_hull\_utils.h}}>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{continuous__contact__manager_8h}{tesseract\_collision/core/continuous\_contact\_manager.h}}>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{common_8h}{tesseract\_collision/core/common.h}}>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{geometries_8h}{tesseract\_geometry/geometries.h}}>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__collision}{tesseract\_collision}}}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }test\_suite}
+\DoxyCodeLine{12 \{}
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }detail}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{15 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__collision_1_1test__suite_1_1detail_a3fb030da7784f5e059d57666cb288f3d}{addCollisionObjects}}(\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager}{ContinuousContactManager}}\& checker, \textcolor{keywordtype}{bool} use\_convex\_mesh = \textcolor{keyword}{false})}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{18   \textcolor{comment}{// Add sphere to checker}}
+\DoxyCodeLine{20 \textcolor{comment}{}  \mbox{\hyperlink{namespacetesseract__collision_a0aa5b9a264467e92cd1b9f0cd0c38ee8}{CollisionShapePtr}} sphere;}
+\DoxyCodeLine{21   \textcolor{keywordflow}{if} (use\_convex\_mesh)}
+\DoxyCodeLine{22   \{}
+\DoxyCodeLine{23     \mbox{\hyperlink{namespacetesseract__common_af89ed6517f4c84bdb2b037bb40f7d9d9}{tesseract\_common::VectorVector3d}} mesh\_vertices;}
+\DoxyCodeLine{24     Eigen::VectorXi mesh\_faces;}
+\DoxyCodeLine{25     EXPECT\_GT(}
+\DoxyCodeLine{26         \mbox{\hyperlink{namespacetesseract__collision_ab79187502eefb0f670dbde89a5b7b969}{loadSimplePlyFile}}(std::string(TESSERACT\_SUPPORT\_DIR) + \textcolor{stringliteral}{"{}/meshes/sphere\_p25m.ply"{}}, mesh\_vertices, mesh\_faces),}
+\DoxyCodeLine{27         0);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{comment}{// This is required because convex hull cannot have multiple faces on the same plane.}}
+\DoxyCodeLine{30     \textcolor{keyword}{auto} ch\_vertices = std::make\_shared<tesseract\_common::VectorVector3d>();}
+\DoxyCodeLine{31     \textcolor{keyword}{auto} ch\_faces = std::make\_shared<Eigen::VectorXi>();}
+\DoxyCodeLine{32     \textcolor{keywordtype}{int} ch\_num\_faces = \mbox{\hyperlink{namespacetesseract__collision_ac97bc1eb96f0aa2e1d3033d7e7758849}{createConvexHull}}(*ch\_vertices, *ch\_faces, mesh\_vertices);}
+\DoxyCodeLine{33     sphere = std::make\_shared<tesseract\_geometry::ConvexMesh>(ch\_vertices, ch\_faces, ch\_num\_faces);}
+\DoxyCodeLine{34   \}}
+\DoxyCodeLine{35   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{36   \{}
+\DoxyCodeLine{37     sphere = std::make\_shared<tesseract\_geometry::Sphere>(0.25);}
+\DoxyCodeLine{38   \}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40   Eigen::Isometry3d sphere\_pose;}
+\DoxyCodeLine{41   sphere\_pose.setIdentity();}
+\DoxyCodeLine{42   sphere\_pose.translation()[2] = 0.25;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44   \mbox{\hyperlink{namespacetesseract__collision_a2472107aae8174a30873bb0a955c3cb4}{CollisionShapesConst}} obj1\_shapes;}
+\DoxyCodeLine{45   \mbox{\hyperlink{namespacetesseract__common_a94d9921fc7ed323609ac57d06f939cb6}{tesseract\_common::VectorIsometry3d}} obj1\_poses;}
+\DoxyCodeLine{46   obj1\_shapes.push\_back(sphere);}
+\DoxyCodeLine{47   obj1\_poses.push\_back(sphere\_pose);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a7b5fe6cd54d25ebadae80359c64e4840}{addCollisionObject}}(\textcolor{stringliteral}{"{}sphere\_link"{}}, 0, obj1\_shapes, obj1\_poses, \textcolor{keyword}{false});}
+\DoxyCodeLine{50   EXPECT\_FALSE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a0b4cf474dcc2d1f5f9d904f6ba9e48d3}{isCollisionObjectEnabled}}(\textcolor{stringliteral}{"{}sphere\_link"{}}));}
+\DoxyCodeLine{51   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_ad55f0a1fd9ed4febf0d85099a95ccfe7}{enableCollisionObject}}(\textcolor{stringliteral}{"{}sphere\_link"{}});}
+\DoxyCodeLine{52   EXPECT\_TRUE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a0b4cf474dcc2d1f5f9d904f6ba9e48d3}{isCollisionObjectEnabled}}(\textcolor{stringliteral}{"{}sphere\_link"{}}));}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{55   \textcolor{comment}{// Add thin box to checker which is disabled}}
+\DoxyCodeLine{57 \textcolor{comment}{}  \mbox{\hyperlink{namespacetesseract__collision_a0aa5b9a264467e92cd1b9f0cd0c38ee8}{CollisionShapePtr}} thin\_box = std::make\_shared<tesseract\_geometry::Box>(0.1, 1, 1);}
+\DoxyCodeLine{58   Eigen::Isometry3d thin\_box\_pose;}
+\DoxyCodeLine{59   thin\_box\_pose.setIdentity();}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61   \mbox{\hyperlink{namespacetesseract__collision_a2472107aae8174a30873bb0a955c3cb4}{CollisionShapesConst}} obj2\_shapes;}
+\DoxyCodeLine{62   \mbox{\hyperlink{namespacetesseract__common_a94d9921fc7ed323609ac57d06f939cb6}{tesseract\_common::VectorIsometry3d}} obj2\_poses;}
+\DoxyCodeLine{63   obj2\_shapes.push\_back(thin\_box);}
+\DoxyCodeLine{64   obj2\_poses.push\_back(thin\_box\_pose);}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a7b5fe6cd54d25ebadae80359c64e4840}{addCollisionObject}}(\textcolor{stringliteral}{"{}thin\_box\_link"{}}, 0, obj2\_shapes, obj2\_poses);}
+\DoxyCodeLine{67   EXPECT\_TRUE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a0b4cf474dcc2d1f5f9d904f6ba9e48d3}{isCollisionObjectEnabled}}(\textcolor{stringliteral}{"{}thin\_box\_link"{}}));}
+\DoxyCodeLine{68   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a997e39fd1c4632656741cd8ef4cb6bb0}{disableCollisionObject}}(\textcolor{stringliteral}{"{}thin\_box\_link"{}});}
+\DoxyCodeLine{69   EXPECT\_FALSE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a0b4cf474dcc2d1f5f9d904f6ba9e48d3}{isCollisionObjectEnabled}}(\textcolor{stringliteral}{"{}thin\_box\_link"{}}));}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{72   \textcolor{comment}{// Add second sphere to checker. If use\_convex\_mesh = true}}
+\DoxyCodeLine{73   \textcolor{comment}{// then this sphere will be added as a convex hull mesh.}}
+\DoxyCodeLine{75 \textcolor{comment}{}  \mbox{\hyperlink{namespacetesseract__collision_a0aa5b9a264467e92cd1b9f0cd0c38ee8}{CollisionShapePtr}} sphere1;}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77   \textcolor{keywordflow}{if} (use\_convex\_mesh)}
+\DoxyCodeLine{78   \{}
+\DoxyCodeLine{79     \mbox{\hyperlink{namespacetesseract__common_af89ed6517f4c84bdb2b037bb40f7d9d9}{tesseract\_common::VectorVector3d}} mesh\_vertices;}
+\DoxyCodeLine{80     Eigen::VectorXi mesh\_faces;}
+\DoxyCodeLine{81     EXPECT\_GT(}
+\DoxyCodeLine{82         \mbox{\hyperlink{namespacetesseract__collision_ab79187502eefb0f670dbde89a5b7b969}{loadSimplePlyFile}}(std::string(TESSERACT\_SUPPORT\_DIR) + \textcolor{stringliteral}{"{}/meshes/sphere\_p25m.ply"{}}, mesh\_vertices, mesh\_faces),}
+\DoxyCodeLine{83         0);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85     \textcolor{comment}{// This is required because convex hull cannot have multiple faces on the same plane.}}
+\DoxyCodeLine{86     \textcolor{keyword}{auto} ch\_verticies = std::make\_shared<tesseract\_common::VectorVector3d>();}
+\DoxyCodeLine{87     \textcolor{keyword}{auto} ch\_faces = std::make\_shared<Eigen::VectorXi>();}
+\DoxyCodeLine{88     \textcolor{keywordtype}{int} ch\_num\_faces = \mbox{\hyperlink{namespacetesseract__collision_ac97bc1eb96f0aa2e1d3033d7e7758849}{createConvexHull}}(*ch\_verticies, *ch\_faces, mesh\_vertices);}
+\DoxyCodeLine{89     sphere1 = std::make\_shared<tesseract\_geometry::ConvexMesh>(ch\_verticies, ch\_faces, ch\_num\_faces);}
+\DoxyCodeLine{90   \}}
+\DoxyCodeLine{91   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{92   \{}
+\DoxyCodeLine{93     sphere1 = std::make\_shared<tesseract\_geometry::Sphere>(0.25);}
+\DoxyCodeLine{94   \}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96   Eigen::Isometry3d sphere1\_pose;}
+\DoxyCodeLine{97   sphere1\_pose.setIdentity();}
+\DoxyCodeLine{98   sphere1\_pose.translation()[2] = 0.25;}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100   \mbox{\hyperlink{namespacetesseract__collision_a2472107aae8174a30873bb0a955c3cb4}{CollisionShapesConst}} obj3\_shapes;}
+\DoxyCodeLine{101   \mbox{\hyperlink{namespacetesseract__common_a94d9921fc7ed323609ac57d06f939cb6}{tesseract\_common::VectorIsometry3d}} obj3\_poses;}
+\DoxyCodeLine{102   obj3\_shapes.push\_back(sphere1);}
+\DoxyCodeLine{103   obj3\_poses.push\_back(sphere1\_pose);}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a7b5fe6cd54d25ebadae80359c64e4840}{addCollisionObject}}(\textcolor{stringliteral}{"{}sphere1\_link"{}}, 0, obj3\_shapes, obj3\_poses);}
+\DoxyCodeLine{106   EXPECT\_TRUE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a0b4cf474dcc2d1f5f9d904f6ba9e48d3}{isCollisionObjectEnabled}}(\textcolor{stringliteral}{"{}sphere1\_link"{}}));}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{109   \textcolor{comment}{// Add box and remove}}
+\DoxyCodeLine{111 \textcolor{comment}{}  \mbox{\hyperlink{namespacetesseract__collision_a0aa5b9a264467e92cd1b9f0cd0c38ee8}{CollisionShapePtr}} remove\_box = std::make\_shared<tesseract\_geometry::Box>(0.1, 1, 1);}
+\DoxyCodeLine{112   Eigen::Isometry3d remove\_box\_pose;}
+\DoxyCodeLine{113   thin\_box\_pose.setIdentity();}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115   \mbox{\hyperlink{namespacetesseract__collision_a2472107aae8174a30873bb0a955c3cb4}{CollisionShapesConst}} obj4\_shapes;}
+\DoxyCodeLine{116   \mbox{\hyperlink{namespacetesseract__common_a94d9921fc7ed323609ac57d06f939cb6}{tesseract\_common::VectorIsometry3d}} obj4\_poses;}
+\DoxyCodeLine{117   obj4\_shapes.push\_back(remove\_box);}
+\DoxyCodeLine{118   obj4\_poses.push\_back(remove\_box\_pose);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a7b5fe6cd54d25ebadae80359c64e4840}{addCollisionObject}}(\textcolor{stringliteral}{"{}remove\_box\_link"{}}, 0, obj4\_shapes, obj4\_poses);}
+\DoxyCodeLine{121   EXPECT\_TRUE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a181b21bb808c40b3b28d095792d8395c}{getCollisionObjects}}().size() == 4);}
+\DoxyCodeLine{122   EXPECT\_TRUE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a311b50cd68a685538a25f9f39e7626b6}{hasCollisionObject}}(\textcolor{stringliteral}{"{}remove\_box\_link"{}}));}
+\DoxyCodeLine{123   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_aad3584c6954993af36c7035ff0c3599a}{removeCollisionObject}}(\textcolor{stringliteral}{"{}remove\_box\_link"{}});}
+\DoxyCodeLine{124   EXPECT\_FALSE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a311b50cd68a685538a25f9f39e7626b6}{hasCollisionObject}}(\textcolor{stringliteral}{"{}remove\_box\_link"{}}));}
+\DoxyCodeLine{125   EXPECT\_TRUE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a181b21bb808c40b3b28d095792d8395c}{getCollisionObjects}}().size() == 3);}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{128   \textcolor{comment}{// Try functions on a link that does not exist}}
+\DoxyCodeLine{130 \textcolor{comment}{}  EXPECT\_FALSE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_aad3584c6954993af36c7035ff0c3599a}{removeCollisionObject}}(\textcolor{stringliteral}{"{}link\_does\_not\_exist"{}}));}
+\DoxyCodeLine{131   EXPECT\_FALSE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_ad55f0a1fd9ed4febf0d85099a95ccfe7}{enableCollisionObject}}(\textcolor{stringliteral}{"{}link\_does\_not\_exist"{}}));}
+\DoxyCodeLine{132   EXPECT\_FALSE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a997e39fd1c4632656741cd8ef4cb6bb0}{disableCollisionObject}}(\textcolor{stringliteral}{"{}link\_does\_not\_exist"{}}));}
+\DoxyCodeLine{133   EXPECT\_FALSE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a0b4cf474dcc2d1f5f9d904f6ba9e48d3}{isCollisionObjectEnabled}}(\textcolor{stringliteral}{"{}link\_does\_not\_exist"{}}));}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{136   \textcolor{comment}{// Try to add empty Collision Object}}
+\DoxyCodeLine{138 \textcolor{comment}{}  EXPECT\_FALSE(}
+\DoxyCodeLine{139       checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a7b5fe6cd54d25ebadae80359c64e4840}{addCollisionObject}}(\textcolor{stringliteral}{"{}empty\_link"{}}, 0, \mbox{\hyperlink{namespacetesseract__collision_a2472107aae8174a30873bb0a955c3cb4}{CollisionShapesConst}}(), \mbox{\hyperlink{namespacetesseract__common_a94d9921fc7ed323609ac57d06f939cb6}{tesseract\_common::VectorIsometry3d}}()));}
+\DoxyCodeLine{140   EXPECT\_TRUE(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a181b21bb808c40b3b28d095792d8395c}{getCollisionObjects}}().size() == 3);}
+\DoxyCodeLine{141 \}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__collision_1_1test__suite_1_1detail_a7d8beb50971dd637b1921c2f9103e719}{runTestPrimitive}}(\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager}{ContinuousContactManager}}\& checker)}
+\DoxyCodeLine{144 \{}
+\DoxyCodeLine{146   \textcolor{comment}{// Test when object is in collision at cc\_time 0.5}}
+\DoxyCodeLine{148 \textcolor{comment}{}  checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a0ee920248e73f437a96db3e80a2cd1bb}{setActiveCollisionObjects}}(\{ \textcolor{stringliteral}{"{}sphere\_link"{}}, \textcolor{stringliteral}{"{}sphere1\_link"{}} \});}
+\DoxyCodeLine{149   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a9e265422d81599a2ae72022fd8670c76}{setCollisionMarginData}}(\mbox{\hyperlink{namespacetesseract__collision_a0717a3c53d08d510257f631ea96cb560}{CollisionMarginData}}(0.1));}
+\DoxyCodeLine{150   EXPECT\_NEAR(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_ad96481e168adf7971270d52251252f87}{getCollisionMarginData}}().\mbox{\hyperlink{classtesseract__common_1_1CollisionMarginData_a8b73bd2450f2c9215e67bba3c048fe4b}{getMaxCollisionMargin}}(), 0.1, 1e-\/5);}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152   \textcolor{comment}{// Set the start location}}
+\DoxyCodeLine{153   \mbox{\hyperlink{namespacetesseract__common_a67bde3cb7bb235f0f61c370ef8bc74d8}{tesseract\_common::TransformMap}} location\_start;}
+\DoxyCodeLine{154   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{155   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(0) = -\/0.2;}
+\DoxyCodeLine{156   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(1) = -\/1.0;}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{159   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(0) = 0.2;}
+\DoxyCodeLine{160   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(2) = -\/1.0;}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162   \textcolor{comment}{// Set the end location}}
+\DoxyCodeLine{163   \mbox{\hyperlink{namespacetesseract__common_a67bde3cb7bb235f0f61c370ef8bc74d8}{tesseract\_common::TransformMap}} location\_end;}
+\DoxyCodeLine{164   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{165   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(0) = -\/0.2;}
+\DoxyCodeLine{166   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(1) = 1.0;}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{169   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(0) = 0.2;}
+\DoxyCodeLine{170   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(2) = 1.0;}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a4bce090140b2992785587e2da4426caa}{setCollisionObjectsTransform}}(location\_start, location\_end);}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174   \textcolor{comment}{// Perform collision check}}
+\DoxyCodeLine{175   \mbox{\hyperlink{namespacetesseract__collision_a1eeace4cc41027dbde8e7dbeb77ca7cf}{ContactResultMap}} result;}
+\DoxyCodeLine{176   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_afcff8dac7fca4dfa7428f10143b89c02}{contactTest}}(result, \mbox{\hyperlink{structtesseract__collision_1_1ContactRequest}{ContactRequest}}(\mbox{\hyperlink{namespacetesseract__collision_ac3da4f46ae16e86ba4f1dfd2935eb80cae9c32f09a44ae1ae34e42d53502fab77}{ContactTestType::CLOSEST}}));}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178   \mbox{\hyperlink{namespacetesseract__collision_a96d77f62b7c26962d1090f0a2f00419b}{ContactResultVector}} result\_vector;}
+\DoxyCodeLine{179   \mbox{\hyperlink{namespacetesseract__collision_a3d63942ad37df10958b434c860782fbb}{flattenResults}}(std::move(result), result\_vector);}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181   EXPECT\_TRUE(!result\_vector.empty());}
+\DoxyCodeLine{182   EXPECT\_NEAR(result\_vector[0].distance, -\/0.1, 0.0001);}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184   std::vector<int> idx = \{ 0, 1, 1 \};}
+\DoxyCodeLine{185   \textcolor{keywordflow}{if} (result\_vector[0].link\_names[0] != \textcolor{stringliteral}{"{}sphere\_link"{}})}
+\DoxyCodeLine{186     idx = \{ 1, 0, -\/1 \};}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188   EXPECT\_NEAR(result\_vector[0].cc\_time[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])], 0.5, 0.001);}
+\DoxyCodeLine{189   EXPECT\_NEAR(result\_vector[0].cc\_time[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])], 0.5, 0.001);}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191   EXPECT\_TRUE(result\_vector[0].cc\_type[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0]))] ==}
+\DoxyCodeLine{192               \mbox{\hyperlink{namespacetesseract__collision_a267c740fd3b446222ba19cbaa56dab5ea1101988a82b0cd8a2e2c5ee5fda455eb}{ContinuousCollisionType::CCType\_Between}});}
+\DoxyCodeLine{193   EXPECT\_TRUE(result\_vector[0].cc\_type[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0]))] ==}
+\DoxyCodeLine{194               \mbox{\hyperlink{namespacetesseract__collision_a267c740fd3b446222ba19cbaa56dab5ea1101988a82b0cd8a2e2c5ee5fda455eb}{ContinuousCollisionType::CCType\_Between}});}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][0], 0.05, 0.001);}
+\DoxyCodeLine{197   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][1], 0.0, 0.001);}
+\DoxyCodeLine{198   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][2], 0.25, 0.001);}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][0], -\/0.05, 0.001);}
+\DoxyCodeLine{201   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][1], 0.0, 0.001);}
+\DoxyCodeLine{202   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][2], 0.25, 0.001);}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][0], 0.25, 0.001);}
+\DoxyCodeLine{205   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][1], 0.0, 0.001);}
+\DoxyCodeLine{206   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][2], 0.25, 0.001);}
+\DoxyCodeLine{207   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][0], -\/0.25, 0.001);}
+\DoxyCodeLine{208   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][1], 0.0, 0.001);}
+\DoxyCodeLine{209   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][2], 0.25, 0.001);}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211   EXPECT\_TRUE(result\_vector[0].transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])].isApprox(location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}], 0.0001));}
+\DoxyCodeLine{212   EXPECT\_TRUE(result\_vector[0].transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])].isApprox(location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}], 0.0001));}
+\DoxyCodeLine{213   EXPECT\_TRUE(result\_vector[0].cc\_transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])].isApprox(location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}], 0.0001));}
+\DoxyCodeLine{214   EXPECT\_TRUE(}
+\DoxyCodeLine{215       result\_vector[0].cc\_transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])].isApprox(location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}], 0.0001));}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217   EXPECT\_NEAR(result\_vector[0].normal[0], idx[2] * 1.0, 0.001);}
+\DoxyCodeLine{218   EXPECT\_NEAR(result\_vector[0].normal[1], idx[2] * 0.0, 0.001);}
+\DoxyCodeLine{219   EXPECT\_NEAR(result\_vector[0].normal[2], idx[2] * 0.0, 0.001);}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{222   \textcolor{comment}{// Test when object is in collision at cc\_time 0.333 and 0.5}}
+\DoxyCodeLine{224 \textcolor{comment}{}}
+\DoxyCodeLine{225   \textcolor{comment}{// Set the start location}}
+\DoxyCodeLine{226   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{227   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(0) = -\/0.2;}
+\DoxyCodeLine{228   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(1) = -\/0.5;}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{231   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(0) = 0.2;}
+\DoxyCodeLine{232   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(2) = -\/1.0;}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234   \textcolor{comment}{// Set the end location}}
+\DoxyCodeLine{235   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{236   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(0) = -\/0.2;}
+\DoxyCodeLine{237   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(1) = 1.0;}
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{240   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(0) = 0.2;}
+\DoxyCodeLine{241   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(2) = 1.0;}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a4bce090140b2992785587e2da4426caa}{setCollisionObjectsTransform}}(location\_start, location\_end);}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245   \textcolor{comment}{// Perform collision check}}
+\DoxyCodeLine{246   result = \mbox{\hyperlink{namespacetesseract__collision_a1eeace4cc41027dbde8e7dbeb77ca7cf}{ContactResultMap}}();}
+\DoxyCodeLine{247   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_afcff8dac7fca4dfa7428f10143b89c02}{contactTest}}(result, \mbox{\hyperlink{structtesseract__collision_1_1ContactRequest}{ContactRequest}}(\mbox{\hyperlink{namespacetesseract__collision_ac3da4f46ae16e86ba4f1dfd2935eb80cae9c32f09a44ae1ae34e42d53502fab77}{ContactTestType::CLOSEST}}));}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249   result\_vector = \mbox{\hyperlink{namespacetesseract__collision_a96d77f62b7c26962d1090f0a2f00419b}{ContactResultVector}}();}
+\DoxyCodeLine{250   \mbox{\hyperlink{namespacetesseract__collision_a3d63942ad37df10958b434c860782fbb}{flattenResults}}(std::move(result), result\_vector);}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252   EXPECT\_TRUE(!result\_vector.empty());}
+\DoxyCodeLine{253   EXPECT\_NEAR(result\_vector[0].distance, -\/0.1, 0.0001);}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255   idx = \{ 0, 1, 1 \};}
+\DoxyCodeLine{256   \textcolor{keywordflow}{if} (result\_vector[0].link\_names[0] != \textcolor{stringliteral}{"{}sphere\_link"{}})}
+\DoxyCodeLine{257     idx = \{ 1, 0, -\/1 \};}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259   EXPECT\_NEAR(result\_vector[0].cc\_time[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])], 0.3333, 0.001);}
+\DoxyCodeLine{260   EXPECT\_NEAR(result\_vector[0].cc\_time[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])], 0.5, 0.001);}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262   EXPECT\_TRUE(result\_vector[0].cc\_type[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0]))] ==}
+\DoxyCodeLine{263               \mbox{\hyperlink{namespacetesseract__collision_a267c740fd3b446222ba19cbaa56dab5ea1101988a82b0cd8a2e2c5ee5fda455eb}{ContinuousCollisionType::CCType\_Between}});}
+\DoxyCodeLine{264   EXPECT\_TRUE(result\_vector[0].cc\_type[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1]))] ==}
+\DoxyCodeLine{265               \mbox{\hyperlink{namespacetesseract__collision_a267c740fd3b446222ba19cbaa56dab5ea1101988a82b0cd8a2e2c5ee5fda455eb}{ContinuousCollisionType::CCType\_Between}});}
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][0], 0.05, 0.001);}
+\DoxyCodeLine{268   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][1], 0.0, 0.001);}
+\DoxyCodeLine{269   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][2], 0.25, 0.001);}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][0], -\/0.05, 0.001);}
+\DoxyCodeLine{272   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][1], 0.0, 0.001);}
+\DoxyCodeLine{273   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][2], 0.25, 0.001);}
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][0], 0.25, 0.001);}
+\DoxyCodeLine{276   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][1], 0.0, 0.001);}
+\DoxyCodeLine{277   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][2], 0.25, 0.001);}
+\DoxyCodeLine{278   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][0], -\/0.25, 0.001);}
+\DoxyCodeLine{279   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][1], 0.0, 0.001);}
+\DoxyCodeLine{280   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][2], 0.25, 0.001);}
+\DoxyCodeLine{281 }
+\DoxyCodeLine{282   EXPECT\_TRUE(result\_vector[0].transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])].isApprox(location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}], 0.0001));}
+\DoxyCodeLine{283   EXPECT\_TRUE(result\_vector[0].transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])].isApprox(location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}], 0.0001));}
+\DoxyCodeLine{284   EXPECT\_TRUE(result\_vector[0].cc\_transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])].isApprox(location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}], 0.0001));}
+\DoxyCodeLine{285   EXPECT\_TRUE(}
+\DoxyCodeLine{286       result\_vector[0].cc\_transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])].isApprox(location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}], 0.0001));}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288   EXPECT\_NEAR(result\_vector[0].normal[0], idx[2] * 1.0, 0.001);}
+\DoxyCodeLine{289   EXPECT\_NEAR(result\_vector[0].normal[1], idx[2] * 0.0, 0.001);}
+\DoxyCodeLine{290   EXPECT\_NEAR(result\_vector[0].normal[2], idx[2] * 0.0, 0.001);}
+\DoxyCodeLine{291 \}}
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__collision_1_1test__suite_1_1detail_a521cbd3bad6d73ea30872e67be93f646}{runTestConvex}}(\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager}{ContinuousContactManager}}\& checker)}
+\DoxyCodeLine{294 \{}
+\DoxyCodeLine{296   \textcolor{comment}{// Test when object is in collision at cc\_time 0.5}}
+\DoxyCodeLine{298 \textcolor{comment}{}  checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a0ee920248e73f437a96db3e80a2cd1bb}{setActiveCollisionObjects}}(\{ \textcolor{stringliteral}{"{}sphere\_link"{}}, \textcolor{stringliteral}{"{}sphere1\_link"{}} \});}
+\DoxyCodeLine{299   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a9e265422d81599a2ae72022fd8670c76}{setCollisionMarginData}}(\mbox{\hyperlink{namespacetesseract__collision_a0717a3c53d08d510257f631ea96cb560}{CollisionMarginData}}(0.1));}
+\DoxyCodeLine{300   EXPECT\_NEAR(checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_ad96481e168adf7971270d52251252f87}{getCollisionMarginData}}().\mbox{\hyperlink{classtesseract__common_1_1CollisionMarginData_a8b73bd2450f2c9215e67bba3c048fe4b}{getMaxCollisionMargin}}(), 0.1, 1e-\/5);}
+\DoxyCodeLine{301 }
+\DoxyCodeLine{302   \textcolor{comment}{// Set the start location}}
+\DoxyCodeLine{303   \mbox{\hyperlink{namespacetesseract__common_a67bde3cb7bb235f0f61c370ef8bc74d8}{tesseract\_common::TransformMap}} location\_start;}
+\DoxyCodeLine{304   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{305   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(0) = -\/0.2;}
+\DoxyCodeLine{306   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(1) = -\/1.0;}
+\DoxyCodeLine{307 }
+\DoxyCodeLine{308   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{309   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(0) = 0.2;}
+\DoxyCodeLine{310   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(2) = -\/1.0;}
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312   \textcolor{comment}{// Set the end location}}
+\DoxyCodeLine{313   \mbox{\hyperlink{namespacetesseract__common_a67bde3cb7bb235f0f61c370ef8bc74d8}{tesseract\_common::TransformMap}} location\_end;}
+\DoxyCodeLine{314   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{315   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(0) = -\/0.2;}
+\DoxyCodeLine{316   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(1) = 1.0;}
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{319   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(0) = 0.2;}
+\DoxyCodeLine{320   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(2) = 1.0;}
+\DoxyCodeLine{321 }
+\DoxyCodeLine{322   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a4bce090140b2992785587e2da4426caa}{setCollisionObjectsTransform}}(location\_start, location\_end);}
+\DoxyCodeLine{323 }
+\DoxyCodeLine{324   \textcolor{comment}{// Perform collision check}}
+\DoxyCodeLine{325   \mbox{\hyperlink{namespacetesseract__collision_a1eeace4cc41027dbde8e7dbeb77ca7cf}{ContactResultMap}} result;}
+\DoxyCodeLine{326   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_afcff8dac7fca4dfa7428f10143b89c02}{contactTest}}(result, \mbox{\hyperlink{structtesseract__collision_1_1ContactRequest}{ContactRequest}}(\mbox{\hyperlink{namespacetesseract__collision_ac3da4f46ae16e86ba4f1dfd2935eb80cae9c32f09a44ae1ae34e42d53502fab77}{ContactTestType::CLOSEST}}));}
+\DoxyCodeLine{327 }
+\DoxyCodeLine{328   \mbox{\hyperlink{namespacetesseract__collision_a96d77f62b7c26962d1090f0a2f00419b}{ContactResultVector}} result\_vector;}
+\DoxyCodeLine{329   \mbox{\hyperlink{namespacetesseract__collision_a3d63942ad37df10958b434c860782fbb}{flattenResults}}(std::move(result), result\_vector);}
+\DoxyCodeLine{330 }
+\DoxyCodeLine{331   EXPECT\_TRUE(!result\_vector.empty());}
+\DoxyCodeLine{332   EXPECT\_NEAR(result\_vector[0].distance, -\/0.0754, 0.001);}
+\DoxyCodeLine{333 }
+\DoxyCodeLine{334   std::vector<int> idx = \{ 0, 1, 1 \};}
+\DoxyCodeLine{335   \textcolor{keywordflow}{if} (result\_vector[0].link\_names[0] != \textcolor{stringliteral}{"{}sphere\_link"{}})}
+\DoxyCodeLine{336     idx = \{ 1, 0, -\/1 \};}
+\DoxyCodeLine{337 }
+\DoxyCodeLine{338   EXPECT\_NEAR(result\_vector[0].cc\_time[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])], 0.5, 0.001);}
+\DoxyCodeLine{339   EXPECT\_NEAR(result\_vector[0].cc\_time[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])], 0.5, 0.001);}
+\DoxyCodeLine{340 }
+\DoxyCodeLine{341   EXPECT\_TRUE(result\_vector[0].cc\_type[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0]))] ==}
+\DoxyCodeLine{342               \mbox{\hyperlink{namespacetesseract__collision_a267c740fd3b446222ba19cbaa56dab5ea1101988a82b0cd8a2e2c5ee5fda455eb}{ContinuousCollisionType::CCType\_Between}});}
+\DoxyCodeLine{343   EXPECT\_TRUE(result\_vector[0].cc\_type[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0]))] ==}
+\DoxyCodeLine{344               \mbox{\hyperlink{namespacetesseract__collision_a267c740fd3b446222ba19cbaa56dab5ea1101988a82b0cd8a2e2c5ee5fda455eb}{ContinuousCollisionType::CCType\_Between}});}
+\DoxyCodeLine{345 }
+\DoxyCodeLine{346   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][0], 0.0377, 0.001);}
+\DoxyCodeLine{347   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][1], 0.0, 0.001);}
+\DoxyCodeLine{348   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][2], 0.25, 0.001);}
+\DoxyCodeLine{349 }
+\DoxyCodeLine{350   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][0], -\/0.0377, 0.001);}
+\DoxyCodeLine{351   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][1], 0.0, 0.001);}
+\DoxyCodeLine{352   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][2], 0.25, 0.001);}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][0], 0.2377, 0.001);}
+\DoxyCodeLine{355   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][1], 0.0, 0.001);}
+\DoxyCodeLine{356   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][2], 0.25, 0.001);}
+\DoxyCodeLine{357   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][0], -\/0.2377, 0.001);}
+\DoxyCodeLine{358   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][1], 0.0, 0.001);}
+\DoxyCodeLine{359   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][2], 0.25, 0.001);}
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361   EXPECT\_TRUE(result\_vector[0].transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])].isApprox(location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}], 0.0001));}
+\DoxyCodeLine{362   EXPECT\_TRUE(result\_vector[0].transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])].isApprox(location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}], 0.0001));}
+\DoxyCodeLine{363   EXPECT\_TRUE(result\_vector[0].cc\_transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])].isApprox(location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}], 0.0001));}
+\DoxyCodeLine{364   EXPECT\_TRUE(}
+\DoxyCodeLine{365       result\_vector[0].cc\_transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])].isApprox(location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}], 0.0001));}
+\DoxyCodeLine{366 }
+\DoxyCodeLine{367   EXPECT\_NEAR(result\_vector[0].normal[0], idx[2] * 1.0, 0.001);}
+\DoxyCodeLine{368   EXPECT\_NEAR(result\_vector[0].normal[1], idx[2] * 0.0, 0.001);}
+\DoxyCodeLine{369   EXPECT\_NEAR(result\_vector[0].normal[2], idx[2] * 0.0, 0.001);}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{372   \textcolor{comment}{// Test when object is in collision at cc\_time 0.333 and 0.5}}
+\DoxyCodeLine{374 \textcolor{comment}{}}
+\DoxyCodeLine{375   \textcolor{comment}{// Set the start location}}
+\DoxyCodeLine{376   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{377   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(0) = -\/0.2;}
+\DoxyCodeLine{378   location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(1) = -\/0.5;}
+\DoxyCodeLine{379 }
+\DoxyCodeLine{380   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{381   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(0) = 0.2;}
+\DoxyCodeLine{382   location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(2) = -\/1.0;}
+\DoxyCodeLine{383 }
+\DoxyCodeLine{384   \textcolor{comment}{// Set the end location}}
+\DoxyCodeLine{385   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{386   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(0) = -\/0.2;}
+\DoxyCodeLine{387   location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}].translation()(1) = 1.0;}
+\DoxyCodeLine{388 }
+\DoxyCodeLine{389   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}] = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{390   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(0) = 0.2;}
+\DoxyCodeLine{391   location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}].translation()(2) = 1.0;}
+\DoxyCodeLine{392 }
+\DoxyCodeLine{393   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_a4bce090140b2992785587e2da4426caa}{setCollisionObjectsTransform}}(location\_start, location\_end);}
+\DoxyCodeLine{394 }
+\DoxyCodeLine{395   \textcolor{comment}{// Perform collision check}}
+\DoxyCodeLine{396   result = \mbox{\hyperlink{namespacetesseract__collision_a1eeace4cc41027dbde8e7dbeb77ca7cf}{ContactResultMap}}();}
+\DoxyCodeLine{397   checker.\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager_afcff8dac7fca4dfa7428f10143b89c02}{contactTest}}(result, \mbox{\hyperlink{structtesseract__collision_1_1ContactRequest}{ContactRequest}}(\mbox{\hyperlink{namespacetesseract__collision_ac3da4f46ae16e86ba4f1dfd2935eb80cae9c32f09a44ae1ae34e42d53502fab77}{ContactTestType::CLOSEST}}));}
+\DoxyCodeLine{398 }
+\DoxyCodeLine{399   result\_vector = \mbox{\hyperlink{namespacetesseract__collision_a96d77f62b7c26962d1090f0a2f00419b}{ContactResultVector}}();}
+\DoxyCodeLine{400   \mbox{\hyperlink{namespacetesseract__collision_a3d63942ad37df10958b434c860782fbb}{flattenResults}}(std::move(result), result\_vector);}
+\DoxyCodeLine{401 }
+\DoxyCodeLine{402   EXPECT\_TRUE(!result\_vector.empty());}
+\DoxyCodeLine{403   EXPECT\_NEAR(result\_vector[0].distance, -\/0.0754, 0.001);}
+\DoxyCodeLine{404 }
+\DoxyCodeLine{405   idx = \{ 0, 1, 1 \};}
+\DoxyCodeLine{406   \textcolor{keywordflow}{if} (result\_vector[0].link\_names[0] != \textcolor{stringliteral}{"{}sphere\_link"{}})}
+\DoxyCodeLine{407     idx = \{ 1, 0, -\/1 \};}
+\DoxyCodeLine{408 }
+\DoxyCodeLine{409   EXPECT\_NEAR(result\_vector[0].cc\_time[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])], 0.3848, 0.001);}
+\DoxyCodeLine{410   EXPECT\_NEAR(result\_vector[0].cc\_time[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])], 0.5, 0.001);}
+\DoxyCodeLine{411 }
+\DoxyCodeLine{412   EXPECT\_TRUE(result\_vector[0].cc\_type[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0]))] ==}
+\DoxyCodeLine{413               \mbox{\hyperlink{namespacetesseract__collision_a267c740fd3b446222ba19cbaa56dab5ea1101988a82b0cd8a2e2c5ee5fda455eb}{ContinuousCollisionType::CCType\_Between}});}
+\DoxyCodeLine{414   EXPECT\_TRUE(result\_vector[0].cc\_type[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1]))] ==}
+\DoxyCodeLine{415               \mbox{\hyperlink{namespacetesseract__collision_a267c740fd3b446222ba19cbaa56dab5ea1101988a82b0cd8a2e2c5ee5fda455eb}{ContinuousCollisionType::CCType\_Between}});}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][0], 0.0377, 0.001);}
+\DoxyCodeLine{418   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][1], 0.0772, 0.001);}
+\DoxyCodeLine{419   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][2], 0.25, 0.001);}
+\DoxyCodeLine{420 }
+\DoxyCodeLine{421   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][0], -\/0.0377, 0.001);}
+\DoxyCodeLine{422   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][1], 0.0772, 0.001);}
+\DoxyCodeLine{423   EXPECT\_NEAR(result\_vector[0].nearest\_points[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][2], 0.25, 0.001);}
+\DoxyCodeLine{424 }
+\DoxyCodeLine{425   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][0], 0.2377, 0.001);}
+\DoxyCodeLine{426   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][1], 0.0, 0.001);}
+\DoxyCodeLine{427   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])][2], 0.25, 0.001);}
+\DoxyCodeLine{428   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][0], -\/0.2377, 0.001);}
+\DoxyCodeLine{429   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][1], 0.0, 0.001);}
+\DoxyCodeLine{430   EXPECT\_NEAR(result\_vector[0].nearest\_points\_local[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])][2], 0.25, 0.001);}
+\DoxyCodeLine{431 }
+\DoxyCodeLine{432   EXPECT\_TRUE(result\_vector[0].transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])].isApprox(location\_start[\textcolor{stringliteral}{"{}sphere\_link"{}}], 0.0001));}
+\DoxyCodeLine{433   EXPECT\_TRUE(result\_vector[0].transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])].isApprox(location\_start[\textcolor{stringliteral}{"{}sphere1\_link"{}}], 0.0001));}
+\DoxyCodeLine{434   EXPECT\_TRUE(result\_vector[0].cc\_transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[0])].isApprox(location\_end[\textcolor{stringliteral}{"{}sphere\_link"{}}], 0.0001));}
+\DoxyCodeLine{435   EXPECT\_TRUE(}
+\DoxyCodeLine{436       result\_vector[0].cc\_transform[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(idx[1])].isApprox(location\_end[\textcolor{stringliteral}{"{}sphere1\_link"{}}], 0.0001));}
+\DoxyCodeLine{437 }
+\DoxyCodeLine{438   EXPECT\_NEAR(result\_vector[0].normal[0], idx[2] * 1.0, 0.001);}
+\DoxyCodeLine{439   EXPECT\_NEAR(result\_vector[0].normal[1], idx[2] * 0.0, 0.001);}
+\DoxyCodeLine{440   EXPECT\_NEAR(result\_vector[0].normal[2], idx[2] * 0.0, 0.001);}
+\DoxyCodeLine{441 \}}
+\DoxyCodeLine{442 \}  \textcolor{comment}{// namespace detail}}
+\DoxyCodeLine{443 }
+\DoxyCodeLine{444 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__collision_1_1test__suite_a64721a2ef6abc909e9a762274303107b}{runTest}}(\mbox{\hyperlink{classtesseract__collision_1_1ContinuousContactManager}{ContinuousContactManager}}\& checker, \textcolor{keywordtype}{bool} use\_convex\_mesh)}
+\DoxyCodeLine{445 \{}
+\DoxyCodeLine{446   \textcolor{comment}{// Add collision objects}}
+\DoxyCodeLine{447   \mbox{\hyperlink{namespacetesseract__collision_1_1test__suite_1_1detail_a3fb030da7784f5e059d57666cb288f3d}{detail::addCollisionObjects}}(checker, use\_convex\_mesh);}
+\DoxyCodeLine{448 }
+\DoxyCodeLine{449   \textcolor{keywordflow}{if} (use\_convex\_mesh)}
+\DoxyCodeLine{450     \mbox{\hyperlink{namespacetesseract__collision_1_1test__suite_1_1detail_a521cbd3bad6d73ea30872e67be93f646}{detail::runTestConvex}}(checker);}
+\DoxyCodeLine{451   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{452     \mbox{\hyperlink{namespacetesseract__collision_1_1test__suite_1_1detail_a7d8beb50971dd637b1921c2f9103e719}{detail::runTestPrimitive}}(checker);}
+\DoxyCodeLine{453 \}}
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455 \}  \textcolor{comment}{// namespace test\_suite}}
+\DoxyCodeLine{456 \}  \textcolor{comment}{// namespace tesseract\_collision}}
+\DoxyCodeLine{457 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_COLLISION\_COLLISION\_SPHERE\_SPHERE\_CAST\_UNIT\_HPP}}
+
+\end{DoxyCode}

@@ -1,0 +1,61 @@
+\hypertarget{change__joint__velocity__limits__command_8h_source}{}\doxysection{change\+\_\+joint\+\_\+velocity\+\_\+limits\+\_\+command.\+h}
+\label{change__joint__velocity__limits__command_8h_source}\index{tesseract\_environment/include/tesseract\_environment/commands/change\_joint\_velocity\_limits\_command.h@{tesseract\_environment/include/tesseract\_environment/commands/change\_joint\_velocity\_limits\_command.h}}
+\mbox{\hyperlink{change__joint__velocity__limits__command_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef TESSERACT\_ENVIRONMENT\_CHANGE\_JOINT\_VELOCITY\_LIMITS\_COMMAND\_H}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define TESSERACT\_ENVIRONMENT\_CHANGE\_JOINT\_VELOCITY\_LIMITS\_COMMAND\_H}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{macros_8h}{tesseract\_common/macros.h}}>}}
+\DoxyCodeLine{30 \mbox{\hyperlink{macros_8h_a8cc0e3c6a3382c5c0b19eb9e676fc2db}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_PUSH}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <boost/serialization/access.hpp>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <unordered\_map>}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <cassert>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{36 \mbox{\hyperlink{namespaceTESSERACT__COMMON__IGNORE__WARNINGS__POP}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_POP}}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{command_8h}{tesseract\_environment/command.h}}>}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__environment}{tesseract\_environment}}}
+\DoxyCodeLine{41 \{}
+\DoxyCodeLine{42 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand}{ChangeJointVelocityLimitsCommand}} : \textcolor{keyword}{public} \mbox{\hyperlink{classtesseract__environment_1_1Command}{Command}}}
+\DoxyCodeLine{43 \{}
+\DoxyCodeLine{44 \textcolor{keyword}{public}:}
+\DoxyCodeLine{45   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__environment_1_1Command_a26e9088280770d9887b52cef37e731db}{Ptr}} = std::shared\_ptr<ChangeJointVelocityLimitsCommand>;}
+\DoxyCodeLine{46   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__environment_1_1Command_a71f41840ff091003233e7ddaff1c4081}{ConstPtr}} = std::shared\_ptr<const ChangeJointVelocityLimitsCommand>;}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48   \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a639620ede2400121e15d6ca529e2278e}{ChangeJointVelocityLimitsCommand}}() : \mbox{\hyperlink{classtesseract__environment_1_1Command}{Command}}(\mbox{\hyperlink{namespacetesseract__environment_afc00c1aecb519acba3afc24dbd367029}{CommandType}}::\mbox{\hyperlink{namespacetesseract__environment_afc00c1aecb519acba3afc24dbd367029aea4ee03591d62742fc798bd6d07914dd}{CHANGE\_JOINT\_VELOCITY\_LIMITS}})\{\};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{55   \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a5500694503731d95119a3663f806c9e4}{ChangeJointVelocityLimitsCommand}}(std::string joint\_name, \textcolor{keywordtype}{double} limit)}
+\DoxyCodeLine{56     : \mbox{\hyperlink{classtesseract__environment_1_1Command}{Command}}(\mbox{\hyperlink{namespacetesseract__environment_afc00c1aecb519acba3afc24dbd367029}{CommandType}}::\mbox{\hyperlink{namespacetesseract__environment_afc00c1aecb519acba3afc24dbd367029aea4ee03591d62742fc798bd6d07914dd}{CHANGE\_JOINT\_VELOCITY\_LIMITS}}), \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a9d74c05b9237272ca106957d8553c480}{limits\_}}(\{ std::make\_pair(std::move(joint\_name), limit) \})}
+\DoxyCodeLine{57   \{}
+\DoxyCodeLine{58     assert(limit > 0);}
+\DoxyCodeLine{59   \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{65   \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a64a6d6e84797c895194251416801048d}{ChangeJointVelocityLimitsCommand}}(std::unordered\_map<std::string, double> limits)}
+\DoxyCodeLine{66     : \mbox{\hyperlink{classtesseract__environment_1_1Command}{Command}}(\mbox{\hyperlink{namespacetesseract__environment_afc00c1aecb519acba3afc24dbd367029}{CommandType}}::\mbox{\hyperlink{namespacetesseract__environment_afc00c1aecb519acba3afc24dbd367029aea4ee03591d62742fc798bd6d07914dd}{CHANGE\_JOINT\_VELOCITY\_LIMITS}}), \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a9d74c05b9237272ca106957d8553c480}{limits\_}}(std::move(limits))}
+\DoxyCodeLine{67   \{}
+\DoxyCodeLine{68     assert(std::all\_of(\mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a9d74c05b9237272ca106957d8553c480}{limits\_}}.begin(), \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a9d74c05b9237272ca106957d8553c480}{limits\_}}.end(), [](\textcolor{keyword}{const} \textcolor{keyword}{auto}\& p) \{ return p.second > 0; \}));}
+\DoxyCodeLine{69   \}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71   \textcolor{keyword}{const} std::unordered\_map<std::string, double>\& \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_aff8ccdfe0ab3dcc90fc8dc796d1e13ad}{getLimits}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a9d74c05b9237272ca106957d8553c480}{limits\_}}; \}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_ac910bec37dbe28426cd7669e6ea99992}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand}{ChangeJointVelocityLimitsCommand}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{74   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a06074865d48ee2aff38dcf32979033b2}{operator!=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand}{ChangeJointVelocityLimitsCommand}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{private}:}
+\DoxyCodeLine{77   std::unordered\_map<std::string, double> \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a9d74c05b9237272ca106957d8553c480}{limits\_}};}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost::serialization::access}};}
+\DoxyCodeLine{80   \textcolor{keyword}{template} <\textcolor{keyword}{class} Archive>}
+\DoxyCodeLine{81   \textcolor{keywordtype}{void} \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand_a4638995432431adbd4b0d6a9c9f3a19e}{serialize}}(Archive\& ar, \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} version);  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{82 \};}
+\DoxyCodeLine{83 \}  \textcolor{comment}{// namespace tesseract\_environment}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#include <boost/serialization/export.hpp>}}
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#include <boost/serialization/tracking.hpp>}}
+\DoxyCodeLine{87 BOOST\_CLASS\_EXPORT\_KEY2(\mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand}{tesseract\_environment::ChangeJointVelocityLimitsCommand}}, \textcolor{stringliteral}{"{}ChangeJointVelocityLimitsCommand"{}})}
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_ENVIRONMENT\_CHANGE\_JOINT\_VELOCITY\_LIMITS\_COMMAND\_H}}
+
+\end{DoxyCode}

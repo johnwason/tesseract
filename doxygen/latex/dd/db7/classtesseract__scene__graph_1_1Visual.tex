@@ -4,6 +4,16 @@
 
 {\ttfamily \#include $<$link.\+h$>$}
 
+
+
+Collaboration diagram for tesseract\+\_\+scene\+\_\+graph\+::Visual\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{db/d9d/classtesseract__scene__graph_1_1Visual__coll__graph}
+\end{center}
+\end{figure}
 \doxysubsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
@@ -17,6 +27,10 @@ using \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_a604735ea917512a19
 \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_a5dd88e7c06e2e33545690b822eb21fda}{Visual}} ()
 \item 
 void \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_aebd604677b78a4b661b729d60d87f208}{clear}} ()
+\item 
+bool \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_ac9b3249b7ae6c988bbd89bada10bff6a}{operator==}} (const \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual}{Visual}} \&rhs) const
+\item 
+bool \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_a25de688144a81a606feee07e1da6a586}{operator!=}} (const \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual}{Visual}} \&rhs) const
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -28,6 +42,16 @@ Eigen\+::\+Isometry3d \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_ae
 \mbox{\hyperlink{classtesseract__scene__graph_1_1Material_a9d68bd33aa85035e3b291c13d6ae7a98}{Material\+::\+Ptr}} \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_a3dc28dcf8a139ebe598c33c63b3263c3}{material}}
 \item 
 std\+::string \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_a1b0d14b4594db8d4a7c382860d9c7f49}{name}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class Archive $>$ }\\void \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_a789b3447ae7f38ced1d4eafdb143184d}{serialize}} (Archive \&ar, const unsigned int version)
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost\+::serialization\+::access}}
 \end{DoxyCompactItemize}
 
 
@@ -62,6 +86,36 @@ std\+::string \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_a1b0d14b45
 \doxysubsubsection{\texorpdfstring{clear()}{clear()}}
 {\footnotesize\ttfamily void tesseract\+\_\+scene\+\_\+graph\+::\+Visual\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+\mbox{\Hypertarget{classtesseract__scene__graph_1_1Visual_a25de688144a81a606feee07e1da6a586}\label{classtesseract__scene__graph_1_1Visual_a25de688144a81a606feee07e1da6a586}} 
+\index{tesseract\_scene\_graph::Visual@{tesseract\_scene\_graph::Visual}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!tesseract\_scene\_graph::Visual@{tesseract\_scene\_graph::Visual}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily bool tesseract\+\_\+scene\+\_\+graph\+::\+Visual\+::operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual}{Visual}} \&}]{rhs }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classtesseract__scene__graph_1_1Visual_ac9b3249b7ae6c988bbd89bada10bff6a}\label{classtesseract__scene__graph_1_1Visual_ac9b3249b7ae6c988bbd89bada10bff6a}} 
+\index{tesseract\_scene\_graph::Visual@{tesseract\_scene\_graph::Visual}!operator==@{operator==}}
+\index{operator==@{operator==}!tesseract\_scene\_graph::Visual@{tesseract\_scene\_graph::Visual}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool tesseract\+\_\+scene\+\_\+graph\+::\+Visual\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual}{Visual}} \&}]{rhs }\end{DoxyParamCaption}) const}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000022}{Todo}}]Make utility to check derived type \end{DoxyRefDesc}
+\mbox{\Hypertarget{classtesseract__scene__graph_1_1Visual_a789b3447ae7f38ced1d4eafdb143184d}\label{classtesseract__scene__graph_1_1Visual_a789b3447ae7f38ced1d4eafdb143184d}} 
+\index{tesseract\_scene\_graph::Visual@{tesseract\_scene\_graph::Visual}!serialize@{serialize}}
+\index{serialize@{serialize}!tesseract\_scene\_graph::Visual@{tesseract\_scene\_graph::Visual}}
+\doxysubsubsection{\texorpdfstring{serialize()}{serialize()}}
+{\footnotesize\ttfamily template$<$class Archive $>$ \\
+void tesseract\+\_\+scene\+\_\+graph\+::\+Visual\+::serialize (\begin{DoxyParamCaption}\item[{Archive \&}]{ar,  }\item[{const unsigned int}]{version }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classtesseract__scene__graph_1_1Visual_ac98d07dd8f7b70e16ccb9a01abf56b9c}\label{classtesseract__scene__graph_1_1Visual_ac98d07dd8f7b70e16ccb9a01abf56b9c}} 
+\index{tesseract\_scene\_graph::Visual@{tesseract\_scene\_graph::Visual}!boost::serialization::access@{boost::serialization::access}}
+\index{boost::serialization::access@{boost::serialization::access}!tesseract\_scene\_graph::Visual@{tesseract\_scene\_graph::Visual}}
+\doxysubsubsection{\texorpdfstring{boost::serialization::access}{boost::serialization::access}}
+{\footnotesize\ttfamily friend class boost\+::serialization\+::access\hspace{0.3cm}{\ttfamily [friend]}}
+
 
 
 \doxysubsection{Member Data Documentation}
@@ -91,6 +145,7 @@ std\+::string \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual_a1b0d14b45
 
 
 
-The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-tesseract/tesseract\+\_\+scene\+\_\+graph/include/tesseract\+\_\+scene\+\_\+graph/\mbox{\hyperlink{tesseract__scene__graph_2include_2tesseract__scene__graph_2link_8h}{link.\+h}}\end{DoxyCompactItemize}
+tesseract\+\_\+scene\+\_\+graph/include/tesseract\+\_\+scene\+\_\+graph/\mbox{\hyperlink{tesseract__scene__graph_2include_2tesseract__scene__graph_2link_8h}{link.\+h}}\item 
+tesseract\+\_\+scene\+\_\+graph/src/\mbox{\hyperlink{tesseract__scene__graph_2src_2link_8cpp}{link.\+cpp}}\end{DoxyCompactItemize}

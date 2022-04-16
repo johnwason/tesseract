@@ -1,0 +1,242 @@
+\hypertarget{tesseract__common_2include_2tesseract__common_2utils_8h_source}{}\doxysection{utils.\+h}
+\label{tesseract__common_2include_2tesseract__common_2utils_8h_source}\index{tesseract\_common/include/tesseract\_common/utils.h@{tesseract\_common/include/tesseract\_common/utils.h}}
+\mbox{\hyperlink{tesseract__common_2include_2tesseract__common_2utils_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef TESSERACT\_COMMON\_UTILS\_H}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define TESSERACT\_COMMON\_UTILS\_H}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{macros_8h}{tesseract\_common/macros.h}}>}}
+\DoxyCodeLine{30 \mbox{\hyperlink{macros_8h_a8cc0e3c6a3382c5c0b19eb9e676fc2db}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_PUSH}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <array>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#include <random>}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include <iomanip>}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#include <Eigen/Core>}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#include <tinyxml2.h>}}
+\DoxyCodeLine{41 \mbox{\hyperlink{namespaceTESSERACT__COMMON__IGNORE__WARNINGS__POP}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_POP}}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{allowed__collision__matrix_8h}{tesseract\_common/allowed\_collision\_matrix.h}}>}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{tesseract__common_2include_2tesseract__common_2types_8h}{tesseract\_common/types.h}}>}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}}
+\DoxyCodeLine{47 \{}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#if \_\_cplusplus < 201703L}}
+\DoxyCodeLine{50 \textcolor{keyword}{static} std::mt19937 \mbox{\hyperlink{namespacetesseract__common_aef65970d6ccc97d88621f27e7c35b32a}{mersenne}}\{ \textcolor{keyword}{static\_cast<}std::mt19937::result\_type\textcolor{keyword}{>}(std::time(\textcolor{keyword}{nullptr})) \};}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{53 \textcolor{comment}{// NOLINTNEXTLINE(cppcoreguidelines-\/avoid-\/non-\/const-\/global-\/variables)}}
+\DoxyCodeLine{54 \textcolor{keyword}{inline} std::mt19937 \mbox{\hyperlink{namespacetesseract__common_aef65970d6ccc97d88621f27e7c35b32a}{mersenne}}\{ \textcolor{keyword}{static\_cast<}std::mt19937::result\_type\textcolor{keyword}{>}(std::time(\textcolor{keyword}{nullptr})) \};}
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{58 std::string \mbox{\hyperlink{namespacetesseract__common_a7f13ad2a741226ab5255302f6750ed4a}{strFormat}}(\textcolor{keyword}{const} std::string\& format, Args... args)}
+\DoxyCodeLine{59 \{}
+\DoxyCodeLine{60   \textcolor{keywordtype}{int} size\_s = std::snprintf(\textcolor{keyword}{nullptr}, 0, format.c\_str(), args...) + 1;  \textcolor{comment}{// Extra space for '\(\backslash\)0'}}
+\DoxyCodeLine{61   \textcolor{keywordflow}{if} (size\_s <= 0)}
+\DoxyCodeLine{62     \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}Error during formatting."{}});}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64   \textcolor{keyword}{auto} size = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(size\_s);}
+\DoxyCodeLine{65   \textcolor{keyword}{auto} buf = std::make\_unique<char[]>(size);  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{66   std::snprintf(buf.get(), size, format.c\_str(), args...);}
+\DoxyCodeLine{67   \textcolor{keywordflow}{return} std::string(buf.get(), buf.get() + size -\/ 1);  \textcolor{comment}{// We don't want the '\(\backslash\)0' inside}}
+\DoxyCodeLine{68 \}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{76 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__common_a4ed12ea384452e2d5d4f7a0854035384}{twistChangeRefPoint}}(Eigen::Ref<Eigen::VectorXd> twist, \textcolor{keyword}{const} Eigen::Ref<const Eigen::Vector3d>\& ref\_point);}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{83 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__common_a98c27df906a6e17d088772d3d1c21a5d}{twistChangeBase}}(Eigen::Ref<Eigen::VectorXd> twist, \textcolor{keyword}{const} Eigen::Isometry3d\& change\_base);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{90 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__common_a9b00920e39050a4b9df5e3100aac7e55}{jacobianChangeBase}}(Eigen::Ref<Eigen::MatrixXd> jacobian, \textcolor{keyword}{const} Eigen::Isometry3d\& change\_base);}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{98 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__common_a5043afd3f3dbdd6655d543e09a7c9ea4}{jacobianChangeRefPoint}}(Eigen::Ref<Eigen::MatrixXd> jacobian, \textcolor{keyword}{const} Eigen::Ref<const Eigen::Vector3d>\& ref\_point);}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{101 Eigen::VectorXd \mbox{\hyperlink{namespacetesseract__common_a757f1e4610f79b4e79e796c698a3c113}{concat}}(\textcolor{keyword}{const} Eigen::VectorXd\& a, \textcolor{keyword}{const} Eigen::VectorXd\& b);}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{110 Eigen::Vector3d \mbox{\hyperlink{namespacetesseract__common_a715e8a56239e73ccfa00e82cda79a28c}{calcRotationalError}}(\textcolor{keyword}{const} Eigen::Ref<const Eigen::Matrix3d>\& R);}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{132 Eigen::Vector3d \mbox{\hyperlink{namespacetesseract__common_a41a6314e5371fa9604c459b85f159afd}{calcRotationalError2}}(\textcolor{keyword}{const} Eigen::Ref<const Eigen::Matrix3d>\& R);}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{140 Eigen::VectorXd \mbox{\hyperlink{namespacetesseract__common_a913b8ec499e3bfe779dc95bae54f39d4}{calcTransformError}}(\textcolor{keyword}{const} Eigen::Isometry3d\& t1, \textcolor{keyword}{const} Eigen::Isometry3d\& t2);}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{146 Eigen::Vector4d \mbox{\hyperlink{namespacetesseract__common_a0d105162c2cd10693e7387cb74d8318b}{computeRandomColor}}();}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{153 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__common_ac4e9558332430365cd69cb2eec1784c8}{printNestedException}}(\textcolor{keyword}{const} std::exception\& e, \textcolor{keywordtype}{int} level = 0);}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{159 std::string \mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{getTempPath}}();}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{166 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a1dc3a9525efbe582991edd4eedc26079}{isNumeric}}(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{173 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a1dc3a9525efbe582991edd4eedc26079}{isNumeric}}(\textcolor{keyword}{const} std::vector<std::string>\& sv);}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{180 Eigen::VectorXd \mbox{\hyperlink{namespacetesseract__common_aa14552337385ce1de42da699506f8b03}{generateRandomNumber}}(\textcolor{keyword}{const} Eigen::Ref<const Eigen::MatrixX2d>\& limits);}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{186 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__common_af46edf9701e45b20e95a5abfac500b8f}{ltrim}}(std::string\& s);}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{192 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__common_aa86a4f0e5ca9d2b1f5abc3f34735d85b}{rtrim}}(std::string\& s);}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{198 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__common_aeacd629bcf585286917aafa7b8e603bb}{trim}}(std::string\& s);}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{209 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{210 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a34d98b9f0df320e12b9f9686761f5b1e}{isIdentical}}(}
+\DoxyCodeLine{211     \textcolor{keyword}{const} std::vector<T>\& vec1,}
+\DoxyCodeLine{212     \textcolor{keyword}{const} std::vector<T>\& vec2,}
+\DoxyCodeLine{213     \textcolor{keywordtype}{bool} ordered = \textcolor{keyword}{true},}
+\DoxyCodeLine{214     \textcolor{keyword}{const} std::function<\textcolor{keywordtype}{bool}(\textcolor{keyword}{const} T\&, \textcolor{keyword}{const} T\&)>\& equal\_pred = [](\textcolor{keyword}{const} T\& v1, \textcolor{keyword}{const} T\& v2) \{ \textcolor{keywordflow}{return} v1 == v2; \},}
+\DoxyCodeLine{215     \textcolor{keyword}{const} std::function<bool(\textcolor{keyword}{const} T\&, \textcolor{keyword}{const} T\&)>\& comp = [](\textcolor{keyword}{const} T\& v1, \textcolor{keyword}{const} T\& v2) \{ \textcolor{keywordflow}{return} v1 < v2; \})}
+\DoxyCodeLine{216 \{}
+\DoxyCodeLine{217   \textcolor{keywordflow}{if} (vec1.size() != vec2.size())}
+\DoxyCodeLine{218     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220   \textcolor{keywordflow}{if} (ordered)}
+\DoxyCodeLine{221     \textcolor{keywordflow}{return} std::equal(vec1.begin(), vec1.end(), vec2.begin(), equal\_pred);}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223   std::vector<T> v1 = vec1;}
+\DoxyCodeLine{224   std::vector<T> v2 = vec2;}
+\DoxyCodeLine{225   std::sort(v1.begin(), v1.end(), comp);}
+\DoxyCodeLine{226   std::sort(v2.begin(), v2.end(), comp);}
+\DoxyCodeLine{227   \textcolor{keywordflow}{return} std::equal(v1.begin(), v1.end(), v2.begin(), equal\_pred);}
+\DoxyCodeLine{228 \}}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{236 \textcolor{keyword}{template} <\textcolor{keyword}{typename} KeyValueContainerType, \textcolor{keyword}{typename} ValueType>}
+\DoxyCodeLine{237 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a4be902621fe3d33f5fe7d72116196f24}{isIdenticalMap}}(}
+\DoxyCodeLine{238     \textcolor{keyword}{const} KeyValueContainerType\& map\_1,}
+\DoxyCodeLine{239     \textcolor{keyword}{const} KeyValueContainerType\& map\_2,}
+\DoxyCodeLine{240     \textcolor{keyword}{const} std::function<\textcolor{keywordtype}{bool}(\textcolor{keyword}{const} ValueType\&, \textcolor{keyword}{const} ValueType\&)>\& value\_eq =}
+\DoxyCodeLine{241         [](\textcolor{keyword}{const} ValueType\& v1, \textcolor{keyword}{const} ValueType\& v2) \{ \textcolor{keywordflow}{return} v1 == v2; \})}
+\DoxyCodeLine{242 \{}
+\DoxyCodeLine{243   \textcolor{keywordflow}{if} (map\_1.size() != map\_2.size())}
+\DoxyCodeLine{244     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& entry : map\_1)}
+\DoxyCodeLine{247   \{}
+\DoxyCodeLine{248     \textcolor{comment}{// Check if the key exists}}
+\DoxyCodeLine{249     \textcolor{keyword}{const} \textcolor{keyword}{auto} cp = map\_2.find(entry.first);}
+\DoxyCodeLine{250     \textcolor{keywordflow}{if} (cp == map\_2.end())}
+\DoxyCodeLine{251       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{252     \textcolor{comment}{// Check if the value is the same}}
+\DoxyCodeLine{253     \textcolor{keywordflow}{if} (!value\_eq(cp-\/>second, entry.second))}
+\DoxyCodeLine{254       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{255   \}}
+\DoxyCodeLine{256   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{257 \}}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{265 \textcolor{keyword}{template} <\textcolor{keyword}{typename} ValueType>}
+\DoxyCodeLine{266 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a129feb5b5288a992d9fb72ba5dbb579d}{isIdenticalSet}}(}
+\DoxyCodeLine{267     \textcolor{keyword}{const} std::set<ValueType>\& set\_1,}
+\DoxyCodeLine{268     \textcolor{keyword}{const} std::set<ValueType>\& set\_2,}
+\DoxyCodeLine{269     \textcolor{keyword}{const} std::function<\textcolor{keywordtype}{bool}(\textcolor{keyword}{const} ValueType\&, \textcolor{keyword}{const} ValueType\&)>\& value\_eq =}
+\DoxyCodeLine{270         [](\textcolor{keyword}{const} ValueType\& v1, \textcolor{keyword}{const} ValueType\& v2) \{ \textcolor{keywordflow}{return} v1 == v2; \})}
+\DoxyCodeLine{271 \{}
+\DoxyCodeLine{272   \textcolor{keywordflow}{if} (set\_1.size() != set\_2.size())}
+\DoxyCodeLine{273     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& entry : set\_1)}
+\DoxyCodeLine{276   \{}
+\DoxyCodeLine{277     \textcolor{comment}{// Check if the key exists}}
+\DoxyCodeLine{278     \textcolor{keyword}{const} \textcolor{keyword}{auto} cp = set\_2.find(entry);}
+\DoxyCodeLine{279     \textcolor{keywordflow}{if} (cp == set\_2.end())}
+\DoxyCodeLine{280       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{281     \textcolor{comment}{// Check if the value is the same}}
+\DoxyCodeLine{282     \textcolor{keywordflow}{if} (!value\_eq(*cp, entry))}
+\DoxyCodeLine{283       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{284   \}}
+\DoxyCodeLine{285   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{286 \}}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{294 \textcolor{keyword}{template} <\textcolor{keyword}{typename} ValueType, std::\textcolor{keywordtype}{size\_t} Size>}
+\DoxyCodeLine{295 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_aff7498ab87445e5c870e74a7d3cbc78f}{isIdenticalArray}}(}
+\DoxyCodeLine{296     \textcolor{keyword}{const} std::array<ValueType, Size>\& array\_1,}
+\DoxyCodeLine{297     \textcolor{keyword}{const} std::array<ValueType, Size>\& array\_2,}
+\DoxyCodeLine{298     \textcolor{keyword}{const} std::function<\textcolor{keywordtype}{bool}(\textcolor{keyword}{const} ValueType\&, \textcolor{keyword}{const} ValueType\&)>\& value\_eq =}
+\DoxyCodeLine{299         [](\textcolor{keyword}{const} ValueType\& v1, \textcolor{keyword}{const} ValueType\& v2) \{ \textcolor{keywordflow}{return} v1 == v2; \})}
+\DoxyCodeLine{300 \{}
+\DoxyCodeLine{301   \textcolor{keywordflow}{if} (array\_1.size() != array\_2.size())}
+\DoxyCodeLine{302     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304   \textcolor{keywordflow}{for} (std::size\_t idx = 0; idx < array\_1.size(); idx++)}
+\DoxyCodeLine{305   \{}
+\DoxyCodeLine{306     \textcolor{keywordflow}{if} (!value\_eq(array\_1[idx], array\_2[idx]))}
+\DoxyCodeLine{307       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{308   \}}
+\DoxyCodeLine{309   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{310 \}}
+\DoxyCodeLine{311 }
+\DoxyCodeLine{318 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{319 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a65966457329351239c51b09ec1a8d3a4}{pointersEqual}}(\textcolor{keyword}{const} std::shared\_ptr<T>\& p1, \textcolor{keyword}{const} std::shared\_ptr<T>\& p2)}
+\DoxyCodeLine{320 \{}
+\DoxyCodeLine{321   \textcolor{keywordflow}{return} (p1 \&\& p2 \&\& *p1 == *p2) || (!p1 \&\& !p2);}
+\DoxyCodeLine{322 \}}
+\DoxyCodeLine{329 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{330 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a5691a34b0a37453566326959831fb6df}{pointersComparison}}(\textcolor{keyword}{const} std::shared\_ptr<T>\& p1, \textcolor{keyword}{const} std::shared\_ptr<T>\& p2)}
+\DoxyCodeLine{331 \{}
+\DoxyCodeLine{332   \textcolor{keywordflow}{if} (p1 \&\& p2)}
+\DoxyCodeLine{333     \textcolor{keywordflow}{return} *p1 < *p2;}
+\DoxyCodeLine{334   \textcolor{comment}{// If p2 is !nullptr then return true. p1 or both are nullptr should be false}}
+\DoxyCodeLine{335   \textcolor{keywordflow}{return} p2 != \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{336 \}}
+\DoxyCodeLine{341 std::string \mbox{\hyperlink{namespacetesseract__common_a1077809c98ad8bf5262e426cff6e63a3}{getTimestampString}}();}
+\DoxyCodeLine{342 }
+\DoxyCodeLine{348 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__common_a7da14d8e3b6c20175711209343aafe2f}{reorder}}(Eigen::Ref<Eigen::VectorXd> v, std::vector<Eigen::Index> order);}
+\DoxyCodeLine{349 }
+\DoxyCodeLine{356 tinyxml2::XMLError \mbox{\hyperlink{namespacetesseract__common_ae1a3ebd3610dce6d24cc7569606fd9ab}{QueryStringValue}}(\textcolor{keyword}{const} tinyxml2::XMLElement* xml\_element, std::string\& value);}
+\DoxyCodeLine{357 }
+\DoxyCodeLine{364 tinyxml2::XMLError \mbox{\hyperlink{namespacetesseract__common_ab95676b5418063a1d7c84fbba4ff1fe0}{QueryStringText}}(\textcolor{keyword}{const} tinyxml2::XMLElement* xml\_element, std::string\& text);}
+\DoxyCodeLine{365 }
+\DoxyCodeLine{372 tinyxml2::XMLError \mbox{\hyperlink{namespacetesseract__common_ae1a3ebd3610dce6d24cc7569606fd9ab}{QueryStringValue}}(\textcolor{keyword}{const} tinyxml2::XMLAttribute* xml\_attribute, std::string\& value);}
+\DoxyCodeLine{373 }
+\DoxyCodeLine{382 tinyxml2::XMLError \mbox{\hyperlink{namespacetesseract__common_a22a4a1b896230ca84cce7aae2e21673a}{QueryStringAttribute}}(\textcolor{keyword}{const} tinyxml2::XMLElement* xml\_element, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* name, std::string\& value);}
+\DoxyCodeLine{383 }
+\DoxyCodeLine{391 std::string \mbox{\hyperlink{namespacetesseract__common_aadfa4845aecc119ae62b37e59c6ee168}{StringAttribute}}(\textcolor{keyword}{const} tinyxml2::XMLElement* xml\_element, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* name, std::string default\_value);}
+\DoxyCodeLine{392 }
+\DoxyCodeLine{405 tinyxml2::XMLError \mbox{\hyperlink{namespacetesseract__common_a609734264f8b63f5c7815871c40b231f}{QueryStringAttributeRequired}}(\textcolor{keyword}{const} tinyxml2::XMLElement* xml\_element,}
+\DoxyCodeLine{406                                                 \textcolor{keyword}{const} \textcolor{keywordtype}{char}* name,}
+\DoxyCodeLine{407                                                 std::string\& value);}
+\DoxyCodeLine{408 }
+\DoxyCodeLine{421 tinyxml2::XMLError \mbox{\hyperlink{namespacetesseract__common_ab5ec94b62bea51b6e40598e0f8e7a6c3}{QueryDoubleAttributeRequired}}(\textcolor{keyword}{const} tinyxml2::XMLElement* xml\_element,}
+\DoxyCodeLine{422                                                 \textcolor{keyword}{const} \textcolor{keywordtype}{char}* name,}
+\DoxyCodeLine{423                                                 \textcolor{keywordtype}{double}\& value);}
+\DoxyCodeLine{424 }
+\DoxyCodeLine{437 tinyxml2::XMLError \mbox{\hyperlink{namespacetesseract__common_ad9a12946985d34fc3b1fcfb61b473f8b}{QueryIntAttributeRequired}}(\textcolor{keyword}{const} tinyxml2::XMLElement* xml\_element, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* name, \textcolor{keywordtype}{int}\& value);}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{449 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_ac9961ff2a5d322165a817241b7746f64}{almostEqualRelativeAndAbs}}(\textcolor{keywordtype}{double} a,}
+\DoxyCodeLine{450                                \textcolor{keywordtype}{double} b,}
+\DoxyCodeLine{451                                \textcolor{keywordtype}{double} max\_diff = 1e-\/6,}
+\DoxyCodeLine{452                                \textcolor{keywordtype}{double} max\_rel\_diff = std::numeric\_limits<double>::epsilon());}
+\DoxyCodeLine{453 }
+\DoxyCodeLine{466 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_ac9961ff2a5d322165a817241b7746f64}{almostEqualRelativeAndAbs}}(\textcolor{keyword}{const} Eigen::Ref<const Eigen::VectorXd>\& v1,}
+\DoxyCodeLine{467                                \textcolor{keyword}{const} Eigen::Ref<const Eigen::VectorXd>\& v2,}
+\DoxyCodeLine{468                                \textcolor{keywordtype}{double} max\_diff = 1e-\/6,}
+\DoxyCodeLine{469                                \textcolor{keywordtype}{double} max\_rel\_diff = std::numeric\_limits<double>::epsilon());}
+\DoxyCodeLine{470 }
+\DoxyCodeLine{477 \textcolor{keyword}{template} <\textcolor{keyword}{typename} FloatType>}
+\DoxyCodeLine{478 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a00bc131acfeba0eba8fe7ff7cd944860}{toNumeric}}(\textcolor{keyword}{const} std::string\& s, FloatType\& value)}
+\DoxyCodeLine{479 \{}
+\DoxyCodeLine{480   \textcolor{keywordflow}{if} (s.empty())}
+\DoxyCodeLine{481     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{482 }
+\DoxyCodeLine{483   std::stringstream ss;}
+\DoxyCodeLine{484   ss.imbue(std::locale::classic());}
+\DoxyCodeLine{485 }
+\DoxyCodeLine{486   ss << s;}
+\DoxyCodeLine{487 }
+\DoxyCodeLine{488   FloatType out;}
+\DoxyCodeLine{489   ss >> out;}
+\DoxyCodeLine{490 }
+\DoxyCodeLine{491   \textcolor{keywordflow}{if} (ss.fail() || !ss.eof())}
+\DoxyCodeLine{492     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{493 }
+\DoxyCodeLine{494   value = out;}
+\DoxyCodeLine{495   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{496 \}}
+\DoxyCodeLine{497 }
+\DoxyCodeLine{505 std::vector<std::string> \mbox{\hyperlink{namespacetesseract__common_aaca6ae7b6cbd8d28ad6e141239a0206f}{getAllowedCollisions}}(\textcolor{keyword}{const} std::vector<std::string>\& link\_names,}
+\DoxyCodeLine{506                                               \textcolor{keyword}{const} \mbox{\hyperlink{namespacetesseract__common_a79d2a34647d0da5e574629878c142086}{AllowedCollisionEntries}}\& acm\_entries,}
+\DoxyCodeLine{507                                               \textcolor{keywordtype}{bool} remove\_duplicates = \textcolor{keyword}{true});}
+\DoxyCodeLine{508 }
+\DoxyCodeLine{509 \}  \textcolor{comment}{// namespace tesseract\_common}}
+\DoxyCodeLine{510 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_COMMON\_UTILS\_H}}
+
+\end{DoxyCode}

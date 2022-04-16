@@ -1,0 +1,229 @@
+\hypertarget{any_8h_source}{}\doxysection{any.\+h}
+\label{any_8h_source}\index{tesseract\_common/include/tesseract\_common/any.h@{tesseract\_common/include/tesseract\_common/any.h}}
+\mbox{\hyperlink{any_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef TESSERACT\_COMMON\_ANY\_H}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define TESSERACT\_COMMON\_ANY\_H}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{macros_8h}{tesseract\_common/macros.h}}>}}
+\DoxyCodeLine{29 \mbox{\hyperlink{macros_8h_a8cc0e3c6a3382c5c0b19eb9e676fc2db}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_PUSH}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <typeindex>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <boost/serialization/base\_object.hpp>}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <boost/serialization/nvp.hpp>}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <boost/serialization/unique\_ptr.hpp>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <boost/serialization/export.hpp>}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#include <boost/type\_traits/is\_virtual\_base\_of.hpp>}}
+\DoxyCodeLine{37 \mbox{\hyperlink{namespaceTESSERACT__COMMON__IGNORE__WARNINGS__POP}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_POP}}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#define TESSERACT\_ANY\_EXPORT\_KEY(any\_t)                                                                                \(\backslash\)}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{  BOOST\_CLASS\_EXPORT\_KEY2(tesseract\_common::detail\_any::AnyInner<any\_t>, \#any\_t)                                       \(\backslash\)}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{  BOOST\_CLASS\_TRACKING(tesseract\_common::detail\_any::AnyInner<any\_t>, boost::serialization::track\_never)}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#define TESSERACT\_ANY\_EXPORT\_IMPLEMENT(any\_t)                                                                          \(\backslash\)}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{  BOOST\_CLASS\_EXPORT\_IMPLEMENT(tesseract\_common::detail\_any::AnyInner<any\_t>)}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#define TESSERACT\_ANY\_EXPORT(any\_t)                                                                                    \(\backslash\)}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{  TESSERACT\_ANY\_EXPORT\_KEY(any\_t)                                                                                      \(\backslash\)}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{  TESSERACT\_ANY\_EXPORT\_IMPLEMENT(any\_t)}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}}
+\DoxyCodeLine{57 \{}
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#ifndef SWIG}}
+\DoxyCodeLine{59 \textcolor{keyword}{namespace }detail\_any}
+\DoxyCodeLine{60 \{}
+\DoxyCodeLine{61 \textcolor{keyword}{struct }\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}}
+\DoxyCodeLine{62 \{}
+\DoxyCodeLine{63   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_af0b6c00025710273582671d22c638a67}{AnyInnerBase}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{64   \textcolor{keyword}{virtual} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_aabffadbb38b52a95510784a1f261226d}{\string~AnyInnerBase}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{65   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_ac702313191bec348228415eba3d3492b}{AnyInnerBase}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{66   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}\& \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_a1dff07c7bbb22b31e37052749fae3dce}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{67   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_a2f7a2c56bf2991e275c49990912c3b09}{AnyInnerBase}}(\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}\&\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{68   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}\& \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_a92b79bc2540746e88abe5de45a7bf68e}{operator=}}(\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}\&\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_aec7cd036820eb28784ed9e9c615f05d1}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}\& rhs) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72   \textcolor{comment}{// This is not required for user defined implementation}}
+\DoxyCodeLine{73   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_a66b7bd115dfcdfd889b5438693c4fa39}{operator!=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}\& rhs) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75   \textcolor{comment}{// This is not required for user defined implementation}}
+\DoxyCodeLine{76   \textcolor{keyword}{virtual} std::type\_index \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_ad8b08b13e55c39b0de92830bdaaab1e4}{getType}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78   \textcolor{comment}{// This is not required for user defined implementation}}
+\DoxyCodeLine{79   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void}* \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_a0daf253b596beb051f51194c8d0abc88}{recover}}() = 0;}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81   \textcolor{comment}{// This is not required for user defined implementation}}
+\DoxyCodeLine{82   \textcolor{keyword}{virtual} \textcolor{keyword}{const} \textcolor{keywordtype}{void}* \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_a936fc8aa442f8c830db485256f6b436e}{recover}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84   \textcolor{comment}{// This is not required for user defined implementation}}
+\DoxyCodeLine{85   \textcolor{keyword}{virtual} std::unique\_ptr<AnyInnerBase> \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_aa3bcfb88a46862e4d38ec375569c409b}{clone}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{keyword}{private}:}
+\DoxyCodeLine{88   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost::serialization::access}};}
+\DoxyCodeLine{89   \textcolor{keyword}{template} <\textcolor{keyword}{class} Archive>}
+\DoxyCodeLine{90   \textcolor{keywordtype}{void} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase_abea54baf93582ddf6721b6327a3b9692}{serialize}}(Archive\& \textcolor{comment}{/*ar*/}, \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \textcolor{comment}{/*version*/});  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{91 \};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{94 \textcolor{keyword}{struct }\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner}{AnyInner}} final : \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}}
+\DoxyCodeLine{95 \{}
+\DoxyCodeLine{96   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a737add0c13a8c0782c92cc7bbe169a15}{AnyInner}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{97   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a1c42f02fbf2ea0075304b47df9ee7ff7}{\string~AnyInner}}() \textcolor{keyword}{override} = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{98   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ad5c9980754dcdb1ebd4810c6be622615}{AnyInner}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner}{AnyInner}}\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{99   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_af315e31621d085ed477037fd706bb782}{AnyInner}}(\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner}{AnyInner}}\&\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{100   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner}{AnyInner}}\& \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a7f447ec5d695169eb5a06e65b52a09fa}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner}{AnyInner}}\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{101   \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner}{AnyInner}}\& \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ab77d2dac331ef8790498d853a55d1b53}{operator=}}(\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner}{AnyInner}}\&\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103   \textcolor{comment}{// Constructors from T (copy and move variants).}}
+\DoxyCodeLine{104   \textcolor{keyword}{explicit} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a1d2627141c60d22f53fa8fd5188f48a3}{AnyInner}}(T any\_type) : \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ac044a16a2a7da963708ee16b4cf574ee}{any\_type\_}}(std::move(any\_type)) \{\}}
+\DoxyCodeLine{105   \textcolor{keyword}{explicit} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a0a75361fa230aaf49b48e665250de8f4}{AnyInner}}(T\&\& any\_type) : \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ac044a16a2a7da963708ee16b4cf574ee}{any\_type\_}}(std::move(any\_type)) \{\}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107   std::unique\_ptr<AnyInnerBase> \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a3eaa2abcfc01e3127eb09bc25dd7b528}{clone}}() const final \{ \textcolor{keywordflow}{return} std::make\_unique<AnyInner>(\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ac044a16a2a7da963708ee16b4cf574ee}{any\_type\_}}); \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109   std::type\_index \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ae2f684553aeb177661f6bffd586f195f}{getType}}() const final \{ \textcolor{keywordflow}{return} std::type\_index(\textcolor{keyword}{typeid}(T)); \}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111   \textcolor{keywordtype}{void}* \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a3ca733b9f4a664156f259ab96ec5e67f}{recover}}() final \{ \textcolor{keywordflow}{return} \&\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ac044a16a2a7da963708ee16b4cf574ee}{any\_type\_}}; \}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113   \textcolor{keyword}{const} \textcolor{keywordtype}{void}* \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_aa48937a872b8cde1bdc8a3a962ce0150}{recover}}() const final \{ \textcolor{keywordflow}{return} \&\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ac044a16a2a7da963708ee16b4cf574ee}{any\_type\_}}; \}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115   \textcolor{keywordtype}{bool} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a3618c1bf3597fd0991dd06ad7e6962a4}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}\& rhs) \textcolor{keyword}{const} \textcolor{keyword}{final}}
+\DoxyCodeLine{116   \{}
+\DoxyCodeLine{117     \textcolor{comment}{// Compare class types before casting the incoming object to the T type}}
+\DoxyCodeLine{118     \textcolor{keywordflow}{if} (rhs.getType() == \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ae2f684553aeb177661f6bffd586f195f}{getType}}())}
+\DoxyCodeLine{119     \{}
+\DoxyCodeLine{120       \textcolor{keyword}{const} \textcolor{keyword}{auto}* any\_type = \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }T*\textcolor{keyword}{>}(rhs.recover());}
+\DoxyCodeLine{121       \textcolor{keywordflow}{return} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ac044a16a2a7da963708ee16b4cf574ee}{any\_type\_}} == *any\_type;}
+\DoxyCodeLine{122     \}}
+\DoxyCodeLine{123     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{124   \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126   \textcolor{keywordtype}{bool} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a45e0ee79819ae764c1a3e98a020ef968}{operator!=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{AnyInnerBase}}\& rhs) \textcolor{keyword}{const} \textcolor{keyword}{final} \{ \textcolor{keywordflow}{return} !\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a3618c1bf3597fd0991dd06ad7e6962a4}{operator==}}(rhs); \}}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \textcolor{keyword}{private}:}
+\DoxyCodeLine{129   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost::serialization::access}};}
+\DoxyCodeLine{130   \textcolor{keyword}{template} <\textcolor{keyword}{class} Archive>}
+\DoxyCodeLine{131   \textcolor{keywordtype}{void} \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_a5cfc6043d6e78da5a80ad3d0b62e48a6}{serialize}}(Archive\& ar, \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \textcolor{comment}{/*version*/})  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{132   \{}
+\DoxyCodeLine{133     \textcolor{comment}{// If this line is removed a exception is thrown for unregistered cast need to too look into this.}}
+\DoxyCodeLine{134     ar\& boost::serialization::make\_nvp(\textcolor{stringliteral}{"{}base"{}}, boost::serialization::base\_object<AnyInnerBase>(*\textcolor{keyword}{this}));}
+\DoxyCodeLine{135     ar\& boost::serialization::make\_nvp(\textcolor{stringliteral}{"{}impl"{}}, \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ac044a16a2a7da963708ee16b4cf574ee}{any\_type\_}});}
+\DoxyCodeLine{136   \}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138   T \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner_ac044a16a2a7da963708ee16b4cf574ee}{any\_type\_}};}
+\DoxyCodeLine{139 \};}
+\DoxyCodeLine{140 \}  \textcolor{comment}{// namespace detail\_any}}
+\DoxyCodeLine{141 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// SWIG}}
+\DoxyCodeLine{142 \}  \textcolor{comment}{// namespace tesseract\_common}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceboost}{boost}}}
+\DoxyCodeLine{145 \{}
+\DoxyCodeLine{146 \textcolor{comment}{// Taken from pagmo to address the same issue}}
+\DoxyCodeLine{147 \textcolor{comment}{// NOTE: in some earlier versions of Boost (i.e., at least up to 1.67)}}
+\DoxyCodeLine{148 \textcolor{comment}{// the is\_virtual\_base\_of type trait, used by the Boost serialization library, fails}}
+\DoxyCodeLine{149 \textcolor{comment}{// with a compile time error if a class is declared final. Thus, we provide a specialized}}
+\DoxyCodeLine{150 \textcolor{comment}{// implementation of this type trait to work around the issue. See:}}
+\DoxyCodeLine{151 \textcolor{comment}{// https://www.boost.org/doc/libs/1\_52\_0/libs/type\_traits/doc/html/boost\_typetraits/reference/is\_virtual\_base\_of.html}}
+\DoxyCodeLine{152 \textcolor{comment}{// https://stackoverflow.com/questions/18982064/boost-\/serialization-\/of-\/base-\/class-\/of-\/final-\/subclass-\/error}}
+\DoxyCodeLine{153 \textcolor{comment}{// We never use virtual inheritance, thus the specialization is always false.}}
+\DoxyCodeLine{154 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{155 \textcolor{keyword}{struct }is\_virtual\_base\_of<\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}::detail\_any::AnyInnerBase, \mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInner}{tesseract\_common::detail\_any::AnyInner}}<T>>}
+\DoxyCodeLine{156   : false\_type}
+\DoxyCodeLine{157 \{}
+\DoxyCodeLine{158 \};}
+\DoxyCodeLine{159 \}  \textcolor{comment}{// namespace boost}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}}
+\DoxyCodeLine{162 \{}
+\DoxyCodeLine{163 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__common_1_1Any}{Any}}}
+\DoxyCodeLine{164 \{}
+\DoxyCodeLine{165   \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{166   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1Any_a842b0ebe8a90b899be7a2877ecc76d3a}{uncvref\_t}} = std::remove\_cv\_t<typename std::remove\_reference<T>::type>;}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168   \textcolor{comment}{// Enable the generic ctor only if ``T`` is not a ForwardKinematics (after removing const/reference qualifiers)}}
+\DoxyCodeLine{169   \textcolor{comment}{// If ``T`` is of type ForwardKinematics we disable so it will use the copy or move constructors of this class.}}
+\DoxyCodeLine{170   \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{171   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1Any_ab7708d56f03efcd2a7a621692ed54e87}{generic\_ctor\_enabler}} = std::enable\_if\_t<!std::is\_same<Any, uncvref\_t<T>>::value, \textcolor{keywordtype}{int}>;}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 \textcolor{keyword}{public}:}
+\DoxyCodeLine{174   \textcolor{keyword}{template} <\textcolor{keyword}{typename} T, \textcolor{keyword}{generic}\_ctor\_enabler<T> = 0>}
+\DoxyCodeLine{175   \mbox{\hyperlink{classtesseract__common_1_1Any_a4d87e27f43d7a1770ac2e5d3603b95bd}{Any}}(T\&\& any\_type)  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{176     : \mbox{\hyperlink{classtesseract__common_1_1Any_a8f2f5c3d13691e573cab8ac5042c570a}{any\_type\_}}(std::make\_unique<detail\_any::AnyInner<\mbox{\hyperlink{classtesseract__common_1_1Any_a842b0ebe8a90b899be7a2877ecc76d3a}{uncvref\_t}}<T>>>(any\_type))}
+\DoxyCodeLine{177   \{}
+\DoxyCodeLine{178   \}}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180   \mbox{\hyperlink{classtesseract__common_1_1Any_aa562163615df01361a7d26546b5da273}{Any}}();  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182   \textcolor{comment}{// Destructor}}
+\DoxyCodeLine{183   \mbox{\hyperlink{classtesseract__common_1_1Any_a3029f0debd2bd5338948d45022252a65}{\string~Any}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185   \textcolor{comment}{// Copy constructor}}
+\DoxyCodeLine{186   \mbox{\hyperlink{classtesseract__common_1_1Any_aa562163615df01361a7d26546b5da273}{Any}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1Any}{Any}}\& other);}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188   \textcolor{comment}{// Move ctor.}}
+\DoxyCodeLine{189   \mbox{\hyperlink{classtesseract__common_1_1Any_aa562163615df01361a7d26546b5da273}{Any}}(\mbox{\hyperlink{classtesseract__common_1_1Any}{Any}}\&\& other) \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191   \textcolor{comment}{// Move assignment.}}
+\DoxyCodeLine{192   \mbox{\hyperlink{classtesseract__common_1_1Any}{Any}}\& \mbox{\hyperlink{classtesseract__common_1_1Any_ad867d8df87648ed93d77c8c3d1a268cb}{operator=}}(\mbox{\hyperlink{classtesseract__common_1_1Any}{Any}}\&\& other) \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194   \textcolor{comment}{// Copy assignment.}}
+\DoxyCodeLine{195   \mbox{\hyperlink{classtesseract__common_1_1Any}{Any}}\& \mbox{\hyperlink{classtesseract__common_1_1Any_ad867d8df87648ed93d77c8c3d1a268cb}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1Any}{Any}}\& other);}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197   \textcolor{keyword}{template} <\textcolor{keyword}{typename} T, \textcolor{keyword}{generic}\_ctor\_enabler<T> = 0>}
+\DoxyCodeLine{198   \mbox{\hyperlink{classtesseract__common_1_1Any}{Any}}\& \mbox{\hyperlink{classtesseract__common_1_1Any_a4e0aaf7516adc4b7381550c8fd4d3392}{operator=}}(T\&\& other)}
+\DoxyCodeLine{199   \{}
+\DoxyCodeLine{200     (*this) = \mbox{\hyperlink{classtesseract__common_1_1Any_aa562163615df01361a7d26546b5da273}{Any}}(std::forward<T>(other));}
+\DoxyCodeLine{201     \textcolor{keywordflow}{return} (*\textcolor{keyword}{this});}
+\DoxyCodeLine{202   \}}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204   std::type\_index \mbox{\hyperlink{classtesseract__common_1_1Any_af207dd9e6a1ff78340bdcf05e1c8be22}{getType}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{205 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{206     \textcolor{keywordflow}{if} (\mbox{\hyperlink{classtesseract__common_1_1Any_a8f2f5c3d13691e573cab8ac5042c570a}{any\_type\_}} == \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{207       \textcolor{keywordflow}{return} std::type\_index(\textcolor{keyword}{typeid}(\textcolor{keyword}{nullptr}));}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209     \textcolor{keywordflow}{return} \mbox{\hyperlink{classtesseract__common_1_1Any_a8f2f5c3d13691e573cab8ac5042c570a}{any\_type\_}}-\/>getType();}
+\DoxyCodeLine{210   \}}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classtesseract__common_1_1Any_a962875c3ad4505138a9fc0cb9aa6556c}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1Any}{Any}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classtesseract__common_1_1Any_aa0980d9cdb790789f9f563f81f5e847a}{operator!=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1Any}{Any}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216   \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{217   T\& \mbox{\hyperlink{classtesseract__common_1_1Any_abcefec67a347bca8b3e5fcebd66ce5fc}{as}}()}
+\DoxyCodeLine{218   \{}
+\DoxyCodeLine{219     \textcolor{keywordflow}{if} (\mbox{\hyperlink{classtesseract__common_1_1Any_af207dd9e6a1ff78340bdcf05e1c8be22}{getType}}() != \textcolor{keyword}{typeid}(T))}
+\DoxyCodeLine{220       \textcolor{keywordflow}{throw} std::bad\_cast();}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222     \textcolor{keyword}{auto}* p = \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classtesseract__common_1_1Any_a842b0ebe8a90b899be7a2877ecc76d3a}{uncvref\_t<T>}}*\textcolor{keyword}{>}(\mbox{\hyperlink{classtesseract__common_1_1Any_a8f2f5c3d13691e573cab8ac5042c570a}{any\_type\_}}-\/>recover());}
+\DoxyCodeLine{223     \textcolor{keywordflow}{return} *p;}
+\DoxyCodeLine{224   \}}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226   \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{227   \textcolor{keyword}{const} T\& \mbox{\hyperlink{classtesseract__common_1_1Any_ad3ca9269615884c7c068f210cec1cdee}{as}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{228 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{229     \textcolor{keywordflow}{if} (\mbox{\hyperlink{classtesseract__common_1_1Any_af207dd9e6a1ff78340bdcf05e1c8be22}{getType}}() != \textcolor{keyword}{typeid}(T))}
+\DoxyCodeLine{230       \textcolor{keywordflow}{throw} std::bad\_cast();}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232     \textcolor{keyword}{auto} p = \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }\mbox{\hyperlink{classtesseract__common_1_1Any_a842b0ebe8a90b899be7a2877ecc76d3a}{uncvref\_t<T>}}*\textcolor{keyword}{>}(\mbox{\hyperlink{classtesseract__common_1_1Any_a8f2f5c3d13691e573cab8ac5042c570a}{any\_type\_}}-\/>recover());}
+\DoxyCodeLine{233     \textcolor{keywordflow}{return} *p;}
+\DoxyCodeLine{234   \}}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236 \textcolor{keyword}{private}:}
+\DoxyCodeLine{237   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__common_1_1Any_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost::serialization::access}};}
+\DoxyCodeLine{238   \textcolor{keyword}{template} <\textcolor{keyword}{class} Archive>}
+\DoxyCodeLine{239   \textcolor{keywordtype}{void} \mbox{\hyperlink{classtesseract__common_1_1Any_abada6580d840ac6df954dbf30caef3cb}{serialize}}(Archive\& ar, \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \textcolor{comment}{/*version*/});  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241   std::unique\_ptr<detail\_any::AnyInnerBase> \mbox{\hyperlink{classtesseract__common_1_1Any_a8f2f5c3d13691e573cab8ac5042c570a}{any\_type\_}};}
+\DoxyCodeLine{242 \};}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 \}  \textcolor{comment}{// namespace tesseract\_common}}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 \textcolor{preprocessor}{\#ifdef SWIG}}
+\DoxyCodeLine{247 \%\textcolor{keyword}{template}(Instructions) std::vector<tesseract\_common::Any>;}
+\DoxyCodeLine{248 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{249 BOOST\_SERIALIZATION\_ASSUME\_ABSTRACT(\mbox{\hyperlink{structtesseract__common_1_1detail__any_1_1AnyInnerBase}{tesseract\_common::detail\_any::AnyInnerBase}})}
+\DoxyCodeLine{250 \mbox{\hyperlink{any_8h_aaec163e216269fcdb13a222b14cd4ccf}{BOOST\_CLASS\_TRACKING}}(\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}::Any, \mbox{\hyperlink{namespaceboost}{boost}}::serialization::track\_never);}
+\DoxyCodeLine{251 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// SWIG}}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_COMMON\_ANY\_H}}
+
+\end{DoxyCode}

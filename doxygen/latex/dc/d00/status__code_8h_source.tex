@@ -1,0 +1,164 @@
+\hypertarget{status__code_8h_source}{}\doxysection{status\+\_\+code.\+h}
+\label{status__code_8h_source}\index{tesseract\_common/include/tesseract\_common/status\_code.h@{tesseract\_common/include/tesseract\_common/status\_code.h}}
+\mbox{\hyperlink{status__code_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef TESSERACT\_COMMON\_STATUS\_CODE\_H}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define TESSERACT\_COMMON\_STATUS\_CODE\_H}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{macros_8h}{tesseract\_common/macros.h}}>}}
+\DoxyCodeLine{30 \mbox{\hyperlink{macros_8h_a8cc0e3c6a3382c5c0b19eb9e676fc2db}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_PUSH}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <cassert>}}
+\DoxyCodeLine{35 \mbox{\hyperlink{namespaceTESSERACT__COMMON__IGNORE__WARNINGS__POP}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_POP}}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#ifdef SWIG}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \%shared\_ptr(\mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{tesseract\_common::StatusCategory}})}
+\DoxyCodeLine{40 \%shared\_ptr(\mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory}{tesseract\_common::GeneralStatusCategory}})}
+\DoxyCodeLine{41 \%shared\_ptr(\mbox{\hyperlink{classtesseract__common_1_1StatusCode}{tesseract\_common::StatusCode}})}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// SWIG}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}}
+\DoxyCodeLine{46 \{}
+\DoxyCodeLine{47 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}}
+\DoxyCodeLine{48 \{}
+\DoxyCodeLine{49 \textcolor{keyword}{public}:}
+\DoxyCodeLine{50   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1StatusCategory_a72aa66302752aba796bf0c10c579c2f4}{Ptr}} = std::shared\_ptr<StatusCategory>;}
+\DoxyCodeLine{51   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1StatusCategory_a78a59d8af48194ec283b74237025e992}{ConstPtr}} = std::shared\_ptr<const StatusCategory>;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{keyword}{constexpr} \mbox{\hyperlink{classtesseract__common_1_1StatusCategory_a14699da8fe65261307f563eaf99f8bfc}{StatusCategory}}() noexcept = default;}
+\DoxyCodeLine{54   virtual \string~\mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}() = default;}
+\DoxyCodeLine{55   \mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}(const \mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}\&) = delete;}
+\DoxyCodeLine{56   \mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}\& operator=(const \mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}\&) = delete;}
+\DoxyCodeLine{57   \mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}(\mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}\&\&) = delete;}
+\DoxyCodeLine{58   \mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}\& operator=(\mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}\&\&) = delete;}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60   virtual const std::\textcolor{keywordtype}{string}\& \mbox{\hyperlink{classtesseract__common_1_1StatusCategory_adb2b3dcbc277399d6727208da61c9821}{name}}() const noexcept = 0;}
+\DoxyCodeLine{61   virtual std::\textcolor{keywordtype}{string} \mbox{\hyperlink{classtesseract__common_1_1StatusCategory_a1b243ec0e046910ceac90403190b45ac}{message}}(\textcolor{keywordtype}{int} code) const = 0;}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{keywordtype}{bool} operator==(const \mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}\& rhs) const noexcept}
+\DoxyCodeLine{64   \{}
+\DoxyCodeLine{65     \textcolor{keywordflow}{return} std::equal\_to<const StatusCategory*>()(\textcolor{keyword}{this}, \&rhs);  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{66   \}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classtesseract__common_1_1StatusCategory_a25dba1a749dc683a33b47975b37036bc}{operator!=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}\& rhs) \textcolor{keyword}{const} \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{69   \{}
+\DoxyCodeLine{70     \textcolor{keywordflow}{return} std::not\_equal\_to<const StatusCategory*>()(\textcolor{keyword}{this}, \&rhs);  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{71   \}}
+\DoxyCodeLine{72 \};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory}{GeneralStatusCategory}} : \textcolor{keyword}{public} \mbox{\hyperlink{classtesseract__common_1_1StatusCategory}{StatusCategory}}}
+\DoxyCodeLine{75 \{}
+\DoxyCodeLine{76 \textcolor{keyword}{public}:}
+\DoxyCodeLine{77   \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a854d3f7f31ca7f56fe33d556db9f6336}{GeneralStatusCategory}}(std::string \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a4462cbbdc338bdc61c65a0ad1a9bb494}{name}} = \textcolor{stringliteral}{"{}GeneralStatus"{}}) : \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a45f895823fb7ce5faa660af8ced590ef}{name\_}}(std::move(\mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a4462cbbdc338bdc61c65a0ad1a9bb494}{name}})) \{\}}
+\DoxyCodeLine{78   \textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a4462cbbdc338bdc61c65a0ad1a9bb494}{name}}() const noexcept\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a45f895823fb7ce5faa660af8ced590ef}{name\_}}; \}}
+\DoxyCodeLine{79   std::string \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a017fd002ab04ef8199a3579dede3a44b}{message}}(\textcolor{keywordtype}{int} code)\textcolor{keyword}{ const override}}
+\DoxyCodeLine{80 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{81     \textcolor{keywordflow}{switch} (code)}
+\DoxyCodeLine{82     \{}
+\DoxyCodeLine{83       \textcolor{keywordflow}{case} \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a6e7d14b55d92f3664a7121c5dc402492a3d8a1c17d1cf8b3ab814a763a616a922}{IsConfigured}}:}
+\DoxyCodeLine{84       \{}
+\DoxyCodeLine{85         \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}Is configured"{}};}
+\DoxyCodeLine{86       \}}
+\DoxyCodeLine{87       \textcolor{keywordflow}{case} \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a6e7d14b55d92f3664a7121c5dc402492ac82674f544c9afe288c09f70d69eba8d}{Success}}:}
+\DoxyCodeLine{88       \{}
+\DoxyCodeLine{89         \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}Successful"{}};}
+\DoxyCodeLine{90       \}}
+\DoxyCodeLine{91       \textcolor{keywordflow}{case} \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a6e7d14b55d92f3664a7121c5dc402492a5c78d06ab11b37fdf3d481d74204c5af}{Failure}}:}
+\DoxyCodeLine{92       \{}
+\DoxyCodeLine{93         \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}Failure"{}};}
+\DoxyCodeLine{94       \}}
+\DoxyCodeLine{95       \textcolor{keywordflow}{case} \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a6e7d14b55d92f3664a7121c5dc402492a50293b6000ef13c217f647dbb4eaefaa}{IsNotConfigured}}:}
+\DoxyCodeLine{96       \{}
+\DoxyCodeLine{97         \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}Is not configured"{}};}
+\DoxyCodeLine{98       \}}
+\DoxyCodeLine{99       \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{100       \{}
+\DoxyCodeLine{101         assert(\textcolor{keyword}{false});}
+\DoxyCodeLine{102         \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{103       \}}
+\DoxyCodeLine{104     \}}
+\DoxyCodeLine{105   \}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107   \textcolor{keyword}{enum}}
+\DoxyCodeLine{108   \{}
+\DoxyCodeLine{109     \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a6e7d14b55d92f3664a7121c5dc402492a3d8a1c17d1cf8b3ab814a763a616a922}{IsConfigured}} = 1,}
+\DoxyCodeLine{110     \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a6e7d14b55d92f3664a7121c5dc402492ac82674f544c9afe288c09f70d69eba8d}{Success}} = 0,}
+\DoxyCodeLine{111     \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a6e7d14b55d92f3664a7121c5dc402492a5c78d06ab11b37fdf3d481d74204c5af}{Failure}} = -\/1,}
+\DoxyCodeLine{112     \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a6e7d14b55d92f3664a7121c5dc402492a50293b6000ef13c217f647dbb4eaefaa}{IsNotConfigured}} = -\/2}
+\DoxyCodeLine{113   \};}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{keyword}{private}:}
+\DoxyCodeLine{116   std::string \mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory_a45f895823fb7ce5faa660af8ced590ef}{name\_}};}
+\DoxyCodeLine{117 \};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__common_1_1StatusCode}{StatusCode}}}
+\DoxyCodeLine{120 \{}
+\DoxyCodeLine{121 \textcolor{keyword}{public}:}
+\DoxyCodeLine{122   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a2b285106bd9f4963d1696b9696dbaf5f}{Ptr}} = std::shared\_ptr<StatusCode>;}
+\DoxyCodeLine{123   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a61254055f82822c470a7b8db39f85cf9}{ConstPtr}} = std::shared\_ptr<const StatusCode>;}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125   \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a7ee4d1e51eafb3d981f1a4751c45a7c3}{StatusCode}}(\mbox{\hyperlink{classtesseract__common_1_1StatusCode_a61254055f82822c470a7b8db39f85cf9}{StatusCode::ConstPtr}} child = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{126     : \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a653a23c29e1d70c5e961a9ea42091834}{cat\_}}(std::make\_shared<\mbox{\hyperlink{classtesseract__common_1_1GeneralStatusCategory}{GeneralStatusCategory}}>()), \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a93d43782540c7a9e7ad0458072aef753}{child\_}}(std::move(child))}
+\DoxyCodeLine{127   \{}
+\DoxyCodeLine{128   \}}
+\DoxyCodeLine{129   \mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae5b4a2c3af547f1ae078cad4d2046036}{StatusCode}}(\textcolor{keywordtype}{int} val, \mbox{\hyperlink{classtesseract__common_1_1StatusCategory_a78a59d8af48194ec283b74237025e992}{StatusCategory::ConstPtr}} cat, \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a61254055f82822c470a7b8db39f85cf9}{StatusCode::ConstPtr}} child = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{130     : \mbox{\hyperlink{classtesseract__common_1_1StatusCode_adbd03f1d51d72b9676ecb740ca0f21ff}{val\_}}(val), \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a653a23c29e1d70c5e961a9ea42091834}{cat\_}}(std::move(cat)), \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a93d43782540c7a9e7ad0458072aef753}{child\_}}(std::move(child))}
+\DoxyCodeLine{131   \{}
+\DoxyCodeLine{132   \}}
+\DoxyCodeLine{133   \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a20e9886159a47f5837aee54e395a619e}{\string~StatusCode}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{134   \mbox{\hyperlink{classtesseract__common_1_1StatusCode_af157185b35ae995f6aec286212203354}{StatusCode}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1StatusCode}{StatusCode}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{135   \mbox{\hyperlink{classtesseract__common_1_1StatusCode}{StatusCode}}\& \mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae9400ce38ef793b9169871232f670359}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1StatusCode}{StatusCode}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{136   \mbox{\hyperlink{classtesseract__common_1_1StatusCode_ab8d12b985ee9b11afc11ec53e142aefa}{StatusCode}}(\mbox{\hyperlink{classtesseract__common_1_1StatusCode}{StatusCode}}\&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{137   \mbox{\hyperlink{classtesseract__common_1_1StatusCode}{StatusCode}}\& \mbox{\hyperlink{classtesseract__common_1_1StatusCode_ad4bf8558cccdb67fd9e077a2db7fcf5c}{operator=}}(\mbox{\hyperlink{classtesseract__common_1_1StatusCode}{StatusCode}}\&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139   \textcolor{keywordtype}{int} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae02dbb736881bbc025ed45e85e9c429b}{value}}() const noexcept \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_adbd03f1d51d72b9676ecb740ca0f21ff}{val\_}}; \}}
+\DoxyCodeLine{140   \textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1StatusCategory_a78a59d8af48194ec283b74237025e992}{StatusCategory::ConstPtr}}\& \mbox{\hyperlink{classtesseract__common_1_1StatusCode_abd72026fd08f685d860be9fa2a4f19cf}{category}}() const noexcept \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a653a23c29e1d70c5e961a9ea42091834}{cat\_}}; \}}
+\DoxyCodeLine{141   std::string \mbox{\hyperlink{classtesseract__common_1_1StatusCode_abeafec55717a0aa564c83b44ba903b5d}{message}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{142 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{143     \textcolor{keywordflow}{if} (\mbox{\hyperlink{classtesseract__common_1_1StatusCode_a93d43782540c7a9e7ad0458072aef753}{child\_}} != \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{144       \textcolor{keywordflow}{return} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_abd72026fd08f685d860be9fa2a4f19cf}{category}}()-\/>message(\mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae02dbb736881bbc025ed45e85e9c429b}{value}}()) + \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a93d43782540c7a9e7ad0458072aef753}{child\_}}-\/>messageIndent(\textcolor{stringliteral}{"{}         "{}});}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146     \textcolor{keywordflow}{return} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_abd72026fd08f685d860be9fa2a4f19cf}{category}}()-\/>message(\mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae02dbb736881bbc025ed45e85e9c429b}{value}}());}
+\DoxyCodeLine{147   \}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{153   \textcolor{keywordtype}{void} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a1f5ac671c45151c992abc225b90bae0f}{setChild}}(\mbox{\hyperlink{classtesseract__common_1_1StatusCode_a61254055f82822c470a7b8db39f85cf9}{StatusCode::ConstPtr}} child) \{ \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a93d43782540c7a9e7ad0458072aef753}{child\_}} = std::move(child); \}}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{159   \textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a61254055f82822c470a7b8db39f85cf9}{StatusCode::ConstPtr}}\& \mbox{\hyperlink{classtesseract__common_1_1StatusCode_aa8a3a97a23e65068e6ee8944f4510aae}{getChild}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a93d43782540c7a9e7ad0458072aef753}{child\_}}; \}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{164   \textcolor{keyword}{explicit} \textcolor{keyword}{operator} bool() const noexcept \{ \textcolor{keywordflow}{return} (\mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae02dbb736881bbc025ed45e85e9c429b}{value}}() >= 0); \}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae40302bb7991937bd8c5b60bff9966c7}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1StatusCode}{StatusCode}}\& rhs) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{167   \{}
+\DoxyCodeLine{168     \textcolor{keywordflow}{return} ((this-\/>\mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae02dbb736881bbc025ed45e85e9c429b}{value}}() == rhs.value()) \&\& (this-\/>category() == rhs.category()));}
+\DoxyCodeLine{169   \}}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a8d051111463e408ac95d021c7eb72c2f}{operator!=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__common_1_1StatusCode}{StatusCode}}\& rhs) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{172   \{}
+\DoxyCodeLine{173     \textcolor{keywordflow}{return} ((this-\/>\mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae02dbb736881bbc025ed45e85e9c429b}{value}}() != rhs.value()) || (this-\/>category() != rhs.category()));}
+\DoxyCodeLine{174   \}}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{177   std::string \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a3e0c1223fdea221504d53fb69bc40dcc}{messageIndent}}(\textcolor{keyword}{const} std::string\& previous\_indent)\textcolor{keyword}{ const}}
+\DoxyCodeLine{178 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{179     std::string indent = previous\_indent + \textcolor{stringliteral}{"{}  "{}};}
+\DoxyCodeLine{180     \textcolor{keywordflow}{if} (\mbox{\hyperlink{classtesseract__common_1_1StatusCode_a93d43782540c7a9e7ad0458072aef753}{child\_}} != \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{181       \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}\(\backslash\)n"{}} + indent + \mbox{\hyperlink{classtesseract__common_1_1StatusCode_abd72026fd08f685d860be9fa2a4f19cf}{category}}()-\/>message(\mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae02dbb736881bbc025ed45e85e9c429b}{value}}()) + \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a93d43782540c7a9e7ad0458072aef753}{child\_}}-\/>messageIndent(indent);}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183     \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}\(\backslash\)n"{}} + indent + \mbox{\hyperlink{classtesseract__common_1_1StatusCode_abd72026fd08f685d860be9fa2a4f19cf}{category}}()-\/>message(\mbox{\hyperlink{classtesseract__common_1_1StatusCode_ae02dbb736881bbc025ed45e85e9c429b}{value}}());}
+\DoxyCodeLine{184   \}}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{keyword}{private}:}
+\DoxyCodeLine{187   \textcolor{keywordtype}{int} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_adbd03f1d51d72b9676ecb740ca0f21ff}{val\_}}\{ 0 \};}
+\DoxyCodeLine{188   \mbox{\hyperlink{classtesseract__common_1_1StatusCategory_a78a59d8af48194ec283b74237025e992}{StatusCategory::ConstPtr}} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a653a23c29e1d70c5e961a9ea42091834}{cat\_}};}
+\DoxyCodeLine{189   \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a61254055f82822c470a7b8db39f85cf9}{StatusCode::ConstPtr}} \mbox{\hyperlink{classtesseract__common_1_1StatusCode_a93d43782540c7a9e7ad0458072aef753}{child\_}};}
+\DoxyCodeLine{190 \};}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 \}  \textcolor{comment}{// namespace tesseract\_common}}
+\DoxyCodeLine{193 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_COMMON\_STATUS\_CODE\_H}}
+
+\end{DoxyCode}

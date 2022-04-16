@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['unknown_4360',['UNKNOWN',['../d9/d42/namespacetesseract__scene__graph.html#ade43fa945a554b6e0c703e38e6a8cf16a696b031073e74bf2cb98e5ef201d4aa3',1,'tesseract_scene_graph']]],
-  ['urdf_5fpath_4361',['URDF_PATH',['../d1/d6b/namespacetesseract.html#af2551b44850bb881619f6449be1fcc5aa39e3f5e0ab06555e7ec85f9fe18edb47',1,'tesseract']]],
-  ['urdf_5fpath_5fsrdf_5fpath_4362',['URDF_PATH_SRDF_PATH',['../d1/d6b/namespacetesseract.html#af2551b44850bb881619f6449be1fcc5aa4ec73fcd3f1c00bcf1eaa59cd92bf6b1',1,'tesseract']]],
-  ['urdf_5fstring_4363',['URDF_STRING',['../d1/d6b/namespacetesseract.html#af2551b44850bb881619f6449be1fcc5aa807a3a9760c6d4e0ffc3314f65ebe26f',1,'tesseract']]],
-  ['urdf_5fstring_5fsrdf_5fstring_4364',['URDF_STRING_SRDF_STRING',['../d1/d6b/namespacetesseract.html#af2551b44850bb881619f6449be1fcc5aa0996db91cb6cb32e8c74a44894d2f45f',1,'tesseract']]]
+  ['vertex_5flink_0',['vertex_link',['../d4/da9/namespaceboost.html#ab951500554c258d05de53b1a9e47c6f7aaa6eb1f0c641e015418e35bd1d9aa546',1,'boost']]],
+  ['vertex_5flink_5fcollision_5fenabled_1',['vertex_link_collision_enabled',['../d4/da9/namespaceboost.html#afeaae59a22dd08541ea42fe3095b2b13ac90fb4523397ca746ec5a311ec9b4f05',1,'boost']]],
+  ['vertex_5flink_5fvisible_2',['vertex_link_visible',['../d4/da9/namespaceboost.html#a662376eac1c00e8974a26749f83d93cea0781dc3c140572dd75c5175ed57dbce2',1,'boost']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resourcelocatorfn_4145',['ResourceLocatorFn',['../dd/d67/classtesseract__scene__graph_1_1SimpleResourceLocator.html#ad429d11dc86978f0c99d21e7a13de8e4',1,'tesseract_scene_graph::SimpleResourceLocator']]]
+  ['simpleresourcelocatorfn_0',['SimpleResourceLocatorFn',['../df/da9/namespacetesseract__common.html#a2ef4ec89c4c07fc0a75c4bc24da9681c',1,'tesseract_common']]]
 ];

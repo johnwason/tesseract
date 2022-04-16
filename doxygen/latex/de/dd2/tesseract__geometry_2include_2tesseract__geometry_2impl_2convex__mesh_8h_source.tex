@@ -1,0 +1,115 @@
+\hypertarget{tesseract__geometry_2include_2tesseract__geometry_2impl_2convex__mesh_8h_source}{}\doxysection{convex\+\_\+mesh.\+h}
+\label{tesseract__geometry_2include_2tesseract__geometry_2impl_2convex__mesh_8h_source}\index{tesseract\_geometry/include/tesseract\_geometry/impl/convex\_mesh.h@{tesseract\_geometry/include/tesseract\_geometry/impl/convex\_mesh.h}}
+\mbox{\hyperlink{tesseract__geometry_2include_2tesseract__geometry_2impl_2convex__mesh_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef TESSERACT\_GEOMETRY\_CONVEX\_MESH\_H}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define TESSERACT\_GEOMETRY\_CONVEX\_MESH\_H}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{macros_8h}{tesseract\_common/macros.h}}>}}
+\DoxyCodeLine{30 \mbox{\hyperlink{macros_8h_a8cc0e3c6a3382c5c0b19eb9e676fc2db}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_PUSH}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <boost/serialization/access.hpp>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <boost/serialization/export.hpp>}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <Eigen/Geometry>}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{35 \mbox{\hyperlink{namespaceTESSERACT__COMMON__IGNORE__WARNINGS__POP}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_POP}}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{tesseract__geometry_2include_2tesseract__geometry_2geometry_8h}{tesseract\_geometry/geometry.h}}>}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{mesh__material_8h}{tesseract\_geometry/impl/mesh\_material.h}}>}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{polygon__mesh_8h}{tesseract\_geometry/impl/polygon\_mesh.h}}>}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#ifdef SWIG}}
+\DoxyCodeLine{42 \%shared\_ptr(\mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh}{tesseract\_geometry::ConvexMesh}})}
+\DoxyCodeLine{43 \%\textcolor{keyword}{template}(ConvexMeshVector) \mbox{\hyperlink{FloatMath_8inl_adcf134d50025cc52907d0c8ac798d89d}{std::vector}}<std::shared\_ptr<tesseract\_geometry::ConvexMesh> >;}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// SWIG}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__geometry}{tesseract\_geometry}}}
+\DoxyCodeLine{47 \{}
+\DoxyCodeLine{48 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh}{ConvexMesh}} : \textcolor{keyword}{public} \mbox{\hyperlink{classtesseract__geometry_1_1PolygonMesh}{PolygonMesh}}}
+\DoxyCodeLine{49 \{}
+\DoxyCodeLine{50 \textcolor{keyword}{public}:}
+\DoxyCodeLine{51   \textcolor{comment}{// LCOV\_EXCL\_START}}
+\DoxyCodeLine{52   EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{53   \textcolor{comment}{// LCOV\_EXCL\_STOP}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__geometry_1_1Geometry_acd91c55fb9604ed374446c029b6f2d08}{Ptr}} = std::shared\_ptr<ConvexMesh>;}
+\DoxyCodeLine{56   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__geometry_1_1Geometry_a755a973394d2ccb45ad53a5e11ff03c7}{ConstPtr}} = std::shared\_ptr<const ConvexMesh>;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58   \textcolor{keyword}{enum} \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_aa89b924e13d31f22ab307d8b2939afda}{CreationMethod}}}
+\DoxyCodeLine{59   \{}
+\DoxyCodeLine{60     \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_aa89b924e13d31f22ab307d8b2939afdaab60f7059125307bcf8ad12166e12f398}{DEFAULT}},}
+\DoxyCodeLine{61     \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_aa89b924e13d31f22ab307d8b2939afdaacc269086ebef2c36f2003822fe6bb64c}{MESH}},}
+\DoxyCodeLine{62     CONVERTED}
+\DoxyCodeLine{63   \};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{80   \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_aa9c0b37115e3e4e44e1dcc3bfe0ca17b}{ConvexMesh}}(std::shared\_ptr<const tesseract\_common::VectorVector3d> vertices,}
+\DoxyCodeLine{81              std::shared\_ptr<const Eigen::VectorXi> faces,}
+\DoxyCodeLine{82              \mbox{\hyperlink{classtesseract__common_1_1Resource_ab1639f2420acb1637e16386860d65962}{tesseract\_common::Resource::ConstPtr}} resource = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{83              \textcolor{keyword}{const} Eigen::Vector3d\& scale = Eigen::Vector3d(1, 1, 1),}
+\DoxyCodeLine{84              std::shared\_ptr<const tesseract\_common::VectorVector3d> normals = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{85              std::shared\_ptr<const tesseract\_common::VectorVector4d> vertex\_colors = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{86              \mbox{\hyperlink{classtesseract__geometry_1_1MeshMaterial_ad67358c38f5044f5759070974ec73e54}{MeshMaterial::Ptr}} mesh\_material = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{87              std::shared\_ptr<\textcolor{keyword}{const} std::vector<MeshTexture::Ptr>> mesh\_textures = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{88     : \mbox{\hyperlink{classtesseract__geometry_1_1PolygonMesh}{PolygonMesh}}(std::move(vertices),}
+\DoxyCodeLine{89                   std::move(faces),}
+\DoxyCodeLine{90                   std::move(resource),}
+\DoxyCodeLine{91                   scale,}
+\DoxyCodeLine{92                   std::move(normals),}
+\DoxyCodeLine{93                   std::move(vertex\_colors),}
+\DoxyCodeLine{94                   std::move(mesh\_material),}
+\DoxyCodeLine{95                   std::move(mesh\_textures),}
+\DoxyCodeLine{96                   \mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56feb}{GeometryType}}::\mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56febae0e321886bf5c6aa4c17eafccecf8ac5}{CONVEX\_MESH}})}
+\DoxyCodeLine{97   \{}
+\DoxyCodeLine{98   \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{117   \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_a9ba4b309383d5ebeb07cec3f5576047e}{ConvexMesh}}(std::shared\_ptr<const tesseract\_common::VectorVector3d> vertices,}
+\DoxyCodeLine{118              std::shared\_ptr<const Eigen::VectorXi> faces,}
+\DoxyCodeLine{119              \textcolor{keywordtype}{int} face\_count,}
+\DoxyCodeLine{120              \mbox{\hyperlink{classtesseract__common_1_1Resource_ab1639f2420acb1637e16386860d65962}{tesseract\_common::Resource::ConstPtr}} resource = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{121              \textcolor{keyword}{const} Eigen::Vector3d\& scale = Eigen::Vector3d(1, 1, 1),}
+\DoxyCodeLine{122              std::shared\_ptr<const tesseract\_common::VectorVector3d> normals = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{123              std::shared\_ptr<const tesseract\_common::VectorVector4d> vertex\_colors = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{124              \mbox{\hyperlink{classtesseract__geometry_1_1MeshMaterial_ad67358c38f5044f5759070974ec73e54}{MeshMaterial::Ptr}} mesh\_material = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{125              std::shared\_ptr<\textcolor{keyword}{const} std::vector<MeshTexture::Ptr>> mesh\_textures = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{126     : \mbox{\hyperlink{classtesseract__geometry_1_1PolygonMesh}{PolygonMesh}}(std::move(vertices),}
+\DoxyCodeLine{127                   std::move(faces),}
+\DoxyCodeLine{128                   face\_count,}
+\DoxyCodeLine{129                   std::move(resource),}
+\DoxyCodeLine{130                   scale,}
+\DoxyCodeLine{131                   std::move(normals),}
+\DoxyCodeLine{132                   std::move(vertex\_colors),}
+\DoxyCodeLine{133                   std::move(mesh\_material),}
+\DoxyCodeLine{134                   std::move(mesh\_textures),}
+\DoxyCodeLine{135                   \mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56feb}{GeometryType}}::\mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56febae0e321886bf5c6aa4c17eafccecf8ac5}{CONVEX\_MESH}})}
+\DoxyCodeLine{136   \{}
+\DoxyCodeLine{137   \}}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139   \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_a84e3b47347858cab48077160ecf4a3ce}{ConvexMesh}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{140   \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_a6c5eb5001c48daa27b1d82b4db160053}{\string~ConvexMesh}}() \textcolor{keyword}{override} = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{147   \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_aa89b924e13d31f22ab307d8b2939afda}{CreationMethod}} \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_abea9b7ccada14ee56fa90542487b2800}{getCreationMethod}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} creation\_method\_; \}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{154   \textcolor{keywordtype}{void} \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_a2b2d1d0194d7204445647e040669f1b1}{setCreationMethod}}(\mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_aa89b924e13d31f22ab307d8b2939afda}{CreationMethod}} method) \{ creation\_method\_ = method; \}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156   \mbox{\hyperlink{classtesseract__geometry_1_1Geometry_acd91c55fb9604ed374446c029b6f2d08}{Geometry::Ptr}} \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_a7e1398fbaf4c54744e38484e30df98f1}{clone}}()\textcolor{keyword}{ const override}}
+\DoxyCodeLine{157 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{158     \textcolor{keywordflow}{return} std::make\_shared<ConvexMesh>(getVertices(), getFaces(), getFaceCount(), getResource(), getScale());}
+\DoxyCodeLine{159   \}}
+\DoxyCodeLine{160   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a0808e2d3c913c41e852ab3819eadd828}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh}{ConvexMesh}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{161   \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh}{ConvexMesh}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{keyword}{private}:}
+\DoxyCodeLine{164   \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh_aa89b924e13d31f22ab307d8b2939afda}{CreationMethod}} creation\_method\_\{ DEFAULT \};}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166   \textcolor{keyword}{friend} \textcolor{keyword}{class }boost::serialization::access;}
+\DoxyCodeLine{167   \textcolor{keyword}{template} <\textcolor{keyword}{class} Archive>}
+\DoxyCodeLine{168   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespaceboost_1_1serialization_aa09e7bc4ef1e47e77fdac84474259e71}{serialize}}(Archive\& ar, \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} version);  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{169 \};}
+\DoxyCodeLine{170 \}  \textcolor{comment}{// namespace tesseract\_geometry}}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 \textcolor{preprocessor}{\#include <boost/serialization/tracking.hpp>}}
+\DoxyCodeLine{173 BOOST\_CLASS\_EXPORT\_KEY2(\mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh}{tesseract\_geometry::ConvexMesh}}, \textcolor{stringliteral}{"{}ConvexMesh"{}})}
+\DoxyCodeLine{174 \mbox{\hyperlink{any_8h_aaec163e216269fcdb13a222b14cd4ccf}{BOOST\_CLASS\_TRACKING}}(\mbox{\hyperlink{namespacetesseract__geometry}{tesseract\_geometry}}::ConvexMesh, \mbox{\hyperlink{namespaceboost}{boost}}::serialization::track\_never)}
+\DoxyCodeLine{175 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,8 @@
+<map id="tesseract_common::SimpleLocatedResource" name="tesseract_common::SimpleLocatedResource">
+<area shape="rect" id="node1" title="Resource implementation for a local file." alt="" coords="211,228,389,269"/>
+<area shape="rect" id="node2" href="$d8/def/classtesseract__common_1_1Resource.html" title="Represents resource data available from a file or url." alt="" coords="5,117,200,143"/>
+<area shape="rect" id="node3" href="$d0/de6/classtesseract__common_1_1ResourceLocator.html" title="Abstract class for resource loaders." alt="" coords="120,5,315,47"/>
+<area shape="rect" id="node6" title=" " alt="" coords="225,109,375,151"/>
+<area shape="rect" id="node4" title=" " alt="" coords="399,117,478,143"/>
+<area shape="rect" id="node5" title=" " alt="" coords="377,5,501,47"/>
+</map>

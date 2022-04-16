@@ -1,8 +1,8 @@
-\hypertarget{kdl__fwd__kin__chain_8h}{}\doxysection{tesseract/tesseract\+\_\+kinematics/include/tesseract\+\_\+kinematics/kdl/kdl\+\_\+fwd\+\_\+kin\+\_\+chain.h File Reference}
-\label{kdl__fwd__kin__chain_8h}\index{tesseract/tesseract\_kinematics/include/tesseract\_kinematics/kdl/kdl\_fwd\_kin\_chain.h@{tesseract/tesseract\_kinematics/include/tesseract\_kinematics/kdl/kdl\_fwd\_kin\_chain.h}}
+\hypertarget{kdl__fwd__kin__chain_8h}{}\doxysection{tesseract\+\_\+kinematics/kdl/include/tesseract\+\_\+kinematics/kdl/kdl\+\_\+fwd\+\_\+kin\+\_\+chain.h File Reference}
+\label{kdl__fwd__kin__chain_8h}\index{tesseract\_kinematics/kdl/include/tesseract\_kinematics/kdl/kdl\_fwd\_kin\_chain.h@{tesseract\_kinematics/kdl/include/tesseract\_kinematics/kdl/kdl\_fwd\_kin\_chain.h}}
 
 
-Tesseract K\+DL forward kinematics chain implementation.  
+Tesseract KDL forward kinematics chain implementation.  
 
 
 {\ttfamily \#include $<$tesseract\+\_\+common/macros.\+h$>$}\newline
@@ -12,23 +12,45 @@ Tesseract K\+DL forward kinematics chain implementation.
 {\ttfamily \#include $<$kdl/chainjnttojacsolver.\+hpp$>$}\newline
 {\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
 {\ttfamily \#include $<$console\+\_\+bridge/console.\+h$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
 {\ttfamily \#include $<$tesseract\+\_\+scene\+\_\+graph/graph.\+h$>$}\newline
 {\ttfamily \#include $<$tesseract\+\_\+kinematics/core/forward\+\_\+kinematics.\+h$>$}\newline
 {\ttfamily \#include $<$tesseract\+\_\+kinematics/kdl/kdl\+\_\+utils.\+h$>$}\newline
+Include dependency graph for kdl\+\_\+fwd\+\_\+kin\+\_\+chain.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{df/d7d/kdl__fwd__kin__chain_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d1/db8/kdl__fwd__kin__chain_8h__dep__incl}
+\end{center}
+\end{figure}
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{classtesseract__kinematics_1_1KDLFwdKinChain}{tesseract\+\_\+kinematics\+::\+K\+D\+L\+Fwd\+Kin\+Chain}}
-\begin{DoxyCompactList}\small\item\em K\+DL kinematic chain implementation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+class \mbox{\hyperlink{classtesseract__kinematics_1_1KDLFwdKinChain}{tesseract\+\_\+kinematics\+::\+KDLFwd\+Kin\+Chain}}
+\begin{DoxyCompactList}\small\item\em KDL kinematic chain implementation. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
- \mbox{\hyperlink{namespacetesseract__kinematics}{tesseract\+\_\+kinematics}}
+namespace \mbox{\hyperlink{namespacetesseract__kinematics}{tesseract\+\_\+kinematics}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const std\+::string \mbox{\hyperlink{namespacetesseract__kinematics_a8e876d3d43f95a425ef08ad478bf6003}{tesseract\+\_\+kinematics\+::\+KDL\+\_\+\+FWD\+\_\+\+KIN\+\_\+\+CHAIN\+\_\+\+SOLVER\+\_\+\+NAME}} = \char`\"{}KDLFwd\+Kin\+Chain\char`\"{}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Tesseract K\+DL forward kinematics chain implementation. 
+Tesseract KDL forward kinematics chain implementation. 
 
 \begin{DoxyAuthor}{Author}
 Levi Armstrong 
@@ -37,10 +59,10 @@ Levi Armstrong
 Dec 18, 2017 
 \end{DoxyDate}
 \begin{DoxyVersion}{Version}
-T\+O\+DO 
+TODO 
 \end{DoxyVersion}
 \begin{DoxyRefDesc}{Bug}
-\item[\mbox{\hyperlink{bug__bug000068}{Bug}}]No known bugs\end{DoxyRefDesc}
+\item[\mbox{\hyperlink{bug__bug000184}{Bug}}]No known bugs\end{DoxyRefDesc}
 
 
 \begin{DoxyCopyright}{Copyright}
@@ -50,8 +72,8 @@ Copyright (c) 2017, Southwest Research Institute
 Software License Agreement (Apache License) 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{}
-Licensed under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at \href{http://www.apache.org/licenses/LICENSE-2.0}{\texttt{ http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}} 
+Licensed under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at \href{http://www.apache.org/licenses/LICENSE-2.0}{\texttt{ http\+://www.\+apache.\+org/licenses/\+LICENSE-\/2.\+0}} 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{}
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+IS, W\+I\+T\+H\+O\+UT W\+A\+R\+R\+A\+N\+T\+I\+ES OR C\+O\+N\+D\+I\+T\+I\+O\+NS OF A\+NY K\+I\+ND, either express or implied. See the License for the specific language governing permissions and limitations under the License. 
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+AS IS\char`\"{} BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. 
 \end{DoxyParagraph}

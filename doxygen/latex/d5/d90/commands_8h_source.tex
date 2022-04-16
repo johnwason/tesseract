@@ -1,0 +1,115 @@
+\hypertarget{commands_8h_source}{}\doxysection{commands.\+h}
+\label{commands_8h_source}\index{tesseract\_environment/include/tesseract\_environment/commands.h@{tesseract\_environment/include/tesseract\_environment/commands.h}}
+\mbox{\hyperlink{commands_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#ifndef TESSERACT\_ENVIRONMENT\_COMMANDS\_H}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define TESSERACT\_ENVIRONMENT\_COMMANDS\_H}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{add__allowed__collision__command_8h}{tesseract\_environment/commands/add\_allowed\_collision\_command.h}}>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{add__contact__managers__plugin__info__command_8h}{tesseract\_environment/commands/add\_contact\_managers\_plugin\_info\_command.h}}>}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{add__link__command_8h}{tesseract\_environment/commands/add\_link\_command.h}}>}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{add__kinematics__information__command_8h}{tesseract\_environment/commands/add\_kinematics\_information\_command.h}}>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{add__scene__graph__command_8h}{tesseract\_environment/commands/add\_scene\_graph\_command.h}}>}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{change__joint__acceleration__limits__command_8h}{tesseract\_environment/commands/change\_joint\_acceleration\_limits\_command.h}}>}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{change__joint__origin__command_8h}{tesseract\_environment/commands/change\_joint\_origin\_command.h}}>}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{change__joint__position__limits__command_8h}{tesseract\_environment/commands/change\_joint\_position\_limits\_command.h}}>}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{change__joint__velocity__limits__command_8h}{tesseract\_environment/commands/change\_joint\_velocity\_limits\_command.h}}>}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{change__link__collision__enabled__command_8h}{tesseract\_environment/commands/change\_link\_collision\_enabled\_command.h}}>}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{change__link__origin__command_8h}{tesseract\_environment/commands/change\_link\_origin\_command.h}}>}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{change__link__visibility__command_8h}{tesseract\_environment/commands/change\_link\_visibility\_command.h}}>}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{move__joint__command_8h}{tesseract\_environment/commands/move\_joint\_command.h}}>}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{move__link__command_8h}{tesseract\_environment/commands/move\_link\_command.h}}>}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{remove__allowed__collision__command_8h}{tesseract\_environment/commands/remove\_allowed\_collision\_command.h}}>}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{remove__allowed__collision__link__command_8h}{tesseract\_environment/commands/remove\_allowed\_collision\_link\_command.h}}>}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{remove__joint__command_8h}{tesseract\_environment/commands/remove\_joint\_command.h}}>}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{remove__link__command_8h}{tesseract\_environment/commands/remove\_link\_command.h}}>}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{replace__joint__command_8h}{tesseract\_environment/commands/replace\_joint\_command.h}}>}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{change__collision__margins__command_8h}{tesseract\_environment/commands/change\_collision\_margins\_command.h}}>}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{set__active__continuous__contact__manager__command_8h}{tesseract\_environment/commands/set\_active\_continuous\_contact\_manager\_command.h}}>}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{set__active__discrete__contact__manager__command_8h}{tesseract\_environment/commands/set\_active\_discrete\_contact\_manager\_command.h}}>}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#ifdef SWIG}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1Command}{tesseract\_environment::Command}})}
+\DoxyCodeLine{57 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1AddLinkCommand}{tesseract\_environment::AddLinkCommand}})}
+\DoxyCodeLine{58 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1MoveLinkCommand}{tesseract\_environment::MoveLinkCommand}})}
+\DoxyCodeLine{59 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1MoveJointCommand}{tesseract\_environment::MoveJointCommand}})}
+\DoxyCodeLine{60 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1RemoveLinkCommand}{tesseract\_environment::RemoveLinkCommand}})}
+\DoxyCodeLine{61 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1RemoveJointCommand}{tesseract\_environment::RemoveJointCommand}})}
+\DoxyCodeLine{62 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1ReplaceJointCommand}{tesseract\_environment::ReplaceJointCommand}})}
+\DoxyCodeLine{63 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1ChangeLinkOriginCommand}{tesseract\_environment::ChangeLinkOriginCommand}})}
+\DoxyCodeLine{64 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1ChangeJointOriginCommand}{tesseract\_environment::ChangeJointOriginCommand}})}
+\DoxyCodeLine{65 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1ChangeLinkCollisionEnabledCommand}{tesseract\_environment::ChangeLinkCollisionEnabledCommand}})}
+\DoxyCodeLine{66 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1ChangeLinkVisibilityCommand}{tesseract\_environment::ChangeLinkVisibilityCommand}})}
+\DoxyCodeLine{67 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1AddAllowedCollisionCommand}{tesseract\_environment::AddAllowedCollisionCommand}})}
+\DoxyCodeLine{68 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1RemoveAllowedCollisionCommand}{tesseract\_environment::RemoveAllowedCollisionCommand}})}
+\DoxyCodeLine{69 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1RemoveAllowedCollisionLinkCommand}{tesseract\_environment::RemoveAllowedCollisionLinkCommand}})}
+\DoxyCodeLine{70 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1AddSceneGraphCommand}{tesseract\_environment::AddSceneGraphCommand}})}
+\DoxyCodeLine{71 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1AddKinematicsInformationCommand}{tesseract\_environment::AddKinematicsInformationCommand}})}
+\DoxyCodeLine{72 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1ChangeJointPositionLimitsCommand}{tesseract\_environment::ChangeJointPositionLimitsCommand}})}
+\DoxyCodeLine{73 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand}{tesseract\_environment::ChangeJointVelocityLimitsCommand}})}
+\DoxyCodeLine{74 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1ChangeJointAccelerationLimitsCommand}{tesseract\_environment::ChangeJointAccelerationLimitsCommand}})}
+\DoxyCodeLine{75 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1ChangeCollisionMarginsCommand}{tesseract\_environment::ChangeCollisionMarginsCommand}})}
+\DoxyCodeLine{76 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1AddContactManagersPluginInfoCommand}{tesseract\_environment::AddContactManagersPluginInfoCommand}})}
+\DoxyCodeLine{77 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1SetActiveContinuousContactManagerCommand}{tesseract\_environment::SetActiveContinuousContactManagerCommand}})}
+\DoxyCodeLine{78 \%shared\_ptr(\mbox{\hyperlink{classtesseract__environment_1_1SetActiveDiscreteContactManagerCommand}{tesseract\_environment::SetActiveDiscreteContactManagerCommand}})}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \%shared\_factory(}
+\DoxyCodeLine{81   \mbox{\hyperlink{classtesseract__environment_1_1Command}{tesseract\_environment::Command}},}
+\DoxyCodeLine{82   \mbox{\hyperlink{classtesseract__environment_1_1AddLinkCommand}{tesseract\_environment::AddLinkCommand}},}
+\DoxyCodeLine{83   \mbox{\hyperlink{classtesseract__environment_1_1MoveLinkCommand}{tesseract\_environment::MoveLinkCommand}},}
+\DoxyCodeLine{84   \mbox{\hyperlink{classtesseract__environment_1_1MoveJointCommand}{tesseract\_environment::MoveJointCommand}},}
+\DoxyCodeLine{85   \mbox{\hyperlink{classtesseract__environment_1_1RemoveLinkCommand}{tesseract\_environment::RemoveLinkCommand}},}
+\DoxyCodeLine{86   \mbox{\hyperlink{classtesseract__environment_1_1RemoveJointCommand}{tesseract\_environment::RemoveJointCommand}},}
+\DoxyCodeLine{87   \mbox{\hyperlink{classtesseract__environment_1_1ReplaceJointCommand}{tesseract\_environment::ReplaceJointCommand}},}
+\DoxyCodeLine{88   \mbox{\hyperlink{classtesseract__environment_1_1ChangeLinkOriginCommand}{tesseract\_environment::ChangeLinkOriginCommand}},}
+\DoxyCodeLine{89   \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointOriginCommand}{tesseract\_environment::ChangeJointOriginCommand}},}
+\DoxyCodeLine{90   \mbox{\hyperlink{classtesseract__environment_1_1ChangeLinkCollisionEnabledCommand}{tesseract\_environment::ChangeLinkCollisionEnabledCommand}},}
+\DoxyCodeLine{91   \mbox{\hyperlink{classtesseract__environment_1_1ChangeLinkVisibilityCommand}{tesseract\_environment::ChangeLinkVisibilityCommand}},}
+\DoxyCodeLine{92   \mbox{\hyperlink{classtesseract__environment_1_1AddAllowedCollisionCommand}{tesseract\_environment::AddAllowedCollisionCommand}},}
+\DoxyCodeLine{93   \mbox{\hyperlink{classtesseract__environment_1_1RemoveAllowedCollisionCommand}{tesseract\_environment::RemoveAllowedCollisionCommand}},}
+\DoxyCodeLine{94   \mbox{\hyperlink{classtesseract__environment_1_1RemoveAllowedCollisionLinkCommand}{tesseract\_environment::RemoveAllowedCollisionLinkCommand}},}
+\DoxyCodeLine{95   \mbox{\hyperlink{classtesseract__environment_1_1AddSceneGraphCommand}{tesseract\_environment::AddSceneGraphCommand}},}
+\DoxyCodeLine{96   \mbox{\hyperlink{classtesseract__environment_1_1AddKinematicsInformationCommand}{tesseract\_environment::AddKinematicsInformationCommand}},}
+\DoxyCodeLine{97   \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointPositionLimitsCommand}{tesseract\_environment::ChangeJointPositionLimitsCommand}},}
+\DoxyCodeLine{98   \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointVelocityLimitsCommand}{tesseract\_environment::ChangeJointVelocityLimitsCommand}},}
+\DoxyCodeLine{99   \mbox{\hyperlink{classtesseract__environment_1_1ChangeJointAccelerationLimitsCommand}{tesseract\_environment::ChangeJointAccelerationLimitsCommand}},}
+\DoxyCodeLine{100   \mbox{\hyperlink{classtesseract__environment_1_1ChangeCollisionMarginsCommand}{tesseract\_environment::ChangeCollisionMarginsCommand}},}
+\DoxyCodeLine{101   \mbox{\hyperlink{classtesseract__environment_1_1AddContactManagersPluginInfoCommand}{tesseract\_environment::AddContactManagersPluginInfoCommand}},}
+\DoxyCodeLine{102   \mbox{\hyperlink{classtesseract__environment_1_1SetActiveContinuousContactManagerCommand}{tesseract\_environment::SetActiveContinuousContactManagerCommand}},}
+\DoxyCodeLine{103   \mbox{\hyperlink{classtesseract__environment_1_1SetActiveDiscreteContactManagerCommand}{tesseract\_environment::SetActiveDiscreteContactManagerCommand}}}
+\DoxyCodeLine{104 )}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \%include \textcolor{stringliteral}{"{}tesseract\_environment/command.h"{}}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \%\textcolor{keyword}{template}(\mbox{\hyperlink{namespacetesseract__environment_acb95740502ec41d80a94a7631d4b7a3c}{Commands}}) std::vector<tesseract\_environment::Command::ConstPtr>;}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/add\_allowed\_collision\_command.h"{}}}
+\DoxyCodeLine{111 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/add\_contact\_managers\_plugin\_info\_command.h"{}}}
+\DoxyCodeLine{112 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/add\_link\_command.h"{}}}
+\DoxyCodeLine{113 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/add\_kinematics\_information\_command.h"{}}}
+\DoxyCodeLine{114 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/add\_scene\_graph\_command.h"{}}}
+\DoxyCodeLine{115 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/change\_joint\_acceleration\_limits\_command.h"{}}}
+\DoxyCodeLine{116 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/change\_joint\_origin\_command.h"{}}}
+\DoxyCodeLine{117 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/change\_joint\_position\_limits\_command.h"{}}}
+\DoxyCodeLine{118 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/change\_joint\_velocity\_limits\_command.h"{}}}
+\DoxyCodeLine{119 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/change\_link\_collision\_enabled\_command.h"{}}}
+\DoxyCodeLine{120 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/change\_link\_origin\_command.h"{}}}
+\DoxyCodeLine{121 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/change\_link\_visibility\_command.h"{}}}
+\DoxyCodeLine{122 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/move\_joint\_command.h"{}}}
+\DoxyCodeLine{123 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/move\_link\_command.h"{}}}
+\DoxyCodeLine{124 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/remove\_allowed\_collision\_command.h"{}}}
+\DoxyCodeLine{125 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/remove\_allowed\_collision\_link\_command.h"{}}}
+\DoxyCodeLine{126 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/remove\_joint\_command.h"{}}}
+\DoxyCodeLine{127 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/remove\_link\_command.h"{}}}
+\DoxyCodeLine{128 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/replace\_joint\_command.h"{}}}
+\DoxyCodeLine{129 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/change\_collision\_margins\_command.h"{}}}
+\DoxyCodeLine{130 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/set\_active\_continuous\_contact\_manager\_command.h"{}}}
+\DoxyCodeLine{131 \%include \textcolor{stringliteral}{"{}tesseract\_environment/commands/set\_active\_discrete\_contact\_manager\_command.h"{}}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// SWIG}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_ENVIRONMENT\_COMMANDS\_H}}
+
+\end{DoxyCode}

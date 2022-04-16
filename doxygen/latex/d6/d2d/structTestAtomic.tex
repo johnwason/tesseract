@@ -1,0 +1,135 @@
+\hypertarget{structTestAtomic}{}\doxysection{Test\+Atomic Struct Reference}
+\label{structTestAtomic}\index{TestAtomic@{TestAtomic}}
+
+
+Atomic do not have a copy constructor so must have implement one for your class.  
+
+
+
+
+Collaboration diagram for Test\+Atomic\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=178pt]{dd/d7a/structTestAtomic__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structTestAtomic_a15f70b654d9d2377c690b48bae927c44}{Test\+Atomic}} ()=default
+\item 
+\mbox{\hyperlink{structTestAtomic_af10ae4672b911929e3c397c786446803}{$\sim$\+Test\+Atomic}} ()=default
+\item 
+\mbox{\hyperlink{structTestAtomic_af93ecd7b2036fa7add5bebf0d409ade6}{Test\+Atomic}} (const \mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&other)
+\item 
+\mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \& \mbox{\hyperlink{structTestAtomic_a4c71c75baec40cf498f7557fcb177db0}{operator=}} (const \mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&other)
+\item 
+\mbox{\hyperlink{structTestAtomic_a2f8f641f53c119c8f77da87338424540}{Test\+Atomic}} (\mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&\&other) noexcept
+\item 
+\mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \& \mbox{\hyperlink{structTestAtomic_a1cf31fcb04fe13ce7e3861a199c529c9}{operator=}} (\mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&\&other) noexcept
+\item 
+bool \mbox{\hyperlink{structTestAtomic_ad8a0ade4e078e218fe9330c1b0baef00}{operator==}} (const \mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&rhs) const
+\item 
+bool \mbox{\hyperlink{structTestAtomic_a3b39f439d4f35871059194698365994e}{operator!=}} (const \mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&rhs) const
+\item 
+{\footnotesize template$<$class Archive $>$ }\\void \mbox{\hyperlink{structTestAtomic_aadf38710a9d6d9703c1145df879e071b}{serialize}} (Archive \&ar, const unsigned int)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::atomic$<$ bool $>$ \mbox{\hyperlink{structTestAtomic_a9db34be48e296fc8f1ae3b4ecb6a338c}{value}} \{ true \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{structTestAtomic_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost\+::serialization\+::access}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Atomic do not have a copy constructor so must have implement one for your class. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structTestAtomic_a15f70b654d9d2377c690b48bae927c44}\label{structTestAtomic_a15f70b654d9d2377c690b48bae927c44}} 
+\index{TestAtomic@{TestAtomic}!TestAtomic@{TestAtomic}}
+\index{TestAtomic@{TestAtomic}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{TestAtomic()}{TestAtomic()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Test\+Atomic\+::\+Test\+Atomic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{structTestAtomic_af10ae4672b911929e3c397c786446803}\label{structTestAtomic_af10ae4672b911929e3c397c786446803}} 
+\index{TestAtomic@{TestAtomic}!````~TestAtomic@{$\sim$TestAtomic}}
+\index{````~TestAtomic@{$\sim$TestAtomic}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{$\sim$TestAtomic()}{~TestAtomic()}}
+{\footnotesize\ttfamily Test\+Atomic\+::$\sim$\+Test\+Atomic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{structTestAtomic_af93ecd7b2036fa7add5bebf0d409ade6}\label{structTestAtomic_af93ecd7b2036fa7add5bebf0d409ade6}} 
+\index{TestAtomic@{TestAtomic}!TestAtomic@{TestAtomic}}
+\index{TestAtomic@{TestAtomic}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{TestAtomic()}{TestAtomic()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Test\+Atomic\+::\+Test\+Atomic (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structTestAtomic_a2f8f641f53c119c8f77da87338424540}\label{structTestAtomic_a2f8f641f53c119c8f77da87338424540}} 
+\index{TestAtomic@{TestAtomic}!TestAtomic@{TestAtomic}}
+\index{TestAtomic@{TestAtomic}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{TestAtomic()}{TestAtomic()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Test\+Atomic\+::\+Test\+Atomic (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structTestAtomic_a3b39f439d4f35871059194698365994e}\label{structTestAtomic_a3b39f439d4f35871059194698365994e}} 
+\index{TestAtomic@{TestAtomic}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily bool Test\+Atomic\+::operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&}]{rhs }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structTestAtomic_a4c71c75baec40cf498f7557fcb177db0}\label{structTestAtomic_a4c71c75baec40cf498f7557fcb177db0}} 
+\index{TestAtomic@{TestAtomic}!operator=@{operator=}}
+\index{operator=@{operator=}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \& Test\+Atomic\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structTestAtomic_a1cf31fcb04fe13ce7e3861a199c529c9}\label{structTestAtomic_a1cf31fcb04fe13ce7e3861a199c529c9}} 
+\index{TestAtomic@{TestAtomic}!operator=@{operator=}}
+\index{operator=@{operator=}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \& Test\+Atomic\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{structTestAtomic_ad8a0ade4e078e218fe9330c1b0baef00}\label{structTestAtomic_ad8a0ade4e078e218fe9330c1b0baef00}} 
+\index{TestAtomic@{TestAtomic}!operator==@{operator==}}
+\index{operator==@{operator==}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool Test\+Atomic\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structTestAtomic}{Test\+Atomic}} \&}]{rhs }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{structTestAtomic_aadf38710a9d6d9703c1145df879e071b}\label{structTestAtomic_aadf38710a9d6d9703c1145df879e071b}} 
+\index{TestAtomic@{TestAtomic}!serialize@{serialize}}
+\index{serialize@{serialize}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{serialize()}{serialize()}}
+{\footnotesize\ttfamily template$<$class Archive $>$ \\
+void Test\+Atomic\+::serialize (\begin{DoxyParamCaption}\item[{Archive \&}]{ar,  }\item[{const unsigned int}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{structTestAtomic_ac98d07dd8f7b70e16ccb9a01abf56b9c}\label{structTestAtomic_ac98d07dd8f7b70e16ccb9a01abf56b9c}} 
+\index{TestAtomic@{TestAtomic}!boost::serialization::access@{boost::serialization::access}}
+\index{boost::serialization::access@{boost::serialization::access}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{boost::serialization::access}{boost::serialization::access}}
+{\footnotesize\ttfamily friend class boost\+::serialization\+::access\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structTestAtomic_a9db34be48e296fc8f1ae3b4ecb6a338c}\label{structTestAtomic_a9db34be48e296fc8f1ae3b4ecb6a338c}} 
+\index{TestAtomic@{TestAtomic}!value@{value}}
+\index{value@{value}!TestAtomic@{TestAtomic}}
+\doxysubsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily std\+::atomic$<$bool$>$ Test\+Atomic\+::value \{ true \}}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tesseract\+\_\+common/test/\mbox{\hyperlink{tesseract__common__serialization__unit_8cpp}{tesseract\+\_\+common\+\_\+serialization\+\_\+unit.\+cpp}}\end{DoxyCompactItemize}

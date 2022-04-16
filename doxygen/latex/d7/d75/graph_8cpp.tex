@@ -1,20 +1,51 @@
-\hypertarget{graph_8cpp}{}\doxysection{tesseract/tesseract\+\_\+scene\+\_\+graph/src/graph.cpp File Reference}
-\label{graph_8cpp}\index{tesseract/tesseract\_scene\_graph/src/graph.cpp@{tesseract/tesseract\_scene\_graph/src/graph.cpp}}
+\hypertarget{graph_8cpp}{}\doxysection{tesseract\+\_\+scene\+\_\+graph/src/graph.cpp File Reference}
+\label{graph_8cpp}\index{tesseract\_scene\_graph/src/graph.cpp@{tesseract\_scene\_graph/src/graph.cpp}}
 
 
 A basic scene graph using boost.  
 
 
 {\ttfamily \#include $<$tesseract\+\_\+common/macros.\+h$>$}\newline
+{\ttfamily \#include $<$boost/graph/adj\+\_\+list\+\_\+serialize.\+hpp$>$}\newline
 {\ttfamily \#include $<$boost/graph/dijkstra\+\_\+shortest\+\_\+paths.\+hpp$>$}\newline
 {\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
 {\ttfamily \#include $<$console\+\_\+bridge/console.\+h$>$}\newline
+{\ttfamily \#include $<$boost/graph/undirected\+\_\+graph.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/graph/copy.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/serialization/access.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/serialization/base\+\_\+object.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/serialization/nvp.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/serialization/shared\+\_\+ptr.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/serialization/split\+\_\+member.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/serialization/unordered\+\_\+map.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/serialization/utility.\+hpp$>$}\newline
 {\ttfamily \#include $<$tesseract\+\_\+scene\+\_\+graph/graph.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+common/utils.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+common/serialization.\+h$>$}\newline
+Include dependency graph for graph.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dc/d09/graph_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtesseract__scene__graph_1_1ugraph__vertex__copier}{tesseract\+\_\+scene\+\_\+graph\+::ugraph\+\_\+vertex\+\_\+copier}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
- \mbox{\hyperlink{namespacetesseract__scene__graph}{tesseract\+\_\+scene\+\_\+graph}}
-\begin{DoxyCompactList}\small\item\em Main namespace. \end{DoxyCompactList}\end{DoxyCompactItemize}
+namespace \mbox{\hyperlink{namespacetesseract__scene__graph}{tesseract\+\_\+scene\+\_\+graph}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespacetesseract__scene__graph_a9d854d1aefdbcdab3a70f2051ee528f5}{tesseract\+\_\+scene\+\_\+graph\+::\+UGraph}} = boost\+::adjacency\+\_\+list$<$ boost\+::listS, boost\+::listS, boost\+::undirectedS, Vertex\+Property, Edge\+Property, Graph\+Property $>$
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -27,10 +58,10 @@ Levi Armstrong
 Dec 18, 2017 
 \end{DoxyDate}
 \begin{DoxyVersion}{Version}
-T\+O\+DO 
+TODO 
 \end{DoxyVersion}
 \begin{DoxyRefDesc}{Bug}
-\item[\mbox{\hyperlink{bug__bug000172}{Bug}}]No known bugs\end{DoxyRefDesc}
+\item[\mbox{\hyperlink{bug__bug000207}{Bug}}]No known bugs\end{DoxyRefDesc}
 
 
 \begin{DoxyCopyright}{Copyright}
@@ -40,8 +71,8 @@ Copyright (c) 2017, Southwest Research Institute
 Software License Agreement (Apache License) 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{}
-Licensed under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at \href{http://www.apache.org/licenses/LICENSE-2.0}{\texttt{ http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}} 
+Licensed under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at \href{http://www.apache.org/licenses/LICENSE-2.0}{\texttt{ http\+://www.\+apache.\+org/licenses/\+LICENSE-\/2.\+0}} 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{}
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+IS, W\+I\+T\+H\+O\+UT W\+A\+R\+R\+A\+N\+T\+I\+ES OR C\+O\+N\+D\+I\+T\+I\+O\+NS OF A\+NY K\+I\+ND, either express or implied. See the License for the specific language governing permissions and limitations under the License. 
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+AS IS\char`\"{} BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. 
 \end{DoxyParagraph}

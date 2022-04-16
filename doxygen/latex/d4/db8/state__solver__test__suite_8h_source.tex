@@ -1,0 +1,1142 @@
+\hypertarget{state__solver__test__suite_8h_source}{}\doxysection{state\+\_\+solver\+\_\+test\+\_\+suite.\+h}
+\label{state__solver__test__suite_8h_source}\index{tesseract\_state\_solver/test/state\_solver\_test\_suite.h@{tesseract\_state\_solver/test/state\_solver\_test\_suite.h}}
+\mbox{\hyperlink{state__solver__test__suite_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef TESSERACT\_STATE\_SOLVER\_STATE\_SOLVER\_TEST\_SUITE\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define TESSERACT\_STATE\_SOLVER\_STATE\_SOLVER\_TEST\_SUITE\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{macros_8h}{tesseract\_common/macros.h}}>}}
+\DoxyCodeLine{5 \mbox{\hyperlink{macros_8h_a8cc0e3c6a3382c5c0b19eb9e676fc2db}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_PUSH}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <gtest/gtest.h>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{urdf__parser_8h}{tesseract\_urdf/urdf\_parser.h}}>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{tesseract__geometry_2include_2tesseract__geometry_2impl_2box_8h}{tesseract\_geometry/impl/box.h}}>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{resource__locator_8h}{tesseract\_common/resource\_locator.h}}>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{tesseract__common_2include_2tesseract__common_2utils_8h}{tesseract\_common/utils.h}}>}}
+\DoxyCodeLine{13 \mbox{\hyperlink{namespaceTESSERACT__COMMON__IGNORE__WARNINGS__POP}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_POP}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{kdl__state__solver_8h}{tesseract\_state\_solver/kdl/kdl\_state\_solver.h}}>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{tesseract__support__resource__locator_8h}{tesseract\_support/tesseract\_support\_resource\_locator.h}}>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite}{tesseract\_scene\_graph::test\_suite}}}
+\DoxyCodeLine{19 \{}
+\DoxyCodeLine{20 \textcolor{keyword}{inline} \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph_aacd7acf57071e94cd87fbae62dbaafba}{SceneGraph::UPtr}} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}()}
+\DoxyCodeLine{21 \{}
+\DoxyCodeLine{22   std::string path = std::string(TESSERACT\_SUPPORT\_DIR) + \textcolor{stringliteral}{"{}/urdf/lbr\_iiwa\_14\_r820.urdf"{}};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24   \mbox{\hyperlink{classtesseract__common_1_1TesseractSupportResourceLocator}{tesseract\_common::TesseractSupportResourceLocator}} locator;}
+\DoxyCodeLine{25   \textcolor{keywordflow}{return} \mbox{\hyperlink{namespacetesseract__urdf_af87dbf019b08c4a9966e8131d382d5ad}{tesseract\_urdf::parseURDFFile}}(path, locator);}
+\DoxyCodeLine{26 \}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{inline} \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph_aacd7acf57071e94cd87fbae62dbaafba}{SceneGraph::UPtr}} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a9913122d8c70e9daca75b9bb5dff5c51}{getSubSceneGraph}}()}
+\DoxyCodeLine{29 \{}
+\DoxyCodeLine{30   \textcolor{keyword}{auto} subgraph = std::make\_unique<SceneGraph>();}
+\DoxyCodeLine{31   subgraph-\/>setName(\textcolor{stringliteral}{"{}subgraph"{}});}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   \textcolor{comment}{// Now add a link to empty environment}}
+\DoxyCodeLine{34   \textcolor{keyword}{auto} visual = std::make\_shared<Visual>();}
+\DoxyCodeLine{35   visual-\/>geometry = std::make\_shared<tesseract\_geometry::Box>(1, 1, 1);}
+\DoxyCodeLine{36   \textcolor{keyword}{auto} collision = std::make\_shared<Collision>();}
+\DoxyCodeLine{37   collision-\/>geometry = std::make\_shared<tesseract\_geometry::Box>(1, 1, 1);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keyword}{const} std::string link\_name1 = \textcolor{stringliteral}{"{}subgraph\_base\_link"{}};}
+\DoxyCodeLine{40   \textcolor{keyword}{const} std::string link\_name2 = \textcolor{stringliteral}{"{}subgraph\_link\_1"{}};}
+\DoxyCodeLine{41   \textcolor{keyword}{const} std::string joint\_name1 = \textcolor{stringliteral}{"{}subgraph\_joint1"{}};}
+\DoxyCodeLine{42   \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}} link\_1(link\_name1);}
+\DoxyCodeLine{43   link\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Link_aa4d41b44549649a9795409c33707a45b}{visual}}.push\_back(visual);}
+\DoxyCodeLine{44   link\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Link_ad62424fd624abb65bd4b6bc1c33eb5a2}{collision}}.push\_back(collision);}
+\DoxyCodeLine{45   \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}} link\_2(link\_name2);}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_1(joint\_name1);}
+\DoxyCodeLine{48   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a94b4442bad0bb1e6f3f9e78bff4eecd3}{parent\_to\_joint\_origin\_transform}}.translation()(0) = 1.25;}
+\DoxyCodeLine{49   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = link\_name1;}
+\DoxyCodeLine{50   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = link\_name2;}
+\DoxyCodeLine{51   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   subgraph-\/>addLink(link\_1);}
+\DoxyCodeLine{54   subgraph-\/>addLink(link\_2);}
+\DoxyCodeLine{55   subgraph-\/>addJoint(joint\_1);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \textcolor{keywordflow}{return} subgraph;}
+\DoxyCodeLine{58 \}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3d5d8f4b8dbca44ba06a562c37fb2a7e}{runCompareSceneStates}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{SceneState}}\& base\_state, \textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{SceneState}}\& compare\_state)}
+\DoxyCodeLine{61 \{}
+\DoxyCodeLine{62   EXPECT\_EQ(base\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.size(), compare\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.size());}
+\DoxyCodeLine{63   EXPECT\_EQ(base\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.size(), compare\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.size());}
+\DoxyCodeLine{64   EXPECT\_EQ(base\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.size(), compare\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.size());}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& pair : base\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}})}
+\DoxyCodeLine{67   \{}
+\DoxyCodeLine{68     EXPECT\_NEAR(pair.second, compare\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.at(pair.first), 1e-\/6);}
+\DoxyCodeLine{69   \}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& pair : base\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}})}
+\DoxyCodeLine{72   \{}
+\DoxyCodeLine{73     EXPECT\_TRUE(pair.second.isApprox(compare\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.at(pair.first), 1e-\/6));}
+\DoxyCodeLine{74   \}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_pair : base\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}})}
+\DoxyCodeLine{77   \{}
+\DoxyCodeLine{78     EXPECT\_TRUE(link\_pair.second.isApprox(compare\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.at(link\_pair.first), 1e-\/6));}
+\DoxyCodeLine{79   \}}
+\DoxyCodeLine{80 \}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver}{StateSolver}}\& base\_solver, \mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver}{StateSolver}}\& comp\_solver)}
+\DoxyCodeLine{83 \{}
+\DoxyCodeLine{84   EXPECT\_EQ(base\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_ab29a8aec90d5df565bdb9316280de860}{getBaseLinkName}}(), comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_ab29a8aec90d5df565bdb9316280de860}{getBaseLinkName}}());}
+\DoxyCodeLine{85   EXPECT\_TRUE(\mbox{\hyperlink{namespacetesseract__common_a34d98b9f0df320e12b9f9686761f5b1e}{tesseract\_common::isIdentical}}(base\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a3dfa78c3dc97ca119571503fca1202ee}{getJointNames}}(), comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a3dfa78c3dc97ca119571503fca1202ee}{getJointNames}}(), \textcolor{keyword}{false}));}
+\DoxyCodeLine{86   EXPECT\_TRUE(}
+\DoxyCodeLine{87       \mbox{\hyperlink{namespacetesseract__common_a34d98b9f0df320e12b9f9686761f5b1e}{tesseract\_common::isIdentical}}(base\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a0c6aa138322ecc7eec14d7f0f2f5e84c}{getActiveJointNames}}(), comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a0c6aa138322ecc7eec14d7f0f2f5e84c}{getActiveJointNames}}(), \textcolor{keyword}{false}));}
+\DoxyCodeLine{88   EXPECT\_TRUE(\mbox{\hyperlink{namespacetesseract__common_a34d98b9f0df320e12b9f9686761f5b1e}{tesseract\_common::isIdentical}}(base\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_aa3352d3b6b37bc7af41f087771770b7e}{getLinkNames}}(), comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_aa3352d3b6b37bc7af41f087771770b7e}{getLinkNames}}(), \textcolor{keyword}{false}));}
+\DoxyCodeLine{89   EXPECT\_TRUE(\mbox{\hyperlink{namespacetesseract__common_a34d98b9f0df320e12b9f9686761f5b1e}{tesseract\_common::isIdentical}}(base\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_ad0e7aa7260bb4c0e90ab71c8d1a7e3b4}{getActiveLinkNames}}(), comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_ad0e7aa7260bb4c0e90ab71c8d1a7e3b4}{getActiveLinkNames}}(), \textcolor{keyword}{false}));}
+\DoxyCodeLine{90   EXPECT\_TRUE(\mbox{\hyperlink{namespacetesseract__common_a34d98b9f0df320e12b9f9686761f5b1e}{tesseract\_common::isIdentical}}(base\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_ae46246329da823fd4eaa5c7190409468}{getStaticLinkNames}}(), comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_ae46246329da823fd4eaa5c7190409468}{getStaticLinkNames}}(), \textcolor{keyword}{false}));}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 10; ++i)}
+\DoxyCodeLine{93   \{}
+\DoxyCodeLine{94     \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{SceneState}} base\_random\_state = base\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a15567db8542f473c54b1bfe0a5cb360a}{getRandomState}}();}
+\DoxyCodeLine{95     \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{SceneState}} comp\_state\_const = comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a795683cd30c399f5723bbbbe50b6c919}{getState}}(base\_random\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}});}
+\DoxyCodeLine{96     comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_ae2d6ddc4de2aa1dcdf89dcf3d4d4a7ab}{setState}}(base\_random\_state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}});}
+\DoxyCodeLine{97     \textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{SceneState}}\& comp\_state = comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a795683cd30c399f5723bbbbe50b6c919}{getState}}();}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3d5d8f4b8dbca44ba06a562c37fb2a7e}{runCompareSceneStates}}(base\_random\_state, comp\_state\_const);}
+\DoxyCodeLine{100     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3d5d8f4b8dbca44ba06a562c37fb2a7e}{runCompareSceneStates}}(base\_random\_state, comp\_state);}
+\DoxyCodeLine{101   \}}
+\DoxyCodeLine{102 \}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph}{SceneGraph}}\& scene\_graph, \textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver}{StateSolver}}\& comp\_solver)}
+\DoxyCodeLine{105 \{}
+\DoxyCodeLine{106   std::vector<std::string> comp\_joint\_names = comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a0c6aa138322ecc7eec14d7f0f2f5e84c}{getActiveJointNames}}();}
+\DoxyCodeLine{107   \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits}{tesseract\_common::KinematicLimits}} limits = comp\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a9a6500620632aa09e6f7d3ba06a11203}{getLimits}}();}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109   \textcolor{keywordflow}{for} (Eigen::Index i = 0; i < static\_cast<Eigen::Index>(comp\_joint\_names.size()); ++i)}
+\DoxyCodeLine{110   \{}
+\DoxyCodeLine{111     \textcolor{keyword}{const} \textcolor{keyword}{auto}\& scene\_joint = scene\_graph.\mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph_af3be6723e8f465c3f11b0ef86624d015}{getJoint}}(comp\_joint\_names[\textcolor{keyword}{static\_cast<}std::size\_t\textcolor{keyword}{>}(i)]);}
+\DoxyCodeLine{112     EXPECT\_NEAR(limits.\mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_a04641308fcc1e182fca0d85d80d25c68}{joint\_limits}}(i, 0), scene\_joint-\/>limits-\/>lower, 1e-\/5);}
+\DoxyCodeLine{113     EXPECT\_NEAR(limits.\mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_a04641308fcc1e182fca0d85d80d25c68}{joint\_limits}}(i, 1), scene\_joint-\/>limits-\/>upper, 1e-\/5);}
+\DoxyCodeLine{114     EXPECT\_NEAR(limits.\mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_aef6ca9124185f5b366bccbbba3242d6e}{velocity\_limits}}(i), scene\_joint-\/>limits-\/>velocity, 1e-\/5);}
+\DoxyCodeLine{115     EXPECT\_NEAR(limits.\mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_a609b65f616f248719082654c9a8a51c6}{acceleration\_limits}}(i), scene\_joint-\/>limits-\/>acceleration, 1e-\/5);}
+\DoxyCodeLine{116   \}}
+\DoxyCodeLine{117 \}}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{127 \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a891db7a005c902c958964c5979ca7600}{numericalJacobian}}(Eigen::Ref<Eigen::MatrixXd> jacobian,}
+\DoxyCodeLine{128                                      \textcolor{keyword}{const} Eigen::Isometry3d\& change\_base,}
+\DoxyCodeLine{129                                      \textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver}{StateSolver}}\& state\_solver,}
+\DoxyCodeLine{130                                      \textcolor{keyword}{const} std::vector<std::string>\& joint\_names,}
+\DoxyCodeLine{131                                      \textcolor{keyword}{const} Eigen::Ref<const Eigen::VectorXd>\& joint\_values,}
+\DoxyCodeLine{132                                      \textcolor{keyword}{const} std::string\& link\_name,}
+\DoxyCodeLine{133                                      \textcolor{keyword}{const} Eigen::Ref<const Eigen::Vector3d>\& link\_point)}
+\DoxyCodeLine{134 \{}
+\DoxyCodeLine{135   Eigen::VectorXd njvals;}
+\DoxyCodeLine{136   \textcolor{keywordtype}{double} delta = 0.001;}
+\DoxyCodeLine{137   \mbox{\hyperlink{namespacetesseract__common_a67bde3cb7bb235f0f61c370ef8bc74d8}{tesseract\_common::TransformMap}} poses;}
+\DoxyCodeLine{138   \textcolor{keywordflow}{if} (joint\_names.empty())}
+\DoxyCodeLine{139     poses = state\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a795683cd30c399f5723bbbbe50b6c919}{getState}}(joint\_values).\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}};}
+\DoxyCodeLine{140   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{141     poses = state\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a795683cd30c399f5723bbbbe50b6c919}{getState}}(joint\_names, joint\_values).\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}};}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143   Eigen::Isometry3d pose = poses[link\_name];}
+\DoxyCodeLine{144   pose = change\_base * pose;}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < static\_cast<int>(joint\_values.size()); ++i)}
+\DoxyCodeLine{147   \{}
+\DoxyCodeLine{148     njvals = joint\_values;}
+\DoxyCodeLine{149     njvals[i] += delta;}
+\DoxyCodeLine{150     \mbox{\hyperlink{namespacetesseract__common_a67bde3cb7bb235f0f61c370ef8bc74d8}{tesseract\_common::TransformMap}} updated\_poses;}
+\DoxyCodeLine{151     \textcolor{keywordflow}{if} (joint\_names.empty())}
+\DoxyCodeLine{152       updated\_poses = state\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a795683cd30c399f5723bbbbe50b6c919}{getState}}(njvals).\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}};}
+\DoxyCodeLine{153     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{154       updated\_poses = state\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a795683cd30c399f5723bbbbe50b6c919}{getState}}(joint\_names, njvals).\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}};}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156     Eigen::Isometry3d updated\_pose = updated\_poses[link\_name];}
+\DoxyCodeLine{157     updated\_pose = change\_base * updated\_pose;}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159     Eigen::Vector3d temp = pose * link\_point;}
+\DoxyCodeLine{160     Eigen::Vector3d temp2 = updated\_pose * link\_point;}
+\DoxyCodeLine{161     jacobian(0, i) = (temp2.x() -\/ temp.x()) / delta;}
+\DoxyCodeLine{162     jacobian(1, i) = (temp2.y() -\/ temp.y()) / delta;}
+\DoxyCodeLine{163     jacobian(2, i) = (temp2.z() -\/ temp.z()) / delta;}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165     Eigen::AngleAxisd r12(pose.rotation().transpose() * updated\_pose.rotation());  \textcolor{comment}{// rotation from p1 -\/> p2}}
+\DoxyCodeLine{166     \textcolor{keywordtype}{double} theta = r12.angle();}
+\DoxyCodeLine{167     theta = copysign(fmod(fabs(theta), 2.0 * M\_PI), theta);}
+\DoxyCodeLine{168     \textcolor{keywordflow}{if} (theta < -\/M\_PI)}
+\DoxyCodeLine{169       theta = theta + 2. * M\_PI;}
+\DoxyCodeLine{170     \textcolor{keywordflow}{if} (theta > M\_PI)}
+\DoxyCodeLine{171       theta = theta -\/ 2. * M\_PI;}
+\DoxyCodeLine{172     Eigen::VectorXd omega = (pose.rotation() * r12.axis() * theta) / delta;}
+\DoxyCodeLine{173     jacobian(3, i) = omega(0);}
+\DoxyCodeLine{174     jacobian(4, i) = omega(1);}
+\DoxyCodeLine{175     jacobian(5, i) = omega(2);}
+\DoxyCodeLine{176   \}}
+\DoxyCodeLine{177 \}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{189 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver}{StateSolver}}\& state\_solver,}
+\DoxyCodeLine{190                                \textcolor{keyword}{const} std::vector<std::string>\& joint\_names,}
+\DoxyCodeLine{191                                \textcolor{keyword}{const} Eigen::VectorXd\& jvals,}
+\DoxyCodeLine{192                                \textcolor{keyword}{const} std::string\& link\_name,}
+\DoxyCodeLine{193                                \textcolor{keyword}{const} Eigen::Vector3d\& link\_point,}
+\DoxyCodeLine{194                                \textcolor{keyword}{const} Eigen::Isometry3d\& change\_base)}
+\DoxyCodeLine{195 \{}
+\DoxyCodeLine{196   Eigen::MatrixXd jacobian, numerical\_jacobian;}
+\DoxyCodeLine{197   jacobian.resize(6, jvals.size());}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199   \mbox{\hyperlink{namespacetesseract__common_a67bde3cb7bb235f0f61c370ef8bc74d8}{tesseract\_common::TransformMap}} poses;}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201   \textcolor{comment}{// The numerical jacobian orders things base on the provided joint list}}
+\DoxyCodeLine{202   \textcolor{comment}{// The order needs to be calculated to compare}}
+\DoxyCodeLine{203   std::vector<std::string> solver\_jn = state\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a0c6aa138322ecc7eec14d7f0f2f5e84c}{getActiveJointNames}}();}
+\DoxyCodeLine{204   std::vector<long> order;}
+\DoxyCodeLine{205   \textcolor{keywordflow}{if} (joint\_names.empty())}
+\DoxyCodeLine{206   \{}
+\DoxyCodeLine{207     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < static\_cast<int>(solver\_jn.size()); ++i)}
+\DoxyCodeLine{208       order.push\_back(i);}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210     poses = state\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a795683cd30c399f5723bbbbe50b6c919}{getState}}(jvals).\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}};}
+\DoxyCodeLine{211     jacobian = state\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a07bf9d73c4f6b3885e72ac696e71f6cb}{getJacobian}}(jvals, link\_name);}
+\DoxyCodeLine{212   \}}
+\DoxyCodeLine{213   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{214   \{}
+\DoxyCodeLine{215     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& joint\_name : solver\_jn)}
+\DoxyCodeLine{216       order.push\_back(}
+\DoxyCodeLine{217           std::distance(joint\_names.begin(), std::find(joint\_names.begin(), joint\_names.end(), joint\_name)));}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219     poses = state\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a795683cd30c399f5723bbbbe50b6c919}{getState}}(joint\_names, jvals).\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}};}
+\DoxyCodeLine{220     jacobian = state\_solver.\mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver_a07bf9d73c4f6b3885e72ac696e71f6cb}{getJacobian}}(joint\_names, jvals, link\_name);}
+\DoxyCodeLine{221   \}}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223   \mbox{\hyperlink{namespacetesseract__common_a9b00920e39050a4b9df5e3100aac7e55}{tesseract\_common::jacobianChangeBase}}(jacobian, change\_base);}
+\DoxyCodeLine{224   \mbox{\hyperlink{namespacetesseract__common_a5043afd3f3dbdd6655d543e09a7c9ea4}{tesseract\_common::jacobianChangeRefPoint}}(jacobian, (change\_base * poses[link\_name]).linear() * link\_point);}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226   numerical\_jacobian.resize(6, jvals.size());}
+\DoxyCodeLine{227   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a891db7a005c902c958964c5979ca7600}{numericalJacobian}}(numerical\_jacobian, change\_base, state\_solver, joint\_names, jvals, link\_name, link\_point);}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 6; ++i)}
+\DoxyCodeLine{230   \{}
+\DoxyCodeLine{231     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} j = 0; j < static\_cast<int>(jvals.size()); ++j)}
+\DoxyCodeLine{232     \{}
+\DoxyCodeLine{233       EXPECT\_NEAR(numerical\_jacobian(i, order[\textcolor{keyword}{static\_cast<}std::size\_t\textcolor{keyword}{>}(j)]), jacobian(i, j), 1e-\/3);}
+\DoxyCodeLine{234     \}}
+\DoxyCodeLine{235   \}}
+\DoxyCodeLine{236 \}}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238 \textcolor{keyword}{template} <\textcolor{keyword}{typename} S>}
+\DoxyCodeLine{239 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a644d93582f19b7e356e84c6c7c04615b}{runJacobianTest}}()}
+\DoxyCodeLine{240 \{}
+\DoxyCodeLine{241   \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{242   \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{243   \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245   std::vector<std::string> joint\_names\_empty;}
+\DoxyCodeLine{246   std::vector<std::string> link\_names = \{ \textcolor{stringliteral}{"{}base\_link"{}}, \textcolor{stringliteral}{"{}link\_1"{}}, \textcolor{stringliteral}{"{}link\_2"{}}, \textcolor{stringliteral}{"{}link\_3"{}}, \textcolor{stringliteral}{"{}link\_4"{}},}
+\DoxyCodeLine{247                                           \textcolor{stringliteral}{"{}link\_5"{}},    \textcolor{stringliteral}{"{}link\_6"{}}, \textcolor{stringliteral}{"{}link\_7"{}}, \textcolor{stringliteral}{"{}tool0"{}} \};}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{250   \textcolor{comment}{// Test forward kinematics when tip link is the base of the chain}}
+\DoxyCodeLine{252 \textcolor{comment}{}  Eigen::MatrixXd jacobian, numerical\_jacobian;}
+\DoxyCodeLine{253   Eigen::VectorXd jvals;}
+\DoxyCodeLine{254   jvals.resize(7);}
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256   \textcolor{comment}{//  jvals(0) = -\/0.785398;}}
+\DoxyCodeLine{257   \textcolor{comment}{//  jvals(1) = 0.785398;}}
+\DoxyCodeLine{258   \textcolor{comment}{//  jvals(2) = -\/0.785398;}}
+\DoxyCodeLine{259   \textcolor{comment}{//  jvals(3) = 0.785398;}}
+\DoxyCodeLine{260   \textcolor{comment}{//  jvals(4) = -\/0.785398;}}
+\DoxyCodeLine{261   \textcolor{comment}{//  jvals(5) = 0.785398;}}
+\DoxyCodeLine{262   \textcolor{comment}{//  jvals(6) = -\/0.785398;}}
+\DoxyCodeLine{263   jvals(0) = -\/0.1;}
+\DoxyCodeLine{264   jvals(1) = 0.2;}
+\DoxyCodeLine{265   jvals(2) = -\/0.3;}
+\DoxyCodeLine{266   jvals(3) = 0.4;}
+\DoxyCodeLine{267   jvals(4) = -\/0.5;}
+\DoxyCodeLine{268   jvals(5) = 0.6;}
+\DoxyCodeLine{269   jvals(6) = -\/0.7;}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{272   \textcolor{comment}{// Test Jacobian}}
+\DoxyCodeLine{274 \textcolor{comment}{}  \{}
+\DoxyCodeLine{275     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{276     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{277       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names\_empty, jvals, link\_name, link\_point, Eigen::Isometry3d::Identity());}
+\DoxyCodeLine{278 }
+\DoxyCodeLine{279     \textcolor{comment}{// NOLINTNEXTLINE}}
+\DoxyCodeLine{280     EXPECT\_ANY\_THROW(\mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(}
+\DoxyCodeLine{281         state\_solver, joint\_names\_empty, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, Eigen::Isometry3d::Identity()));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{282   \}}
+\DoxyCodeLine{283 }
+\DoxyCodeLine{285   \textcolor{comment}{// Test Jacobian at Point}}
+\DoxyCodeLine{287 \textcolor{comment}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0; k < 3; ++k)}
+\DoxyCodeLine{288   \{}
+\DoxyCodeLine{289     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{290     link\_point[k] = 1;}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{293       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names\_empty, jvals, link\_name, link\_point, Eigen::Isometry3d::Identity());}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295     \textcolor{comment}{// NOLINTNEXTLINE}}
+\DoxyCodeLine{296     EXPECT\_ANY\_THROW(\mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(}
+\DoxyCodeLine{297         state\_solver, joint\_names\_empty, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, Eigen::Isometry3d::Identity()));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{298   \}}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{301   \textcolor{comment}{// Test Jacobian with change base}}
+\DoxyCodeLine{303 \textcolor{comment}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0; k < 3; ++k)}
+\DoxyCodeLine{304   \{}
+\DoxyCodeLine{305     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{306     Eigen::Isometry3d change\_base;}
+\DoxyCodeLine{307     change\_base.setIdentity();}
+\DoxyCodeLine{308     change\_base(0, 0) = 0;}
+\DoxyCodeLine{309     change\_base(1, 0) = 1;}
+\DoxyCodeLine{310     change\_base(0, 1) = -\/1;}
+\DoxyCodeLine{311     change\_base(1, 1) = 0;}
+\DoxyCodeLine{312     change\_base.translation() = Eigen::Vector3d(0, 0, 0);}
+\DoxyCodeLine{313     change\_base.translation()[k] = 1;}
+\DoxyCodeLine{314 }
+\DoxyCodeLine{315     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{316       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names\_empty, jvals, link\_name, link\_point, change\_base);}
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318     \textcolor{comment}{// NOLINTNEXTLINE}}
+\DoxyCodeLine{319     EXPECT\_ANY\_THROW(}
+\DoxyCodeLine{320         \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names\_empty, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, change\_base));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{321   \}}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{324   \textcolor{comment}{// Test Jacobian at point with change base}}
+\DoxyCodeLine{326 \textcolor{comment}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0; k < 3; ++k)}
+\DoxyCodeLine{327   \{}
+\DoxyCodeLine{328     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{329     link\_point[k] = 1;}
+\DoxyCodeLine{330 }
+\DoxyCodeLine{331     Eigen::Isometry3d change\_base;}
+\DoxyCodeLine{332     change\_base.setIdentity();}
+\DoxyCodeLine{333     change\_base(0, 0) = 0;}
+\DoxyCodeLine{334     change\_base(1, 0) = 1;}
+\DoxyCodeLine{335     change\_base(0, 1) = -\/1;}
+\DoxyCodeLine{336     change\_base(1, 1) = 0;}
+\DoxyCodeLine{337     change\_base.translation() = link\_point;}
+\DoxyCodeLine{338 }
+\DoxyCodeLine{339     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{340       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names\_empty, jvals, link\_name, link\_point, change\_base);}
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342     \textcolor{comment}{// NOLINTNEXTLINE}}
+\DoxyCodeLine{343     EXPECT\_ANY\_THROW(}
+\DoxyCodeLine{344         \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names\_empty, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, change\_base));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{345   \}}
+\DoxyCodeLine{346 }
+\DoxyCodeLine{348   \textcolor{comment}{// Test Jacobian with joint names}}
+\DoxyCodeLine{350 \textcolor{comment}{}  std::vector<std::string> joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{351   \{}
+\DoxyCodeLine{352     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{353     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{354       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, link\_name, link\_point, Eigen::Isometry3d::Identity());}
+\DoxyCodeLine{355 }
+\DoxyCodeLine{356     \textcolor{comment}{// NOLINTNEXTLINE}}
+\DoxyCodeLine{357     EXPECT\_ANY\_THROW(}
+\DoxyCodeLine{358         \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, Eigen::Isometry3d::Identity()));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{359   \}}
+\DoxyCodeLine{360 }
+\DoxyCodeLine{362   \textcolor{comment}{// Test Jacobian at Point}}
+\DoxyCodeLine{364 \textcolor{comment}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0; k < 3; ++k)}
+\DoxyCodeLine{365   \{}
+\DoxyCodeLine{366     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{367     link\_point[k] = 1;}
+\DoxyCodeLine{368 }
+\DoxyCodeLine{369     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{370       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, link\_name, link\_point, Eigen::Isometry3d::Identity());}
+\DoxyCodeLine{371 }
+\DoxyCodeLine{372     \textcolor{comment}{// NOLINTNEXTLINE}}
+\DoxyCodeLine{373     EXPECT\_ANY\_THROW(}
+\DoxyCodeLine{374         \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, Eigen::Isometry3d::Identity()));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{375   \}}
+\DoxyCodeLine{376 }
+\DoxyCodeLine{378   \textcolor{comment}{// Test Jacobian with change base}}
+\DoxyCodeLine{380 \textcolor{comment}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0; k < 3; ++k)}
+\DoxyCodeLine{381   \{}
+\DoxyCodeLine{382     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{383     Eigen::Isometry3d change\_base;}
+\DoxyCodeLine{384     change\_base.setIdentity();}
+\DoxyCodeLine{385     change\_base(0, 0) = 0;}
+\DoxyCodeLine{386     change\_base(1, 0) = 1;}
+\DoxyCodeLine{387     change\_base(0, 1) = -\/1;}
+\DoxyCodeLine{388     change\_base(1, 1) = 0;}
+\DoxyCodeLine{389     change\_base.translation() = Eigen::Vector3d(0, 0, 0);}
+\DoxyCodeLine{390     change\_base.translation()[k] = 1;}
+\DoxyCodeLine{391 }
+\DoxyCodeLine{392     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{393       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, link\_name, link\_point, change\_base);}
+\DoxyCodeLine{394 }
+\DoxyCodeLine{395     \textcolor{comment}{// NOLINTNEXTLINE}}
+\DoxyCodeLine{396     EXPECT\_ANY\_THROW(\mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, change\_base));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{397   \}}
+\DoxyCodeLine{398 }
+\DoxyCodeLine{400   \textcolor{comment}{// Test Jacobian at point with change base}}
+\DoxyCodeLine{402 \textcolor{comment}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0; k < 3; ++k)}
+\DoxyCodeLine{403   \{}
+\DoxyCodeLine{404     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{405     link\_point[k] = 1;}
+\DoxyCodeLine{406 }
+\DoxyCodeLine{407     Eigen::Isometry3d change\_base;}
+\DoxyCodeLine{408     change\_base.setIdentity();}
+\DoxyCodeLine{409     change\_base(0, 0) = 0;}
+\DoxyCodeLine{410     change\_base(1, 0) = 1;}
+\DoxyCodeLine{411     change\_base(0, 1) = -\/1;}
+\DoxyCodeLine{412     change\_base(1, 1) = 0;}
+\DoxyCodeLine{413     change\_base.translation() = link\_point;}
+\DoxyCodeLine{414 }
+\DoxyCodeLine{415     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{416       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, link\_name, link\_point, change\_base);}
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418     \textcolor{comment}{// NOLINTNEXTLINE}}
+\DoxyCodeLine{419     EXPECT\_ANY\_THROW(\mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, change\_base));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{420   \}}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{423   \textcolor{comment}{// Test Jacobian with joint names in different order}}
+\DoxyCodeLine{425 \textcolor{comment}{}  std::reverse(joint\_names.begin(), joint\_names.end());}
+\DoxyCodeLine{426   jvals(0) = -\/0.7;}
+\DoxyCodeLine{427   jvals(1) = 0.6;}
+\DoxyCodeLine{428   jvals(2) = -\/0.5;}
+\DoxyCodeLine{429   jvals(3) = 0.4;}
+\DoxyCodeLine{430   jvals(4) = -\/0.3;}
+\DoxyCodeLine{431   jvals(5) = 0.2;}
+\DoxyCodeLine{432   jvals(6) = -\/0.1;}
+\DoxyCodeLine{433 }
+\DoxyCodeLine{434   \{}
+\DoxyCodeLine{435     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{436     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{437       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, link\_name, link\_point, Eigen::Isometry3d::Identity());}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{439     \textcolor{comment}{// NOLINTNEXTLINE}}
+\DoxyCodeLine{440     EXPECT\_ANY\_THROW(}
+\DoxyCodeLine{441         \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, Eigen::Isometry3d::Identity()));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{442   \}}
+\DoxyCodeLine{443 }
+\DoxyCodeLine{445   \textcolor{comment}{// Test Jacobian at Point}}
+\DoxyCodeLine{447 \textcolor{comment}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0; k < 3; ++k)}
+\DoxyCodeLine{448   \{}
+\DoxyCodeLine{449     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{450     link\_point[k] = 1;}
+\DoxyCodeLine{451 }
+\DoxyCodeLine{452     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{453       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, link\_name, link\_point, Eigen::Isometry3d::Identity());}
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455     \textcolor{comment}{// NOLINTNEXTLINE}}
+\DoxyCodeLine{456     EXPECT\_ANY\_THROW(}
+\DoxyCodeLine{457         \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, Eigen::Isometry3d::Identity()));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{458   \}}
+\DoxyCodeLine{459 }
+\DoxyCodeLine{461   \textcolor{comment}{// Test Jacobian with change base}}
+\DoxyCodeLine{463 \textcolor{comment}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0; k < 3; ++k)}
+\DoxyCodeLine{464   \{}
+\DoxyCodeLine{465     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{466     Eigen::Isometry3d change\_base;}
+\DoxyCodeLine{467     change\_base.setIdentity();}
+\DoxyCodeLine{468     change\_base(0, 0) = 0;}
+\DoxyCodeLine{469     change\_base(1, 0) = 1;}
+\DoxyCodeLine{470     change\_base(0, 1) = -\/1;}
+\DoxyCodeLine{471     change\_base(1, 1) = 0;}
+\DoxyCodeLine{472     change\_base.translation() = Eigen::Vector3d(0, 0, 0);}
+\DoxyCodeLine{473     change\_base.translation()[k] = 1;}
+\DoxyCodeLine{474 }
+\DoxyCodeLine{475     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{476       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, link\_name, link\_point, change\_base);}
+\DoxyCodeLine{477 }
+\DoxyCodeLine{478     EXPECT\_ANY\_THROW(\mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, change\_base));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{479   \}}
+\DoxyCodeLine{480 }
+\DoxyCodeLine{482   \textcolor{comment}{// Test Jacobian at point with change base}}
+\DoxyCodeLine{484 \textcolor{comment}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0; k < 3; ++k)}
+\DoxyCodeLine{485   \{}
+\DoxyCodeLine{486     Eigen::Vector3d link\_point(0, 0, 0);}
+\DoxyCodeLine{487     link\_point[k] = 1;}
+\DoxyCodeLine{488 }
+\DoxyCodeLine{489     Eigen::Isometry3d change\_base;}
+\DoxyCodeLine{490     change\_base.setIdentity();}
+\DoxyCodeLine{491     change\_base(0, 0) = 0;}
+\DoxyCodeLine{492     change\_base(1, 0) = 1;}
+\DoxyCodeLine{493     change\_base(0, 1) = -\/1;}
+\DoxyCodeLine{494     change\_base(1, 1) = 0;}
+\DoxyCodeLine{495     change\_base.translation() = link\_point;}
+\DoxyCodeLine{496 }
+\DoxyCodeLine{497     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& link\_name : link\_names)}
+\DoxyCodeLine{498       \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, link\_name, link\_point, change\_base);}
+\DoxyCodeLine{499 }
+\DoxyCodeLine{500     EXPECT\_ANY\_THROW(\mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac306d55f86c9c0cfbef7d1d2d5d3cdea}{runCompareJacobian}}(state\_solver, joint\_names, jvals, \textcolor{stringliteral}{"{}"{}}, link\_point, change\_base));  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{501   \}}
+\DoxyCodeLine{502 \}}
+\DoxyCodeLine{503 }
+\DoxyCodeLine{504 \textcolor{keyword}{template} <\textcolor{keyword}{typename} S>}
+\DoxyCodeLine{505 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_acfa882edab944e020bfbe7e17d5c8c63}{runAddandRemoveLinkTest}}()}
+\DoxyCodeLine{506 \{}
+\DoxyCodeLine{507   \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{508   \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{509   \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{510 }
+\DoxyCodeLine{511   \textcolor{keyword}{auto} visual = std::make\_shared<Visual>();}
+\DoxyCodeLine{512   visual-\/>geometry = std::make\_shared<tesseract\_geometry::Box>(1, 1, 1);}
+\DoxyCodeLine{513   \textcolor{keyword}{auto} collision = std::make\_shared<Collision>();}
+\DoxyCodeLine{514   collision-\/>geometry = std::make\_shared<tesseract\_geometry::Box>(1, 1, 1);}
+\DoxyCodeLine{515 }
+\DoxyCodeLine{516   \textcolor{keyword}{const} std::string link\_name1 = \textcolor{stringliteral}{"{}link\_n1"{}};}
+\DoxyCodeLine{517   \textcolor{keyword}{const} std::string link\_name2 = \textcolor{stringliteral}{"{}link\_n2"{}};}
+\DoxyCodeLine{518   \textcolor{keyword}{const} std::string joint\_name1 = \textcolor{stringliteral}{"{}joint\_n1"{}};}
+\DoxyCodeLine{519   \textcolor{keyword}{const} std::string joint\_name2 = \textcolor{stringliteral}{"{}joint\_n2"{}};}
+\DoxyCodeLine{520 }
+\DoxyCodeLine{521   \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}} link\_1(link\_name1);}
+\DoxyCodeLine{522   link\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Link_aa4d41b44549649a9795409c33707a45b}{visual}}.push\_back(visual);}
+\DoxyCodeLine{523   link\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Link_ad62424fd624abb65bd4b6bc1c33eb5a2}{collision}}.push\_back(collision);}
+\DoxyCodeLine{524 }
+\DoxyCodeLine{525   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_1(joint\_name1);}
+\DoxyCodeLine{526   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = scene\_graph-\/>getRoot();}
+\DoxyCodeLine{527   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = link\_name1;}
+\DoxyCodeLine{528   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{529 }
+\DoxyCodeLine{530   \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}} link\_2(link\_name2);}
+\DoxyCodeLine{531 }
+\DoxyCodeLine{532   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_2(joint\_name2);}
+\DoxyCodeLine{533   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a94b4442bad0bb1e6f3f9e78bff4eecd3}{parent\_to\_joint\_origin\_transform}}.translation()(0) = 1.25;}
+\DoxyCodeLine{534   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = link\_name1;}
+\DoxyCodeLine{535   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = link\_name2;}
+\DoxyCodeLine{536   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{537 }
+\DoxyCodeLine{538   \textcolor{comment}{// Test adding link}}
+\DoxyCodeLine{539 }
+\DoxyCodeLine{540   EXPECT\_TRUE(scene\_graph-\/>addLink(link\_1, joint\_1));}
+\DoxyCodeLine{541   EXPECT\_TRUE(state\_solver.addLink(link\_1, joint\_1));}
+\DoxyCodeLine{542 }
+\DoxyCodeLine{543   \textcolor{keyword}{auto} base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{544 }
+\DoxyCodeLine{545   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{546   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{547 }
+\DoxyCodeLine{548   std::vector<std::string> joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{549   \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{SceneState}} state = state\_solver.getState();}
+\DoxyCodeLine{550   \textcolor{comment}{// Fixed joints are not listed}}
+\DoxyCodeLine{551   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name1) == joint\_names.end());}
+\DoxyCodeLine{552   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{553   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{554   \textcolor{comment}{// Fixed joints are not listed}}
+\DoxyCodeLine{555   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{556 }
+\DoxyCodeLine{557   EXPECT\_TRUE(scene\_graph-\/>addLink(link\_2, joint\_2));}
+\DoxyCodeLine{558   EXPECT\_TRUE(state\_solver.addLink(link\_2, joint\_2));}
+\DoxyCodeLine{559 }
+\DoxyCodeLine{560   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{561 }
+\DoxyCodeLine{562   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{563   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{564 }
+\DoxyCodeLine{565   joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{566   state = state\_solver.getState();}
+\DoxyCodeLine{567   \textcolor{comment}{// Fixed joints are not listed}}
+\DoxyCodeLine{568   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name2) == joint\_names.end());}
+\DoxyCodeLine{569   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{570   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{571   \textcolor{comment}{// Fixed joints are not listed}}
+\DoxyCodeLine{572   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{573 }
+\DoxyCodeLine{574   scene\_graph-\/>saveDOT(\mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{tesseract\_common::getTempPath}}() + \textcolor{stringliteral}{"{}state\_solver\_before\_remove\_link\_unit.dot"{}});}
+\DoxyCodeLine{575 }
+\DoxyCodeLine{576   \textcolor{comment}{// Test removing link}}
+\DoxyCodeLine{577   EXPECT\_TRUE(scene\_graph-\/>removeLink(link\_name1, \textcolor{keyword}{true}));}
+\DoxyCodeLine{578   EXPECT\_TRUE(state\_solver.removeLink(link\_name1));}
+\DoxyCodeLine{579 }
+\DoxyCodeLine{580   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{581 }
+\DoxyCodeLine{582   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{583   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{584 }
+\DoxyCodeLine{585   joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{586   state = state\_solver.getState();}
+\DoxyCodeLine{587   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name1) == joint\_names.end());}
+\DoxyCodeLine{588   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{589   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{590   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{591   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{592   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{593   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{594 }
+\DoxyCodeLine{595   scene\_graph-\/>saveDOT(\mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{tesseract\_common::getTempPath}}() + \textcolor{stringliteral}{"{}state\_solver\_after\_remove\_link\_unit.dot"{}});}
+\DoxyCodeLine{596 }
+\DoxyCodeLine{597   \textcolor{comment}{// Test against double removing}}
+\DoxyCodeLine{598 }
+\DoxyCodeLine{599   EXPECT\_FALSE(state\_solver.removeLink(link\_name1));}
+\DoxyCodeLine{600   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{601   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{602 }
+\DoxyCodeLine{603   EXPECT\_FALSE(state\_solver.removeLink(link\_name2));}
+\DoxyCodeLine{604   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{605   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{606 }
+\DoxyCodeLine{607   EXPECT\_FALSE(state\_solver.removeJoint(joint\_name1));}
+\DoxyCodeLine{608   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{609   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{610 }
+\DoxyCodeLine{611   EXPECT\_FALSE(state\_solver.removeJoint(joint\_name2));}
+\DoxyCodeLine{612   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{613   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{614 }
+\DoxyCodeLine{616 }
+\DoxyCodeLine{617   \textcolor{comment}{// Test adding link}}
+\DoxyCodeLine{618 }
+\DoxyCodeLine{619   EXPECT\_TRUE(scene\_graph-\/>addLink(link\_1, joint\_1));}
+\DoxyCodeLine{620   EXPECT\_TRUE(state\_solver.addLink(link\_1, joint\_1));}
+\DoxyCodeLine{621 }
+\DoxyCodeLine{622   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{623 }
+\DoxyCodeLine{624   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{625   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{626 }
+\DoxyCodeLine{627   joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{628   state = state\_solver.getState();}
+\DoxyCodeLine{629   \textcolor{comment}{// Fixed joints are not listed}}
+\DoxyCodeLine{630   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name1) == joint\_names.end());}
+\DoxyCodeLine{631   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{632   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{633   \textcolor{comment}{// Fixed joints are not listed}}
+\DoxyCodeLine{634   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{635 }
+\DoxyCodeLine{636   EXPECT\_TRUE(scene\_graph-\/>addLink(link\_2, joint\_2));}
+\DoxyCodeLine{637   EXPECT\_TRUE(state\_solver.addLink(link\_2, joint\_2));}
+\DoxyCodeLine{638 }
+\DoxyCodeLine{639   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{640 }
+\DoxyCodeLine{641   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{642   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{643 }
+\DoxyCodeLine{644   joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{645   state = state\_solver.getState();}
+\DoxyCodeLine{646   \textcolor{comment}{// Fixed joints are not listed}}
+\DoxyCodeLine{647   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name2) == joint\_names.end());}
+\DoxyCodeLine{648   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{649   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{650   \textcolor{comment}{// Fixed joints are not listed}}
+\DoxyCodeLine{651   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{652 }
+\DoxyCodeLine{653   scene\_graph-\/>saveDOT(\mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{tesseract\_common::getTempPath}}() + \textcolor{stringliteral}{"{}state\_solver\_before\_remove\_link\_unit2.dot"{}});}
+\DoxyCodeLine{654 }
+\DoxyCodeLine{655   \textcolor{comment}{// Test removing link}}
+\DoxyCodeLine{656   EXPECT\_TRUE(scene\_graph-\/>removeJoint(joint\_name1, \textcolor{keyword}{true}));}
+\DoxyCodeLine{657   EXPECT\_TRUE(state\_solver.removeJoint(joint\_name1));}
+\DoxyCodeLine{658 }
+\DoxyCodeLine{659   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{660 }
+\DoxyCodeLine{661   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{662   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{663 }
+\DoxyCodeLine{664   joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{665   state = state\_solver.getState();}
+\DoxyCodeLine{666   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name1) == joint\_names.end());}
+\DoxyCodeLine{667   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{668   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{669   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{670   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{671   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{672   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{673 }
+\DoxyCodeLine{674   scene\_graph-\/>saveDOT(\mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{tesseract\_common::getTempPath}}() + \textcolor{stringliteral}{"{}state\_solver\_after\_remove\_link\_unit2.dot"{}});}
+\DoxyCodeLine{675 }
+\DoxyCodeLine{676   EXPECT\_FALSE(state\_solver.removeLink(link\_name1));}
+\DoxyCodeLine{677   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{678   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{679 }
+\DoxyCodeLine{680   EXPECT\_FALSE(state\_solver.removeLink(link\_name2));}
+\DoxyCodeLine{681   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{682   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{683 }
+\DoxyCodeLine{684   EXPECT\_FALSE(state\_solver.removeJoint(joint\_name1));}
+\DoxyCodeLine{685   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{686   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{687 }
+\DoxyCodeLine{688   EXPECT\_FALSE(state\_solver.removeJoint(joint\_name2));}
+\DoxyCodeLine{689   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{690   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{691 \}}
+\DoxyCodeLine{692 }
+\DoxyCodeLine{693 \textcolor{keyword}{template} <\textcolor{keyword}{typename} S>}
+\DoxyCodeLine{694 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a0207efebd2c5ce0547b140e907f9dc4b}{runAddSceneGraphTest}}()}
+\DoxyCodeLine{695 \{}
+\DoxyCodeLine{696   \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{697   \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{698   \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{699 }
+\DoxyCodeLine{700   \textcolor{keyword}{auto} subgraph = std::make\_unique<SceneGraph>();}
+\DoxyCodeLine{701   subgraph-\/>setName(\textcolor{stringliteral}{"{}subgraph"{}});}
+\DoxyCodeLine{702 }
+\DoxyCodeLine{703   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_1\_empty(\textcolor{stringliteral}{"{}provided\_subgraph\_joint"{}});}
+\DoxyCodeLine{704   joint\_1\_empty.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = \textcolor{stringliteral}{"{}base\_link"{}};}
+\DoxyCodeLine{705   joint\_1\_empty.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = \textcolor{stringliteral}{"{}prefix\_subgraph\_base\_link"{}};}
+\DoxyCodeLine{706   joint\_1\_empty.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{707 }
+\DoxyCodeLine{708   EXPECT\_FALSE(scene\_graph-\/>insertSceneGraph(*subgraph, joint\_1\_empty));}
+\DoxyCodeLine{709   EXPECT\_FALSE(state\_solver.insertSceneGraph(*subgraph, joint\_1\_empty));}
+\DoxyCodeLine{710 }
+\DoxyCodeLine{711   \textcolor{keyword}{auto} base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{712 }
+\DoxyCodeLine{713   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{714   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{715 }
+\DoxyCodeLine{716   subgraph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a9913122d8c70e9daca75b9bb5dff5c51}{getSubSceneGraph}}();}
+\DoxyCodeLine{717 }
+\DoxyCodeLine{718   \textcolor{keyword}{const} std::string subgraph\_joint\_name = \textcolor{stringliteral}{"{}attach\_subgraph\_joint"{}};}
+\DoxyCodeLine{719 }
+\DoxyCodeLine{720   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint(subgraph\_joint\_name);}
+\DoxyCodeLine{721   joint.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = scene\_graph-\/>getRoot();}
+\DoxyCodeLine{722   joint.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = subgraph-\/>getRoot();}
+\DoxyCodeLine{723   joint.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{724 }
+\DoxyCodeLine{725   EXPECT\_TRUE(scene\_graph-\/>insertSceneGraph(*subgraph, joint));}
+\DoxyCodeLine{726   EXPECT\_TRUE(state\_solver.insertSceneGraph(*subgraph, joint));}
+\DoxyCodeLine{727 }
+\DoxyCodeLine{728   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{729 }
+\DoxyCodeLine{730   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{731   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{732 }
+\DoxyCodeLine{733   std::vector<std::string> joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{734   \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{SceneState}} state = state\_solver.getState();}
+\DoxyCodeLine{735   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), subgraph\_joint\_name) == joint\_names.end());}
+\DoxyCodeLine{736   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(subgraph-\/>getRoot()) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{737   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(subgraph\_joint\_name) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{738   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(subgraph\_joint\_name) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{739 }
+\DoxyCodeLine{740   \textcolor{comment}{// Adding twice with the same name should fail}}
+\DoxyCodeLine{741   EXPECT\_FALSE(scene\_graph-\/>insertSceneGraph(*subgraph, joint));}
+\DoxyCodeLine{742   EXPECT\_FALSE(state\_solver.insertSceneGraph(*subgraph, joint));}
+\DoxyCodeLine{743 }
+\DoxyCodeLine{744   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{745 }
+\DoxyCodeLine{746   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{747   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{748 }
+\DoxyCodeLine{749   \textcolor{comment}{// Add subgraph with prefix}}
+\DoxyCodeLine{750   std::string prefix = \textcolor{stringliteral}{"{}prefix\_"{}};}
+\DoxyCodeLine{751   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} prefix\_joint(prefix + subgraph\_joint\_name);}
+\DoxyCodeLine{752   prefix\_joint.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = scene\_graph-\/>getRoot();}
+\DoxyCodeLine{753   prefix\_joint.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = prefix + subgraph-\/>getRoot();}
+\DoxyCodeLine{754   prefix\_joint.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{755 }
+\DoxyCodeLine{756   EXPECT\_TRUE(scene\_graph-\/>insertSceneGraph(*subgraph, prefix\_joint, prefix));}
+\DoxyCodeLine{757   EXPECT\_TRUE(state\_solver.insertSceneGraph(*subgraph, prefix\_joint, prefix));}
+\DoxyCodeLine{758 }
+\DoxyCodeLine{759   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{760 }
+\DoxyCodeLine{761   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{762   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{763 }
+\DoxyCodeLine{764   joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{765   state = state\_solver.getState();}
+\DoxyCodeLine{766   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), prefix + subgraph\_joint\_name) == joint\_names.end());}
+\DoxyCodeLine{767   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(prefix + subgraph-\/>getRoot()) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{768   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(prefix + subgraph\_joint\_name) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{769   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(prefix + subgraph\_joint\_name) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{770 }
+\DoxyCodeLine{771   \textcolor{comment}{// Add subgraph with prefix and joint}}
+\DoxyCodeLine{772   prefix = \textcolor{stringliteral}{"{}prefix2\_"{}};}
+\DoxyCodeLine{773   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} prefix\_joint2(prefix + subgraph\_joint\_name);}
+\DoxyCodeLine{774   prefix\_joint2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = scene\_graph-\/>getRoot();}
+\DoxyCodeLine{775   prefix\_joint2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = prefix + subgraph-\/>getRoot();}
+\DoxyCodeLine{776   prefix\_joint2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{777 }
+\DoxyCodeLine{778   EXPECT\_TRUE(scene\_graph-\/>insertSceneGraph(*subgraph, prefix\_joint2, prefix));}
+\DoxyCodeLine{779   EXPECT\_TRUE(state\_solver.insertSceneGraph(*subgraph, prefix\_joint2, prefix));}
+\DoxyCodeLine{780 }
+\DoxyCodeLine{781   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{782 }
+\DoxyCodeLine{783   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{784   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{785 }
+\DoxyCodeLine{786   joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{787 }
+\DoxyCodeLine{788   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), prefix + subgraph\_joint\_name) == joint\_names.end());}
+\DoxyCodeLine{789   state = state\_solver.getState();}
+\DoxyCodeLine{790   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(prefix + subgraph-\/>getRoot()) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{791   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(prefix + subgraph\_joint\_name) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{792   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(prefix + subgraph\_joint\_name) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{793 \}}
+\DoxyCodeLine{794 }
+\DoxyCodeLine{795 \textcolor{keyword}{template} <\textcolor{keyword}{typename} S>}
+\DoxyCodeLine{796 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_afa2df50411c17b4727a186aea950cdf9}{runChangeJointOriginTest}}()}
+\DoxyCodeLine{797 \{}
+\DoxyCodeLine{798   \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{799   \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{800   \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{801 }
+\DoxyCodeLine{802   \textcolor{keyword}{const} std::string link\_name1 = \textcolor{stringliteral}{"{}link\_n1"{}};}
+\DoxyCodeLine{803   \textcolor{keyword}{const} std::string joint\_name1 = \textcolor{stringliteral}{"{}joint\_n1"{}};}
+\DoxyCodeLine{804   \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}} link\_1(link\_name1);}
+\DoxyCodeLine{805 }
+\DoxyCodeLine{806   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_1(joint\_name1);}
+\DoxyCodeLine{807   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = scene\_graph-\/>getRoot();}
+\DoxyCodeLine{808   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = link\_name1;}
+\DoxyCodeLine{809   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{810 }
+\DoxyCodeLine{811   EXPECT\_TRUE(scene\_graph-\/>addLink(link\_1, joint\_1));}
+\DoxyCodeLine{812   EXPECT\_TRUE(state\_solver.addLink(link\_1, joint\_1));}
+\DoxyCodeLine{813 }
+\DoxyCodeLine{814   \textcolor{keyword}{auto} base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{815 }
+\DoxyCodeLine{816   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{817   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{818 }
+\DoxyCodeLine{819   \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{SceneState}} state = state\_solver.getState();}
+\DoxyCodeLine{820   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{821   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{822   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{823 }
+\DoxyCodeLine{824   scene\_graph-\/>saveDOT(\mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{tesseract\_common::getTempPath}}() + \textcolor{stringliteral}{"{}state\_solver\_before\_change\_joint\_origin\_unit.dot"{}});}
+\DoxyCodeLine{825 }
+\DoxyCodeLine{826   Eigen::Isometry3d new\_origin = Eigen::Isometry3d::Identity();}
+\DoxyCodeLine{827   new\_origin.translation()(0) += 1.234;}
+\DoxyCodeLine{828 }
+\DoxyCodeLine{829   EXPECT\_TRUE(scene\_graph-\/>changeJointOrigin(joint\_name1, new\_origin));}
+\DoxyCodeLine{830   EXPECT\_TRUE(state\_solver.changeJointOrigin(joint\_name1, new\_origin));}
+\DoxyCodeLine{831 }
+\DoxyCodeLine{832   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{833 }
+\DoxyCodeLine{834   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{835   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{836 }
+\DoxyCodeLine{837   \textcolor{comment}{// Check that the origin got updated}}
+\DoxyCodeLine{838   state = state\_solver.getState();}
+\DoxyCodeLine{839   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.at(link\_name1).isApprox(new\_origin));}
+\DoxyCodeLine{840   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.at(joint\_name1).isApprox(new\_origin));}
+\DoxyCodeLine{841 }
+\DoxyCodeLine{842   scene\_graph-\/>saveDOT(\mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{tesseract\_common::getTempPath}}() + \textcolor{stringliteral}{"{}state\_solver\_after\_change\_joint\_origin\_unit.dot"{}});}
+\DoxyCodeLine{843 \}}
+\DoxyCodeLine{844 }
+\DoxyCodeLine{845 \textcolor{keyword}{template} <\textcolor{keyword}{typename} S>}
+\DoxyCodeLine{846 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a1f456dac84857d7e83707a9fd702ddce}{runMoveJointTest}}()}
+\DoxyCodeLine{847 \{}
+\DoxyCodeLine{848   \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{849   \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{850   \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{851 }
+\DoxyCodeLine{852   \textcolor{keyword}{const} std::string link\_name1 = \textcolor{stringliteral}{"{}link\_n1"{}};}
+\DoxyCodeLine{853   \textcolor{keyword}{const} std::string link\_name2 = \textcolor{stringliteral}{"{}link\_n2"{}};}
+\DoxyCodeLine{854   \textcolor{keyword}{const} std::string joint\_name1 = \textcolor{stringliteral}{"{}joint\_n1"{}};}
+\DoxyCodeLine{855   \textcolor{keyword}{const} std::string joint\_name2 = \textcolor{stringliteral}{"{}joint\_n2"{}};}
+\DoxyCodeLine{856   \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}} link\_1(link\_name1);}
+\DoxyCodeLine{857   \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}} link\_2(link\_name2);}
+\DoxyCodeLine{858 }
+\DoxyCodeLine{859   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_1(joint\_name1);}
+\DoxyCodeLine{860   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = scene\_graph-\/>getRoot();}
+\DoxyCodeLine{861   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = link\_name1;}
+\DoxyCodeLine{862   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{863 }
+\DoxyCodeLine{864   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_2(joint\_name2);}
+\DoxyCodeLine{865   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a94b4442bad0bb1e6f3f9e78bff4eecd3}{parent\_to\_joint\_origin\_transform}}.translation()(0) = 1.25;}
+\DoxyCodeLine{866   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = link\_name1;}
+\DoxyCodeLine{867   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = link\_name2;}
+\DoxyCodeLine{868   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{869 }
+\DoxyCodeLine{870   EXPECT\_TRUE(scene\_graph-\/>addLink(link\_1, joint\_1));}
+\DoxyCodeLine{871   EXPECT\_TRUE(state\_solver.addLink(link\_1, joint\_1));}
+\DoxyCodeLine{872 }
+\DoxyCodeLine{873   \textcolor{keyword}{auto} base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{874 }
+\DoxyCodeLine{875   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{876   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{877 }
+\DoxyCodeLine{878   \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{SceneState}} state = state\_solver.getState();}
+\DoxyCodeLine{879   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{880   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{881   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{882 }
+\DoxyCodeLine{883   EXPECT\_TRUE(scene\_graph-\/>addLink(link\_2, joint\_2));}
+\DoxyCodeLine{884   EXPECT\_TRUE(state\_solver.addLink(link\_2, joint\_2));}
+\DoxyCodeLine{885 }
+\DoxyCodeLine{886   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{887 }
+\DoxyCodeLine{888   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{889 }
+\DoxyCodeLine{890   std::vector<std::string> joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{891   state = state\_solver.getState();}
+\DoxyCodeLine{892   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name1) == joint\_names.end());}
+\DoxyCodeLine{893   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name2) == joint\_names.end());}
+\DoxyCodeLine{894   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{895   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{896   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{897   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{898   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{899   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{900 }
+\DoxyCodeLine{901   scene\_graph-\/>saveDOT(\mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{tesseract\_common::getTempPath}}() + \textcolor{stringliteral}{"{}state\_solver\_before\_move\_joint\_unit.dot"{}});}
+\DoxyCodeLine{902 }
+\DoxyCodeLine{903   EXPECT\_TRUE(scene\_graph-\/>moveJoint(joint\_name1, \textcolor{stringliteral}{"{}tool0"{}}));}
+\DoxyCodeLine{904   EXPECT\_TRUE(state\_solver.moveJoint(joint\_name1, \textcolor{stringliteral}{"{}tool0"{}}));}
+\DoxyCodeLine{905 }
+\DoxyCodeLine{906   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{907 }
+\DoxyCodeLine{908   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{909   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{910 }
+\DoxyCodeLine{911   joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{912   state = state\_solver.getState();}
+\DoxyCodeLine{913   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name1) == joint\_names.end());}
+\DoxyCodeLine{914   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name2) == joint\_names.end());}
+\DoxyCodeLine{915   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{916   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{917   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{918   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{919   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{920   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{921 }
+\DoxyCodeLine{922   scene\_graph-\/>saveDOT(\mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{tesseract\_common::getTempPath}}() + \textcolor{stringliteral}{"{}state\_solver\_after\_move\_joint\_unit.dot"{}});}
+\DoxyCodeLine{923 \}}
+\DoxyCodeLine{924 }
+\DoxyCodeLine{925 \textcolor{keyword}{template} <\textcolor{keyword}{typename} S>}
+\DoxyCodeLine{926 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ac80e2cd385b2f9fd13605a84554d72eb}{runMoveLinkTest}}()}
+\DoxyCodeLine{927 \{}
+\DoxyCodeLine{928   \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{929   \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{930   \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{931 }
+\DoxyCodeLine{932   \textcolor{keyword}{const} std::string link\_name1 = \textcolor{stringliteral}{"{}link\_n1"{}};}
+\DoxyCodeLine{933   \textcolor{keyword}{const} std::string link\_name2 = \textcolor{stringliteral}{"{}link\_n2"{}};}
+\DoxyCodeLine{934   \textcolor{keyword}{const} std::string joint\_name1 = \textcolor{stringliteral}{"{}joint\_n1"{}};}
+\DoxyCodeLine{935   \textcolor{keyword}{const} std::string joint\_name2 = \textcolor{stringliteral}{"{}joint\_n2"{}};}
+\DoxyCodeLine{936   \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}} link\_1(link\_name1);}
+\DoxyCodeLine{937   \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}} link\_2(link\_name2);}
+\DoxyCodeLine{938 }
+\DoxyCodeLine{939   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_1(joint\_name1);}
+\DoxyCodeLine{940   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = scene\_graph-\/>getRoot();}
+\DoxyCodeLine{941   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = link\_name1;}
+\DoxyCodeLine{942   joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{943 }
+\DoxyCodeLine{944   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_2(joint\_name2);}
+\DoxyCodeLine{945   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a94b4442bad0bb1e6f3f9e78bff4eecd3}{parent\_to\_joint\_origin\_transform}}.translation()(0) = 1.25;}
+\DoxyCodeLine{946   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = link\_name1;}
+\DoxyCodeLine{947   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = link\_name2;}
+\DoxyCodeLine{948   joint\_2.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{949 }
+\DoxyCodeLine{950   EXPECT\_TRUE(scene\_graph-\/>addLink(link\_1, joint\_1));}
+\DoxyCodeLine{951   EXPECT\_TRUE(state\_solver.addLink(link\_1, joint\_1));}
+\DoxyCodeLine{952 }
+\DoxyCodeLine{953   \textcolor{keyword}{auto} base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{954 }
+\DoxyCodeLine{955   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{956   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{957 }
+\DoxyCodeLine{958   \mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState}{SceneState}} state = state\_solver.getState();}
+\DoxyCodeLine{959   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{960   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{961   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{962 }
+\DoxyCodeLine{963   EXPECT\_TRUE(scene\_graph-\/>addLink(link\_2, joint\_2));}
+\DoxyCodeLine{964   EXPECT\_TRUE(state\_solver.addLink(link\_2, joint\_2));}
+\DoxyCodeLine{965 }
+\DoxyCodeLine{966   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{967 }
+\DoxyCodeLine{968   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{969   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{970 }
+\DoxyCodeLine{971   std::vector<std::string> joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{972   state = state\_solver.getState();}
+\DoxyCodeLine{973   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name1) == joint\_names.end());}
+\DoxyCodeLine{974   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name2) == joint\_names.end());}
+\DoxyCodeLine{975   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{976   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{977   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{978   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{979   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{980   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{981 }
+\DoxyCodeLine{982   scene\_graph-\/>saveDOT(\mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{tesseract\_common::getTempPath}}() + \textcolor{stringliteral}{"{}state\_solver\_before\_move\_link\_unit.dot"{}});}
+\DoxyCodeLine{983 }
+\DoxyCodeLine{984   std::string moved\_joint\_name = joint\_name1 + \textcolor{stringliteral}{"{}\_moved"{}};}
+\DoxyCodeLine{985   \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} move\_link\_joint = joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a97f37f38d2827c7edfcc083cc6dfe5d9}{clone}}(moved\_joint\_name);}
+\DoxyCodeLine{986   move\_link\_joint.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = \textcolor{stringliteral}{"{}tool0"{}};}
+\DoxyCodeLine{987 }
+\DoxyCodeLine{988   EXPECT\_TRUE(scene\_graph-\/>moveLink(move\_link\_joint));}
+\DoxyCodeLine{989   EXPECT\_TRUE(state\_solver.moveLink(move\_link\_joint));}
+\DoxyCodeLine{990 }
+\DoxyCodeLine{991   base\_state\_solver = std::make\_shared<KDLStateSolver>(*scene\_graph);}
+\DoxyCodeLine{992 }
+\DoxyCodeLine{993   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(*base\_state\_solver, state\_solver);}
+\DoxyCodeLine{994   \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, *base\_state\_solver);}
+\DoxyCodeLine{995 }
+\DoxyCodeLine{996   joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{997   state = state\_solver.getState();}
+\DoxyCodeLine{998   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name1) == joint\_names.end());}
+\DoxyCodeLine{999   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), moved\_joint\_name) == joint\_names.end());}
+\DoxyCodeLine{1000   EXPECT\_TRUE(std::find(joint\_names.begin(), joint\_names.end(), joint\_name2) == joint\_names.end());}
+\DoxyCodeLine{1001 }
+\DoxyCodeLine{1002   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name1) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{1003   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{1004   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(moved\_joint\_name) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{1005   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name1) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{1006   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.find(link\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_a65525289756c29897a86bc6ea3451264}{link\_transforms}}.end());}
+\DoxyCodeLine{1007   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.find(joint\_name2) != state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_af28a4f8515dd7435cdb59d3dc2ed7714}{joint\_transforms}}.end());}
+\DoxyCodeLine{1008   EXPECT\_TRUE(state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.find(joint\_name2) == state.\mbox{\hyperlink{structtesseract__scene__graph_1_1SceneState_ad1218286967403d66726653bfb00dea8}{joints}}.end());}
+\DoxyCodeLine{1009 }
+\DoxyCodeLine{1010   scene\_graph-\/>saveDOT(\mbox{\hyperlink{namespacetesseract__common_a58ecad04db85855fa9e4de21084598ca}{tesseract\_common::getTempPath}}() + \textcolor{stringliteral}{"{}state\_solver\_after\_move\_link\_unit.dot"{}});}
+\DoxyCodeLine{1011 \}}
+\DoxyCodeLine{1012 }
+\DoxyCodeLine{1013 \textcolor{keyword}{template} <\textcolor{keyword}{typename} S>}
+\DoxyCodeLine{1014 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_abd77bf99e16a5edfc36fedff4f3ce33b}{runChangeJointLimitsTest}}()}
+\DoxyCodeLine{1015 \{}
+\DoxyCodeLine{1016   \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{1017   \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{1018   \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{1019 }
+\DoxyCodeLine{1020   \textcolor{keywordtype}{double} new\_lower = 1.0;}
+\DoxyCodeLine{1021   \textcolor{keywordtype}{double} new\_upper = 2.0;}
+\DoxyCodeLine{1022   \textcolor{keywordtype}{double} new\_velocity = 3.0;}
+\DoxyCodeLine{1023   \textcolor{keywordtype}{double} new\_acceleration = 4.0;}
+\DoxyCodeLine{1024 }
+\DoxyCodeLine{1025   scene\_graph-\/>changeJointPositionLimits(\textcolor{stringliteral}{"{}joint\_a1"{}}, new\_lower, new\_upper);}
+\DoxyCodeLine{1026   scene\_graph-\/>changeJointVelocityLimits(\textcolor{stringliteral}{"{}joint\_a1"{}}, new\_velocity);}
+\DoxyCodeLine{1027   scene\_graph-\/>changeJointAccelerationLimits(\textcolor{stringliteral}{"{}joint\_a1"{}}, new\_acceleration);}
+\DoxyCodeLine{1028 }
+\DoxyCodeLine{1029   state\_solver.changeJointPositionLimits(\textcolor{stringliteral}{"{}joint\_a1"{}}, new\_lower, new\_upper);}
+\DoxyCodeLine{1030   state\_solver.changeJointVelocityLimits(\textcolor{stringliteral}{"{}joint\_a1"{}}, new\_velocity);}
+\DoxyCodeLine{1031   state\_solver.changeJointAccelerationLimits(\textcolor{stringliteral}{"{}joint\_a1"{}}, new\_acceleration);}
+\DoxyCodeLine{1032 }
+\DoxyCodeLine{1033   std::vector<std::string> joint\_names = state\_solver.getActiveJointNames();}
+\DoxyCodeLine{1034   \textcolor{keywordtype}{long} idx = std::distance(joint\_names.begin(), std::find(joint\_names.begin(), joint\_names.end(), \textcolor{stringliteral}{"{}joint\_a1"{}}));}
+\DoxyCodeLine{1035   \textcolor{keyword}{auto} limits = state\_solver.getLimits();}
+\DoxyCodeLine{1036   EXPECT\_NEAR(limits.joint\_limits(idx, 0), new\_lower, 1e-\/5);}
+\DoxyCodeLine{1037   EXPECT\_NEAR(limits.joint\_limits(idx, 1), new\_upper, 1e-\/5);}
+\DoxyCodeLine{1038   EXPECT\_NEAR(limits.velocity\_limits(idx), new\_velocity, 1e-\/5);}
+\DoxyCodeLine{1039   EXPECT\_NEAR(limits.acceleration\_limits(idx), new\_acceleration, 1e-\/5);}
+\DoxyCodeLine{1040 \}}
+\DoxyCodeLine{1041 }
+\DoxyCodeLine{1042 \textcolor{keyword}{template} <\textcolor{keyword}{typename} S>}
+\DoxyCodeLine{1043 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a5ca0217ce64feee05d4f19d83824f49d}{runReplaceJointTest}}()}
+\DoxyCodeLine{1044 \{}
+\DoxyCodeLine{1045   \{  \textcolor{comment}{// Replace joint with same type}}
+\DoxyCodeLine{1046     \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{1047     \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{1048     \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{1049 }
+\DoxyCodeLine{1050     \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_1(\textcolor{stringliteral}{"{}joint\_a1"{}});}
+\DoxyCodeLine{1051     joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a94b4442bad0bb1e6f3f9e78bff4eecd3}{parent\_to\_joint\_origin\_transform}}.translation()(0) = 1.25;}
+\DoxyCodeLine{1052     joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = \textcolor{stringliteral}{"{}base\_link"{}};}
+\DoxyCodeLine{1053     joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = \textcolor{stringliteral}{"{}link\_1"{}};}
+\DoxyCodeLine{1054     joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{1055 }
+\DoxyCodeLine{1056     EXPECT\_TRUE(scene\_graph-\/>removeJoint(\textcolor{stringliteral}{"{}joint\_a1"{}}));}
+\DoxyCodeLine{1057     EXPECT\_TRUE(scene\_graph-\/>addJoint(joint\_1));}
+\DoxyCodeLine{1058     EXPECT\_TRUE(state\_solver.replaceJoint(joint\_1));}
+\DoxyCodeLine{1059 }
+\DoxyCodeLine{1060     \mbox{\hyperlink{classtesseract__scene__graph_1_1KDLStateSolver}{KDLStateSolver}} base\_state\_solver(*scene\_graph);}
+\DoxyCodeLine{1061 }
+\DoxyCodeLine{1062     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(base\_state\_solver, state\_solver);}
+\DoxyCodeLine{1063     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, base\_state\_solver);}
+\DoxyCodeLine{1064   \}}
+\DoxyCodeLine{1065 }
+\DoxyCodeLine{1066   \{  \textcolor{comment}{// Replace joint which exist but the link does not which should fail}}
+\DoxyCodeLine{1067     \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{1068     \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{1069     \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{1070 }
+\DoxyCodeLine{1071     \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} joint\_1(\textcolor{stringliteral}{"{}joint\_a1"{}});}
+\DoxyCodeLine{1072     joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a94b4442bad0bb1e6f3f9e78bff4eecd3}{parent\_to\_joint\_origin\_transform}}.translation()(0) = 1.25;}
+\DoxyCodeLine{1073     joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = \textcolor{stringliteral}{"{}base\_link"{}};}
+\DoxyCodeLine{1074     joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_ad1771eb5526df8fee32ad65f0b5330f5}{child\_link\_name}} = \textcolor{stringliteral}{"{}link\_2\_does\_not\_exist"{}};}
+\DoxyCodeLine{1075     joint\_1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{1076 }
+\DoxyCodeLine{1077     EXPECT\_FALSE(state\_solver.replaceJoint(joint\_1));}
+\DoxyCodeLine{1078 }
+\DoxyCodeLine{1079     \mbox{\hyperlink{classtesseract__scene__graph_1_1KDLStateSolver}{KDLStateSolver}} base\_state\_solver(*scene\_graph);}
+\DoxyCodeLine{1080 }
+\DoxyCodeLine{1081     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(base\_state\_solver, state\_solver);}
+\DoxyCodeLine{1082     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, base\_state\_solver);}
+\DoxyCodeLine{1083   \}}
+\DoxyCodeLine{1084 }
+\DoxyCodeLine{1085   \{  \textcolor{comment}{// Replace joint with same type but change transform}}
+\DoxyCodeLine{1086     \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{1087     \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{1088     \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{1089 }
+\DoxyCodeLine{1090     \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} new\_joint\_a1 = scene\_graph-\/>getJoint(\textcolor{stringliteral}{"{}joint\_a1"{}})-\/>\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a97f37f38d2827c7edfcc083cc6dfe5d9}{clone}}();}
+\DoxyCodeLine{1091     new\_joint\_a1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a94b4442bad0bb1e6f3f9e78bff4eecd3}{parent\_to\_joint\_origin\_transform}}.translation()(0) = 1.25;}
+\DoxyCodeLine{1092 }
+\DoxyCodeLine{1093     EXPECT\_TRUE(scene\_graph-\/>removeJoint(\textcolor{stringliteral}{"{}joint\_a1"{}}));}
+\DoxyCodeLine{1094     EXPECT\_TRUE(scene\_graph-\/>addJoint(new\_joint\_a1));}
+\DoxyCodeLine{1095     EXPECT\_TRUE(state\_solver.replaceJoint(new\_joint\_a1));}
+\DoxyCodeLine{1096 }
+\DoxyCodeLine{1097     \mbox{\hyperlink{classtesseract__scene__graph_1_1KDLStateSolver}{KDLStateSolver}} base\_state\_solver(*scene\_graph);}
+\DoxyCodeLine{1098 }
+\DoxyCodeLine{1099     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(base\_state\_solver, state\_solver);}
+\DoxyCodeLine{1100     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, base\_state\_solver);}
+\DoxyCodeLine{1101   \}}
+\DoxyCodeLine{1102 }
+\DoxyCodeLine{1103   \{  \textcolor{comment}{// Replace joint with different type (Fixed)}}
+\DoxyCodeLine{1104     \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{1105     \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{1106     \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{1107 }
+\DoxyCodeLine{1108     \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} new\_joint\_a1 = scene\_graph-\/>getJoint(\textcolor{stringliteral}{"{}joint\_a1"{}})-\/>\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a97f37f38d2827c7edfcc083cc6dfe5d9}{clone}}();}
+\DoxyCodeLine{1109     new\_joint\_a1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a94b4442bad0bb1e6f3f9e78bff4eecd3}{parent\_to\_joint\_origin\_transform}}.translation()(0) = 1.25;}
+\DoxyCodeLine{1110     new\_joint\_a1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{JointType::FIXED}};}
+\DoxyCodeLine{1111 }
+\DoxyCodeLine{1112     EXPECT\_TRUE(scene\_graph-\/>removeJoint(\textcolor{stringliteral}{"{}joint\_a1"{}}));}
+\DoxyCodeLine{1113     EXPECT\_TRUE(scene\_graph-\/>addJoint(new\_joint\_a1));}
+\DoxyCodeLine{1114     EXPECT\_TRUE(state\_solver.replaceJoint(new\_joint\_a1));}
+\DoxyCodeLine{1115 }
+\DoxyCodeLine{1116     \mbox{\hyperlink{classtesseract__scene__graph_1_1KDLStateSolver}{KDLStateSolver}} base\_state\_solver(*scene\_graph);}
+\DoxyCodeLine{1117 }
+\DoxyCodeLine{1118     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(base\_state\_solver, state\_solver);}
+\DoxyCodeLine{1119     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, base\_state\_solver);}
+\DoxyCodeLine{1120   \}}
+\DoxyCodeLine{1121 }
+\DoxyCodeLine{1122   \{  \textcolor{comment}{// Replace joint with different type (Continuous)}}
+\DoxyCodeLine{1123     \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{1124     \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{1125     \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{1126 }
+\DoxyCodeLine{1127     \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} new\_joint\_a1 = scene\_graph-\/>getJoint(\textcolor{stringliteral}{"{}joint\_a1"{}})-\/>\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a97f37f38d2827c7edfcc083cc6dfe5d9}{clone}}();}
+\DoxyCodeLine{1128     new\_joint\_a1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a94b4442bad0bb1e6f3f9e78bff4eecd3}{parent\_to\_joint\_origin\_transform}}.translation()(0) = 1.25;}
+\DoxyCodeLine{1129     new\_joint\_a1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ab1fa9dd3af034b3ef4291579aa673c07}{JointType::CONTINUOUS}};}
+\DoxyCodeLine{1130 }
+\DoxyCodeLine{1131     EXPECT\_TRUE(scene\_graph-\/>removeJoint(\textcolor{stringliteral}{"{}joint\_a1"{}}));}
+\DoxyCodeLine{1132     EXPECT\_TRUE(scene\_graph-\/>addJoint(new\_joint\_a1));}
+\DoxyCodeLine{1133     EXPECT\_TRUE(state\_solver.replaceJoint(new\_joint\_a1));}
+\DoxyCodeLine{1134 }
+\DoxyCodeLine{1135     \mbox{\hyperlink{classtesseract__scene__graph_1_1KDLStateSolver}{KDLStateSolver}} base\_state\_solver(*scene\_graph);}
+\DoxyCodeLine{1136 }
+\DoxyCodeLine{1137     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(base\_state\_solver, state\_solver);}
+\DoxyCodeLine{1138     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, base\_state\_solver);}
+\DoxyCodeLine{1139   \}}
+\DoxyCodeLine{1140 }
+\DoxyCodeLine{1141   \{  \textcolor{comment}{// Replace joint with different type (Prismatic)}}
+\DoxyCodeLine{1142     \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{1143     \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{1144     \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{1145 }
+\DoxyCodeLine{1146     \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} new\_joint\_a1 = scene\_graph-\/>getJoint(\textcolor{stringliteral}{"{}joint\_a1"{}})-\/>\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a97f37f38d2827c7edfcc083cc6dfe5d9}{clone}}();}
+\DoxyCodeLine{1147     new\_joint\_a1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a94b4442bad0bb1e6f3f9e78bff4eecd3}{parent\_to\_joint\_origin\_transform}}.translation()(0) = 1.25;}
+\DoxyCodeLine{1148     new\_joint\_a1.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a1318902e89f9397b84cfaecdc007348c}{type}} = \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16aace8e17dd1560c692929800de207e902}{JointType::PRISMATIC}};}
+\DoxyCodeLine{1149 }
+\DoxyCodeLine{1150     EXPECT\_TRUE(scene\_graph-\/>removeJoint(\textcolor{stringliteral}{"{}joint\_a1"{}}));}
+\DoxyCodeLine{1151     EXPECT\_TRUE(scene\_graph-\/>addJoint(new\_joint\_a1));}
+\DoxyCodeLine{1152     EXPECT\_TRUE(state\_solver.replaceJoint(new\_joint\_a1));}
+\DoxyCodeLine{1153 }
+\DoxyCodeLine{1154     \mbox{\hyperlink{classtesseract__scene__graph_1_1KDLStateSolver}{KDLStateSolver}} base\_state\_solver(*scene\_graph);}
+\DoxyCodeLine{1155 }
+\DoxyCodeLine{1156     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(base\_state\_solver, state\_solver);}
+\DoxyCodeLine{1157     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, base\_state\_solver);}
+\DoxyCodeLine{1158   \}}
+\DoxyCodeLine{1159 }
+\DoxyCodeLine{1160   \{  \textcolor{comment}{// Replace joint with different parent which is a replace and move}}
+\DoxyCodeLine{1161     \textcolor{comment}{// Get the scene graph}}
+\DoxyCodeLine{1162     \textcolor{keyword}{auto} scene\_graph = \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a3a503bedb111fb56460cc53f1f18e9a3}{getSceneGraph}}();}
+\DoxyCodeLine{1163     \textcolor{keyword}{auto} state\_solver = S(*scene\_graph);}
+\DoxyCodeLine{1164 }
+\DoxyCodeLine{1165     \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} new\_joint\_a3 = scene\_graph-\/>getJoint(\textcolor{stringliteral}{"{}joint\_a3"{}})-\/>\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a97f37f38d2827c7edfcc083cc6dfe5d9}{clone}}();}
+\DoxyCodeLine{1166     new\_joint\_a3.\mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_acddba7745bf86f4f93099afef9a3b1fe}{parent\_link\_name}} = \textcolor{stringliteral}{"{}base\_link"{}};}
+\DoxyCodeLine{1167 }
+\DoxyCodeLine{1168     EXPECT\_TRUE(state\_solver.replaceJoint(new\_joint\_a3));}
+\DoxyCodeLine{1169 }
+\DoxyCodeLine{1170     EXPECT\_TRUE(scene\_graph-\/>removeJoint(\textcolor{stringliteral}{"{}joint\_a3"{}}));}
+\DoxyCodeLine{1171     EXPECT\_TRUE(scene\_graph-\/>addJoint(new\_joint\_a3));}
+\DoxyCodeLine{1172 }
+\DoxyCodeLine{1173     \mbox{\hyperlink{classtesseract__scene__graph_1_1KDLStateSolver}{KDLStateSolver}} base\_state\_solver(*scene\_graph);}
+\DoxyCodeLine{1174 }
+\DoxyCodeLine{1175     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_a8f74908077d44f8fa4e9514ba4dcf683}{runCompareStateSolver}}(base\_state\_solver, state\_solver);}
+\DoxyCodeLine{1176     \mbox{\hyperlink{namespacetesseract__scene__graph_1_1test__suite_ad7036e32578fd7d17af26a9c8fd363c8}{runCompareStateSolverLimits}}(*scene\_graph, base\_state\_solver);}
+\DoxyCodeLine{1177   \}}
+\DoxyCodeLine{1178 \}}
+\DoxyCodeLine{1179 \}  \textcolor{comment}{// namespace tesseract\_scene\_graph::test\_suite}}
+\DoxyCodeLine{1180 }
+\DoxyCodeLine{1181 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_STATE\_SOLVER\_}}
+
+\end{DoxyCode}

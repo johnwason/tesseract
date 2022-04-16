@@ -1,0 +1,7 @@
+<map id="tesseract_visualization::TrajectoryPlayer" name="tesseract_visualization::TrajectoryPlayer">
+<area shape="rect" id="node1" title="Enables the ability to play a trajectory provided by the set program." alt="" coords="97,303,252,344"/>
+<area shape="rect" id="node2" title=" " alt="" coords="87,199,262,240"/>
+<area shape="rect" id="node3" href="$d6/ded/classtesseract__visualization_1_1TrajectoryInterpolator.html" title=" " alt="" coords="97,95,252,136"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,5,168,32"/>
+<area shape="rect" id="node5" title=" " alt="" coords="193,5,335,32"/>
+</map>

@@ -1,0 +1,61 @@
+\hypertarget{arrow__marker_8h_source}{}\doxysection{arrow\+\_\+marker.\+h}
+\label{arrow__marker_8h_source}\index{tesseract\_visualization/include/tesseract\_visualization/markers/arrow\_marker.h@{tesseract\_visualization/include/tesseract\_visualization/markers/arrow\_marker.h}}
+\mbox{\hyperlink{arrow__marker_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef TESSERACT\_VISUALIZATION\_MARKERS\_ARROW\_MARKER\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define TESSERACT\_VISUALIZATION\_MARKERS\_ARROW\_MARKER\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{marker_8h}{tesseract\_visualization/markers/marker.h}}>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{tesseract__scene__graph_2include_2tesseract__scene__graph_2link_8h}{tesseract\_scene\_graph/link.h}}>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifdef SWIG}}
+\DoxyCodeLine{8 \%shared\_ptr(\mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker}{tesseract\_visualization::ArrowMarker}})}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// SWIG}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__visualization}{tesseract\_visualization}}}
+\DoxyCodeLine{12 \{}
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker}{ArrowMarker}} : \textcolor{keyword}{public} \mbox{\hyperlink{classtesseract__visualization_1_1Marker}{Marker}}}
+\DoxyCodeLine{19 \{}
+\DoxyCodeLine{20 \textcolor{keyword}{public}:}
+\DoxyCodeLine{21   EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23   \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a94ef2d6558d18b07a3b621a4dc8a4a72}{ArrowMarker}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{30   \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a781077f7db9b94edcbd64caef474a086}{ArrowMarker}}(\textcolor{keyword}{const} Eigen::Vector3d\& pt1, \textcolor{keyword}{const} Eigen::Vector3d\& pt2)}
+\DoxyCodeLine{31   \{}
+\DoxyCodeLine{32     Eigen::Vector3d x, y, z;}
+\DoxyCodeLine{33     z = (pt2 -\/ pt1).normalized();}
+\DoxyCodeLine{34     y = z.unitOrthogonal();}
+\DoxyCodeLine{35     x = (y.cross(z)).normalized();}
+\DoxyCodeLine{36     Eigen::Matrix3d rot;}
+\DoxyCodeLine{37     rot.col(0) = x;}
+\DoxyCodeLine{38     rot.col(1) = y;}
+\DoxyCodeLine{39     rot.col(2) = z;}
+\DoxyCodeLine{40     \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a11ce839d4e440c63d3b99f97a445010c}{pose}}.linear() = rot;}
+\DoxyCodeLine{41     \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a11ce839d4e440c63d3b99f97a445010c}{pose}}.translation() = pt1 + (((pt2 -\/ pt1).norm() / 2) * z);}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43     \textcolor{keywordtype}{double} length = (pt2 -\/ pt1).norm();}
+\DoxyCodeLine{44     \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a4912dcb50b150d3af85fd0fada8d9a83}{shaft\_length}} = length -\/ 0.01;}
+\DoxyCodeLine{45     \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_afe3350b62559caf57d7331f6e26ea30d}{shaft\_radius}} = 0.005;}
+\DoxyCodeLine{46     \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a0df1b8d2c86e3375ea94690c73590358}{head\_length}} = length -\/ \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a4912dcb50b150d3af85fd0fada8d9a83}{shaft\_length}};}
+\DoxyCodeLine{47     \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_ae485cea70c7c1f218ab01545c459a128}{head\_radius}} = 0.01;}
+\DoxyCodeLine{48   \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50   \textcolor{keywordtype}{int} \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a186d740a1826122fc9742178c0f6b259}{getType}}()\textcolor{keyword}{ const override }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(\mbox{\hyperlink{namespacetesseract__visualization_ac8e02d8f51fc302b5ea1fb8c3b1abc01aca2dc0c55b6e8d70bafcb4d84f5a9544}{MarkerType::ARROW}}); \}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{53   \textcolor{keywordtype}{double} \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a4912dcb50b150d3af85fd0fada8d9a83}{shaft\_length}}\{ 0.8 \};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{56   \textcolor{keywordtype}{double} \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_afe3350b62559caf57d7331f6e26ea30d}{shaft\_radius}}\{ 0.1 \};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{59   \textcolor{keywordtype}{double} \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a0df1b8d2c86e3375ea94690c73590358}{head\_length}}\{ 0.2 \};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{62   \textcolor{keywordtype}{double} \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_ae485cea70c7c1f218ab01545c459a128}{head\_radius}}\{ 0.15 \};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{65   Eigen::Isometry3d \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_a11ce839d4e440c63d3b99f97a445010c}{pose}}\{ Eigen::Isometry3d::Identity() \};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{68   \mbox{\hyperlink{classtesseract__scene__graph_1_1Material_a9d68bd33aa85035e3b291c13d6ae7a98}{tesseract\_scene\_graph::Material::Ptr}} \mbox{\hyperlink{classtesseract__visualization_1_1ArrowMarker_ab5f254acc2779131b0fc0a2decfcd9a0}{material}};}
+\DoxyCodeLine{69 \};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \}  \textcolor{comment}{// namespace tesseract\_visualization}}
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_VISUALIZATION\_MARKERS\_ARROW\_MARKER\_H}}
+
+\end{DoxyCode}

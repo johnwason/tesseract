@@ -1,0 +1,192 @@
+\hypertarget{large__dataset__benchmarks_8hpp_source}{}\doxysection{large\+\_\+dataset\+\_\+benchmarks.\+hpp}
+\label{large__dataset__benchmarks_8hpp_source}\index{tesseract\_collision/core/include/tesseract\_collision/test\_suite/benchmarks/large\_dataset\_benchmarks.hpp@{tesseract\_collision/core/include/tesseract\_collision/test\_suite/benchmarks/large\_dataset\_benchmarks.hpp}}
+\mbox{\hyperlink{large__dataset__benchmarks_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef TESSERACT\_COLLISION\_LARGE\_DATASET\_BENCHMARKS\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define TESSERACT\_COLLISION\_LARGE\_DATASET\_BENCHMARKS\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{macros_8h}{tesseract\_common/macros.h}}>}}
+\DoxyCodeLine{5 \mbox{\hyperlink{macros_8h_a8cc0e3c6a3382c5c0b19eb9e676fc2db}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_PUSH}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <chrono>}}
+\DoxyCodeLine{7 \mbox{\hyperlink{namespaceTESSERACT__COMMON__IGNORE__WARNINGS__POP}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_POP}}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{convex__hull__utils_8h}{tesseract\_collision/bullet/convex\_hull\_utils.h}}>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{discrete__contact__manager_8h}{tesseract\_collision/core/discrete\_contact\_manager.h}}>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{common_8h}{tesseract\_collision/core/common.h}}>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{geometries_8h}{tesseract\_geometry/geometries.h}}>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__collision}{tesseract\_collision}}}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }test\_suite}
+\DoxyCodeLine{17 \{}
+\DoxyCodeLine{20 \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__collision_1_1test__suite_ae31509e0483f6538a77dd1ab719e9551}{BM\_LARGE\_DATASET\_MULTILINK}}(benchmark::State\& state,}
+\DoxyCodeLine{21                                        \mbox{\hyperlink{classtesseract__collision_1_1DiscreteContactManager_a108295071670971e81fe3c34794db427}{DiscreteContactManager::Ptr}} checker,}
+\DoxyCodeLine{22                                        \textcolor{keywordtype}{int} edge\_size,}
+\DoxyCodeLine{23                                        \mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56feb}{tesseract\_geometry::GeometryType}} type)}
+\DoxyCodeLine{24 \{}
+\DoxyCodeLine{25   \textcolor{comment}{// Add Meshed Sphere to checker}}
+\DoxyCodeLine{26   \mbox{\hyperlink{namespacetesseract__collision_a0aa5b9a264467e92cd1b9f0cd0c38ee8}{CollisionShapePtr}} sphere;}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \mbox{\hyperlink{namespacetesseract__common_af89ed6517f4c84bdb2b037bb40f7d9d9}{tesseract\_common::VectorVector3d}} mesh\_vertices;}
+\DoxyCodeLine{29   Eigen::VectorXi mesh\_faces;}
+\DoxyCodeLine{30   \mbox{\hyperlink{namespacetesseract__collision_ab79187502eefb0f670dbde89a5b7b969}{loadSimplePlyFile}}(std::string(TESSERACT\_SUPPORT\_DIR) + \textcolor{stringliteral}{"{}/meshes/sphere\_p25m.ply"{}}, mesh\_vertices, mesh\_faces);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{comment}{// This is required because convex hull cannot have multiple faces on the same plane.}}
+\DoxyCodeLine{33   \textcolor{keyword}{auto} ch\_verticies = std::make\_shared<tesseract\_common::VectorVector3d>();}
+\DoxyCodeLine{34   \textcolor{keyword}{auto} ch\_faces = std::make\_shared<Eigen::VectorXi>();}
+\DoxyCodeLine{35   \textcolor{keywordtype}{int} ch\_num\_faces = \mbox{\hyperlink{namespacetesseract__collision_ac97bc1eb96f0aa2e1d3033d7e7758849}{createConvexHull}}(*ch\_verticies, *ch\_faces, mesh\_vertices);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keywordflow}{switch} (type)}
+\DoxyCodeLine{38   \{}
+\DoxyCodeLine{39     \textcolor{keywordflow}{case} \mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56febae0e321886bf5c6aa4c17eafccecf8ac5}{tesseract\_geometry::GeometryType::CONVEX\_MESH}}:}
+\DoxyCodeLine{40       sphere = std::make\_shared<tesseract\_geometry::ConvexMesh>(ch\_verticies, ch\_faces, ch\_num\_faces);}
+\DoxyCodeLine{41       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{42     \textcolor{keywordflow}{case} \mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56febad452813d26ea6530df4492e3ad9f230c}{tesseract\_geometry::GeometryType::MESH}}:}
+\DoxyCodeLine{43       sphere = std::make\_shared<tesseract\_geometry::Mesh>(ch\_verticies, ch\_faces, ch\_num\_faces);}
+\DoxyCodeLine{44       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{45     \textcolor{keywordflow}{case} \mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56febafb20b649d5d1c5441b986a717b632ee3}{tesseract\_geometry::GeometryType::SPHERE}}:}
+\DoxyCodeLine{46       sphere = std::make\_shared<tesseract\_geometry::Sphere>(0.25);}
+\DoxyCodeLine{47       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{48     \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{49       \textcolor{keywordflow}{throw}(std::runtime\_error(\textcolor{stringliteral}{"{}Invalid geometry type"{}}));}
+\DoxyCodeLine{50       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{51   \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{keywordtype}{double} delta = 0.55;}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   std::vector<std::string> link\_names;}
+\DoxyCodeLine{56   \mbox{\hyperlink{namespacetesseract__common_a67bde3cb7bb235f0f61c370ef8bc74d8}{tesseract\_common::TransformMap}} location;}
+\DoxyCodeLine{57   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} x = 0; x < edge\_size; ++x)}
+\DoxyCodeLine{58   \{}
+\DoxyCodeLine{59     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} y = 0; y < edge\_size; ++y)}
+\DoxyCodeLine{60     \{}
+\DoxyCodeLine{61       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} z = 0; z < edge\_size; ++z)}
+\DoxyCodeLine{62       \{}
+\DoxyCodeLine{63         \mbox{\hyperlink{namespacetesseract__collision_a2472107aae8174a30873bb0a955c3cb4}{CollisionShapesConst}} obj3\_shapes;}
+\DoxyCodeLine{64         \mbox{\hyperlink{namespacetesseract__common_a94d9921fc7ed323609ac57d06f939cb6}{tesseract\_common::VectorIsometry3d}} obj3\_poses;}
+\DoxyCodeLine{65         Eigen::Isometry3d sphere\_pose;}
+\DoxyCodeLine{66         sphere\_pose.setIdentity();}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68         obj3\_shapes.push\_back(\mbox{\hyperlink{namespacetesseract__collision_a0aa5b9a264467e92cd1b9f0cd0c38ee8}{CollisionShapePtr}}(sphere-\/>clone()));}
+\DoxyCodeLine{69         obj3\_poses.push\_back(sphere\_pose);}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71         link\_names.push\_back(\textcolor{stringliteral}{"{}sphere\_link\_"{}} + std::to\_string(x) + std::to\_string(y) + std::to\_string(z));}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73         location[link\_names.back()] = sphere\_pose;}
+\DoxyCodeLine{74         location[link\_names.back()].translation() = Eigen::Vector3d(}
+\DoxyCodeLine{75             \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(x) * delta, \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(y) * delta, \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(z) * delta);}
+\DoxyCodeLine{76         checker-\/>addCollisionObject(link\_names.back(), 0, obj3\_shapes, obj3\_poses);}
+\DoxyCodeLine{77       \}}
+\DoxyCodeLine{78     \}}
+\DoxyCodeLine{79   \}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81   \textcolor{comment}{// Check if they are in collision}}
+\DoxyCodeLine{82   checker-\/>setActiveCollisionObjects(link\_names);}
+\DoxyCodeLine{83   checker-\/>setCollisionMarginData(\mbox{\hyperlink{namespacetesseract__collision_a0717a3c53d08d510257f631ea96cb560}{CollisionMarginData}}(0.1));}
+\DoxyCodeLine{84   checker-\/>setCollisionObjectsTransform(location);}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86   \mbox{\hyperlink{namespacetesseract__collision_a96d77f62b7c26962d1090f0a2f00419b}{ContactResultVector}} result\_vector;}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \_ : state)}
+\DoxyCodeLine{89   \{}
+\DoxyCodeLine{90     \mbox{\hyperlink{namespacetesseract__collision_a1eeace4cc41027dbde8e7dbeb77ca7cf}{ContactResultMap}} result;}
+\DoxyCodeLine{91     result\_vector.clear();}
+\DoxyCodeLine{92     checker-\/>contactTest(result, \mbox{\hyperlink{namespacetesseract__collision_ac3da4f46ae16e86ba4f1dfd2935eb80ca5fb1f955b45e38e31789286a1790398d}{ContactTestType::ALL}});}
+\DoxyCodeLine{93     \mbox{\hyperlink{namespacetesseract__collision_a3d63942ad37df10958b434c860782fbb}{flattenResults}}(std::move(result), result\_vector);}
+\DoxyCodeLine{94   \}}
+\DoxyCodeLine{95 \};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{99 \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__collision_1_1test__suite_af0e19e5969df586db37845dc1a735ad8}{BM\_LARGE\_DATASET\_SINGLELINK}}(benchmark::State\& state,}
+\DoxyCodeLine{100                                         \mbox{\hyperlink{classtesseract__collision_1_1DiscreteContactManager_a108295071670971e81fe3c34794db427}{DiscreteContactManager::Ptr}} checker,}
+\DoxyCodeLine{101                                         \textcolor{keywordtype}{int} edge\_size,}
+\DoxyCodeLine{102                                         \mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56feb}{tesseract\_geometry::GeometryType}} type)}
+\DoxyCodeLine{103 \{}
+\DoxyCodeLine{104   \textcolor{comment}{// Add Meshed Sphere to checker}}
+\DoxyCodeLine{105   \mbox{\hyperlink{namespacetesseract__collision_a0aa5b9a264467e92cd1b9f0cd0c38ee8}{CollisionShapePtr}} sphere;}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107   \mbox{\hyperlink{namespacetesseract__common_af89ed6517f4c84bdb2b037bb40f7d9d9}{tesseract\_common::VectorVector3d}} mesh\_vertices;}
+\DoxyCodeLine{108   Eigen::VectorXi mesh\_faces;}
+\DoxyCodeLine{109   \mbox{\hyperlink{namespacetesseract__collision_ab79187502eefb0f670dbde89a5b7b969}{loadSimplePlyFile}}(std::string(TESSERACT\_SUPPORT\_DIR) + \textcolor{stringliteral}{"{}/meshes/sphere\_p25m.ply"{}}, mesh\_vertices, mesh\_faces);}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111   \textcolor{comment}{// This is required because convex hull cannot have multiple faces on the same plane.}}
+\DoxyCodeLine{112   \textcolor{keyword}{auto} ch\_verticies = std::make\_shared<tesseract\_common::VectorVector3d>();}
+\DoxyCodeLine{113   \textcolor{keyword}{auto} ch\_faces = std::make\_shared<Eigen::VectorXi>();}
+\DoxyCodeLine{114   \textcolor{keywordtype}{int} ch\_num\_faces = \mbox{\hyperlink{namespacetesseract__collision_ac97bc1eb96f0aa2e1d3033d7e7758849}{createConvexHull}}(*ch\_verticies, *ch\_faces, mesh\_vertices);}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116   \textcolor{keywordflow}{switch} (type)}
+\DoxyCodeLine{117   \{}
+\DoxyCodeLine{118     \textcolor{keywordflow}{case} \mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56febae0e321886bf5c6aa4c17eafccecf8ac5}{tesseract\_geometry::GeometryType::CONVEX\_MESH}}:}
+\DoxyCodeLine{119       sphere = std::make\_shared<tesseract\_geometry::ConvexMesh>(ch\_verticies, ch\_faces, ch\_num\_faces);}
+\DoxyCodeLine{120       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{121     \textcolor{keywordflow}{case} \mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56febad452813d26ea6530df4492e3ad9f230c}{tesseract\_geometry::GeometryType::MESH}}:}
+\DoxyCodeLine{122       sphere = std::make\_shared<tesseract\_geometry::Mesh>(ch\_verticies, ch\_faces, ch\_num\_faces);}
+\DoxyCodeLine{123       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{124     \textcolor{keywordflow}{case} \mbox{\hyperlink{namespacetesseract__geometry_a7543d6c1dc8947a3274abdd21fb56febafb20b649d5d1c5441b986a717b632ee3}{tesseract\_geometry::GeometryType::SPHERE}}:}
+\DoxyCodeLine{125       sphere = std::make\_shared<tesseract\_geometry::Sphere>(0.25);}
+\DoxyCodeLine{126       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{127     \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{128       \textcolor{keywordflow}{throw}(std::runtime\_error(\textcolor{stringliteral}{"{}Invalid geometry type"{}}));}
+\DoxyCodeLine{129       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{130   \}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132   \textcolor{comment}{// Add Grid of spheres}}
+\DoxyCodeLine{133   \textcolor{keywordtype}{double} delta = 0.55;}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135   std::vector<std::string> link\_names;}
+\DoxyCodeLine{136   \textcolor{comment}{//  tesseract\_common::TransformMap location;}}
+\DoxyCodeLine{137   \mbox{\hyperlink{namespacetesseract__collision_a2472107aae8174a30873bb0a955c3cb4}{CollisionShapesConst}} obj3\_shapes;}
+\DoxyCodeLine{138   \mbox{\hyperlink{namespacetesseract__common_a94d9921fc7ed323609ac57d06f939cb6}{tesseract\_common::VectorIsometry3d}} obj3\_poses;}
+\DoxyCodeLine{139   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} x = 0; x < edge\_size; ++x)}
+\DoxyCodeLine{140   \{}
+\DoxyCodeLine{141     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} y = 0; y < edge\_size; ++y)}
+\DoxyCodeLine{142     \{}
+\DoxyCodeLine{143       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} z = 0; z < edge\_size; ++z)}
+\DoxyCodeLine{144       \{}
+\DoxyCodeLine{145         Eigen::Isometry3d sphere\_pose;}
+\DoxyCodeLine{146         sphere\_pose.setIdentity();}
+\DoxyCodeLine{147         sphere\_pose.translation() = Eigen::Vector3d(}
+\DoxyCodeLine{148             \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(x) * delta, \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(y) * delta, \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(z) * delta);}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150         obj3\_shapes.push\_back(\mbox{\hyperlink{namespacetesseract__collision_a0aa5b9a264467e92cd1b9f0cd0c38ee8}{CollisionShapePtr}}(sphere-\/>clone()));}
+\DoxyCodeLine{151         obj3\_poses.push\_back(sphere\_pose);}
+\DoxyCodeLine{152       \}}
+\DoxyCodeLine{153     \}}
+\DoxyCodeLine{154   \}}
+\DoxyCodeLine{155   link\_names.push\_back(\textcolor{stringliteral}{"{}grid\_link"{}});}
+\DoxyCodeLine{156   checker-\/>addCollisionObject(link\_names.back(), 0, obj3\_shapes, obj3\_poses);}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158   \textcolor{comment}{// Add Single Sphere Link}}
+\DoxyCodeLine{159   Eigen::Isometry3d sphere\_pose;}
+\DoxyCodeLine{160   sphere\_pose.setIdentity();}
+\DoxyCodeLine{161   sphere\_pose.translation() = Eigen::Vector3d(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(edge\_size) / 2.0 * delta,}
+\DoxyCodeLine{162                                               \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(edge\_size) / 2.0 * delta,}
+\DoxyCodeLine{163                                               \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(edge\_size) / 2.0 * delta);}
+\DoxyCodeLine{164   \mbox{\hyperlink{namespacetesseract__collision_a2472107aae8174a30873bb0a955c3cb4}{CollisionShapesConst}} single\_shapes;}
+\DoxyCodeLine{165   \mbox{\hyperlink{namespacetesseract__common_a94d9921fc7ed323609ac57d06f939cb6}{tesseract\_common::VectorIsometry3d}} single\_poses;}
+\DoxyCodeLine{166   single\_shapes.push\_back(\mbox{\hyperlink{namespacetesseract__collision_a0aa5b9a264467e92cd1b9f0cd0c38ee8}{CollisionShapePtr}}(sphere-\/>clone()));}
+\DoxyCodeLine{167   single\_poses.push\_back(sphere\_pose);}
+\DoxyCodeLine{168   link\_names.push\_back(\textcolor{stringliteral}{"{}single\_link"{}});}
+\DoxyCodeLine{169   checker-\/>addCollisionObject(link\_names.back(), 0, single\_shapes, single\_poses);}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171   \textcolor{comment}{// Check if they are in collision}}
+\DoxyCodeLine{172   checker-\/>setActiveCollisionObjects(link\_names);}
+\DoxyCodeLine{173   checker-\/>setCollisionMarginData(\mbox{\hyperlink{namespacetesseract__collision_a0717a3c53d08d510257f631ea96cb560}{CollisionMarginData}}(0.1));}
+\DoxyCodeLine{174   \textcolor{comment}{//  checker-\/>setCollisionObjectsTransform(location);}}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176   \mbox{\hyperlink{namespacetesseract__collision_a96d77f62b7c26962d1090f0a2f00419b}{ContactResultVector}} result\_vector;}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \_ : state)}
+\DoxyCodeLine{179   \{}
+\DoxyCodeLine{180     \mbox{\hyperlink{namespacetesseract__collision_a1eeace4cc41027dbde8e7dbeb77ca7cf}{ContactResultMap}} result;}
+\DoxyCodeLine{181     result\_vector.clear();}
+\DoxyCodeLine{182     checker-\/>contactTest(result, \mbox{\hyperlink{namespacetesseract__collision_ac3da4f46ae16e86ba4f1dfd2935eb80ca5fb1f955b45e38e31789286a1790398d}{ContactTestType::ALL}});}
+\DoxyCodeLine{183     \mbox{\hyperlink{namespacetesseract__collision_a3d63942ad37df10958b434c860782fbb}{flattenResults}}(std::move(result), result\_vector);}
+\DoxyCodeLine{184   \}}
+\DoxyCodeLine{185 \};}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 \}  \textcolor{comment}{// namespace test\_suite}}
+\DoxyCodeLine{188 \}  \textcolor{comment}{// namespace tesseract\_collision}}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

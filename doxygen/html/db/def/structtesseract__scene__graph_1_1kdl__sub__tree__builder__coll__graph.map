@@ -1,0 +1,10 @@
+<map id="tesseract_scene_graph::kdl_sub_tree_builder" name="tesseract_scene_graph::kdl_sub_tree_builder">
+<area shape="rect" id="node1" title="Every time a vertex is visited for the first time add a new segment to the KDL Tree;." alt="" coords="957,131,1115,173"/>
+<area shape="rect" id="node2" title=" " alt="" coords="727,5,863,32"/>
+<area shape="rect" id="node3" href="$dc/d32/structtesseract__scene__graph_1_1KDLTreeData.html" title="The KDLTreeData populated when parsing scene graph." alt="" coords="716,57,873,98"/>
+<area shape="rect" id="node4" title=" " alt="" coords="179,168,257,195"/>
+<area shape="rect" id="node6" title=" " alt="" coords="363,139,523,165"/>
+<area shape="rect" id="node7" title=" " alt="" coords="548,193,691,234"/>
+<area shape="rect" id="node8" title=" " alt="" coords="547,247,692,289"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,161,129,202"/>
+</map>

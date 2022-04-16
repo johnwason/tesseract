@@ -1,8 +1,8 @@
-\hypertarget{state__solver_8h}{}\doxysection{tesseract/tesseract\+\_\+environment/include/tesseract\+\_\+environment/core/state\+\_\+solver.h File Reference}
-\label{state__solver_8h}\index{tesseract/tesseract\_environment/include/tesseract\_environment/core/state\_solver.h@{tesseract/tesseract\_environment/include/tesseract\_environment/core/state\_solver.h}}
+\hypertarget{state__solver_8h}{}\doxysection{tesseract\+\_\+state\+\_\+solver/include/tesseract\+\_\+state\+\_\+solver/state\+\_\+solver.h File Reference}
+\label{state__solver_8h}\index{tesseract\_state\_solver/include/tesseract\_state\_solver/state\_solver.h@{tesseract\_state\_solver/include/tesseract\_state\_solver/state\_solver.h}}
 
 
-Tesseract Environment State Solver Interface.  
+Tesseract Scene Graph State Solver Interface.  
 
 
 {\ttfamily \#include $<$tesseract\+\_\+common/macros.\+h$>$}\newline
@@ -13,22 +13,38 @@ Tesseract Environment State Solver Interface.
 {\ttfamily \#include $<$Eigen/\+Geometry$>$}\newline
 {\ttfamily \#include $<$Eigen/\+Core$>$}\newline
 {\ttfamily \#include $<$tesseract\+\_\+scene\+\_\+graph/graph.\+h$>$}\newline
-{\ttfamily \#include $<$tesseract\+\_\+environment/core/types.\+h$>$}\newline
-{\ttfamily \#include $<$tesseract\+\_\+environment/core/commands.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+scene\+\_\+graph/scene\+\_\+state.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+common/types.\+h$>$}\newline
+Include dependency graph for state\+\_\+solver.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{db/d7c/state__solver_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{df/dc2/state__solver_8h__dep__incl}
+\end{center}
+\end{figure}
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{classtesseract__environment_1_1StateSolver}{tesseract\+\_\+environment\+::\+State\+Solver}}
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1StateSolver}{tesseract\+\_\+scene\+\_\+graph\+::\+State\+Solver}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
- \mbox{\hyperlink{namespacetesseract__environment}{tesseract\+\_\+environment}}
+namespace \mbox{\hyperlink{namespacetesseract__scene__graph}{tesseract\+\_\+scene\+\_\+graph}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Tesseract Environment State Solver Interface. 
+Tesseract Scene Graph State Solver Interface. 
 
 \begin{DoxyAuthor}{Author}
 Levi Armstrong 
@@ -37,10 +53,10 @@ Levi Armstrong
 Dec 18, 2017 
 \end{DoxyDate}
 \begin{DoxyVersion}{Version}
-T\+O\+DO 
+TODO 
 \end{DoxyVersion}
 \begin{DoxyRefDesc}{Bug}
-\item[\mbox{\hyperlink{bug__bug000038}{Bug}}]No known bugs\end{DoxyRefDesc}
+\item[\mbox{\hyperlink{bug__bug000236}{Bug}}]No known bugs\end{DoxyRefDesc}
 
 
 \begin{DoxyCopyright}{Copyright}
@@ -50,8 +66,8 @@ Copyright (c) 2017, Southwest Research Institute
 Software License Agreement (Apache License) 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{}
-Licensed under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at \href{http://www.apache.org/licenses/LICENSE-2.0}{\texttt{ http\+://www.\+apache.\+org/licenses/\+L\+I\+C\+E\+N\+S\+E-\/2.\+0}} 
+Licensed under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at \href{http://www.apache.org/licenses/LICENSE-2.0}{\texttt{ http\+://www.\+apache.\+org/licenses/\+LICENSE-\/2.\+0}} 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{}
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+A\+S I\+S\char`\"{} B\+A\+S\+IS, W\+I\+T\+H\+O\+UT W\+A\+R\+R\+A\+N\+T\+I\+ES OR C\+O\+N\+D\+I\+T\+I\+O\+NS OF A\+NY K\+I\+ND, either express or implied. See the License for the specific language governing permissions and limitations under the License. 
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+AS IS\char`\"{} BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. 
 \end{DoxyParagraph}

@@ -1,0 +1,8 @@
+<map id="tesseract_environment::SceneStateChangedEvent" name="tesseract_environment::SceneStateChangedEvent">
+<area shape="rect" id="node1" title="The scene state changed event." alt="" coords="49,393,229,435"/>
+<area shape="rect" id="node2" href="$d9/d80/structtesseract__environment_1_1Event.html" title="The event base class." alt="" coords="5,289,160,331"/>
+<area shape="rect" id="node3" href="$d5/d12/structtesseract__scene__graph_1_1SceneState.html" title="This holds a state of the scene." alt="" coords="184,289,341,331"/>
+<area shape="rect" id="node4" title=" " alt="" coords="190,185,335,227"/>
+<area shape="rect" id="node5" title=" " alt="" coords="223,96,302,123"/>
+<area shape="rect" id="node6" title=" " alt="" coords="201,5,325,47"/>
+</map>

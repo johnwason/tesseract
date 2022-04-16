@@ -1,0 +1,46 @@
+\hypertarget{fcl__collision__object__wrapper_8h_source}{}\doxysection{fcl\+\_\+collision\+\_\+object\+\_\+wrapper.\+h}
+\label{fcl__collision__object__wrapper_8h_source}\index{tesseract\_collision/fcl/include/tesseract\_collision/fcl/fcl\_collision\_object\_wrapper.h@{tesseract\_collision/fcl/include/tesseract\_collision/fcl/fcl\_collision\_object\_wrapper.h}}
+\mbox{\hyperlink{fcl__collision__object__wrapper_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef TESSERACT\_COLLISION\_FCL\_COLLISION\_OBJECT\_WRAPPER\_H}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define TESSERACT\_COLLISION\_FCL\_COLLISION\_OBJECT\_WRAPPER\_H}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{macros_8h}{tesseract\_common/macros.h}}>}}
+\DoxyCodeLine{30 \mbox{\hyperlink{macros_8h_a8cc0e3c6a3382c5c0b19eb9e676fc2db}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_PUSH}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <fcl/narrowphase/collision\_object-\/inl.h>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{33 \mbox{\hyperlink{namespaceTESSERACT__COMMON__IGNORE__WARNINGS__POP}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_POP}}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__collision}{tesseract\_collision}}}
+\DoxyCodeLine{36 \{}
+\DoxyCodeLine{37 \textcolor{keyword}{namespace }tesseract\_collision\_fcl}
+\DoxyCodeLine{38 \{}
+\DoxyCodeLine{44 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__collision_1_1tesseract__collision__fcl_1_1FCLCollisionObjectWrapper}{FCLCollisionObjectWrapper}} : \textcolor{keyword}{public} fcl::CollisionObject<double>}
+\DoxyCodeLine{45 \{}
+\DoxyCodeLine{46 \textcolor{keyword}{public}:}
+\DoxyCodeLine{47   \mbox{\hyperlink{classtesseract__collision_1_1tesseract__collision__fcl_1_1FCLCollisionObjectWrapper_a48dc767a967d2984f1e0627f1c8ad893}{FCLCollisionObjectWrapper}}(\textcolor{keyword}{const} std::shared\_ptr<fcl::CollisionGeometry<double>>\& cgeom);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \mbox{\hyperlink{classtesseract__collision_1_1tesseract__collision__fcl_1_1FCLCollisionObjectWrapper_a48dc767a967d2984f1e0627f1c8ad893}{FCLCollisionObjectWrapper}}(\textcolor{keyword}{const} std::shared\_ptr<fcl::CollisionGeometry<double>>\& cgeom,}
+\DoxyCodeLine{50                             \textcolor{keyword}{const} fcl::Transform3<double>\& tf);}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52   \mbox{\hyperlink{classtesseract__collision_1_1tesseract__collision__fcl_1_1FCLCollisionObjectWrapper_a48dc767a967d2984f1e0627f1c8ad893}{FCLCollisionObjectWrapper}}(\textcolor{keyword}{const} std::shared\_ptr<fcl::CollisionGeometry<double>>\& cgeom,}
+\DoxyCodeLine{53                             \textcolor{keyword}{const} fcl::Matrix3<double>\& R,}
+\DoxyCodeLine{54                             \textcolor{keyword}{const} fcl::Vector3<double>\& T);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{62   \textcolor{keywordtype}{void} \mbox{\hyperlink{classtesseract__collision_1_1tesseract__collision__fcl_1_1FCLCollisionObjectWrapper_a20bc2ae95cddaf4bcefc9e7a31501833}{setContactDistanceThreshold}}(\textcolor{keywordtype}{double} contact\_distance);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{68   \textcolor{keywordtype}{double} \mbox{\hyperlink{classtesseract__collision_1_1tesseract__collision__fcl_1_1FCLCollisionObjectWrapper_afcb85ace1e52b93047335c11e5d4a4bc}{getContactDistanceThreshold}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{75   \textcolor{keywordtype}{void} \mbox{\hyperlink{classtesseract__collision_1_1tesseract__collision__fcl_1_1FCLCollisionObjectWrapper_af606359addeed10e4fe4f6edfd1a444b}{updateAABB}}();}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{78   \textcolor{keywordtype}{double} \mbox{\hyperlink{classtesseract__collision_1_1tesseract__collision__fcl_1_1FCLCollisionObjectWrapper_ae00b5537297d2c4bfabfd6489648833f}{contact\_distance\_}}\{ 0 \}; }
+\DoxyCodeLine{79 \};}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \}  \textcolor{comment}{// namespace tesseract\_collision\_fcl}}
+\DoxyCodeLine{82 \}  \textcolor{comment}{// namespace tesseract\_collision}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_COLLISION\_FCL\_COLLISION\_OBJECT\_WRAPPER\_H}}
+
+\end{DoxyCode}

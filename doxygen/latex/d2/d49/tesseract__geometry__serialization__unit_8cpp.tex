@@ -1,0 +1,155 @@
+\hypertarget{tesseract__geometry__serialization__unit_8cpp}{}\doxysection{tesseract\+\_\+geometry/test/tesseract\+\_\+geometry\+\_\+serialization\+\_\+unit.cpp File Reference}
+\label{tesseract__geometry__serialization__unit_8cpp}\index{tesseract\_geometry/test/tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry/test/tesseract\_geometry\_serialization\_unit.cpp}}
+
+
+Tests serialization of geometry.  
+
+
+{\ttfamily \#include $<$tesseract\+\_\+common/macros.\+h$>$}\newline
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$boost/serialization/shared\+\_\+ptr.\+hpp$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+common/serialization.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+common/unit\+\_\+test\+\_\+utils.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+common/utils.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+geometry/geometries.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+geometry/mesh\+\_\+parser.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+support/tesseract\+\_\+support\+\_\+resource\+\_\+locator.\+h$>$}\newline
+Include dependency graph for tesseract\+\_\+geometry\+\_\+serialization\+\_\+unit.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d4/dc1/tesseract__geometry__serialization__unit_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_a9d6ee22193627605c7a35a43df7aab0d}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1Box}{Box}})
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_ad7580ed02aa15912999ebf60ae9176d0}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1Capsule}{Capsule}})
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_a5826ee599a34c259d69f5d339f0a19a5}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1Cone}{Cone}})
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_a4d66682d7a147a5e4df1426a4c5c34c5}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh}{Convex\+Mesh}})
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_ae1f7223e7102bc0ffcd909e07f67e94a}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1Cylinder}{Cylinder}})
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_a6a7ef7f2d9589869521148da75f67e43}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1Mesh}{Mesh}})
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_a3da3e874279aa9823685258e6d9a2109}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1Octree}{Octree}})
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_a3dcaa41be40bbf3961a00c8796fd9f92}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1Plane}{Plane}})
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_a60da7aa73c638f50e8c913270183e530}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1PolygonMesh}{Polygon\+Mesh}})
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_ae7c1d7a1c56976aa43539e01b16c3d9a}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1SDFMesh}{SDFMesh}})
+\item 
+\mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_a7a13f3db9bf38a46064f6bd2c3efc7bb}{TEST}} (Tesseract\+Geometry\+Serialize\+Unit, \mbox{\hyperlink{classtesseract__geometry_1_1Sphere}{Sphere}})
+\item 
+int \mbox{\hyperlink{tesseract__geometry__serialization__unit_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Tests serialization of geometry. 
+
+\begin{DoxyAuthor}{Author}
+Levi Armstrong 
+
+Matthew Powelson 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+March 16, 2022 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+TODO 
+\end{DoxyVersion}
+\begin{DoxyRefDesc}{Bug}
+\item[\mbox{\hyperlink{bug__bug000160}{Bug}}]No known bugs\end{DoxyRefDesc}
+
+
+\begin{DoxyParagraph}{License}
+Software License Agreement (Apache License) 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Licensed under the Apache License, Version 2.\+0 (the \char`\"{}\+License\char`\"{}); you may not use this file except in compliance with the License. You may obtain a copy of the License at \href{http://www.apache.org/licenses/LICENSE-2.0}{\texttt{ http\+://www.\+apache.\+org/licenses/\+LICENSE-\/2.\+0}} 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \char`\"{}\+AS IS\char`\"{} BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. 
+\end{DoxyParagraph}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{tesseract__geometry__serialization__unit_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!main@{main}}
+\index{main@{main}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_a9d6ee22193627605c7a35a43df7aab0d}\label{tesseract__geometry__serialization__unit_8cpp_a9d6ee22193627605c7a35a43df7aab0d}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [1/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1Box}{Box}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_ad7580ed02aa15912999ebf60ae9176d0}\label{tesseract__geometry__serialization__unit_8cpp_ad7580ed02aa15912999ebf60ae9176d0}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [2/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1Capsule}{Capsule}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_a5826ee599a34c259d69f5d339f0a19a5}\label{tesseract__geometry__serialization__unit_8cpp_a5826ee599a34c259d69f5d339f0a19a5}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [3/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1Cone}{Cone}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_a4d66682d7a147a5e4df1426a4c5c34c5}\label{tesseract__geometry__serialization__unit_8cpp_a4d66682d7a147a5e4df1426a4c5c34c5}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [4/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1ConvexMesh}{Convex\+Mesh}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_ae1f7223e7102bc0ffcd909e07f67e94a}\label{tesseract__geometry__serialization__unit_8cpp_ae1f7223e7102bc0ffcd909e07f67e94a}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [5/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1Cylinder}{Cylinder}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_a6a7ef7f2d9589869521148da75f67e43}\label{tesseract__geometry__serialization__unit_8cpp_a6a7ef7f2d9589869521148da75f67e43}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [6/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1Mesh}{Mesh}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_a3da3e874279aa9823685258e6d9a2109}\label{tesseract__geometry__serialization__unit_8cpp_a3da3e874279aa9823685258e6d9a2109}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [7/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1Octree}{Octree}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_a3dcaa41be40bbf3961a00c8796fd9f92}\label{tesseract__geometry__serialization__unit_8cpp_a3dcaa41be40bbf3961a00c8796fd9f92}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [8/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1Plane}{Plane}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_a60da7aa73c638f50e8c913270183e530}\label{tesseract__geometry__serialization__unit_8cpp_a60da7aa73c638f50e8c913270183e530}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [9/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1PolygonMesh}{Polygon\+Mesh}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_ae7c1d7a1c56976aa43539e01b16c3d9a}\label{tesseract__geometry__serialization__unit_8cpp_ae7c1d7a1c56976aa43539e01b16c3d9a}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [10/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1SDFMesh}{SDFMesh}}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__geometry__serialization__unit_8cpp_a7a13f3db9bf38a46064f6bd2c3efc7bb}\label{tesseract__geometry__serialization__unit_8cpp_a7a13f3db9bf38a46064f6bd2c3efc7bb}} 
+\index{tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_geometry\_serialization\_unit.cpp@{tesseract\_geometry\_serialization\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [11/11]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Geometry\+Serialize\+Unit}]{,  }\item[{\mbox{\hyperlink{classtesseract__geometry_1_1Sphere}{Sphere}}}]{ }\end{DoxyParamCaption})}
+

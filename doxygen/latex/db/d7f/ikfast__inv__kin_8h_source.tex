@@ -1,0 +1,72 @@
+\hypertarget{ikfast__inv__kin_8h_source}{}\doxysection{ikfast\+\_\+inv\+\_\+kin.\+h}
+\label{ikfast__inv__kin_8h_source}\index{tesseract\_kinematics/ikfast/include/tesseract\_kinematics/ikfast/ikfast\_inv\_kin.h@{tesseract\_kinematics/ikfast/include/tesseract\_kinematics/ikfast/ikfast\_inv\_kin.h}}
+\mbox{\hyperlink{ikfast__inv__kin_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef TESSERACT\_KINEMATICS\_IKFAST\_INV\_KIN\_H}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define TESSERACT\_KINEMATICS\_IKFAST\_INV\_KIN\_H}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{inverse__kinematics_8h}{tesseract\_kinematics/core/inverse\_kinematics.h}}>}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{tesseract__kinematics_2core_2include_2tesseract__kinematics_2core_2types_8h}{tesseract\_kinematics/core/types.h}}>}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#ifdef SWIG}}
+\DoxyCodeLine{33 \%shared\_ptr(\mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin}{tesseract\_kinematics::IKFastInvKin}})}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// SWIG}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__kinematics}{tesseract\_kinematics}}}
+\DoxyCodeLine{37 \{}
+\DoxyCodeLine{38 \textcolor{keyword}{static} \textcolor{keyword}{const} std::string \mbox{\hyperlink{namespacetesseract__kinematics_ac29892c9bb7ec49301f7dd901ff8e356}{IKFAST\_INV\_KIN\_CHAIN\_SOLVER\_NAME}} = \textcolor{stringliteral}{"{}IKFastInvKin"{}};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{81 \textcolor{keyword}{class }\mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin}{IKFastInvKin}} : \textcolor{keyword}{public} \mbox{\hyperlink{classtesseract__kinematics_1_1InverseKinematics}{InverseKinematics}}}
+\DoxyCodeLine{82 \{}
+\DoxyCodeLine{83 \textcolor{keyword}{public}:}
+\DoxyCodeLine{84   \textcolor{comment}{// LCOV\_EXCL\_START}}
+\DoxyCodeLine{85   EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{86   \textcolor{comment}{// LCOV\_EXCL\_STOP}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__kinematics_1_1InverseKinematics_a189ebd423f38f83720d58a922d049688}{Ptr}} = std::shared\_ptr<IKFastInvKin>;}
+\DoxyCodeLine{89   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__kinematics_1_1InverseKinematics_ab8d8c23f62e4298bcc0951f82f3dba27}{ConstPtr}} = std::shared\_ptr<const IKFastInvKin>;}
+\DoxyCodeLine{90   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__kinematics_1_1InverseKinematics_a68e526591337b0781c9ec91618d1d5f0}{UPtr}} = std::unique\_ptr<IKFastInvKin>;}
+\DoxyCodeLine{91   \textcolor{keyword}{using} \mbox{\hyperlink{classtesseract__kinematics_1_1InverseKinematics_a66e71b6a6b320d8a60c29baaa04c7011}{ConstUPtr}} = std::unique\_ptr<const IKFastInvKin>;}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93   \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a9780621790cbdb66e2d8dda27834a4a3}{\string~IKFastInvKin}}() \textcolor{keyword}{override} = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{94   \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a9716b8691e656dbb1334264464bbf92a}{IKFastInvKin}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin}{IKFastInvKin}}\& other);}
+\DoxyCodeLine{95   \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin}{IKFastInvKin}}\& \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_adaa51b594fcfb307ba4abbf7f54ba297}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin}{IKFastInvKin}}\& other);}
+\DoxyCodeLine{96   \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_aa52184e36d0c886569309efacd47c98d}{IKFastInvKin}}(\mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin}{IKFastInvKin}}\&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{97   \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin}{IKFastInvKin}}\& \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_abc3dc7940e3061b619b50599366b3fb7}{operator=}}(\mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin}{IKFastInvKin}}\&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{106   \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a9716b8691e656dbb1334264464bbf92a}{IKFastInvKin}}(std::string base\_link\_name,}
+\DoxyCodeLine{107                std::string tip\_link\_name,}
+\DoxyCodeLine{108                std::vector<std::string> joint\_names,}
+\DoxyCodeLine{109                std::vector<Eigen::Index> redundancy\_capable\_joints,}
+\DoxyCodeLine{110                std::string solver\_name = \mbox{\hyperlink{namespacetesseract__kinematics_ac29892c9bb7ec49301f7dd901ff8e356}{IKFAST\_INV\_KIN\_CHAIN\_SOLVER\_NAME}},}
+\DoxyCodeLine{111                \mbox{\hyperlink{FloatMath_8inl_adcf134d50025cc52907d0c8ac798d89d}{std::vector}}<std::vector<double>> free\_joint\_states = \{\});}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113   \mbox{\hyperlink{namespacetesseract__kinematics_af12a01d2264e3371dc9bc7db2a7b59ac}{IKSolutions}} \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a8d4ceb3a73931703fa00ef9d1433780d}{calcInvKin}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacetesseract__common_a67bde3cb7bb235f0f61c370ef8bc74d8}{tesseract\_common::TransformMap}}\& tip\_link\_poses,}
+\DoxyCodeLine{114                          \textcolor{keyword}{const} Eigen::Ref<const Eigen::VectorXd>\& seed) \textcolor{keyword}{const override};}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116   Eigen::Index \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a5fbb8c88b2945c9bf59159327de099d0}{numJoints}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{117   std::vector<std::string> \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_acaefc3d712a3419b600ceb183c11cec6}{getJointNames}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{118   std::string \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_ae246bbbdcc1168e763867b63654d627b}{getBaseLinkName}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{119   std::string \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a07dc81f4ec2ef1a89a977affb5320276}{getWorkingFrame}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{120   std::vector<std::string> \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_af76a91c0909149cd65fd8fe7c972d10b}{getTipLinkNames}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{121   std::string \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_afc0f8b30276ba25b8730a9e872dbbe4b}{getSolverName}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{122   \mbox{\hyperlink{classtesseract__kinematics_1_1InverseKinematics_a68e526591337b0781c9ec91618d1d5f0}{InverseKinematics::UPtr}} \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_af4f458ba2879d3f962ce7228719acfaf}{clone}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{132   \textcolor{keyword}{static} std::vector<std::vector<double>>}
+\DoxyCodeLine{133   \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a2a9853b21a22b168ab26167fb3b3627b}{generateAllFreeJointStateCombinations}}(\textcolor{keyword}{const} \mbox{\hyperlink{FloatMath_8inl_adcf134d50025cc52907d0c8ac798d89d}{std::vector}}<std::vector<double>>\& free\_joint\_samples);}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{136   std::string \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a769811812973842dd1d8b2ac59ad5b80}{base\_link\_name\_}};                          }
+\DoxyCodeLine{137   std::string \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_aff4307652e3959810f431fcb4895e5e8}{tip\_link\_name\_}};                           }
+\DoxyCodeLine{138   std::vector<std::string> \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a2b4be6412d6a25f271914bcccc407bfd}{joint\_names\_}};                }
+\DoxyCodeLine{139   std::vector<Eigen::Index> \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a1cf52903cc9c500e8d65755c00ce4122}{redundancy\_capable\_joints\_}}; }
+\DoxyCodeLine{140   std::string \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_ac122d5be325b8e4f4e6e064179ecbeb2}{solver\_name\_}}\{ \mbox{\hyperlink{namespacetesseract__kinematics_ac29892c9bb7ec49301f7dd901ff8e356}{IKFAST\_INV\_KIN\_CHAIN\_SOLVER\_NAME}} \}; }
+\DoxyCodeLine{143   std::vector<std::vector<double>> \mbox{\hyperlink{classtesseract__kinematics_1_1IKFastInvKin_a139663aac5dd1256626d7270cb0481a9}{free\_joint\_states\_}};}
+\DoxyCodeLine{144 \};}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \}  \textcolor{comment}{// namespace tesseract\_kinematics}}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_KINEMATICS\_IKFAST\_INV\_KIN\_H}}
+
+\end{DoxyCode}

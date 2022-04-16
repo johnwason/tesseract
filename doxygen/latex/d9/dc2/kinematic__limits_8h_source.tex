@@ -1,0 +1,51 @@
+\hypertarget{kinematic__limits_8h_source}{}\doxysection{kinematic\+\_\+limits.\+h}
+\label{kinematic__limits_8h_source}\index{tesseract\_common/include/tesseract\_common/kinematic\_limits.h@{tesseract\_common/include/tesseract\_common/kinematic\_limits.h}}
+\mbox{\hyperlink{kinematic__limits_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef TESSERACT\_COMMON\_KINEMATIC\_LIMITS\_H}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define TESSERACT\_COMMON\_KINEMATIC\_LIMITS\_H}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{macros_8h}{tesseract\_common/macros.h}}>}}
+\DoxyCodeLine{29 \mbox{\hyperlink{macros_8h_a8cc0e3c6a3382c5c0b19eb9e676fc2db}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_PUSH}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include <Eigen/Core>}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <Eigen/Geometry>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <boost/serialization/base\_object.hpp>}}
+\DoxyCodeLine{33 \mbox{\hyperlink{namespaceTESSERACT__COMMON__IGNORE__WARNINGS__POP}{TESSERACT\_COMMON\_IGNORE\_WARNINGS\_POP}}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacetesseract__common}{tesseract\_common}}}
+\DoxyCodeLine{36 \{}
+\DoxyCodeLine{38 \textcolor{keyword}{struct }\mbox{\hyperlink{structtesseract__common_1_1KinematicLimits}{KinematicLimits}}}
+\DoxyCodeLine{39 \{}
+\DoxyCodeLine{40   \textcolor{comment}{// LCOV\_EXCL\_START}}
+\DoxyCodeLine{41   EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW}
+\DoxyCodeLine{42   \textcolor{comment}{// LCOV\_EXCL\_STOP}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{45   Eigen::MatrixX2d \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_a04641308fcc1e182fca0d85d80d25c68}{joint\_limits}};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{48   Eigen::VectorXd \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_aef6ca9124185f5b366bccbbba3242d6e}{velocity\_limits}};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{51   Eigen::VectorXd \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_a609b65f616f248719082654c9a8a51c6}{acceleration\_limits}};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{keywordtype}{void} \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_abd68f4faaf100411e8a067f02e0a6e66}{resize}}(Eigen::Index size);}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \textcolor{keywordtype}{bool} \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_ad44ef1fe9ffa93453d7ebeae4f3aef96}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits}{KinematicLimits}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{56   \textcolor{keywordtype}{bool} \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_a00dcfeec202e19fb26590209db5cedd8}{operator!=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits}{KinematicLimits}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{private}:}
+\DoxyCodeLine{59   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost::serialization::access}};}
+\DoxyCodeLine{60   \textcolor{keyword}{template} <\textcolor{keyword}{class} Archive>}
+\DoxyCodeLine{61   \textcolor{keywordtype}{void} \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits_aaa4471bb1d7f3fe9c99df6c9e118f081}{serialize}}(Archive\& ar, \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} version);  \textcolor{comment}{// NOLINT}}
+\DoxyCodeLine{62 \};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{74 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacetesseract__common_a2eab6bf31cc0eb0089298c5e3e377fe9}{satisfiesPositionLimits}}(\textcolor{keyword}{const} Eigen::Ref<const Eigen::VectorXd>\& joint\_positions,}
+\DoxyCodeLine{75                              \textcolor{keyword}{const} Eigen::Ref<const Eigen::MatrixX2d>\& position\_limits,}
+\DoxyCodeLine{76                              \textcolor{keywordtype}{double} max\_diff = 1e-\/6,}
+\DoxyCodeLine{77                              \textcolor{keywordtype}{double} max\_rel\_diff = std::numeric\_limits<double>::epsilon());}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{84 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacetesseract__common_aaea55ba44081a4d90868727a7106f933}{enforcePositionLimits}}(Eigen::Ref<Eigen::VectorXd> joint\_positions,}
+\DoxyCodeLine{85                            \textcolor{keyword}{const} Eigen::Ref<const Eigen::MatrixX2d>\& position\_limits);}
+\DoxyCodeLine{86 \}  \textcolor{comment}{// namespace tesseract\_common}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// TESSERACT\_COMMON\_KINEMATIC\_LIMITS\_H}}
+
+\end{DoxyCode}
