@@ -117,6 +117,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/de2/structtesseract__common_1_1JointState.html">JointState</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d28/structtesseract__common_1_1JointTrajectory.html">JointTrajectory</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a joint trajectory.  <a href="../../d5/d28/structtesseract__common_1_1JointTrajectory.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d94/structtesseract__common_1_1KinematicLimits.html">KinematicLimits</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store kinematic limits.  <a href="../../d2/d94/structtesseract__common_1_1KinematicLimits.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,9 +173,6 @@ Typedefs</h2></td></tr>
 <tr class="separator:a79d2a34647d0da5e574629878c142086"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84cc21cc4b384291adbbddaa81fe6447"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/da9/namespacetesseract__common.html#a84cc21cc4b384291adbbddaa81fe6447">PairsCollisionMarginData</a> = std::unordered_map&lt; <a class="el" href="../../df/da9/namespacetesseract__common.html#a5b28b7ae665b374a7ca166d496f648ce">tesseract_common::LinkNamesPair</a>, double, <a class="el" href="../../d7/de0/structtesseract__common_1_1PairHash.html">tesseract_common::PairHash</a> &gt;</td></tr>
 <tr class="separator:a84cc21cc4b384291adbbddaa81fe6447"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57fa3336d4e5f8655281342a9c94aece"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/da9/namespacetesseract__common.html#a57fa3336d4e5f8655281342a9c94aece">JointTrajectory</a> = <a class="el" href="../../db/dad/vhacdRaycastMesh_8cpp.html#adcf134d50025cc52907d0c8ac798d89d">std::vector</a>&lt; <a class="el" href="../../d0/de2/structtesseract__common_1_1JointState.html">JointState</a> &gt;</td></tr>
-<tr class="memdesc:a57fa3336d4e5f8655281342a9c94aece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a joint trajectory.  <a href="../../df/da9/namespacetesseract__common.html#a57fa3336d4e5f8655281342a9c94aece">More...</a><br /></td></tr>
-<tr class="separator:a57fa3336d4e5f8655281342a9c94aece"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ef4ec89c4c07fc0a75c4bc24da9681c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/da9/namespacetesseract__common.html#a2ef4ec89c4c07fc0a75c4bc24da9681c">SimpleResourceLocatorFn</a> = std::function&lt; std::string(const std::string &amp;)&gt;</td></tr>
 <tr class="separator:a2ef4ec89c4c07fc0a75c4bc24da9681c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a000d15c3ab8d8ba4ebdaae64153b053a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -468,22 +468,6 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="a57fa3336d4e5f8655281342a9c94aece" name="a57fa3336d4e5f8655281342a9c94aece"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57fa3336d4e5f8655281342a9c94aece">&#9670;&nbsp;</a></span>JointTrajectory</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="../../df/da9/namespacetesseract__common.html#a57fa3336d4e5f8655281342a9c94aece">tesseract_common::JointTrajectory</a> = typedef <a class="el" href="../../db/dad/vhacdRaycastMesh_8cpp.html#adcf134d50025cc52907d0c8ac798d89d">std::vector</a>&lt;<a class="el" href="../../d0/de2/structtesseract__common_1_1JointState.html">JointState</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Represents a joint trajectory. </p>
 
 </div>
 </div>
@@ -2846,7 +2830,7 @@ template&lt;typename FloatType &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 17 2022 01:20:45 for Tesseract by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3
+Generated on Wed Apr 20 2022 05:29:23 for Tesseract by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3
 </small></address>
 </body>
 </html>

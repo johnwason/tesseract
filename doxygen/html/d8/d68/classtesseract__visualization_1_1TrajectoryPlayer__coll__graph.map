@@ -1,7 +1,13 @@
 <map id="tesseract_visualization::TrajectoryPlayer" name="tesseract_visualization::TrajectoryPlayer">
-<area shape="rect" id="node1" title="Enables the ability to play a trajectory provided by the set program." alt="" coords="97,303,252,344"/>
-<area shape="rect" id="node2" title=" " alt="" coords="87,199,262,240"/>
-<area shape="rect" id="node3" href="$d6/ded/classtesseract__visualization_1_1TrajectoryInterpolator.html" title=" " alt="" coords="97,95,252,136"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,5,168,32"/>
-<area shape="rect" id="node5" title=" " alt="" coords="193,5,335,32"/>
+<area shape="rect" id="node1" title="Enables the ability to play a trajectory provided by the set program." alt="" coords="143,809,297,851"/>
+<area shape="rect" id="node2" title=" " alt="" coords="133,705,307,747"/>
+<area shape="rect" id="node3" href="$d6/ded/classtesseract__visualization_1_1TrajectoryInterpolator.html" title=" " alt="" coords="143,601,297,643"/>
+<area shape="rect" id="node4" href="$d5/d28/structtesseract__common_1_1JointTrajectory.html" title="Represents a joint trajectory." alt="" coords="5,512,229,539"/>
+<area shape="rect" id="node5" title=" " alt="" coords="171,408,325,449"/>
+<area shape="rect" id="node6" href="$d0/de2/structtesseract__common_1_1JointState.html" title=" " alt="" coords="187,319,386,345"/>
+<area shape="rect" id="node7" title=" " alt="" coords="133,185,293,212"/>
+<area shape="rect" id="node8" title=" " alt="" coords="78,96,157,123"/>
+<area shape="rect" id="node9" title=" " alt="" coords="55,5,179,47"/>
+<area shape="rect" id="node10" title=" " alt="" coords="318,185,394,212"/>
+<area shape="rect" id="node11" title=" " alt="" coords="253,512,395,539"/>
 </map>

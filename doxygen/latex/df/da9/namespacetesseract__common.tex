@@ -36,6 +36,8 @@ struct \mbox{\hyperlink{structtesseract__common_1_1has__member}{has\+\_\+member}
 \item 
 struct \mbox{\hyperlink{structtesseract__common_1_1JointState}{Joint\+State}}
 \item 
+struct \mbox{\hyperlink{structtesseract__common_1_1JointTrajectory}{Joint\+Trajectory}}
+\begin{DoxyCompactList}\small\item\em Represents a joint trajectory. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structtesseract__common_1_1KinematicLimits}{Kinematic\+Limits}}
 \begin{DoxyCompactList}\small\item\em Store kinematic limits. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structtesseract__common_1_1KinematicsPluginInfo}{Kinematics\+Plugin\+Info}}
@@ -79,8 +81,6 @@ using \mbox{\hyperlink{namespacetesseract__common_a79d2a34647d0da5e574629878c142
 \item 
 using \mbox{\hyperlink{namespacetesseract__common_a84cc21cc4b384291adbbddaa81fe6447}{Pairs\+Collision\+Margin\+Data}} = std\+::unordered\+\_\+map$<$ \mbox{\hyperlink{namespacetesseract__common_a5b28b7ae665b374a7ca166d496f648ce}{tesseract\+\_\+common\+::\+Link\+Names\+Pair}}, double, \mbox{\hyperlink{structtesseract__common_1_1PairHash}{tesseract\+\_\+common\+::\+Pair\+Hash}} $>$
 \item 
-using \mbox{\hyperlink{namespacetesseract__common_a57fa3336d4e5f8655281342a9c94aece}{Joint\+Trajectory}} = \mbox{\hyperlink{vhacdRaycastMesh_8cpp_adcf134d50025cc52907d0c8ac798d89d}{std\+::vector}}$<$ \mbox{\hyperlink{structtesseract__common_1_1JointState}{Joint\+State}} $>$
-\begin{DoxyCompactList}\small\item\em Represents a joint trajectory. \end{DoxyCompactList}\item 
 using \mbox{\hyperlink{namespacetesseract__common_a2ef4ec89c4c07fc0a75c4bc24da9681c}{Simple\+Resource\+Locator\+Fn}} = std\+::function$<$ std\+::string(const std\+::string \&)$>$
 \item 
 {\footnotesize template$<$typename T $>$ }\\using \mbox{\hyperlink{namespacetesseract__common_a000d15c3ab8d8ba4ebdaae64153b053a}{Aligned\+Vector}} = \mbox{\hyperlink{vhacdRaycastMesh_8cpp_adcf134d50025cc52907d0c8ac798d89d}{std\+::vector}}$<$ T, Eigen\+::aligned\+\_\+allocator$<$ T $>$ $>$
@@ -279,16 +279,6 @@ Enable easy switching to std\+::filesystem when available.
 \index{AllowedCollisionEntries@{AllowedCollisionEntries}!tesseract\_common@{tesseract\_common}}
 \doxysubsubsection{\texorpdfstring{AllowedCollisionEntries}{AllowedCollisionEntries}}
 {\footnotesize\ttfamily using \mbox{\hyperlink{namespacetesseract__common_a79d2a34647d0da5e574629878c142086}{tesseract\+\_\+common\+::\+Allowed\+Collision\+Entries}} = typedef std\+::unordered\+\_\+map$<$\mbox{\hyperlink{namespacetesseract__common_a5b28b7ae665b374a7ca166d496f648ce}{tesseract\+\_\+common\+::\+Link\+Names\+Pair}}, std\+::string, \mbox{\hyperlink{structtesseract__common_1_1PairHash}{tesseract\+\_\+common\+::\+Pair\+Hash}}$>$}
-
-\mbox{\Hypertarget{namespacetesseract__common_a57fa3336d4e5f8655281342a9c94aece}\label{namespacetesseract__common_a57fa3336d4e5f8655281342a9c94aece}} 
-\index{tesseract\_common@{tesseract\_common}!JointTrajectory@{JointTrajectory}}
-\index{JointTrajectory@{JointTrajectory}!tesseract\_common@{tesseract\_common}}
-\doxysubsubsection{\texorpdfstring{JointTrajectory}{JointTrajectory}}
-{\footnotesize\ttfamily using \mbox{\hyperlink{namespacetesseract__common_a57fa3336d4e5f8655281342a9c94aece}{tesseract\+\_\+common\+::\+Joint\+Trajectory}} = typedef \mbox{\hyperlink{vhacdRaycastMesh_8cpp_adcf134d50025cc52907d0c8ac798d89d}{std\+::vector}}$<$\mbox{\hyperlink{structtesseract__common_1_1JointState}{Joint\+State}}$>$}
-
-
-
-Represents a joint trajectory. 
 
 \mbox{\Hypertarget{namespacetesseract__common_a5b28b7ae665b374a7ca166d496f648ce}\label{namespacetesseract__common_a5b28b7ae665b374a7ca166d496f648ce}} 
 \index{tesseract\_common@{tesseract\_common}!LinkNamesPair@{LinkNamesPair}}

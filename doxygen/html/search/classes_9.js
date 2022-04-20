@@ -7,5 +7,6 @@ var searchData=
   ['jointlimits_4',['JointLimits',['../df/d9f/classtesseract__scene__graph_1_1JointLimits.html',1,'tesseract_scene_graph']]],
   ['jointmimic_5',['JointMimic',['../da/dba/classtesseract__scene__graph_1_1JointMimic.html',1,'tesseract_scene_graph']]],
   ['jointsafety_6',['JointSafety',['../dd/d5b/classtesseract__scene__graph_1_1JointSafety.html',1,'tesseract_scene_graph']]],
-  ['jointstate_7',['JointState',['../d0/de2/structtesseract__common_1_1JointState.html',1,'tesseract_common']]]
+  ['jointstate_7',['JointState',['../d0/de2/structtesseract__common_1_1JointState.html',1,'tesseract_common']]],
+  ['jointtrajectory_8',['JointTrajectory',['../d5/d28/structtesseract__common_1_1JointTrajectory.html',1,'tesseract_common']]]
 ];

@@ -1,0 +1,9 @@
+<map id="tesseract_common::JointTrajectory" name="tesseract_common::JointTrajectory">
+<area shape="rect" id="node1" title="Represents a joint trajectory." alt="" coords="5,512,229,539"/>
+<area shape="rect" id="node2" title=" " alt="" coords="171,408,325,449"/>
+<area shape="rect" id="node3" href="$d0/de2/structtesseract__common_1_1JointState.html" title=" " alt="" coords="187,319,386,345"/>
+<area shape="rect" id="node4" title=" " alt="" coords="133,185,293,212"/>
+<area shape="rect" id="node5" title=" " alt="" coords="78,96,157,123"/>
+<area shape="rect" id="node6" title=" " alt="" coords="55,5,179,47"/>
+<area shape="rect" id="node7" title=" " alt="" coords="318,185,394,212"/>
+</map>

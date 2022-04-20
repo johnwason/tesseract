@@ -223,9 +223,13 @@ var menudata={children:[
 {text:"z",url:"functions_vars_z.html#index_z"}]},
 {text:"Typedefs",url:"functions_type.html",children:[
 {text:"c",url:"functions_type.html#index_c"},
+{text:"d",url:"functions_type_d.html#index_d"},
 {text:"e",url:"functions_type_e.html#index_e"},
 {text:"g",url:"functions_type_g.html#index_g"},
+{text:"i",url:"functions_type_i.html#index_i"},
 {text:"p",url:"functions_type_p.html#index_p"},
+{text:"r",url:"functions_type_r.html#index_r"},
+{text:"s",url:"functions_type_s.html#index_s"},
 {text:"t",url:"functions_type_t.html#index_t"},
 {text:"u",url:"functions_type_u.html#index_u"},
 {text:"v",url:"functions_type_v.html#index_v"}]},

@@ -83,62 +83,68 @@ $(function() {
 <code>#include &lt;gtest/gtest.h&gt;</code><br />
 <code>#include &lt;boost/serialization/shared_ptr.hpp&gt;</code><br />
 <code>#include &lt;boost/serialization/nvp.hpp&gt;</code><br />
+<code>#include &lt;<a class="el" href="../../d1/df1/eigen__serialization_8h_source.html">tesseract_common/eigen_serialization.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="../../dd/d50/serialization_8h_source.html">tesseract_common/serialization.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="../../d2/d05/unit__test__utils_8h_source.html">tesseract_common/unit_test_utils.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="../../dc/d79/tesseract__common_2include_2tesseract__common_2utils_8h_source.html">tesseract_common/utils.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="../../d2/d01/allowed__collision__matrix_8h_source.html">tesseract_common/allowed_collision_matrix.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="../../d4/da8/collision__margin__data_8h_source.html">tesseract_common/collision_margin_data.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="../../d5/dbf/atomic__serialization_8h_source.html">tesseract_common/atomic_serialization.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="../../d4/dc4/joint__state_8h_source.html">tesseract_common/joint_state.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="../../d5/df5/manipulator__info_8h_source.html">tesseract_common/manipulator_info.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tesseract_common_serialization_unit.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/df2/tesseract__common__serialization__unit_8cpp__incl.png" border="0" usemap="#atesseract__common_2test_2tesseract__common__serialization__unit_8cpp" alt=""/></div>
 <map name="atesseract__common_2test_2tesseract__common__serialization__unit_8cpp" id="atesseract__common_2test_2tesseract__common__serialization__unit_8cpp">
-<area shape="rect" title="Tests serialization of types in tesseract_common." alt="" coords="2753,5,2965,61"/>
-<area shape="rect" href="../../de/d3c/macros_8h.html" title="Common Tesseract Macros." alt="" coords="2088,549,2279,575"/>
-<area shape="rect" title=" " alt="" coords="2988,206,3083,233"/>
-<area shape="rect" title=" " alt="" coords="3107,199,3233,240"/>
-<area shape="rect" title=" " alt="" coords="3432,199,3559,240"/>
-<area shape="rect" href="../../dd/d50/serialization_8h.html" title="Additional Boost serialization wrappers." alt="" coords="2693,206,2908,233"/>
-<area shape="rect" href="../../d2/d05/unit__test__utils_8h.html" title="Common Tesseract unit test utilities." alt="" coords="2839,109,2997,151"/>
-<area shape="rect" href="../../dc/d79/tesseract__common_2include_2tesseract__common_2utils_8h.html" title="Common Tesseract Utility Functions." alt="" coords="1545,206,1715,233"/>
-<area shape="rect" href="../../d2/d01/allowed__collision__matrix_8h.html" title=" " alt="" coords="999,288,1181,329"/>
-<area shape="rect" href="../../d4/da8/collision__margin__data_8h.html" title="This is used to store collision margin information." alt="" coords="1161,109,1345,151"/>
-<area shape="rect" href="../../d5/dbf/atomic__serialization_8h.html" title="Additional Boost serialization wrappers." alt="" coords="3618,109,3794,151"/>
-<area shape="rect" title=" " alt="" coords="2691,295,2753,322"/>
-<area shape="rect" title=" " alt="" coords="2481,295,2576,322"/>
-<area shape="rect" title=" " alt="" coords="2601,295,2667,322"/>
-<area shape="rect" title=" " alt="" coords="2077,295,2146,322"/>
-<area shape="rect" title=" " alt="" coords="2777,295,2981,322"/>
-<area shape="rect" title=" " alt="" coords="3006,295,3206,322"/>
-<area shape="rect" title=" " alt="" coords="3230,288,3369,329"/>
-<area shape="rect" title=" " alt="" coords="3393,288,3531,329"/>
-<area shape="rect" title=" " alt="" coords="1456,452,1583,493"/>
-<area shape="rect" title=" " alt="" coords="2323,288,2457,329"/>
-<area shape="rect" title=" " alt="" coords="1467,295,1518,322"/>
-<area shape="rect" title=" " alt="" coords="1373,459,1431,486"/>
-<area shape="rect" title=" " alt="" coords="1320,377,1375,404"/>
-<area shape="rect" title=" " alt="" coords="1543,295,1621,322"/>
-<area shape="rect" title=" " alt="" coords="1645,295,1711,322"/>
-<area shape="rect" title=" " alt="" coords="1735,295,1802,322"/>
-<area shape="rect" title=" " alt="" coords="269,549,354,575"/>
-<area shape="rect" title=" " alt="" coords="1826,295,1898,322"/>
-<area shape="rect" title=" " alt="" coords="1923,295,2001,322"/>
-<area shape="rect" href="../../dd/ddb/tesseract__common_2include_2tesseract__common_2types_8h.html" title="Common Tesseract Types." alt="" coords="698,377,877,404"/>
-<area shape="rect" title=" " alt="" coords="45,452,172,493"/>
-<area shape="rect" title=" " alt="" coords="1145,459,1213,486"/>
-<area shape="rect" title=" " alt="" coords="1002,377,1093,404"/>
-<area shape="rect" title=" " alt="" coords="1237,459,1348,486"/>
-<area shape="rect" title=" " alt="" coords="248,452,375,493"/>
-<area shape="rect" title=" " alt="" coords="999,549,1114,575"/>
-<area shape="rect" title=" " alt="" coords="755,459,801,486"/>
-<area shape="rect" title=" " alt="" coords="451,459,591,486"/>
-<area shape="rect" title=" " alt="" coords="615,459,730,486"/>
-<area shape="rect" href="../../d9/dc2/kinematic__limits_8h.html" title="Common Tesseract Kinematic Limits and Related Utility Functions." alt="" coords="825,452,1019,493"/>
-<area shape="rect" title=" " alt="" coords="848,541,975,583"/>
-<area shape="rect" title=" " alt="" coords="3708,199,3835,240"/>
-<area shape="rect" title=" " alt="" coords="3859,199,3985,240"/>
-<area shape="rect" title=" " alt="" coords="4010,206,4071,233"/>
+<area shape="rect" title="Tests serialization of types in tesseract_common." alt="" coords="1230,5,1442,61"/>
+<area shape="rect" href="../../de/d3c/macros_8h.html" title="Common Tesseract Macros." alt="" coords="1672,563,1863,590"/>
+<area shape="rect" title=" " alt="" coords="1068,206,1163,233"/>
+<area shape="rect" title=" " alt="" coords="1187,199,1314,240"/>
+<area shape="rect" title=" " alt="" coords="3370,199,3496,240"/>
+<area shape="rect" href="../../d1/df1/eigen__serialization_8h.html" title=" " alt="" coords="680,377,848,419"/>
+<area shape="rect" href="../../dd/d50/serialization_8h.html" title="Additional Boost serialization wrappers." alt="" coords="878,385,1092,411"/>
+<area shape="rect" href="../../d2/d05/unit__test__utils_8h.html" title="Common Tesseract unit test utilities." alt="" coords="1256,109,1415,151"/>
+<area shape="rect" href="../../dc/d79/tesseract__common_2include_2tesseract__common_2utils_8h.html" title="Common Tesseract Utility Functions." alt="" coords="1864,206,2034,233"/>
+<area shape="rect" href="../../d2/d01/allowed__collision__matrix_8h.html" title=" " alt="" coords="2302,288,2484,329"/>
+<area shape="rect" href="../../d4/da8/collision__margin__data_8h.html" title="This is used to store collision margin information." alt="" coords="2753,109,2937,151"/>
+<area shape="rect" href="../../d5/dbf/atomic__serialization_8h.html" title="Additional Boost serialization wrappers." alt="" coords="3497,109,3673,151"/>
+<area shape="rect" href="../../d4/dc4/joint__state_8h.html" title="Tesseract Joint State." alt="" coords="90,377,251,419"/>
+<area shape="rect" href="../../d5/df5/manipulator__info_8h.html" title=" " alt="" coords="1554,377,1758,419"/>
+<area shape="rect" title=" " alt="" coords="1416,474,1477,501"/>
+<area shape="rect" title=" " alt="" coords="123,474,218,501"/>
+<area shape="rect" title=" " alt="" coords="565,474,632,501"/>
+<area shape="rect" title=" " alt="" coords="1322,474,1392,501"/>
+<area shape="rect" title=" " alt="" coords="656,474,860,501"/>
+<area shape="rect" title=" " alt="" coords="885,474,1085,501"/>
+<area shape="rect" title=" " alt="" coords="1109,467,1248,508"/>
+<area shape="rect" title=" " alt="" coords="242,467,381,508"/>
+<area shape="rect" title=" " alt="" coords="1990,467,2116,508"/>
+<area shape="rect" title=" " alt="" coords="406,467,540,508"/>
+<area shape="rect" title=" " alt="" coords="2076,295,2126,322"/>
+<area shape="rect" title=" " alt="" coords="1805,474,1864,501"/>
+<area shape="rect" title=" " alt="" coords="2098,385,2152,411"/>
+<area shape="rect" title=" " alt="" coords="1491,295,1570,322"/>
+<area shape="rect" title=" " alt="" coords="1594,295,1659,322"/>
+<area shape="rect" title=" " alt="" coords="1684,295,1750,322"/>
+<area shape="rect" title=" " alt="" coords="2680,563,2765,590"/>
+<area shape="rect" title=" " alt="" coords="1774,295,1846,322"/>
+<area shape="rect" title=" " alt="" coords="1871,295,1950,322"/>
+<area shape="rect" href="../../dd/ddb/tesseract__common_2include_2tesseract__common_2types_8h.html" title="Common Tesseract Types." alt="" coords="2558,385,2737,411"/>
+<area shape="rect" title=" " alt="" coords="3128,467,3255,508"/>
+<area shape="rect" title=" " alt="" coords="2140,474,2208,501"/>
+<area shape="rect" title=" " alt="" coords="2177,385,2268,411"/>
+<area shape="rect" title=" " alt="" coords="3279,474,3390,501"/>
+<area shape="rect" title=" " alt="" coords="2978,467,3104,508"/>
+<area shape="rect" title=" " alt="" coords="2324,563,2438,590"/>
+<area shape="rect" title=" " alt="" coords="2502,474,2548,501"/>
+<area shape="rect" title=" " alt="" coords="2572,474,2712,501"/>
+<area shape="rect" title=" " alt="" coords="2737,474,2852,501"/>
+<area shape="rect" href="../../d9/dc2/kinematic__limits_8h.html" title="Common Tesseract Kinematic Limits and Related Utility Functions." alt="" coords="2284,467,2478,508"/>
+<area shape="rect" title=" " alt="" coords="1522,556,1648,597"/>
+<area shape="rect" title=" " alt="" coords="3572,199,3699,240"/>
+<area shape="rect" title=" " alt="" coords="3723,199,3850,240"/>
+<area shape="rect" title=" " alt="" coords="3874,206,3936,233"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -150,6 +156,14 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a1a750e03b5794be558e9fcaf910cf550"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#a1a750e03b5794be558e9fcaf910cf550">TEST</a> (TesseractCommonSerializeUnit, <a class="el" href="../../d2/d94/structtesseract__common_1_1KinematicLimits.html">KinematicLimits</a>)</td></tr>
+<tr class="separator:a1a750e03b5794be558e9fcaf910cf550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaac1ba7b235d8f6638219882e109060a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#aaac1ba7b235d8f6638219882e109060a">TEST</a> (TesseractCommonSerializeUnit, <a class="el" href="../../d4/d31/structtesseract__common_1_1ManipulatorInfo.html">ManipulatorInfo</a>)</td></tr>
+<tr class="separator:aaac1ba7b235d8f6638219882e109060a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3339cf8857c0ce6d6b55496a03ec0fe4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#a3339cf8857c0ce6d6b55496a03ec0fe4">TEST</a> (TesseractCommonSerializeUnit, <a class="el" href="../../d0/de2/structtesseract__common_1_1JointState.html">JointState</a>)</td></tr>
+<tr class="separator:a3339cf8857c0ce6d6b55496a03ec0fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1163e92c2678a953652bf0d971991661"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#a1163e92c2678a953652bf0d971991661">TEST</a> (TesseractCommonSerializeUnit, <a class="el" href="../../d5/d28/structtesseract__common_1_1JointTrajectory.html">JointTrajectory</a>)</td></tr>
+<tr class="separator:a1163e92c2678a953652bf0d971991661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5594547fd45cf22c7eeaa803aec58180"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#a5594547fd45cf22c7eeaa803aec58180">TEST</a> (TesseractCommonSerializeUnit, <a class="el" href="../../d7/d4e/classtesseract__common_1_1AllowedCollisionMatrix.html">AllowedCollisionMatrix</a>)</td></tr>
 <tr class="separator:a5594547fd45cf22c7eeaa803aec58180"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d81a89792931d4654102e1c491ad795"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#a5d81a89792931d4654102e1c491ad795">TEST</a> (TesseractCommonSerializeUnit, <a class="el" href="../../d6/d32/structtesseract__common_1_1CalibrationInfo.html">CalibrationInfo</a>)</td></tr>
@@ -164,6 +178,12 @@ Functions</h2></td></tr>
 <tr class="separator:a78451459e2ae0c6803bb227430d30136"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51a295975bb6f72b43e81098e4ee9da9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#a51a295975bb6f72b43e81098e4ee9da9">TEST</a> (TesseractCommonSerializeUnit, <a class="el" href="../../dc/d89/structtesseract__common_1_1PluginInfoContainer.html">PluginInfoContainer</a>)</td></tr>
 <tr class="separator:a51a295975bb6f72b43e81098e4ee9da9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33a3c3fd86f8e058071e6b328737a9d6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#a33a3c3fd86f8e058071e6b328737a9d6">TEST</a> (TesseractCommonSerializeUnit, VectorXd)</td></tr>
+<tr class="separator:a33a3c3fd86f8e058071e6b328737a9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78790e9779696496339074c1c9a56861"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#a78790e9779696496339074c1c9a56861">TEST</a> (TesseractCommonSerializeUnit, MatrixX2d)</td></tr>
+<tr class="separator:a78790e9779696496339074c1c9a56861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72c60343b9ab761e80f4c0116d4fa26b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#a72c60343b9ab761e80f4c0116d4fa26b">TEST</a> (TesseractCommonSerializeUnit, Isometry3d)</td></tr>
+<tr class="separator:a72c60343b9ab761e80f4c0116d4fa26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac21bda1760f247f0b182d9e823fe1a7c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#ac21bda1760f247f0b182d9e823fe1a7c">TEST</a> (TesseractCommonSerializeUnit, StdAtomic)</td></tr>
 <tr class="separator:ac21bda1760f247f0b182d9e823fe1a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d44/tesseract__common__serialization__unit_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
@@ -210,7 +230,7 @@ Matthew Powelson </dd></dl>
 </div>
 </div>
 <a id="a5594547fd45cf22c7eeaa803aec58180" name="a5594547fd45cf22c7eeaa803aec58180"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5594547fd45cf22c7eeaa803aec58180">&#9670;&nbsp;</a></span>TEST() <span class="overload">[1/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5594547fd45cf22c7eeaa803aec58180">&#9670;&nbsp;</a></span>TEST() <span class="overload">[1/15]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,7 +258,7 @@ Matthew Powelson </dd></dl>
 </div>
 </div>
 <a id="a5d81a89792931d4654102e1c491ad795" name="a5d81a89792931d4654102e1c491ad795"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d81a89792931d4654102e1c491ad795">&#9670;&nbsp;</a></span>TEST() <span class="overload">[2/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d81a89792931d4654102e1c491ad795">&#9670;&nbsp;</a></span>TEST() <span class="overload">[2/15]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -266,7 +286,7 @@ Matthew Powelson </dd></dl>
 </div>
 </div>
 <a id="ad66c4f8439e89af14ec43e41dde19a4e" name="ad66c4f8439e89af14ec43e41dde19a4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad66c4f8439e89af14ec43e41dde19a4e">&#9670;&nbsp;</a></span>TEST() <span class="overload">[3/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad66c4f8439e89af14ec43e41dde19a4e">&#9670;&nbsp;</a></span>TEST() <span class="overload">[3/15]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,7 +314,7 @@ Matthew Powelson </dd></dl>
 </div>
 </div>
 <a id="a1897d3badae45e11cfbc18867ca363c4" name="a1897d3badae45e11cfbc18867ca363c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1897d3badae45e11cfbc18867ca363c4">&#9670;&nbsp;</a></span>TEST() <span class="overload">[4/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1897d3badae45e11cfbc18867ca363c4">&#9670;&nbsp;</a></span>TEST() <span class="overload">[4/15]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,8 +341,120 @@ Matthew Powelson </dd></dl>
 
 </div>
 </div>
+<a id="a72c60343b9ab761e80f4c0116d4fa26b" name="a72c60343b9ab761e80f4c0116d4fa26b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72c60343b9ab761e80f4c0116d4fa26b">&#9670;&nbsp;</a></span>TEST() <span class="overload">[5/15]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST </td>
+          <td>(</td>
+          <td class="paramtype">TesseractCommonSerializeUnit&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Isometry3d&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3339cf8857c0ce6d6b55496a03ec0fe4" name="a3339cf8857c0ce6d6b55496a03ec0fe4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3339cf8857c0ce6d6b55496a03ec0fe4">&#9670;&nbsp;</a></span>TEST() <span class="overload">[6/15]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST </td>
+          <td>(</td>
+          <td class="paramtype">TesseractCommonSerializeUnit&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d0/de2/structtesseract__common_1_1JointState.html">JointState</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1163e92c2678a953652bf0d971991661" name="a1163e92c2678a953652bf0d971991661"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1163e92c2678a953652bf0d971991661">&#9670;&nbsp;</a></span>TEST() <span class="overload">[7/15]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST </td>
+          <td>(</td>
+          <td class="paramtype">TesseractCommonSerializeUnit&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d5/d28/structtesseract__common_1_1JointTrajectory.html">JointTrajectory</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1a750e03b5794be558e9fcaf910cf550" name="a1a750e03b5794be558e9fcaf910cf550"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a750e03b5794be558e9fcaf910cf550">&#9670;&nbsp;</a></span>TEST() <span class="overload">[8/15]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST </td>
+          <td>(</td>
+          <td class="paramtype">TesseractCommonSerializeUnit&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d2/d94/structtesseract__common_1_1KinematicLimits.html">KinematicLimits</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a145b4fead1bd1d019b2a19770a7e194f" name="a145b4fead1bd1d019b2a19770a7e194f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a145b4fead1bd1d019b2a19770a7e194f">&#9670;&nbsp;</a></span>TEST() <span class="overload">[5/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a145b4fead1bd1d019b2a19770a7e194f">&#9670;&nbsp;</a></span>TEST() <span class="overload">[9/15]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -349,8 +481,64 @@ Matthew Powelson </dd></dl>
 
 </div>
 </div>
+<a id="aaac1ba7b235d8f6638219882e109060a" name="aaac1ba7b235d8f6638219882e109060a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaac1ba7b235d8f6638219882e109060a">&#9670;&nbsp;</a></span>TEST() <span class="overload">[10/15]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST </td>
+          <td>(</td>
+          <td class="paramtype">TesseractCommonSerializeUnit&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d4/d31/structtesseract__common_1_1ManipulatorInfo.html">ManipulatorInfo</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a78790e9779696496339074c1c9a56861" name="a78790e9779696496339074c1c9a56861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78790e9779696496339074c1c9a56861">&#9670;&nbsp;</a></span>TEST() <span class="overload">[11/15]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST </td>
+          <td>(</td>
+          <td class="paramtype">TesseractCommonSerializeUnit&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">MatrixX2d&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a78451459e2ae0c6803bb227430d30136" name="a78451459e2ae0c6803bb227430d30136"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78451459e2ae0c6803bb227430d30136">&#9670;&nbsp;</a></span>TEST() <span class="overload">[6/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78451459e2ae0c6803bb227430d30136">&#9670;&nbsp;</a></span>TEST() <span class="overload">[12/15]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -378,7 +566,7 @@ Matthew Powelson </dd></dl>
 </div>
 </div>
 <a id="a51a295975bb6f72b43e81098e4ee9da9" name="a51a295975bb6f72b43e81098e4ee9da9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51a295975bb6f72b43e81098e4ee9da9">&#9670;&nbsp;</a></span>TEST() <span class="overload">[7/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a51a295975bb6f72b43e81098e4ee9da9">&#9670;&nbsp;</a></span>TEST() <span class="overload">[13/15]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -406,7 +594,7 @@ Matthew Powelson </dd></dl>
 </div>
 </div>
 <a id="ac21bda1760f247f0b182d9e823fe1a7c" name="ac21bda1760f247f0b182d9e823fe1a7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac21bda1760f247f0b182d9e823fe1a7c">&#9670;&nbsp;</a></span>TEST() <span class="overload">[8/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac21bda1760f247f0b182d9e823fe1a7c">&#9670;&nbsp;</a></span>TEST() <span class="overload">[14/15]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -433,10 +621,38 @@ Matthew Powelson </dd></dl>
 
 </div>
 </div>
+<a id="a33a3c3fd86f8e058071e6b328737a9d6" name="a33a3c3fd86f8e058071e6b328737a9d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33a3c3fd86f8e058071e6b328737a9d6">&#9670;&nbsp;</a></span>TEST() <span class="overload">[15/15]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TEST </td>
+          <td>(</td>
+          <td class="paramtype">TesseractCommonSerializeUnit&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VectorXd&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 17 2022 01:20:44 for Tesseract by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3
+Generated on Wed Apr 20 2022 05:29:21 for Tesseract by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3
 </small></address>
 </body>
 </html>
