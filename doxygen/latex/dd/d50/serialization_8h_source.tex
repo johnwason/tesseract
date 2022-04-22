@@ -111,7 +111,7 @@
 \DoxyCodeLine{131                                   \textcolor{keyword}{const} std::string\& file\_path,}
 \DoxyCodeLine{132                                   \textcolor{keyword}{const} std::string\& name = \textcolor{stringliteral}{"{}"{}})}
 \DoxyCodeLine{133   \{}
-\DoxyCodeLine{134     std::ofstream os(file\_path);}
+\DoxyCodeLine{134     std::ofstream os(file\_path, std::ios\_base::binary);}
 \DoxyCodeLine{135     \{  \textcolor{comment}{// Must be scoped because all data is not written until the oost::archive::xml\_oarchive goes out of scope}}
 \DoxyCodeLine{136       boost::archive::binary\_oarchive oa(os);}
 \DoxyCodeLine{137       \textcolor{comment}{// Boost uses the same function for serialization and deserialization so it requires a non-\/const reference}}
@@ -162,7 +162,7 @@
 \DoxyCodeLine{182     SerializableType archive\_type;}
 \DoxyCodeLine{183 }
 \DoxyCodeLine{184     \{  \textcolor{comment}{// Must be scoped because all data is not written until the oost::archive::xml\_oarchive goes out of scope}}
-\DoxyCodeLine{185       std::ifstream ifs(file\_path);}
+\DoxyCodeLine{185       std::ifstream ifs(file\_path, std::ios\_base::binary);}
 \DoxyCodeLine{186       assert(ifs.good());}
 \DoxyCodeLine{187       boost::archive::binary\_iarchive ia(ifs);}
 \DoxyCodeLine{188       ia >> BOOST\_SERIALIZATION\_NVP(archive\_type);}
