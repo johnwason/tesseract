@@ -29,12 +29,15 @@
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <chrono>
+#include <memory>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
-#include <tesseract_visualization/trajectory_interpolator.h>
+#include <tesseract_common/fwd.h>
 
 namespace tesseract_visualization
 {
+class TrajectoryInterpolator;
+
 /** @brief Enables the ability to play a trajectory provided by the set program */
 class TrajectoryPlayer
 {
@@ -123,7 +126,7 @@ public:
   long size() const;
 
 private:
-  TrajectoryInterpolator::UPtr trajectory_{ nullptr };
+  std::unique_ptr<TrajectoryInterpolator> trajectory_{ nullptr };
   double trajectory_duration_start_{ 0 };
   double trajectory_duration_end_{ 0 };
   double current_duration_{ 0 };

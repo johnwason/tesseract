@@ -69,10 +69,6 @@ private:
   void serialize(Archive& ar, const unsigned int version);  // NOLINT
 };
 
-}  // namespace tesseract_common
-
-namespace tesseract_common
-{
 /** @brief Represents a joint trajectory */
 class JointTrajectory
 {
