@@ -55,3 +55,13 @@ jobs:
         upstream-args: --cmake-args -G "Ninja" -DVCPKG_TARGET_TRIPLET=x64-windows-release -DCMAKE_BUILD_TYPE=Release
         target-path: target_ws/src
         target-args: --cmake-args -G "Ninja" -DVCPKG_TARGET_TRIPLET=x64-windows-release -DCMAKE_BUILD_TYPE=Release -DTESSERACT_ENABLE_TESTING=ON
+    - name: capture artifacts
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ runner.os }}-build-files
+        path: |
+          target_ws/build
+          target_ws/install
+          vcpkg/installed/**/*.cmake
+          vcpkg/**/*.log
