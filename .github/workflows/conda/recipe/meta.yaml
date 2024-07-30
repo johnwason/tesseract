@@ -38,12 +38,11 @@ requirements:
       - flann
       - jsoncpp
       - yaml-cpp
-      - bullet-cpp
+      - libboost-devel
       - blas
       - xorg-libx11    # [unix]
       - xorg-libxext   # [unix]
     run:
-      - boost-cpp
       - eigen 
       - tinyxml2
       - console_bridge
@@ -59,7 +58,6 @@ requirements:
       - jsoncpp
       - taskflow 
       - yaml-cpp
-      - bullet-cpp
       - blas
       - xorg-libx11    # [unix]
       - xorg-libxext   # [unix]
