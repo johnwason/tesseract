@@ -78,6 +78,7 @@ jobs:
       run: vcs import --input tesseract/.github/workflows/windows_dependencies.repos
     - name: colcon build
       working-directory: ws
+      shell: bash
       run: |
         set -e
         export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$GITHUB_WORKSPACE/vcpkg/installed/${{ matrix.config.vcpkg_triplet }}/lib
@@ -99,6 +100,7 @@ jobs:
             -DOpenMP_libomp_LIBRARY=${{ matrix.config.homebrew_root }}/opt/libomp/lib/libomp.dylib
     - name: colcon test
       working-directory: ws
+      shell: bash
       run: |
         set -e
         export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$GITHUB_WORKSPACE/vcpkg/installed/${{ matrix.config.vcpkg_triplet }}/lib
