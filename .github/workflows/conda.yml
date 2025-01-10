@@ -33,10 +33,8 @@ jobs:
         vcs import --input "${{ github.workspace }}/workspace/src/tesseract/.github/workflows/windows_dependencies.repos" workspace/src/
     - uses: conda-incubator/setup-miniconda@v3
       with:
-        channel-priority: strict
         environment-file: workspace/src/tesseract/.github/workflows/conda/environment.yml       
-        use-mamba: true
-        auto-update-conda: true
+        miniforge-version: latest
         activate-environment: tesseract-build
     - name: build and test
       run: |
@@ -70,8 +68,7 @@ jobs:
       with:
         channel-priority: strict
         environment-file: workspace/src/tesseract/.github/workflows/conda/environment.yml
-        use-mamba: true
-        auto-update-conda: true
+        miniforge-version: latest
         activate-environment: tesseract-build
     - name: build and test
       run: |
