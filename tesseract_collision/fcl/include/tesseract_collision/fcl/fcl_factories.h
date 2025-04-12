@@ -37,7 +37,7 @@ public:
                                                  const YAML::Node& config) const override final;
 };
 
-TESSERACT_PLUGIN_ANCHOR_DECL(FCLFactoriesAnchor)
+PLUGIN_ANCHOR_DECL(FCLFactoriesAnchor)
 
 }  // namespace tesseract_collision::tesseract_collision_fcl
 #endif  // TESSERACT_COLLISION_FCL_FCL_FACTORIES_H

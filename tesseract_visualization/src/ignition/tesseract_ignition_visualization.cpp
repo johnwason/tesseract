@@ -44,7 +44,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_visualization/markers/axis_marker.h>
 #include <tesseract_visualization/markers/contact_results_marker.h>
 #include <tesseract_visualization/markers/toolpath_marker.h>
-#include <tesseract_common/class_loader.h>
 
 /** @brief Message type is gz::msgs::Scene */
 static const std::string DEFAULT_SCENE_TOPIC_NAME = "/tesseract_ignition/topic/scene";
@@ -602,7 +601,7 @@ void TesseractIgnitionVisualization::sendSceneState(const tesseract_scene_graph:
 //  scene_pub_.Publish(scene_msg);
 //}
 
-TESSERACT_PLUGIN_ANCHOR_IMPL(IgnitionVisualizationAnchor)
+PLUGIN_ANCHOR_IMPL(IgnitionVisualizationAnchor)
 }  // namespace tesseract_visualization
 
 TESSERACT_ADD_VISUALIZATION_PLUGIN(tesseract_visualization::TesseractIgnitionVisualization,

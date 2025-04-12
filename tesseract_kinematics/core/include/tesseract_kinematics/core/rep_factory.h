@@ -39,7 +39,7 @@ class REPInvKinFactory : public InvKinFactory
                                             const YAML::Node& config) const override final;
 };
 
-TESSERACT_PLUGIN_ANCHOR_DECL(REPInvKinFactoriesAnchor)
+PLUGIN_ANCHOR_DECL(REPInvKinFactoriesAnchor)
 
 }  // namespace tesseract_kinematics
 

@@ -82,7 +82,7 @@ private:
   void sendSceneState(const tesseract_scene_graph::SceneState& scene_state);
 };
 
-TESSERACT_PLUGIN_ANCHOR_DECL(IgnitionVisualizationAnchor)
+PLUGIN_ANCHOR_DECL(IgnitionVisualizationAnchor)
 
 }  // namespace tesseract_visualization
 

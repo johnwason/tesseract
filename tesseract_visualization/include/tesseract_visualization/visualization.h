@@ -40,7 +40,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 // clang-format off
 #define TESSERACT_ADD_VISUALIZATION_PLUGIN(DERIVED_CLASS, ALIAS)                                                       \
-  TESSERACT_ADD_PLUGIN_SECTIONED(DERIVED_CLASS, ALIAS, Plotter)
+  EXPORT_CLASS_SECTIONED(DERIVED_CLASS, ALIAS, Plotter)
 // clang-format on
 
 namespace tesseract_visualization

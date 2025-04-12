@@ -29,9 +29,10 @@
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <memory>
+#include <boost_plugin_loader/plugin_loader.h>
+#include <boost_plugin_loader/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
-#include <tesseract_common/plugin_loader.h>
 
 namespace tesseract_visualization
 {
@@ -41,7 +42,7 @@ class Visualization;
  * @brief This is used to dynamically load tesseract visualizer.
  * This class must remain around for the life of the loaded visualization class.
  */
-class VisualizationLoader : public tesseract_common::PluginLoader
+class VisualizationLoader : public boost_plugin_loader::PluginLoader
 {
 public:
   /** @brief This will attempt to load the tesseract_ignition visualizer provided by snap package */

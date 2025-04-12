@@ -27,6 +27,7 @@
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <yaml-cpp/yaml.h>
+#include <boost_plugin_loader/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_collision/bullet/bullet_factories.h>
@@ -86,7 +87,7 @@ std::unique_ptr<ContinuousContactManager> BulletCastSimpleManagerFactory::create
   return std::make_unique<BulletCastSimpleManager>(name, getConfigInfo(config));
 }
 
-TESSERACT_PLUGIN_ANCHOR_IMPL(BulletFactoriesAnchor)
+PLUGIN_ANCHOR_IMPL(BulletFactoriesAnchor)
 
 }  // namespace tesseract_collision::tesseract_collision_bullet
 

@@ -1,4 +1,6 @@
 # Create interface for core
+find_package(boost_plugin_loader REQUIRED)
+
 add_library(
   ${PROJECT_NAME}_core
   src/common.cpp
@@ -18,7 +20,8 @@ target_link_libraries(
          Boost::system
          Boost::serialization
          yaml-cpp
-         octomap)
+         octomap
+         boost_plugin_loader::boost_plugin_loader)
 target_compile_options(${PROJECT_NAME}_core PRIVATE ${TESSERACT_COMPILE_OPTIONS_PRIVATE})
 target_compile_options(${PROJECT_NAME}_core PUBLIC ${TESSERACT_COMPILE_OPTIONS_PUBLIC})
 target_compile_definitions(${PROJECT_NAME}_core PUBLIC ${TESSERACT_COMPILE_DEFINITIONS})
@@ -57,6 +60,7 @@ configure_component(
     tesseract_common
     yaml-cpp
     octomap
+    boost_plugin_loader
     "Boost COMPONENTS system program_options serialization"
   CFG_EXTRAS cmake/core-extras.cmake)
 

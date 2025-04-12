@@ -27,6 +27,9 @@
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <gtest/gtest.h>
 #include <fstream>
+#include <boost_plugin_loader/plugin_loader.h>
+#include <boost_plugin_loader/plugin_loader.hpp>
+#include <boost_plugin_loader/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_collision/core/contact_managers_plugin_factory.h>
@@ -39,7 +42,7 @@ using namespace tesseract_collision;
 
 TEST(TesseractContactManagersFactoryUnit, StaticLoadPlugin)  // NOLINT
 {
-  tesseract_common::PluginLoader::addSymbolLibraryToSearchLibrariesEnv(
+  boost_plugin_loader::PluginLoader::addSymbolLibraryToSearchLibrariesEnv(
       tesseract_collision::tesseract_collision_bullet::BulletFactoriesAnchor(), "TESSERACT_CONTACT_MANAGERS_PLUGINS");
 
   std::string config = R"(contact_manager_plugins:

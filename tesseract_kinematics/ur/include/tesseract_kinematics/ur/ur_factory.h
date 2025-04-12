@@ -39,7 +39,7 @@ class URInvKinFactory : public InvKinFactory
                                             const YAML::Node& config) const override final;
 };
 
-TESSERACT_PLUGIN_ANCHOR_DECL(URFactoriesAnchor)
+PLUGIN_ANCHOR_DECL(URFactoriesAnchor)
 
 }  // namespace tesseract_kinematics
 #endif  // TESSERACT_KINEMATICS_UR_FACTORY_H

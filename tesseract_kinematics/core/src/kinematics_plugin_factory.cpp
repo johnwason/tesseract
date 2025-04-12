@@ -26,6 +26,12 @@
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <boost/algorithm/string.hpp>
+#include <boost_plugin_loader/plugin_loader.h>
+#include <boost_plugin_loader/plugin_loader.hpp>
+#include <boost_plugin_loader/macros.h>
+#include <console_bridge/console.h>
+#include <filesystem>
+#include <fstream>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/inverse_kinematics.h>
@@ -33,7 +39,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_scene_graph/graph.h>
 #include <tesseract_scene_graph/scene_state.h>
 #include <tesseract_common/resource_locator.h>
-#include <tesseract_common/plugin_loader.h>
 #include <tesseract_common/yaml_utils.h>
 #include <tesseract_common/yaml_extenstions.h>
 #include <tesseract_kinematics/core/kinematics_plugin_factory.h>
@@ -267,7 +272,7 @@ KinematicsPluginFactory::createFwdKin(const std::string& solver_name,
     if (it != fwd_kin_factories_.end())
       return it->second->create(solver_name, scene_graph, scene_state, *this, plugin_info.config);
 
-    auto plugin = plugin_loader_.instantiate<FwdKinFactory>(plugin_info.class_name);
+    auto plugin = plugin_loader_.createInstance<FwdKinFactory>(plugin_info.class_name);
     if (plugin == nullptr)
     {
       CONSOLE_BRIDGE_logWarn("Failed to load symbol '%s'", plugin_info.class_name.c_str());
@@ -324,7 +329,7 @@ KinematicsPluginFactory::createInvKin(const std::string& solver_name,
     if (it != inv_kin_factories_.end())
       return it->second->create(solver_name, scene_graph, scene_state, *this, plugin_info.config);
 
-    auto plugin = plugin_loader_.instantiate<InvKinFactory>(plugin_info.class_name);
+    auto plugin = plugin_loader_.createInstance<InvKinFactory>(plugin_info.class_name);
     if (plugin == nullptr)
     {
       CONSOLE_BRIDGE_logWarn("Failed to load symbol '%s'", plugin_info.class_name.c_str());

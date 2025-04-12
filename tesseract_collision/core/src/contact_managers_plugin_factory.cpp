@@ -27,12 +27,15 @@
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <boost/algorithm/string.hpp>
+#include <console_bridge/console.h>
+#include <boost_plugin_loader/plugin_loader.h>
+#include <boost_plugin_loader/plugin_loader.hpp>
+#include <boost_plugin_loader/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_collision/core/discrete_contact_manager.h>
 #include <tesseract_collision/core/continuous_contact_manager.h>
 #include <tesseract_common/resource_locator.h>
-#include <tesseract_common/plugin_loader.h>
 #include <tesseract_common/yaml_utils.h>
 #include <tesseract_common/yaml_extenstions.h>
 #include <tesseract_collision/core/contact_managers_plugin_factory.h>
@@ -243,7 +246,7 @@ ContactManagersPluginFactory::createDiscreteContactManager(const std::string& na
     if (it != discrete_factories_.end())
       return it->second->create(name, plugin_info.config);
 
-    auto plugin = plugin_loader_.instantiate<DiscreteContactManagerFactory>(plugin_info.class_name);
+    auto plugin = plugin_loader_.createInstance<DiscreteContactManagerFactory>(plugin_info.class_name);
     if (plugin == nullptr)
     {
       CONSOLE_BRIDGE_logWarn("Failed to load symbol '%s'", plugin_info.class_name.c_str());
@@ -286,7 +289,7 @@ ContactManagersPluginFactory::createContinuousContactManager(const std::string& 
     if (it != continuous_factories_.end())
       return it->second->create(name, plugin_info.config);
 
-    auto plugin = plugin_loader_.instantiate<ContinuousContactManagerFactory>(plugin_info.class_name);
+    auto plugin = plugin_loader_.createInstance<ContinuousContactManagerFactory>(plugin_info.class_name);
     if (plugin == nullptr)
     {
       CONSOLE_BRIDGE_logWarn("Failed to load symbol '%s'", plugin_info.class_name.c_str());

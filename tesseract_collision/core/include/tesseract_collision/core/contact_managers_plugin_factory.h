@@ -31,19 +31,20 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <string>
 #include <memory>
 #include <map>
+#include <boost_plugin_loader/plugin_loader.h>
+#include <boost_plugin_loader/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/fwd.h>
 #include <filesystem>
-#include <tesseract_common/plugin_loader.h>
 #include <tesseract_common/plugin_info.h>
 
 // clang-format off
 #define TESSERACT_ADD_DISCRETE_MANAGER_PLUGIN(DERIVED_CLASS, ALIAS)                                                    \
-  TESSERACT_ADD_PLUGIN_SECTIONED(DERIVED_CLASS, ALIAS, DiscColl)
+  EXPORT_CLASS_SECTIONED(DERIVED_CLASS, ALIAS, DiscColl)
 
 #define TESSERACT_ADD_CONTINUOUS_MANAGER_PLUGIN(DERIVED_CLASS, ALIAS)                                                  \
-  TESSERACT_ADD_PLUGIN_SECTIONED(DERIVED_CLASS, ALIAS, ContColl)
+  EXPORT_CLASS_SECTIONED(DERIVED_CLASS, ALIAS, ContColl)
 // clang-format on
 
 namespace tesseract_collision
@@ -71,7 +72,7 @@ public:
 
 protected:
   static const std::string SECTION_NAME;
-  friend class PluginLoader;
+  friend class boost_plugin_loader::PluginLoader;
 };
 
 /** @brief Define a continuous contact manager plugin which the factory can create an instance */
@@ -93,7 +94,7 @@ public:
 
 protected:
   static const std::string SECTION_NAME;
-  friend class PluginLoader;
+  friend class boost_plugin_loader::PluginLoader;
 };
 
 class ContactManagersPluginFactory
@@ -281,7 +282,7 @@ private:
   mutable std::map<std::string, ContinuousContactManagerFactory::Ptr> continuous_factories_;
   tesseract_common::PluginInfoContainer discrete_plugin_info_;
   tesseract_common::PluginInfoContainer continuous_plugin_info_;
-  tesseract_common::PluginLoader plugin_loader_;
+  boost_plugin_loader::PluginLoader plugin_loader_;
 
   void loadConfig(const YAML::Node& config);
 };

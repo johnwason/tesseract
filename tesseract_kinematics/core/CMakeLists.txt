@@ -1,3 +1,5 @@
+find_package(boost_plugin_loader REQUIRED)
+
 add_library(
   ${PROJECT_NAME}_core
   src/inverse_kinematics.cpp
@@ -15,7 +17,8 @@ target_link_libraries(
          tesseract::tesseract_scene_graph
          tesseract::tesseract_state_solver_kdl
          console_bridge::console_bridge
-         yaml-cpp)
+         yaml-cpp
+         boost_plugin_loader::boost_plugin_loader)
 target_compile_options(${PROJECT_NAME}_core PRIVATE ${TESSERACT_COMPILE_OPTIONS_PRIVATE})
 target_compile_options(${PROJECT_NAME}_core PUBLIC ${TESSERACT_COMPILE_OPTIONS_PUBLIC})
 target_compile_definitions(${PROJECT_NAME}_core PUBLIC ${TESSERACT_COMPILE_DEFINITIONS})
@@ -34,7 +37,7 @@ target_include_directories(${PROJECT_NAME}_core PUBLIC "$<BUILD_INTERFACE:${CMAK
 
 # Add KDL kinematics factories
 add_library(${PROJECT_NAME}_core_factories src/rop_factory.cpp src/rep_factory.cpp)
-target_link_libraries(${PROJECT_NAME}_core_factories PUBLIC ${PROJECT_NAME}_core console_bridge::console_bridge)
+target_link_libraries(${PROJECT_NAME}_core_factories PUBLIC ${PROJECT_NAME}_core console_bridge::console_bridge boost_plugin_loader::boost_plugin_loader)
 target_compile_options(${PROJECT_NAME}_core_factories PRIVATE ${TESSERACT_COMPILE_OPTIONS_PRIVATE})
 target_compile_options(${PROJECT_NAME}_core_factories PUBLIC ${TESSERACT_COMPILE_OPTIONS_PUBLIC})
 target_compile_definitions(${PROJECT_NAME}_core_factories PUBLIC ${TESSERACT_COMPILE_DEFINITIONS})

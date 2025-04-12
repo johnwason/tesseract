@@ -32,6 +32,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <boost/serialization/unique_ptr.hpp>
 #include <boost/serialization/binary_object.hpp>
 #include <boost/serialization/vector.hpp>
+#include <console_bridge/console.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_environment/utils.h>

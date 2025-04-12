@@ -16,6 +16,7 @@ find_package(tesseract_common REQUIRED)
 find_package(tesseract_environment REQUIRED)
 find_package(tesseract_scene_graph REQUIRED)
 find_package(tesseract_state_solver REQUIRED)
+find_package(boost_plugin_loader REQUIRED)
 
 # Optional to build gazebo visualization
 find_package(gz-common5 COMPONENTS profiler events av QUIET)
@@ -80,7 +81,8 @@ target_link_libraries(
          tesseract::tesseract_state_solver_core
          tesseract::tesseract_collision_core
          tesseract::tesseract_common
-         console_bridge::console_bridge)
+         console_bridge::console_bridge
+         boost_plugin_loader::boost_plugin_loader)
 target_compile_options(${PROJECT_NAME} PRIVATE ${TESSERACT_COMPILE_OPTIONS_PRIVATE})
 target_compile_options(${PROJECT_NAME} PUBLIC ${TESSERACT_COMPILE_OPTIONS_PUBLIC})
 target_compile_definitions(${PROJECT_NAME} PUBLIC ${TESSERACT_COMPILE_DEFINITIONS})
@@ -185,6 +187,7 @@ configure_package(
     tesseract_environment
     tesseract_scene_graph
     tesseract_state_solver
+    boost_plugin_loader
   CFG_EXTRAS cmake/tesseract_visualization-extras.cmake)
 
 # Mark cpp header files for installation

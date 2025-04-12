@@ -39,7 +39,7 @@ class ROPInvKinFactory : public InvKinFactory
                                             const YAML::Node& config) const override final;
 };
 
-TESSERACT_PLUGIN_ANCHOR_DECL(ROPInvKinFactoriesAnchor)
+PLUGIN_ANCHOR_DECL(ROPInvKinFactoriesAnchor)
 
 }  // namespace tesseract_kinematics
 
