@@ -37,6 +37,7 @@ jobs:
         environment-file: workspace/src/tesseract/.github/workflows/conda/environment.yml
         activate-environment: tesseract-build
         channels: conda-forge
+        conda-remove-defaults: "true"
     - name: build and test
       run: |
         conda info
@@ -71,6 +72,7 @@ jobs:
         environment-file: workspace/src/tesseract/.github/workflows/conda/environment.yml
         activate-environment: tesseract-build
         channels: conda-forge
+        conda-remove-defaults: "true"
     - name: build and test
       run: |
         conda info
