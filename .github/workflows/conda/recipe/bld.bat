@@ -1,5 +1,3 @@
-set CXXFLAGS=%CXXFLAGS% -DEIGEN_DONT_ALIGN=1 -DEIGEN_DONT_VECTORIZE=1
-set CXXFLAGS=%CXXFLAGS% /std:c++17
 
 colcon build --merge-install --install-base="%PREFIX%\opt\tesseract_robotics" ^
    --event-handlers console_cohesion+ ^
