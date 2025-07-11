@@ -117,4 +117,4 @@ jobs:
         touch conda-forge.yml
         conda smithy regenerate
         
-        conda build -m .ci_support/linux_64_.yaml --build-only .
+        conda build -m .ci_support/osx_arm64_.yaml --build-only .

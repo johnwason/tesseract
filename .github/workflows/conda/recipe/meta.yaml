@@ -13,7 +13,7 @@ requirements:
       - gmock
       - cmake
       - ninja # [win]
-      - make # [linux]
+      - make # [unix]
       - pkg-config
       - swig
       - colcon-common-extensions 
