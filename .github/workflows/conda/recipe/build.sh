@@ -15,7 +15,8 @@ colcon build --merge-install --install-base="$PREFIX/opt/tesseract_robotics" \
    -DTESSERACT_ENABLE_EXAMPLES=OFF \
    -DTESSERACT_BUILD_TRAJOPT_IFOPT=OFF \
    -DSETUPTOOLS_DEB_LAYOUT=OFF \
-   -DTESSERACT_ENABLE_TESTING=ON
+   -DTESSERACT_ENABLE_TESTING=ON \
+   -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
 
 source "$PREFIX/opt/tesseract_robotics/setup.sh"
 
