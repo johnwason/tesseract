@@ -19,8 +19,10 @@ colcon build --merge-install --install-base="$PREFIX/opt/tesseract_robotics" \
 
 source "$PREFIX/opt/tesseract_robotics/setup.sh"
 
+export TESSERACT_RESOURCE_PATH="$PREFIX/opt/tesseract_robotics/share/"
+
 colcon test --event-handlers console_direct+ --return-code-on-test-failure \
-   --packages-ignore gtest osqp osqp_eigen tesseract_examples trajopt_ifopt trajopt_sqp tesseract_common \
+   --packages-ignore gtest osqp osqp_eigen tesseract_examples trajopt_ifopt trajopt_sqp \
    --merge-install --install-base="$PREFIX/opt/tesseract_robotics" 
 
 

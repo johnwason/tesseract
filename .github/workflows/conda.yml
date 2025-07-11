@@ -16,12 +16,12 @@ on:
 
 jobs:
   conda-win:
-    runs-on: windows-2019
+    runs-on: windows-latest
     defaults:
       run:
         shell: powershell
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
        path: workspace/src/tesseract
     - name: install-depends
@@ -34,9 +34,7 @@ jobs:
     - uses: conda-incubator/setup-miniconda@v3
       with:
         channel-priority: strict
-        environment-file: workspace/src/tesseract/.github/workflows/conda/environment.yml       
-        use-mamba: true
-        auto-update-conda: true
+        environment-file: workspace/src/tesseract/.github/workflows/conda/environment.yml
         activate-environment: tesseract-build
     - name: build and test
       run: |
@@ -49,7 +47,7 @@ jobs:
         New-Item -Name conda-forge.yml -ItemType File
         conda smithy regenerate
         
-        conda mambabuild -m .ci_support/win_64_.yaml --build-only .
+        conda build -m .ci_support/win_64_.yaml --build-only .
 
   conda-linux:
     runs-on: ubuntu-latest
@@ -57,7 +55,7 @@ jobs:
       run:
         shell: bash -el {0}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: workspace/src/tesseract
     - name: install-depends
@@ -70,8 +68,6 @@ jobs:
       with:
         channel-priority: strict
         environment-file: workspace/src/tesseract/.github/workflows/conda/environment.yml
-        use-mamba: true
-        auto-update-conda: true
         activate-environment: tesseract-build
     - name: build and test
       run: |
@@ -83,4 +79,4 @@ jobs:
         touch conda-forge.yml
         conda smithy regenerate
         
-        conda mambabuild -m .ci_support/linux_64_.yaml --build-only .
+        conda build -m .ci_support/linux_64_.yaml --build-only .
