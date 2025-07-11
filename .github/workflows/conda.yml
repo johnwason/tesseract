@@ -36,6 +36,7 @@ jobs:
         channel-priority: strict
         environment-file: workspace/src/tesseract/.github/workflows/conda/environment.yml
         activate-environment: tesseract-build
+        channels: conda-forge
     - name: build and test
       run: |
         conda info
@@ -69,6 +70,7 @@ jobs:
         channel-priority: strict
         environment-file: workspace/src/tesseract/.github/workflows/conda/environment.yml
         activate-environment: tesseract-build
+        channels: conda-forge
     - name: build and test
       run: |
         conda info
