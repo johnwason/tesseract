@@ -86,7 +86,7 @@ jobs:
         conda build -m .ci_support/linux_64_.yaml --build-only .
 
   conda-mac:
-    runs-on: mac-latest
+    runs-on: macos-latest
     defaults:
       run:
         shell: bash -el {0}
