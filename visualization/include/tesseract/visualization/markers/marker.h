@@ -74,7 +74,7 @@ enum class MarkerType : std::uint32_t  // NOLINT
 class Marker
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   using Ptr = std::shared_ptr<Marker>;
   using ConstPtr = std::shared_ptr<const Marker>;

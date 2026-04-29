@@ -10,7 +10,7 @@ namespace tesseract::visualization
 class ToolpathMarker : public Marker
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   ToolpathMarker() = default;
   ToolpathMarker(tesseract::common::Toolpath toolpath) : toolpath(std::move(toolpath)) {}

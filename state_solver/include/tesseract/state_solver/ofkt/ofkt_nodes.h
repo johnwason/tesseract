@@ -40,7 +40,7 @@ class OFKTBaseNode : public OFKTNode
 {
 public:
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   OFKTBaseNode(JointType type, OFKTNode* parent, std::string link_name);
@@ -112,7 +112,7 @@ class OFKTRootNode : public OFKTBaseNode
 {
 public:
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   /**
@@ -141,7 +141,7 @@ class OFKTFixedNode : public OFKTBaseNode
 {
 public:
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   OFKTFixedNode(OFKTNode* parent, std::string link_name, std::string joint_name, const Eigen::Isometry3d& static_tf);
@@ -163,7 +163,7 @@ class OFKTFloatingNode : public OFKTBaseNode
 {
 public:
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   OFKTFloatingNode(OFKTNode* parent, std::string link_name, std::string joint_name, const Eigen::Isometry3d& static_tf);
@@ -185,7 +185,7 @@ class OFKTRevoluteNode : public OFKTBaseNode
 {
 public:
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   OFKTRevoluteNode(OFKTNode* parent,
@@ -214,7 +214,7 @@ class OFKTContinuousNode : public OFKTBaseNode
 {
 public:
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   OFKTContinuousNode(OFKTNode* parent,
@@ -242,7 +242,7 @@ class OFKTPrismaticNode : public OFKTBaseNode
 {
 public:
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   OFKTPrismaticNode(OFKTNode* parent,

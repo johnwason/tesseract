@@ -132,7 +132,7 @@ bool isNearSingularity(const Eigen::Ref<const Eigen::MatrixXd>& jacobian, double
 struct ManipulabilityEllipsoid
 {
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   /** @brief The manipulability ellipsoid eigen values */
@@ -162,7 +162,7 @@ struct ManipulabilityEllipsoid
 struct Manipulability
 {
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   /** @brief Full Manipulability Ellipsoid */

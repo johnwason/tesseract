@@ -75,7 +75,7 @@ enum CollisionFilterGroups : std::int8_t
 class CollisionObjectWrapper
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   using Ptr = std::shared_ptr<CollisionObjectWrapper>;
   using ConstPtr = std::shared_ptr<const CollisionObjectWrapper>;

@@ -19,7 +19,7 @@ namespace tesseract::visualization
 class ContactResultsMarker : public Marker
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   ContactResultsMarker() = default;
   ContactResultsMarker(std::vector<std::string> link_names,

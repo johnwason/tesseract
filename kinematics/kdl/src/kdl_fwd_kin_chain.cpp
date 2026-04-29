@@ -36,7 +36,7 @@ namespace tesseract::kinematics
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-thread_local KDL::JntArray KDLFwdKinChain::kdl_joints_cache;  // NOLINT
+KDL::JntArray KDLFwdKinChain::kdl_joints_cache;  // NOLINT
 
 KDLFwdKinChain::KDLFwdKinChain(const tesseract::scene_graph::SceneGraph& scene_graph,
                                const std::vector<std::pair<std::string, std::string>>& chains,

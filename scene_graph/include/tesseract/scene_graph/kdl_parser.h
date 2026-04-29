@@ -124,7 +124,7 @@ KDL::RigidBodyInertia convert(const std::shared_ptr<const Inertial>& inertial);
 /** @brief The KDLTreeData populated when parsing scene graph */
 struct KDLTreeData
 {
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   KDL::Tree tree;
   std::string base_link_name;

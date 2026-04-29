@@ -68,7 +68,7 @@ using PairsCollisionMarginData = std::unordered_map<tesseract::common::LinkNames
 class CollisionMarginPairData
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   CollisionMarginPairData() = default;
   CollisionMarginPairData(const PairsCollisionMarginData& pair_margins);
@@ -169,7 +169,7 @@ private:
 class CollisionMarginData
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   using Ptr = std::shared_ptr<CollisionMarginData>;
   using ConstPtr = std::shared_ptr<const CollisionMarginData>;

@@ -79,7 +79,7 @@ static const std::vector<std::string> ContactTestTypeStrings = {
 struct ContactResult
 {
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   /** @brief The distance between two links */
@@ -153,7 +153,7 @@ using ContactResultVector = tesseract::common::AlignedVector<ContactResult>;
 class ContactResultMap
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   using KeyType = std::pair<std::string, std::string>;
   using MappedType = ContactResultVector;
   using ContainerType = tesseract::common::AlignedMap<KeyType, MappedType>;
@@ -325,7 +325,7 @@ struct ContactRequest
  */
 struct ContactTestData
 {
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   ContactTestData() = default;
   ContactTestData(CollisionMarginData collision_margin_data,
@@ -506,7 +506,7 @@ struct CollisionCheckConfig
 struct ContactTrajectorySubstepResults
 {
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   ContactTrajectorySubstepResults() = default;
@@ -540,7 +540,7 @@ struct ContactTrajectorySubstepResults
 struct ContactTrajectoryStepResults
 {
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   ContactTrajectoryStepResults() = default;
@@ -590,7 +590,7 @@ struct ContactTrajectoryStepResults
 struct ContactTrajectoryResults
 {
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   ContactTrajectoryResults() = default;

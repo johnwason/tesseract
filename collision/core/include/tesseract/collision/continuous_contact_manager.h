@@ -39,7 +39,7 @@ namespace tesseract::collision
 class ContinuousContactManager
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   using Ptr = std::shared_ptr<ContinuousContactManager>;
   using ConstPtr = std::shared_ptr<const ContinuousContactManager>;

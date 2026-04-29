@@ -61,7 +61,7 @@ void serialize(Archive& ar, Link& obj);
 class Material
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   using Ptr = std::shared_ptr<Material>;
   using ConstPtr = std::shared_ptr<const Material>;
@@ -97,7 +97,7 @@ private:
 class Inertial
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   using Ptr = std::shared_ptr<Inertial>;
   using ConstPtr = std::shared_ptr<const Inertial>;
@@ -128,7 +128,7 @@ public:
 class Visual
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   using Ptr = std::shared_ptr<Visual>;
   using ConstPtr = std::shared_ptr<const Visual>;
@@ -155,7 +155,7 @@ public:
 class Collision
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   using Ptr = std::shared_ptr<Collision>;
   using ConstPtr = std::shared_ptr<const Collision>;

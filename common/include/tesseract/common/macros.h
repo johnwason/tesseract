@@ -72,11 +72,11 @@
 
 #define UNUSED(x) (void)(x)
 
-#ifdef TESSERACT_DISABLE_THREAD_LOCAL
+//#ifdef TESSERACT_DISABLE_THREAD_LOCAL
 #  define TESSERACT_THREAD_LOCAL
-#else
-#  define TESSERACT_THREAD_LOCAL thread_local
-#endif
+//#else
+//#  define TESSERACT_THREAD_LOCAL thread_local
+//#endif
 
 // clang-format on
 

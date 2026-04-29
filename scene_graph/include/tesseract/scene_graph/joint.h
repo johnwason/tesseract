@@ -240,7 +240,7 @@ enum class JointType : std::uint8_t
 class Joint
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   using Ptr = std::shared_ptr<Joint>;
   using ConstPtr = std::shared_ptr<const Joint>;

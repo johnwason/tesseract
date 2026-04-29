@@ -46,7 +46,7 @@ class InverseKinematics;
 struct KinGroupIKInput
 {
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   KinGroupIKInput(const Eigen::Isometry3d& p, std::string wf, std::string tl);
@@ -74,7 +74,7 @@ class KinematicGroup : public JointGroup
 {
 public:
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   using Ptr = std::shared_ptr<KinematicGroup>;

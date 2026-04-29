@@ -48,7 +48,7 @@ class KDLFwdKinChain : public ForwardKinematics
 {
 public:
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   using Ptr = std::shared_ptr<KDLFwdKinChain>;
@@ -108,7 +108,7 @@ private:
   std::string solver_name_{ KDL_FWD_KIN_CHAIN_SOLVER_NAME };   /**< @brief Name of this solver */
   mutable std::mutex mutex_; /**< @brief KDL is not thread safe due to mutable variables in Joint Class */
 
-  static thread_local KDL::JntArray kdl_joints_cache;  // NOLINT
+  static KDL::JntArray kdl_joints_cache;  // NOLINT
 
   /** @brief calcFwdKin helper function */
   void calcFwdKinHelperAll(tesseract::common::TransformMap& transforms,

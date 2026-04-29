@@ -545,7 +545,7 @@ Changelog for package tesseract_collision
 * Update due to changes in FCL Convex Shape Constructor
 * Add additional compiler warning options
 * Ignore unused param warnings in bullet
-* Add EIGEN_MAKE_ALIGNED_OPERATOR_NEW macros
+* Add   macros
 * Disable tesseract_collision FCL ConvexHull tests
 * Fix/Clean depends in CMakeLists.txt and package.xml for travis-ci
 * Merge pull request `#41 <https://github.com/ros-industrial-consortium/tesseract/issues/41>`_ from Levi-Armstrong/issue/FixMultiLayerCompoundShape

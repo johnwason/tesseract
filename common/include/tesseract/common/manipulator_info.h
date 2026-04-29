@@ -40,7 +40,7 @@ namespace tesseract::common
 struct ManipulatorInfo
 {
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   ManipulatorInfo() = default;

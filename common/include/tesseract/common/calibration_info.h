@@ -38,7 +38,7 @@ void serialize(Archive& ar, CalibrationInfo& obj);
 struct CalibrationInfo
 {
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   CalibrationInfo() = default;

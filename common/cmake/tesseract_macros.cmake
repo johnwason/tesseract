@@ -97,7 +97,7 @@ macro(tesseract_variables)
              CMAKE_SYSTEM_NAME2
              MATCHES
              "unknown")
-        set(TESSERACT_COMPILE_OPTIONS_PUBLIC -mno-avx)
+        #set(TESSERACT_COMPILE_OPTIONS_PUBLIC -mno-avx)
       endif()
     elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*")
       set(TESSERACT_COMPILE_OPTIONS_PRIVATE
@@ -136,7 +136,7 @@ macro(tesseract_variables)
              CMAKE_SYSTEM_NAME2
              MATCHES
              "unknown")
-        set(TESSERACT_COMPILE_OPTIONS_PUBLIC -mno-avx)
+        #set(TESSERACT_COMPILE_OPTIONS_PUBLIC -mno-avx)
       endif()
     elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*")
       set(TESSERACT_COMPILE_OPTIONS_PRIVATE

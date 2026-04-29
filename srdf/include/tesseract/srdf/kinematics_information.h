@@ -58,7 +58,7 @@ using GroupNames = std::set<std::string>;
 struct KinematicsInformation
 {
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   /** @brief A set of group names */

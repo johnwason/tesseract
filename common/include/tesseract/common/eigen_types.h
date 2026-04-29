@@ -13,17 +13,16 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 namespace tesseract::common
 {
 template <typename T>
-using AlignedVector = std::vector<T, Eigen::aligned_allocator<T>>;
+using AlignedVector = std::vector<T>;
 
 template <typename Key, typename Value>
-using AlignedMap = std::map<Key, Value, std::less<Key>, Eigen::aligned_allocator<std::pair<const Key, Value>>>;
+using AlignedMap = std::map<Key, Value, std::less<Key>>;
 
 template <typename Key, typename Value>
 using AlignedUnorderedMap = std::unordered_map<Key,
                                                Value,
                                                std::hash<Key>,
-                                               std::equal_to<Key>,
-                                               Eigen::aligned_allocator<std::pair<const Key, Value>>>;
+                                               std::equal_to<Key>>;
 
 using VectorIsometry3d = AlignedVector<Eigen::Isometry3d>;
 using VectorVector4d = AlignedVector<Eigen::Vector4d>;

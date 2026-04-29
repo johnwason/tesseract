@@ -54,7 +54,7 @@ class OFKTNode
 {
 public:
   // LCOV_EXCL_START
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
   // LCOV_EXCL_STOP
 
   using UPtr = std::unique_ptr<OFKTNode>;

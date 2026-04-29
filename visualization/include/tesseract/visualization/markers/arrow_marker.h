@@ -14,7 +14,7 @@ namespace tesseract::visualization
 class ArrowMarker : public Marker
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   ArrowMarker() = default;
   /**

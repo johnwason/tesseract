@@ -10,7 +10,7 @@ namespace tesseract::visualization
 class GeometryMarker : public Marker
 {
 public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+   
 
   GeometryMarker() = default;
   GeometryMarker(tesseract::geometry::Geometry::ConstPtr geom, Eigen::Isometry3d origin = Eigen::Isometry3d::Identity())
