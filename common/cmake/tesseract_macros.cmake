@@ -156,6 +156,9 @@ macro(tesseract_variables)
   endif()
 
   set(TESSERACT_CXX_VERSION 17)
+  if(UNIX)
+    add_compile_definitions(EIGEN_MALLOC_ALREADY_ALIGNED=1)
+  endif()
 endmacro()
 
 macro(find_bullet)
