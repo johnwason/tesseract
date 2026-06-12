@@ -20,7 +20,6 @@ requirements:
       - if: win
         then:
           - ninja
-          - cmd
       - if: unix
         then:
           - make
@@ -96,6 +95,11 @@ tests:
 
 build:
   number: 0
+  script:
+    if: win
+    then:
+      file: build.bat
+      interpreter: cmd.exe
 
 about:
   homepage: https://github.com/ros-industrial-consortium/tesseract
