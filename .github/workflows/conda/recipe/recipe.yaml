@@ -20,6 +20,7 @@ requirements:
       - if: win
         then:
           - ninja
+          - cmd
       - if: unix
         then:
           - make
